@@ -59,6 +59,6 @@ buck-out/
 /ios/Pods/
 
 #project
-src/components/
-src/modules/basics/
-src/services/api/
+agricord/components/
+agricord/modules/basics/
+agricord/services/api/
