@@ -1,4 +1,4 @@
-let LIVE_BACKEND_URL = 'https://api.runwayexpress.co.uk/server.php/increment/v1'
+let LIVE_BACKEND_URL = 'https://api.traceag.com.au/api/public/increment/v1'
 let DEV_BACKEND_URL = 'http://192.168.254.102/project_rx_api/public/increment/v1'
 let isDev = false
 let BACKEND_URL = isDev ? DEV_BACKEND_URL : LIVE_BACKEND_URL
