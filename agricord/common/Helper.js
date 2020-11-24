@@ -119,7 +119,6 @@ export default {
       title: 'Welcome to RunwayExpress!',
       text: 'Delivering food and more to your doorstep!',
       icon: null,
-      image: require('assets/logo.png'),
       colors: [Color.primary, Color.lightGray]
     }
   ],
