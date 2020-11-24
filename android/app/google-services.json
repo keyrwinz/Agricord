@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "266010404439",
+    "firebase_url": "https://agricord-dee7d.firebaseio.com",
+    "project_id": "agricord-dee7d",
+    "storage_bucket": "agricord-dee7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:266010404439:android:dd8e617195ad3c65b7a512",
+        "android_client_info": {
+          "package_name": "com.agricord"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "266010404439-0g54ahi5g0vlpaebt5rn0radals5rsb1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbmGu87CIrJxMwlf0k_1SAAVETYe5vFHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "266010404439-0g54ahi5g0vlpaebt5rn0radals5rsb1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
