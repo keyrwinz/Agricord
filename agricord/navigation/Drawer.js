@@ -6,10 +6,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Slider from 'components/Slider/WithIcons.js';
 import { Color, BasicStyles } from 'common';
-import Homepage from 'modules/homepage';
+import Homepage from 'modules/basics/Welcome.js';
+import Dashboard from 'modules/basics/Welcome.js';
+import Notification from 'modules/basics/Welcome.js';
+import Profile from 'modules/basics/Welcome.js';
+import HelpCenter from 'modules/basics/Welcome.js';
 import OptionRight from './OptionRight';
-
-import MessengerMessages from 'components/Messenger/MessagesV2';
+import TermsAndConditions from 'modules/basics/Welcome.js';
+import PrivacyPolicy from 'modules/basics/Welcome.js';
+import Merchant from 'modules/basics/Welcome.js';;
+import MyAddress from 'modules/basics/Welcome.js';
+import Settings from 'modules/basics/Welcome.js';
+import Referral from 'modules/basics/Welcome.js';
+import MyOrders from 'modules/basics/Welcome.js';
+import MyOrderDetails from 'modules/basics/Welcome.js';;
+import MessengerMessages from 'modules/basics/Welcome.js';
 import { connect } from 'react-redux';
 
 class MenuDrawerContentStructure extends Component {
