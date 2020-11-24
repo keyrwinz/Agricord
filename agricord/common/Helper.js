@@ -14,11 +14,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 export default {
   company: 'Increment Technologies',
-  APP_NAME: '@RunwayExpress_',
-  APP_NAME_BASIC: 'RunwayExpress',
-  APP_EMAIL: 'support@runwayexpress.com',
-  APP_WEBSITE: 'www.runwayexpress.com',
-  APP_HOST: 'com.runwayexpress',
+  APP_NAME: '@Agicord_',
+  APP_NAME_BASIC: 'Agicord',
+  APP_EMAIL: 'support@traceag.com.au',
+  APP_WEBSITE: 'support@traceag.com.au',
+  APP_HOST: 'com.agricord',
   DrawerMenu: [{
     title: 'Homepage',
     route: 'Homepage',
@@ -116,7 +116,7 @@ export default {
   tutorials: [
     {
       key: 1,
-      title: 'Welcome to RunwayExpress!',
+      title: 'Welcome to Agicord!',
       text: 'Delivering food and more to your doorstep!',
       icon: null,
       colors: [Color.primary, Color.lightGray]
