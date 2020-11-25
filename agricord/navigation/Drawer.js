@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Dimensions } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -22,6 +22,8 @@ import MyOrders from 'modules/basics/Welcome.js';
 import MyOrderDetails from 'modules/basics/Welcome.js';;
 import MessengerMessages from 'modules/basics/Welcome.js';
 import { connect } from 'react-redux';
+
+const width = Math.round(Dimensions.get('window').width);
 
 class MenuDrawerContentStructure extends Component {
   constructor(props){
@@ -319,7 +321,8 @@ const Drawer = createDrawerNavigator({
     }
   }
 }, {
-  contentComponent: Slider
+  contentComponent: Slider,
+  drawerWidth: width,
 });
 
 export default Drawer;

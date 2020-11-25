@@ -37,6 +37,14 @@
 			</dict>
 		</dict>
 	</dict>
+  <key>NSCameraUsageDescription</key>
+	<string>App needs access to Camera</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string></string>
+  <key>NSLocationAlwaysUsageDescription</key>
+	<string></string>
+  <key>NSPhotoLibraryUsageDescription</key>
+	<string>App needs access to Photo Library</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>
