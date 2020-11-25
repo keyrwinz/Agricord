@@ -11,7 +11,7 @@ import {
   faQuestionCircle,
   faUsers,
   faFile,
-  faHome
+  faHome,
 } from '@fortawesome/free-solid-svg-icons';
 
 import TasksIcon from '../assets/drawer/tasks_icon.svg';
@@ -30,59 +30,64 @@ export default {
   APP_EMAIL: 'support@traceag.com.au',
   APP_WEBSITE: 'support@traceag.com.au',
   APP_HOST: 'com.agricord',
-  DrawerMenu: [{
-    title: 'Homepage',
-    route: 'Homepage',
-    icon: faHome,
-    iconStyle: {
-      color: Color.primary
-    }
-  }, {
-    title: 'My Order History',
-    route: 'MyOrders',
-    icon: faFile,
-    iconStyle: {
-      color: Color.primary
-    }
-  }, {
-    title: 'My Profile',
-    route: 'Profile',
-    icon: faUser,
-    iconStyle: {
-      color: Color.primary
-    }
-  }, {
-    title: 'My Address',
-    route: 'MyAddress',
-    icon: faMapMarker,
-    iconStyle: {
-      color: Color.primary
-    }
-  }, 
-  // {
-  //   title: 'Payment Methods',
-  //   route: 'PaymentMethods',
-  //   icon: faCreditCard,
-  //   iconStyle: {
-  //     color: Color.primary
-  //   }
-  // },
-  //  {
-  //   title: 'Help Center',
-  //   route: 'HelpCenter',
-  //   icon: faQuestionCircle,
-  //   iconStyle: {
-  //     color: Color.primary
-  //   }
-  // }, 
-  {
-    title: 'Invite Friends',
-    route: 'InviteFriends',
-    icon: faUsers,
-    iconStyle: {
-      color: Color.primary
-    }
-  }],
+  DrawerMenu: [
+    {
+      title: 'Homepage',
+      route: 'Homepage',
+      icon: faHome,
+      iconStyle: {
+        color: Color.primary,
+      },
+    },
+    {
+      title: 'My Order History',
+      route: 'MyOrders',
+      icon: faFile,
+      iconStyle: {
+        color: Color.primary,
+      },
+    },
+    {
+      title: 'My Profile',
+      route: 'Profile',
+      icon: faUser,
+      iconStyle: {
+        color: Color.primary,
+      },
+    },
+    {
+      title: 'My Address',
+      route: 'MyAddress',
+      icon: faMapMarker,
+      iconStyle: {
+        color: Color.primary,
+      },
+    },
+    // {
+    //   title: 'Payment Methods',
+    //   route: 'PaymentMethods',
+    //   icon: faCreditCard,
+    //   iconStyle: {
+    //     color: Color.primary
+    //   }
+    // },
+    //  {
+    //   title: 'Help Center',
+    //   route: 'HelpCenter',
+    //   icon: faQuestionCircle,
+    //   iconStyle: {
+    //     color: Color.primary
+    //   }
+    // },
+    {
+      title: 'Invite Friends',
+      route: 'InviteFriends',
+      icon: faUsers,
+      iconStyle: {
+        color: Color.primary,
+      },
+    },
+  ],
   DrawerMenuLogout: [{
     // TEMP. ONLY (SHOULD BE ON DRAWERMENU_LOGGEDIN)
     title: 'Tasks',
@@ -141,31 +146,39 @@ export default {
       title: 'App Settings',
       route: 'AppSettings'
     }]
-  },
+  }],
+  DrawerMenuBottom: [
+    {
+      title: 'Settings',
+      route: 'Settings',
+    },
+    {
+      title: 'Terms and Conditions',
+      route: 'TermsAndConditions',
+    },
+    {
+      title: 'Privacy Policy',
+      route: 'PrivacyPolicy',
+    },
   ],
-  DrawerMenuBottom: [{
-    title: 'Settings',
-    route: 'Settings'
-  }, {
-    title: 'Terms and Conditions',
-    route: 'TermsAndConditions'
-  }, {
-    title: 'Privacy Policy',
-    route: 'PrivacyPolicy'
-  }],
-  pagerMenu: [{
-    title: 'FEATURED',
-    value: 'featured'
-  }, {
-    title: 'CATEGORIES',
-    value: 'categories'
-  }, {
-    title: 'SHOPS',
-    value: 'shops'
-  }, {
-    title: 'OTHERS',
-    value: 'others'
-  }],
+  pagerMenu: [
+    {
+      title: 'FEATURED',
+      value: 'featured',
+    },
+    {
+      title: 'CATEGORIES',
+      value: 'categories',
+    },
+    {
+      title: 'SHOPS',
+      value: 'shops',
+    },
+    {
+      title: 'OTHERS',
+      value: 'others',
+    },
+  ],
   pusher: {
     broadcast_type: 'pusher',
     channel: 'runway',
@@ -182,35 +195,35 @@ export default {
       title: 'Welcome to Agicord!',
       text: 'Delivering food and more to your doorstep!',
       icon: null,
-      image: require('assets/logo.png'),
-      colors: [Color.primary, Color.lightGray]
-    }
+      // image: require('assets/logo.png'),
+      colors: [Color.primary, Color.lightGray],
+    },
   ],
   referral: {
     message:
       `Share the benefits of <<popular products>> with your friends and family. ` +
       `Give them ₱100 towards their first purchase when they confirm your invite. ` +
       `You’ll get ₱100 when they do!`,
-    emailMessage: 'I\'d like to invite you on RunwayExpress!'
+    emailMessage: "I'd like to invite you on RunwayExpress!",
   },
-  categories:[
+  categories: [
     {
-      type:'Asian',
+      type: 'Asian',
     },
     {
-      type:'American',
+      type: 'American',
     },
     {
-      type:'Beverages',
-    }
+      type: 'Beverages',
+    },
   ],
   retrieveDataFlag: 1,
-  validateEmail(email){
-    let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+.[a-zA-Z0-9]*$/
-    if(reg.test(email) === false){
-      return false
-    }else{
-      return true
+  validateEmail(email) {
+    let reg = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+.[a-zA-Z0-9]*$/;
+    if (reg.test(email) === false) {
+      return false;
+    } else {
+      return true;
     }
-  }
-}
+  },
+};
