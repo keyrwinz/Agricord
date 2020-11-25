@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, TextInput, Text, StyleSheet} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import styles from 'modules/login/Styles.js';
 
 class LoginInputField extends Component {
   render() {
@@ -12,32 +13,14 @@ class LoginInputField extends Component {
         <TextInput
           onChangeText={() => {}}
           secureTextEntry={this.props.secureTextEntry}
+          placeholder={this.props.placeholder}
+          placeholderTextColor={
+            !this.props.secureTextEntry ? '#000000' : '#B4B4B4'
+          }
         />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  InputContainer: {
-    flexDirection: 'row',
-    width: '80%',
-    height: 45,
-    borderRadius: 22.5,
-    borderWidth: 1,
-    borderColor: '#DDDDDD',
-  },
-  IconContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft: 20,
-    paddingRight: 10,
-  },
-  IconStyle: {
-    height: 30,
-    width: 30,
-    borderRadius: 100,
-  },
-});
 
 export default LoginInputField;

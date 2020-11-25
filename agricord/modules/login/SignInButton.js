@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import styles from 'modules/login/Styles.js';
 
 class SignInButton extends Component {
   render() {
@@ -16,22 +17,5 @@ class SignInButton extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  ButtonContainer: {
-    height: 50,
-    width: '45%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#BADC78',
-    borderRadius: 45,
-    elevation: 5,
-  },
-  ButtonTextStyle: {
-    color: '#FFFFFF',
-    fontSize: 25,
-    fontWeight: 'bold',
-  },
-});
 
 export default SignInButton;

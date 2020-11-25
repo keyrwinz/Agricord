@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {faLock, faUserAlt} from '@fortawesome/free-solid-svg-icons';
 import LoginInputField from 'modules/login/LoginInputField';
 import SignInButton from 'modules/login/SignInButton';
-
+import styles from 'modules/login/Styles.js';
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 
@@ -40,10 +40,17 @@ class Login extends Component {
               </Text>
             </View>
             <View style={styles.UsernameContainer}>
-              <LoginInputField icon={faUserAlt} />
+              <LoginInputField
+                icon={faUserAlt}
+                placeholder="Login or Username"
+              />
             </View>
             <View style={styles.PasswordContainer}>
-              <LoginInputField icon={faLock} secureTextEntry={true} />
+              <LoginInputField
+                icon={faLock}
+                secureTextEntry={true}
+                placeholder="Password"
+              />
             </View>
             <TouchableOpacity
               onPress={() => {}}
@@ -88,91 +95,6 @@ class Login extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  MainContainer: {},
-  BackgroundContainer: {
-    flex: 1,
-    resizeMode: 'cover',
-    height: '100%',
-    width: '100%',
-    elevation: 2,
-  },
-  LoginContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: '38%',
-  },
-  LogoContainer: {
-    height: 180,
-    width: 180,
-  },
-  TitleContainer: {
-    width: 4336 * ratio,
-    height: 882 * ratio,
-  },
-  TitleTextStyle: {},
-  SignInTextContainer: {
-    paddingBottom: 10,
-    paddingTop: 15,
-  },
-  SignInTextStyle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  UsernameContainer: {
-    paddingVertical: 14,
-    width: '100%',
-    alignItems: 'center',
-  },
-  PasswordContainer: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  CreateAccountContainer: {
-    alignSelf: 'flex-end',
-    paddingVertical: 8,
-    paddingRight: '10%',
-  },
-  CreateAccountTextStyle: {
-    color: '#A9A9A9',
-    fontSize: 13,
-  },
-  SignInButtonContainer: {
-    width: '100%',
-    paddingVertical: 15,
-    alignItems: 'flex-end',
-    paddingRight: '10%',
-    paddingTop: 30,
-  },
-  ForgottenPasswordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: '10%',
-  },
-  ForgottenPasswordTextContainer: {},
-  ForgottenPasswordTextStyle: {
-    fontSize: 13,
-  },
-  SendCodeContainer: {},
-  SendCodeTextStyle: {
-    fontWeight: 'bold',
-    fontSize: 13,
-  },
-  DrumScanContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: '10%',
-  },
-  DrumScanTextContainer: {},
-  DrumScanTextStyle: {
-    fontWeight: 'bold',
-    fontSize: 13,
-  },
-});
 
 const mapStateToProps = (state) => ({state: state});
 
