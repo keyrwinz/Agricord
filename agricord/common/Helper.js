@@ -1,3 +1,4 @@
+import React from 'react';
 import Color from './Color.js';
 import {
   faEdit,
@@ -12,6 +13,16 @@ import {
   faFile,
   faHome,
 } from '@fortawesome/free-solid-svg-icons';
+
+import TasksIcon from '../assets/drawer/tasks_icon.svg';
+import InventoryIcon from '../assets/drawer/inventory_icon.svg';
+import OrdersIcon from '../assets/drawer/orders_icon.svg';
+import SettingsIcon from '../assets/drawer/settings_icon.svg';
+import TasksActive from '../assets/drawer/tasks_active.svg';
+import InventoryActive from '../assets/drawer/inventory_active.svg';
+import OrdersActive from '../assets/drawer/orders_active.svg';
+import SettingsActive from '../assets/drawer/settings_active.svg';
+
 export default {
   company: 'Increment Technologies',
   APP_NAME: '@Agicord_',
@@ -77,16 +88,65 @@ export default {
       },
     },
   ],
-  DrawerMenuLogout: [
-    {
-      title: 'Homepage',
-      route: 'Homepage',
-      icon: faHome,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
-  ],
+  DrawerMenuLogout: [{
+    // TEMP. ONLY (SHOULD BE ON DRAWERMENU_LOGGEDIN)
+    title: 'Tasks',
+    route: 'Tasks',
+    defaultIcon: <TasksIcon />,
+    activeIcon: <TasksActive />,
+    subRoutes: [{
+      title: 'Tasks In Progress',
+      route: 'TaskInProgress'
+    }, {
+      title: 'Tasks Due',
+      route: 'TasksDue'
+    }, {
+      title: 'Tasks History',
+      route: 'TasksHistory'
+    }]
+  }, {
+    title: 'Inventory',
+    route: 'Inventory',
+    defaultIcon: <InventoryIcon />,
+    activeIcon: <InventoryActive />,
+    subRoutes: [{
+      title: 'Herbicides',
+      route: 'InventoryHerbicides'
+    }, {
+      title: 'Fungicides',
+      route: 'InventoryFungicides'
+    }, {
+      title: 'Insecticides',
+      route: 'InventoryInsecticides'
+    }, {
+      title: 'Other',
+      route: 'InventoryOther'
+    }]
+  }, {
+    title: 'Orders',
+    route: 'Orders',
+    defaultIcon: <OrdersIcon />,
+    activeIcon: <OrdersActive />,
+    subRoutes: [{
+      title: 'Upcoming Orders',
+      route: 'UpcomingOrders'
+    }, {
+      title: 'Historical Orders',
+      route: 'HistoricalOrders'
+    }]
+  }, {
+    title: 'Settings',
+    route: 'Settings',
+    defaultIcon: <SettingsIcon />,
+    activeIcon: <SettingsActive />,
+    subRoutes: [{
+      title: 'Account Settings',
+      route: 'AccountSettings'
+    }, {
+      title: 'App Settings',
+      route: 'AppSettings'
+    }]
+  }],
   DrawerMenuBottom: [
     {
       title: 'Settings',
