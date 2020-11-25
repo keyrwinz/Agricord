@@ -1,16 +1,16 @@
 import {createStackNavigator} from 'react-navigation-stack';
-import Login from 'modules/basics/SliderLogin';
+import Login from 'modules/login';
 import ForgotPassword from 'modules/basics/ForgotPassword';
 import Register from 'modules/basics/Register';
 import Drawer from './Drawer';
-// import NotificationStack from 'modules/notification/Drawer.js';
-// import selectLocationStack from 'modules/selectLocation/Drawer.js';
-// import selectFilterStack from 'modules/FilterPicker/Drawer.js';
-// import CartStack from 'modules/productCheckout/Drawer.js';
-// import addressMapStack from 'modules/addressMap/Drawer.js';
-// import paymentOptionStack from 'modules/paymentOptions/Drawer.js';
-// import ChangeAddressStack from 'modules/checkoutChangeAddress/Drawer.js';
-
+import NotificationStack from 'modules/basics/Welcome.js';
+import selectLocationStack from 'modules/basics/Welcome.js';
+import selectFilterStack from 'modules/basics/Welcome.js';
+import CartStack from 'modules/basics/Welcome.js';
+import addressMapStack from 'modules/basics/Welcome.js';
+import paymentOptionStack from 'modules/basics/Welcome.js';
+import ChangeAddressStack from 'modules/basics/Welcome.js';
+import DrumScanLogin from 'modules/login/DrumScanLogin';
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -58,6 +58,7 @@ const PrimaryNav = createStackNavigator(
     // addressMap: {screen: addressMapStack},
     // paymentOptions: {screen: paymentOptionStack},
     // ChangeAddress: {screen: ChangeAddressStack},
+    drumScanLoginStack: {screen: DrumScanLogin},
   },
   {
     // Default config for all screens

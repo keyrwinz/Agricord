@@ -1,16 +1,16 @@
-let primary = '#FF5B04'
-let secondary = '#ffaa81'
-let tertiary = '#FF5B04'
+let primary = '#cae166'
+let secondary = '#7575C7'
+let tertiary = '#5A84EE'
 export default {
-  primaryDark: '#FF5B04',
+  primaryDark: '#cae166',
   primary: primary,
-  danger: '#ff0000',
+  danger: '#cae166',
   warning: '#ffc107',
   secondary: secondary,
   white: '#ffffff',
   gray: '#cccccc',
   lightGray: '#eeeeee',
-  darkGray: '#555555',
+  darkGray: '#2b2b2b',
   normalGray: '#999',
   black: '#000',
   success: '#4BB543',
