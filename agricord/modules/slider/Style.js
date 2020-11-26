@@ -62,27 +62,34 @@ export default {
     position: 'relative',
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap',
-    flex: 1
+    flexWrap: 'nowrap',
   },
   lineGraph: {
-    width: '7%',
-    height: '100%',
+    width: '12%',
+    height: '130%',
     position: 'absolute',
     top: -15,
     left: -3,
-    // backgroundColor: 'red',
     borderLeftWidth: 1,
     borderLeftColor: '#AAD76F',
     borderBottomWidth: 1,
     borderBottomColor: '#AAD76F',
+  },
+  sectionConnector: {
+    position: 'absolute',
+    width: '50%',
+    left: 17,
+    top: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#AAD76F'
   },
   bulletView: {
     width: 15,
     height: 15,
     borderRadius: 7.5,
     backgroundColor: '#AAD76F',
-    marginLeft: 10,
+    marginTop: 15,
+    marginLeft: 15,
     marginRight: 10
   },
   subRouteText: {

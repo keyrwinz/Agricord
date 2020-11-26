@@ -34,7 +34,9 @@ class Slider extends Component {
 
   navigateToScreen = (route) => {
     this.props.navigation.toggleDrawer();
-    return // RETURN TEMPRARILY
+    // RETURN TEMPRARILY
+    return
+
     // const navigateAction = NavigationActions.navigate({
     //   routeName: route
     // });
@@ -176,6 +178,7 @@ class Slider extends Component {
                       Hi {user.username}!
                     </Text>
 
+                    {/* NOTIFICATION BUTTON */}
                     {/* <TouchableOpacity
                       onPress={() => {
                         this.props.navigation.navigate('Notification')
@@ -269,27 +272,43 @@ class Slider extends Component {
                     shadowRadius: 10,
                     elevation: 1,
                   } : {}
+
+                  const minCount = 2
+                  let leftSectionCount = Math.ceil(item.subRoutes.length/2)
+                  leftSectionCount = leftSectionCount < minCount ? minCount : leftSectionCount
+
+                  const leftSubRoutes = []
+                  const rightSubRoutes = []
+                  const subRoutes = [...item.subRoutes]
+                  subRoutes.map((sub, idx) => {
+                    if (idx+1 <= leftSectionCount) {
+                      leftSubRoutes.push(sub)
+                    } else {
+                      rightSubRoutes.push(sub)
+                    }
+                  })
+
                   return (
-                    <View
-                      style={[styles.navSectionStyleNoBorder, activeStyle]}
-                      key={index}
-                    >
+                    <View style={[styles.navSectionStyleNoBorder, activeStyle]} key={index}>
                       <TouchableOpacity
                         onPress={() => this.toggleExpanded(item.route)}
                         style={styles.drawerItem}
                       >
                         <View>
-                          {
-                            this.state.collapsed === item.route ? (
-                              item.activeIcon
-                            ) : (
-                              item.defaultIcon
-                            )
-                          }
+                        {
+                          this.state.collapsed === item.route ? (
+                            item.activeIcon
+                          ) : (
+                            item.defaultIcon
+                          )
+                        }
                         </View>
-                        <Text style={[styles.navItemStyle, {
-                          fontWeight: this.state.collapsed === item.route ? 'bold' : 'normal'
-                        }]}>
+                        <Text
+                          style={[
+                            styles.navItemStyle, {
+                            fontWeight: this.state.collapsed === item.route ? 'bold' : 'normal'
+                          }]}
+                        >
                           {item.title}
                         </Text>
                         <FontAwesomeIcon
@@ -298,20 +317,57 @@ class Slider extends Component {
                         />
                       </TouchableOpacity>
                       <Collapsible collapsed={this.state.collapsed !== item.route} align="center">
-                        <View style={styles.collapsibleView}>
-                          {item.subRoutes.length && item.subRoutes.map(data => (
-                            <TouchableOpacity
-                              key={data.title}
-                              onPress={() => Alert.alert(`Route: ${data.route}`)}
-                              style={styles.subRoutes}
-                            >
-                              <View style={styles.lineGraph} />
-                              <View style={styles.bulletView} />
-                              <Text style={styles.subRouteText}>
-                                {data.title}
-                              </Text>
-                            </TouchableOpacity>
-                          ))}
+                        <View style={{
+                          position: 'relative',
+                          width: '100%',
+                          paddingHorizontal: 20,
+                          paddingTop: rightSubRoutes.length > 0 ? 15 : 0,
+                          flexDirection: 'row',
+                        }}>
+                          {
+                            rightSubRoutes.length > 0 && (
+                              <View style={styles.sectionConnector} />
+                            )
+                          }
+                          <View style={{ width: '50%', flexDirection: 'column' }}>
+                            {
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                                <TouchableOpacity
+                                  key={data.title}
+                                  onPress={() => Alert.alert(`Route: ${data.route}`)}
+                                  style={styles.subRoutes}
+                                >
+                                  <View style={styles.lineGraph} />
+                                  <View style={styles.bulletView} />
+                                  <Text style={styles.subRouteText}>
+                                    {data.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              )) : null
+                            }
+                          </View>
+                          <View style={{ width: '50%', flexDirection: 'column' }}>
+                            {
+                              rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
+                                <TouchableOpacity
+                                  key={data.title}
+                                  onPress={() => Alert.alert(`Route: ${data.route}`)}
+                                  style={styles.subRoutes}
+                                >
+                                  <View
+                                    style={[styles.lineGraph, {
+                                      marginTop: idx === 0 ? 10 : 0,
+                                      height: idx === 0 ? '90%' : '130%'
+                                    }]}
+                                  />
+                                  <View style={styles.bulletView} />
+                                  <Text style={styles.subRouteText}>
+                                    {data.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              )) : null
+                            }
+                          </View>
                         </View>
                       </Collapsible>
                     </View>
