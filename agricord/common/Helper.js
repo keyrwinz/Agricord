@@ -22,6 +22,8 @@ import TasksActive from '../assets/drawer/tasks_active.svg';
 import InventoryActive from '../assets/drawer/inventory_active.svg';
 import OrdersActive from '../assets/drawer/orders_active.svg';
 import SettingsActive from '../assets/drawer/settings_active.svg';
+import CompleteTaskIcon from '../assets/drawer/complete_task_icon.svg';
+import LogoutIcon from '../assets/drawer/logout_icon.svg';
 
 export default {
   company: 'Increment Technologies',
@@ -148,18 +150,27 @@ export default {
     }]
   }],
   DrawerMenuBottom: [
+    // {
+    //   title: 'Settings',
+    //   route: 'Settings',
+    // },
+    // {
+    //   title: 'Terms and Conditions',
+    //   route: 'TermsAndConditions',
+    // },
+    // {
+    //   title: 'Privacy Policy',
+    //   route: 'PrivacyPolicy',
+    // },
     {
-      title: 'Settings',
-      route: 'Settings',
-    },
-    {
-      title: 'Terms and Conditions',
-      route: 'TermsAndConditions',
-    },
-    {
-      title: 'Privacy Policy',
-      route: 'PrivacyPolicy',
-    },
+      title: 'Complete spray task',
+      route: 'CompleteSprayTask',
+      defaultIcon: <CompleteTaskIcon />,
+    }, {
+      title: 'Log out',
+      route: 'Logout',
+      defaultIcon: <LogoutIcon />
+    }
   ],
   pagerMenu: [
     {

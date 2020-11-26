@@ -1,0 +1,384 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import Collapsible from 'react-native-collapsible';
+import styles from './Style';
+import { NavigationActions, StackActions } from 'react-navigation';
+import { SafeAreaView, ScrollView, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import { connect } from 'react-redux';
+import { Helper, BasicStyles, Color } from 'common';
+import Config from 'src/config.js';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faUserCircle, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Pusher from 'services/Pusher.js';
+
+import HouseIcon from '../../assets/drawer/profile/houseIcon.svg';
+
+const TEST_DEV = true
+
+class Slider extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      collapsed: null
+    }
+  }
+
+  toggleExpanded = (route) => {
+    if (route === this.state.collapsed) {
+      this.setState({ collapsed: null });
+      return
+    }
+
+    this.setState({ collapsed: route });
+  };
+
+  navigateToScreen = (route) => {
+    this.props.navigation.toggleDrawer();
+    return // RETURN TEMPRARILY
+    // const navigateAction = NavigationActions.navigate({
+    //   routeName: route
+    // });
+    // this.props.navigation.dispatch(navigateAction);
+    // const { setActiveRoute } = this.props;
+    // setActiveRoute(null)
+
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'drawerStack',
+      action: StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+            NavigationActions.navigate({routeName: route}),
+        ]
+      })
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
+  navigateToStack =(route) => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: route
+    });
+    this.props.navigation.dispatch(navigateAction);
+  }
+
+  logoutAction(){
+    //clear storage
+    const { logout, setActiveRoute } = this.props;
+
+    // unsubscribe pusher
+    if (Pusher.pusher) {
+      Pusher.pusher.unsubscribe(Helper.pusher.channel);
+      Pusher.pusher = null
+      Pusher.channel = null
+    }
+
+    logout();
+    // setActiveRoute(null)
+    this.props.navigation.navigate('loginStack');
+  }
+
+  render () {
+    const { user, theme } = this.props.state;
+    return (
+      <View style={styles.container}>
+        <SafeAreaView>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View>
+              <View style={styles.titleContainer}>
+                <View style={styles.topRightBox} />
+                <View style={styles.imageContainer}>
+                  <Image
+                    source={require('assets/logo.png')}
+                    style={styles.LogoContainer}
+                  />
+                  <Image
+                    source={require('assets/agricordLogo03.png')}
+                    style={styles.TitleContainer}
+                  />
+                </View>
+              </View>
+              {
+                TEST_DEV ? (
+                  <View style={styles.userContainer}>
+                    <View style={styles.userContainer2}>
+                      <View style={styles.userContainer3}>
+                        <View style={styles.userInfoContainer}>
+                          <View>
+                            <Image
+                              source={require('assets/drawer/profile/profile_pic.png')}
+                              style={styles.userImage}
+                            />
+                          </View>
+                          <View style={styles.userInfo}>
+                            <View>
+                              <Text style={styles.userName}>
+                                Steve.A
+                              </Text>
+                              <Text style={styles.userEmail}>
+                                Steven@abacus.au
+                              </Text>
+                            </View>
+                            <View style={styles.extraIcons}>
+                              <HouseIcon />
+                              <View style={styles.badgeContainer}>
+                                <Text style={styles.badgeText}>
+                                  Greenacres Farming Co
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                ) : 
+                /**
+                 * IF USER LOGGED IN
+                 */
+                user != null ? (
+                  <View style={[styles.sectionHeadingStyle, {
+                    backgroundColor: theme ? theme.primary : Color.primary,
+                  }]}>
+                    {
+                      user.account_profile != null && user.account_profile.url != null && (
+                        <Image
+                          source={{uri: Config.BACKEND_URL  + user.account_profile.url}}
+                          style={[BasicStyles.profileImageSize, {
+                            height: 100,
+                            width: 100,
+                            borderRadius: 50
+                          }]}/>
+                      )
+                    }
+
+                    {
+                      (user.account_profile == null || (user.account_profile != null && user.account_profile.url == null)) && (
+                        <FontAwesomeIcon
+                          icon={faUserCircle}
+                          size={100}
+                          style={{
+                            color: Color.white
+                          }}
+                        />
+                      )
+                    }
+              
+                    <Text 
+                      style={{
+                      color: Color.white,
+                      fontWeight: 'bold',
+                      fontSize: 16,
+                      marginTop: 10
+                      }}
+                    >
+                      Hi {user.username}!
+                    </Text>
+
+                    {/* <TouchableOpacity
+                      onPress={() => {
+                        this.props.navigation.navigate('Notification')
+                      }}
+                      style={{ width: '100%' }}
+                    >
+                      <View
+                        style={{
+                          width: '100%',
+                          marginTop: 20,
+                          marginBottom: 10,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          justifyContent: 'flex-start',
+                          paddingLeft: 15
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faBell}
+                          size={20}
+                          style={{ color: Color.white }}
+                        />
+                        <Text style={{ color: Color.white, marginHorizontal: 5 }}>
+                          Notifications
+                        </Text>
+                      </View>
+                    </TouchableOpacity> */}
+                  </View>
+                ) : (
+                  /**
+                   * IF NOT LOGGED IN
+                   */
+                  <View
+                    style={[
+                      styles.sectionHeadingStyle, {
+                      alignItems: 'flex-start',
+                      // backgroundColor: theme ? theme.primary : Color.primary
+                    }]}
+                  >
+                    <TouchableOpacity
+                      onPress={() => this.navigateToStack('loginStack')}>
+                      <Text style={{
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                        paddingLeft: 20
+                      }}>
+                        Login or register
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                )
+              }
+
+              {(user != null && Helper.DrawerMenu.length > 0) &&
+                Helper.DrawerMenu.map((item, index) => {
+                  return(
+                  <View style={[styles.navSectionStyleNoBorder, {
+                    paddingLeft: 15
+                  }]} key={index}>
+                    <TouchableOpacity
+                      onPress={() => this.navigateToScreen(item.route)}
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '100%'
+                      }}>
+                        <FontAwesomeIcon icon={item.icon} style={[item.iconStyle, {
+                          color: theme ? theme.primary : Color.primary
+                        }]}/>
+                        <Text style={styles.navItemStyle}>
+                          {item.title}
+                        </Text>
+                    </TouchableOpacity>
+                  </View>)
+                })
+              }
+              {(user == null && Helper.DrawerMenuLogout.length > 0) &&
+                Helper.DrawerMenuLogout.map((item, index) => {
+                  const activeStyle = this.state.collapsed === item.route ? {
+                    borderLeftWidth: 12,
+                    borderLeftColor: '#D9E597',
+                    paddingLeft: 18,
+                    // box-shadow
+                    backgroundColor: Color.white,
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    shadowOpacity: 0.13,
+                    shadowRadius: 10,
+                    elevation: 1,
+                  } : {}
+                  return (
+                    <View
+                      style={[styles.navSectionStyleNoBorder, activeStyle]}
+                      key={index}
+                    >
+                      <TouchableOpacity
+                        onPress={() => this.toggleExpanded(item.route)}
+                        style={styles.drawerItem}
+                      >
+                        <View>
+                          {
+                            this.state.collapsed === item.route ? (
+                              item.activeIcon
+                            ) : (
+                              item.defaultIcon
+                            )
+                          }
+                        </View>
+                        <Text style={[styles.navItemStyle, {
+                          fontWeight: this.state.collapsed === item.route ? 'bold' : 'normal'
+                        }]}>
+                          {item.title}
+                        </Text>
+                        <FontAwesomeIcon
+                          icon={this.state.collapsed === item.route ? faChevronDown : faChevronRight}
+                          style={styles.chevronIcon}
+                        />
+                      </TouchableOpacity>
+                      <Collapsible collapsed={this.state.collapsed !== item.route} align="center">
+                        <View style={styles.collapsibleView}>
+                          {item.subRoutes.length && item.subRoutes.map(data => (
+                            <TouchableOpacity
+                              key={data.title}
+                              onPress={() => Alert.alert(`Route: ${data.route}`)}
+                              style={styles.subRoutes}
+                            >
+                              <View style={styles.lineGraph} />
+                              <View style={styles.bulletView} />
+                              <Text style={styles.subRouteText}>
+                                {data.title}
+                              </Text>
+                            </TouchableOpacity>
+                          ))}
+                        </View>
+                      </Collapsible>
+                    </View>
+                  )
+                })
+              }
+              <View style={styles.navSectionStyleBorderTop}>
+                {
+                  Helper.DrawerMenuBottom.length > 0 && Helper.DrawerMenuBottom.map((item, index) => {
+                    return (
+                      <View key={index} style={styles.navSectionBottom} >
+                        <View>{item.defaultIcon}</View>
+                        <Text
+                          style={styles.navItemStyle}
+                          onPress={() => Alert.alert(item.route)}
+                          // onPress={() => this.navigateToScreen(item.route)}
+                        >
+                          {item.title}
+                        </Text>
+                      </View>
+                    )
+                  })
+                }
+                {
+                  user !== null && (
+                    <View style={styles.navSectionStyleNoBorder}>
+                      <Text style={[styles.navItemStyle, {
+                        color: theme ? theme.primary : Color.primary,
+                        fontWeight: 'bold'
+                      }]} onPress={() => this.logoutAction()}>
+                        Logout
+                      </Text>
+                    </View>
+                  )
+                }
+                
+              </View>
+            </View>
+          </ScrollView>
+          {
+            /*
+              <View style={styles.footerContainer}>
+                <Text>A product of {Helper.company}</Text>
+              </View> 
+            */
+          }
+        </SafeAreaView>
+      </View>
+    );
+  }
+}
+
+Slider.propTypes = {
+  navigation: PropTypes.object
+};
+
+const mapStateToProps = state => ({ state: state });
+
+const mapDispatchToProps = dispatch => {
+  const { actions } = require('@redux');
+  return {
+    logout: () => dispatch(actions.logout()),
+    setActiveRoute: (route) => dispatch(actions.setActiveRoute(route))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Slider);
