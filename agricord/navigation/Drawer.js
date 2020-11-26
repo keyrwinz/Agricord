@@ -4,7 +4,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
-import Slider from 'components/Slider/WithIcons.js';
+import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/basics/Welcome.js';
 import Dashboard from 'modules/basics/Welcome.js';

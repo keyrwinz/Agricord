@@ -62,3 +62,5 @@ buck-out/
 agricord/components/
 agricord/modules/basics/
 agricord/services/api/
+/ios/Agricord.xcodeproj/project.pbxproj
+/ios/Podfile.lock
