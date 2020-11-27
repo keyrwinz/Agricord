@@ -67,7 +67,10 @@ class Login extends Component {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => {}}
+                onPress={() => {
+                  const {navigate} = this.props.navigation;
+                  navigate('ForgotPassword');
+                }}
                 style={styles.SendCodeContainer}>
                 <Text style={styles.SendCodeTextStyle}> Send Code</Text>
               </TouchableOpacity>
