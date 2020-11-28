@@ -17,7 +17,6 @@ import { Card, MainCard } from 'components/ProductThumbnail'
 import { Color, Routes } from 'common'
 import Api from 'services/api/index.js'
 import Style from './Style.js';
-import GetDeviceLocation from './getDeviceLocation';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);

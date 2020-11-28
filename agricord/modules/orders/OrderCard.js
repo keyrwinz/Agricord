@@ -1,75 +1,49 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheckCircle, faTimesCircle, faMinusCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
-import Style from './Style';
+import { faStar, faStopwatch, faCircle, faPlay, faImage } from '@fortawesome/free-solid-svg-icons';
+import { Divider } from 'react-native-elements';
+import { Color } from 'common'
+import Config from 'src/config.js'
+import Style from './OrderCardStyle';
 
-const CompletedIcon = () => <FontAwesomeIcon icon={faCheckCircle} size={30} style={{ color: Color.success}} />
-const PendingIcon = () => <FontAwesomeIcon icon={faMinusCircle} size={30} style={{ color: Color.warning}} />
-const CancelledIcon = () => <FontAwesomeIcon icon={faTimesCircle} size={30} style={{ color: Color.danger}} />
-const DefaultIcon = () => <FontAwesomeIcon icon={faExclamationCircle} size={30} style={{ color: Color.darkGray}} />
-
-class OrderCard extends Component {
-  goToOrderDetails(data) {
-    const { navigate } = this.props.navigation
-    navigate('MyOrderDetails', { data })
-  }
-
+class ProductCard extends Component {
   render() {
-    const { data } = this.props
-    let icon = null
-    switch (data.status) {
-      case 'completed':
-        icon = <CompletedIcon />
-        break
-      case 'pending':
-        icon = <PendingIcon />
-        break
-      case 'cancelled':
-        icon = <CancelledIcon />
-        break
-      default:
-        icon = <DefaultIcon />
-        break
-    }
-
+    const { details, theme } = this.props;
     return (
-      <TouchableHighlight onPress={() => this.goToOrderDetails(data)}>
-        <View style={Style.orderCard}>
-          <View style={{ flex: 0.8}}>
-            <View>
-              <Text numberOfLines={2}>
-                <Text style={{ fontWeight: '600' }}>
-                  Order Number: {' '}
-                </Text>
-                <Text>
-                  {data.order_number}
-                </Text>
-              </Text>
+      <View style={{alignItems:'center',width:'100%'}}>
+        
+      <View style={Style.paddockContainer}>
+        
+          <View style={Style.paddockInfo}>
+            <View style={{flexDirection:'row',marginLeft:20,marginTop:10}}>
+            <View style={{marginTop:6,marginRight:10,width:10,height:10,borderRadius:100/2,backgroundColor:'#D3E584'}}/>
+              <Text style={{fontWeight:'bold',fontSize:17}}>{this.props.details.title}</Text>
             </View>
-            <View style={{ paddingTop: 10 }}>
-              <Text numberOfLines={2}>
-                <Text style={{ fontWeight: '600' }}>
-                  Delivery To: {' '}
-                </Text>
-                <Text>
-                  {data.location}
-                </Text>
-              </Text>
-            </View>
-          </View>
-          <View style={{ flex: 0.2, alignItems: 'center' }}>
-            <View style={{ paddingTop: 20 }}>
-              <Text>
-                { icon }
-              </Text>
-            </View>
-          </View>
+
+        <View style={Style.cardInfo}>
+           {this.props.details.status=="pending" ? 
+                <Text style={{fontWeight:'bold',color:'#969696',width:'50%'}}>Delivery Due</Text> : 
+                <Text style={{fontWeight:'bold',color:'#969696',width:'50%'}}>Delivered</Text>
+            }
+            {this.props.details.status=="pending" ? 
+                <Text>{this.props.details.delivery_due}</Text> : 
+                <Text>{this.props.details.delivered_date}</Text>
+            }   
         </View>
-      </TouchableHighlight>
-    )
+          <Divider style={{height:1,marginLeft:15,marginRight:15}}></Divider>
+        <View style={Style.cardInfo}>
+            <Text style={{fontWeight:'bold',color:'#969696',width:'50%'}}>Ordered</Text>
+            <Text>{this.props.details.orderNum}</Text>
+        </View>
+        <Divider style={{height:1,marginLeft:15,marginRight:15,marginBottom:20}}></Divider>
+        </View> 
+      
+        </View>  
+      </View>
+    );
   }
 }
 
-export default OrderCard
+
+export default ProductCard;

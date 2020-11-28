@@ -14,7 +14,7 @@ import { Divider } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
-import Orders from './Orders'
+import InProgress from './InProgress'
 import PaddockCard from 'components/Products/paddockCard.js'
 import {products} from './data-test.js';
 
@@ -45,18 +45,18 @@ class Tasks extends Component {
     const { activeIndex } = this.state;
     const paginationProps=[
       {
-        name:'Pending'
+        name:'In Progress'
       },
       {
-        name:'Deliver',
+        name:'Due',
       },
+      {
+        name:"History",
+      }
     ]
-    const pending=products.filter(product=>{
-      return product.status=="pending";
-    })
-    const delivered=products.filter(product=>{
-      return product.status=="delivered"
-    })
+    const progress= products.filter(product=>{return product.status=="inprogress"});
+    const due=products.filter(product=>{return product.status=="due"});
+    const completed=products.filter(product=>{return product.status=="completed"});
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
@@ -69,10 +69,13 @@ class Tasks extends Component {
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={pending} />
+              <InProgress {...this.props} data={progress} />
             </View>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={delivered}/>
+              <InProgress {...this.props} data={due}/>
+            </View>
+            <View style={Style.sliderContainer}>
+              <InProgress {...this.props} data={completed}/>
             </View>
           </Pager>
         </PagerProvider>

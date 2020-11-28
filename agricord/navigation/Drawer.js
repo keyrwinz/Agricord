@@ -12,6 +12,9 @@ import Notification from 'modules/basics/Welcome.js';
 import Profile from 'modules/basics/Welcome.js';
 import HelpCenter from 'modules/basics/Welcome.js';
 import OptionRight from './OptionRight';
+import Tasks from 'modules/tasks';
+import Orders from 'modules/orders';
+import AccountSettings from 'modules/accountSettings'
 import TermsAndConditions from 'modules/basics/Welcome.js';
 import PrivacyPolicy from 'modules/basics/Welcome.js';
 import Merchant from 'modules/basics/Welcome.js';;
@@ -74,10 +77,61 @@ const Homepage_StackNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+  Tasks: {
+    screen: Tasks,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  AccountSettings: {
+    screen: AccountSettings,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  Orders: {
+    screen: Orders,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
 });
 
 const Drawer = createDrawerNavigator({
   Homepage: {
+    screen: Homepage_StackNavigator,
+    navigationOptions: {
+      drawerLabel: '',
+    },
+  },
+  Tasks: {
+    screen: Homepage_StackNavigator,
+    navigationOptions: {
+      drawerLabel: '',
+    },
+  },
+  AccountSettings: {
+    screen: Homepage_StackNavigator,
+    navigationOptions: {
+      drawerLabel: '',
+    },
+  },
+  Orders: {
     screen: Homepage_StackNavigator,
     navigationOptions: {
       drawerLabel: '',

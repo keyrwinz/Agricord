@@ -79,7 +79,32 @@ export default {
     iconStyle: {
       color: Color.primary
     }
-  }],
+  },
+  {
+    title: 'Tasks',
+    route: 'Tasks',
+    icon: faHome,
+    iconStyle: {
+      color: Color.primary
+    }
+  },
+  {
+    title: 'Account Settings',
+    route: 'AccountSettings',
+    icon: faHome,
+    iconStyle: {
+      color: Color.primary
+    }
+  },
+  {
+    title: 'Orders',
+    route: 'Orders',
+    icon: faHome,
+    iconStyle: {
+      color: Color.primary
+    }
+  }
+],
   DrawerMenuBottom: [{
     title: 'Settings',
     route: 'Settings'
