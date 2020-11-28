@@ -10,8 +10,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "react": "16.13.1",
-    "react-native": "0.63.3",
     "@crowdlinker/react-native-pager": "^0.2.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-brands-svg-icons": "^5.12.0",
@@ -21,6 +19,8 @@
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/audio-toolkit": "^2.0.2",
     "@react-native-community/checkbox": "^0.4.2",
+    "@react-native-community/cli": "^4.13.1",
+    "@react-native-community/cli-platform-android": "^4.13.0",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/netinfo": "^5.2.0",
@@ -42,6 +42,8 @@
     "moment": "^2.27.0",
     "native-base": "^2.13.12",
     "pusher-js": "^5.0.3",
+    "react": "16.13.1",
+    "react-native": "0.63.3",
     "react-native-app-intro-slider": "^3.0.0",
     "react-native-appstore-version-checker": "^3.0.0",
     "react-native-button": "^3.0.1",
@@ -65,7 +67,8 @@
     "react-native-qrcode-scanner": "^1.4.0",
     "react-native-qrcode-svg": "^6.0.3",
     "react-native-reanimated": "^1.4.0",
-    "react-native-screens": "^2.2.0",
+    "react-native-safe-area": "^0.5.1",
+    "react-native-screens": "^2.15.0",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^9.13.6",
     "react-native-swipeable-list": "^0.1.0",
@@ -94,6 +97,7 @@
     "preset": "react-native"
   },
   "resolutions": {
-    "@react-native-community/cli-debugger-ui": "4.7.0"
+    "@react-native-community/cli-debugger-ui": "4.7.0",
+    "@react-native-community/cli-platform-android": "~3.0.0"
   }
 }
