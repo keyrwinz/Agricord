@@ -21,6 +21,7 @@ import Referral from 'modules/basics/Welcome.js';
 import MyOrders from 'modules/basics/Welcome.js';
 import MyOrderDetails from 'modules/basics/Welcome.js';
 import MessengerMessages from 'modules/basics/Welcome.js';
+import ForgotPassword from 'modules/basics/ForgotPassword.js';
 import {connect} from 'react-redux';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -242,6 +243,17 @@ const Homepage_StackNavigator = createStackNavigator({
       },
     }),
   },
+  ForgotPassword: {
+    screen: ForgotPassword,
+    navigationOptions: ({navigation}) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
 });
 
 const Drawer = createDrawerNavigator(
@@ -325,6 +337,12 @@ const Drawer = createDrawerNavigator(
       },
     },
     MyOrderDetails: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    ForgotPassword: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',
