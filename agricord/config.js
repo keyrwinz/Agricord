@@ -5,7 +5,7 @@ let BACKEND_URL = isDev ? DEV_BACKEND_URL : LIVE_BACKEND_URL
 export default{
   IS_DEV: BACKEND_URL,
   BACKEND_URL: BACKEND_URL,
-  TEST: false,
+  TEST: true,
   GOOGLE: {
     API_KEY: 'AIzaSyDrRdwTpaLeofZGsv39i0OuMpDLiIQJIIk'
   },
