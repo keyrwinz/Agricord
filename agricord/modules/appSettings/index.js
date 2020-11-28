@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import AppSettingTile from 'modules/appSettings/AppSettingTile';
 import {connect} from 'react-redux';
+import styles from 'modules/appSettings/Styles.js';
 
 class AppSettings extends Component {
   render() {
@@ -63,36 +64,6 @@ class AppSettings extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  AppSettings: {
-    backgroundColor: '#F1F1F1',
-    height: '100%',
-    alignItems: 'center',
-  },
-  SettingContainer: {
-    width: '85%',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
-  AppSettingsContainer: {
-    marginVertical: 15,
-    width: '100%',
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-  },
-  AppSettingsTitleContainer: {
-    marginTop: 15,
-    paddingLeft: '10%',
-    alignSelf: 'flex-start',
-  },
-  AppSettingsTitleTextStyle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
 
 const mapStateToProps = (state) => ({state: state});
 

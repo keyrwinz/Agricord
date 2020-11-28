@@ -58,7 +58,12 @@ class Login extends Component {
               <Text style={styles.CreateAccountTextStyle}>Create Account</Text>
             </TouchableOpacity>
             <View style={styles.SignInButtonContainer}>
-              <SignInButton />
+              <SignInButton
+                onPress={() => {
+                  console.log('Click');
+                  this.props.navigation.navigate('AppSettings');
+                }}
+              />
             </View>
             <View style={styles.ForgottenPasswordContainer}>
               <View style={styles.ForgottenPasswordTextContainer}>
