@@ -11,6 +11,7 @@ import addressMapStack from 'modules/basics/Welcome.js';
 import paymentOptionStack from 'modules/basics/Welcome.js';
 import ChangeAddressStack from 'modules/basics/Welcome.js';
 import DrumScanLogin from 'modules/login/DrumScanLogin';
+import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
 // login stack
 const LoginStack = createStackNavigator(
   {

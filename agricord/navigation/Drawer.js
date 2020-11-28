@@ -22,6 +22,7 @@ import MyOrders from 'modules/basics/Welcome.js';
 import MyOrderDetails from 'modules/basics/Welcome.js';
 import MessengerMessages from 'modules/basics/Welcome.js';
 import ForgotPassword from 'modules/basics/ForgotPassword.js';
+import AppSettings from 'modules/appSettings';
 import {connect} from 'react-redux';
 
 class MenuDrawerContentStructure extends Component {
@@ -252,6 +253,17 @@ const Homepage_StackNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+  AppSettings: {
+    screen: AppSettings,
+    navigationOptions: ({navigation}) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
 });
 
 const Drawer = createDrawerNavigator(
@@ -341,6 +353,12 @@ const Drawer = createDrawerNavigator(
       },
     },
     ForgotPassword: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    AppSettings: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',

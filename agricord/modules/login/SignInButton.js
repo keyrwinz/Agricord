@@ -11,7 +11,11 @@ import styles from 'modules/login/Styles.js';
 class SignInButton extends Component {
   render() {
     return (
-      <TouchableOpacity onPress={() => {}} style={styles.ButtonContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.onPress();
+        }}
+        style={styles.ButtonContainer}>
         <Text style={styles.ButtonTextStyle}>Sign In</Text>
       </TouchableOpacity>
     );
