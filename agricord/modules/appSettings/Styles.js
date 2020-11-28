@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     width: '85%',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    paddingTop: '3%',
   },
   AppSettingsContainer: {
     marginVertical: 15,
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   AppSettingsTitleTextStyle: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   AppSettingTileContainer: {

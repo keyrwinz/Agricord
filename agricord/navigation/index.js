@@ -60,6 +60,7 @@ const PrimaryNav = createStackNavigator(
     // paymentOptions: {screen: paymentOptionStack},
     // ChangeAddress: {screen: ChangeAddressStack},
     drumScanLoginStack: {screen: DrumScanLogin},
+    appSettingsStack: {screen: AppSettingsStack},
   },
   {
     // Default config for all screens

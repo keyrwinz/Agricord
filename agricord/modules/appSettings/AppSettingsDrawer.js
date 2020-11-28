@@ -12,25 +12,18 @@ class HeaderOptions extends Component {
     super(props);
   }
   back = () => {
-    this.props.navigationProps.navigate('drawerStack');
+    this.props.navigationProps.pop();
   };
   render() {
     return (
-      <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity
-          onPress={() => {
-            this.back();
-          }}
-          style={{
-            width: '16.5%',
-            alignItems: 'center',
-            marginLeft: '0.5%',
-          }}>
+      <View style={{flexDirection: 'row', paddingLeft: 20}}>
+        <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
           <FontAwesomeIcon
+            color="#BABABA"
             icon={faChevronLeft}
-            size={30}
-            style={{color: '#3F0050'}}
+            size={25}
+            style={styles.iconStyle}
           />
         </TouchableOpacity>
       </View>
@@ -51,19 +44,31 @@ const AppSettingsStack = createStackNavigator({
   appSettingsScreen: {
     screen: AppSettings,
     navigationOptions: ({navigation}) => ({
-      title: 'App Settings',
-      drawerLabel: 'App Settings',
+      title: 'APP SETTINGS',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       headerStyle: {
-        backgroundColor: 'white',
-        height: 80,
         elevation: 0,
+        paddingTop: 20,
+        backgroundColor: '#F1F1F1',
       },
-      headerTintColor: '#4c4c4c',
+      headerTintColor: BasicStyles.headerTintColor,
+      headerTitleContainerStyle: {
+        backgroundColor: '#F1F1F1',
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingRight: '18%',
+      },
       headerTitleStyle: {
-        fontSize: 20,
+        fontWeight: 'bold',
       },
     }),
+  },
+});
+
+const styles = StyleSheet.create({
+  iconStyle: {
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
 
