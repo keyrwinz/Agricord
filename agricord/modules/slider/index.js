@@ -35,7 +35,7 @@ class Slider extends Component {
   navigateToScreen = (route) => {
     this.props.navigation.toggleDrawer();
     // RETURN TEMPRARILY
-    return
+
 
     // const navigateAction = NavigationActions.navigate({
     //   routeName: route
@@ -334,7 +334,7 @@ class Slider extends Component {
                               leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => Alert.alert(`Route: ${data.route}`)}
+                                   onPress={() => this.navigateToScreen(data.route)}
                                   style={styles.subRoutes}
                                 >
                                   <View style={styles.lineGraph} />
@@ -351,7 +351,7 @@ class Slider extends Component {
                               rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => Alert.alert(`Route: ${data.route}`)}
+                                  onPress={() => this.navigateToScreen(data.route)}
                                   style={styles.subRoutes}
                                 >
                                   <View

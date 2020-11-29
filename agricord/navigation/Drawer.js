@@ -164,6 +164,28 @@ const Homepage_StackNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+  UpcomingOrders: {
+    screen: Orders,
+    navigationOptions: ({navigation}) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  HistoricalOrders: {
+    screen: Orders,
+    navigationOptions: ({navigation}) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
   MyOrderDetails: {
     screen: MyOrderDetails,
     navigationOptions: ({navigation}) => ({
@@ -268,6 +290,18 @@ const Drawer = createDrawerNavigator(
       },
     },
     Dashboard: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    UpcomingOrders: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    HistoricalOrders: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',

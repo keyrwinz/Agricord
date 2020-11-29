@@ -46,20 +46,6 @@ const RegisterStack = createStackNavigator(
 );
 
 // Manifest of possible screens
-<<<<<<< HEAD
-const PrimaryNav = createStackNavigator({
-  loginStack: { screen: LoginStack },
-  forgotPasswordStack: { screen: ForgotPasswordStack},
-  registerStack: { screen: RegisterStack},
-  drawerStack: { screen: Drawer },
- 
-}, {
-  // Default config for all screens
-  headerMode: 'none',
-  title: 'Main',
-  initialRouteName: 'drawerStack'
-})
-=======
 const PrimaryNav = createStackNavigator(
   {
     loginStack: {screen: LoginStack},
@@ -83,6 +69,5 @@ const PrimaryNav = createStackNavigator(
     initialRouteName: 'drawerStack',
   },
 );
->>>>>>> 25c1ce5c6a29a3659e4857613aef33fc9a155a54
 
 export default PrimaryNav;
