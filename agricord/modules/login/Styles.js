@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 const styles = StyleSheet.create({

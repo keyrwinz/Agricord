@@ -19,6 +19,8 @@
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/audio-toolkit": "^2.0.2",
     "@react-native-community/checkbox": "^0.4.2",
+    "@react-native-community/cli": "^4.13.1",
+    "@react-native-community/cli-platform-android": "^4.13.0",
     "@react-native-community/datetimepicker": "^2.1.0",
     "@react-native-community/geolocation": "^2.0.2",
     "@react-native-community/netinfo": "^5.2.0",
@@ -66,7 +68,8 @@
     "react-native-qrcode-scanner": "^1.4.0",
     "react-native-qrcode-svg": "^6.0.3",
     "react-native-reanimated": "^1.4.0",
-    "react-native-screens": "^2.2.0",
+    "react-native-safe-area": "^0.5.1",
+    "react-native-screens": "^2.15.0",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-svg": "^9.13.6",
     "react-native-svg-transformer": "^0.14.3",
@@ -84,16 +87,20 @@
     "yup": "^0.28.3"
   },
   "devDependencies": {
-    "@babel/core": "7.12.7",
-    "@babel/runtime": "7.12.5",
-    "@react-native-community/eslint-config": "1.1.0",
-    "babel-jest": "25.5.1",
+    "@babel/core": "7.10.4",
+    "@babel/runtime": "7.10.4",
+    "@react-native-community/eslint-config": "0.0.5",
+    "babel-jest": "24.9.0",
     "eslint": "6.8.0",
-    "jest": "25.5.4",
-    "metro-react-native-babel-preset": "0.59.0",
-    "react-test-renderer": "16.13.1"
+    "jest": "24.9.0",
+    "metro-react-native-babel-preset": "0.58.0",
+    "react-test-renderer": "16.11.0"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "@react-native-community/cli-debugger-ui": "4.7.0",
+    "@react-native-community/cli-platform-android": "~3.0.0"
   }
 }

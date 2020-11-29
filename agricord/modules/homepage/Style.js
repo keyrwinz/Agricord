@@ -17,20 +17,5 @@ export default {
   },
   ScrollView: {
     flex: 1
-  },
-  circleButton:{
-    padding: 5,
-    height: 75,
-    width: 75,  
-    borderRadius:400, 
-    backgroundColor:'#FF5B04',
-    justifyContent:'center',
-},
-image:{   
-  width: '100%',
-  height: 80,
-  padding:50,
-  borderRadius:5,
-  resizeMode:'contain'
- },
+  }
 }
