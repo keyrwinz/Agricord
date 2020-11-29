@@ -36,8 +36,27 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
+
+    switch(this.props.navigation.state.routeName) {
+ 
+      case 'TasksInProgress':
+        this.setState({activeIndex:0})
+        break;
+      
+      case 'TasksDue':
+        this.setState({activeIndex:1})
+        break;
+ 
+      case 'TasksHistory':
+        this.setState({activeIndex:2})
+        break;
+      default:
+        console.log("Route does not exist")
     
+      }
+ 
   }
+    
 
 
  
