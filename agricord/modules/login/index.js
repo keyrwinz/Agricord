@@ -61,7 +61,7 @@ class Login extends Component {
               <SignInButton
                 onPress={() => {
                   console.log('Click');
-                  this.props.navigation.navigate('AppSettings');
+                  this.props.navigation.navigate('appSettingsStack');
                 }}
               />
             </View>
@@ -104,11 +104,14 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({state: state});
+const mapStateToProps = state => ({state: state});
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
   return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Login);

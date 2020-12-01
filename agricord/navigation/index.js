@@ -10,7 +10,7 @@ import CartStack from 'modules/basics/Welcome.js';
 import addressMapStack from 'modules/basics/Welcome.js';
 import paymentOptionStack from 'modules/basics/Welcome.js';
 import ChangeAddressStack from 'modules/basics/Welcome.js';
-import DrumScanLogin from 'modules/login/DrumScanLogin';
+import DrumScanLoginStack from 'modules/login/LoginWithDrumScanDrawer.js';
 import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
 // login stack
 const LoginStack = createStackNavigator(
@@ -59,7 +59,7 @@ const PrimaryNav = createStackNavigator(
     // addressMap: {screen: addressMapStack},
     // paymentOptions: {screen: paymentOptionStack},
     // ChangeAddress: {screen: ChangeAddressStack},
-    drumScanLoginStack: {screen: DrumScanLogin},
+    drumScanLoginStack: {screen: DrumScanLoginStack},
     appSettingsStack: {screen: AppSettingsStack},
   },
   {
