@@ -17,6 +17,7 @@ const dummyData = [
     quantity: '(110L)',
     numberOfItems: 10,
     status: '#5A84EE',
+    numberOutline: '#4570DD',
   },
   {
     productName: 'Product Y',
@@ -24,6 +25,7 @@ const dummyData = [
     quantity: '(20kg)',
     numberOfItems: 3,
     status: '#5A84EE',
+    numberOutline: '#4570DD',
   },
   {
     productName: 'Product Z',
@@ -31,6 +33,7 @@ const dummyData = [
     quantity: '',
     numberOfItems: 0,
     status: '#FF6262',
+    numberOutline: '#EE3A3A',
   },
 ];
 
@@ -67,6 +70,7 @@ class OrderDetails extends Component {
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 6,
+                  borderColor: data.numberOutline,
                 }}>
                 <Text style={styles.ProductNumberOfItemsTextStyle}>
                   {data.numberOfItems}
