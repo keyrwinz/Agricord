@@ -18,7 +18,7 @@ class DrumScanLogin extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isScanning: false,
+      isScanning: true,
     };
   }
   render() {

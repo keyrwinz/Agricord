@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-
+import {BasicStyles} from 'common';
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 const styles = StyleSheet.create({
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   InstructionsTextStyle: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: BasicStyles.titleText.fontSize,
     fontWeight: 'bold',
   },
 });

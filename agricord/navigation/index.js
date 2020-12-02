@@ -12,6 +12,8 @@ import paymentOptionStack from 'modules/basics/Welcome.js';
 import ChangeAddressStack from 'modules/basics/Welcome.js';
 import DrumScanLoginStack from 'modules/login/LoginWithDrumScanDrawer.js';
 import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
+import ApplyTaskStack from 'modules/applyTask/ApplyTaskDrawer.js';
+import OrderDetailsStack from 'modules/orderDetails/OrderDetailsDrawer.js';
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -61,6 +63,8 @@ const PrimaryNav = createStackNavigator(
     // ChangeAddress: {screen: ChangeAddressStack},
     drumScanLoginStack: {screen: DrumScanLoginStack},
     appSettingsStack: {screen: AppSettingsStack},
+    applyTaskStack: {screen: ApplyTaskStack},
+    orderDetailsStack: {screen: OrderDetailsStack},
   },
   {
     // Default config for all screens
