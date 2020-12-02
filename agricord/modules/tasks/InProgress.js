@@ -14,7 +14,7 @@ import { Divider } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import PaddockCard from 'components/Products/paddockCard.js';
 import {products} from './data-test.js';
-import TaskIcon from '../basics/TaskIcon.js'
+import TaskIcon from 'components/Products/TaskIcon.js'
 
 
 const width = Math.round(Dimensions.get('window').width);
