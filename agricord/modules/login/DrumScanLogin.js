@@ -10,10 +10,17 @@ import {
   Dimensions,
 } from 'react-native';
 import styles from 'modules/login/Styles.js';
+import Ring from 'modules/login/Ring.js';
 
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 class DrumScanLogin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isScanning: true,
+    };
+  }
   render() {
     return (
       <ImageBackground
@@ -29,9 +36,13 @@ class DrumScanLogin extends Component {
             style={styles.TitleContainer}
           />
           <View style={styles.InstructionsContainer}>
-            <Text style={styles.InstructionsTextStyle}>
-              Hold your phone close to an Agricord smart label....
-            </Text>
+            {this.state.isScanning ? (
+              <Text style={styles.InstructionsTextStyle}>
+                Hold your phone close to an Agricord smart label....
+              </Text>
+            ) : (
+              <Ring />
+            )}
           </View>
         </View>
       </ImageBackground>
