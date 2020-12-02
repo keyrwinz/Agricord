@@ -211,7 +211,11 @@ PODS:
     - React
   - react-native-netinfo (5.9.9):
     - React-Core
-  - react-native-notifications (3.4.1):
+  - react-native-notifications (3.4.0):
+    - React-Core
+  - react-native-safe-area (0.5.1):
+    - React
+  - react-native-safe-area-context (3.1.9):
     - React-Core
   - react-native-version-check (3.4.2):
     - React
@@ -334,6 +338,8 @@ DEPENDENCIES:
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-notifications (from `../node_modules/react-native-notifications`)
+  - react-native-safe-area (from `../node_modules/react-native-safe-area`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-version-check (from `../node_modules/react-native-version-check`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -418,6 +424,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-notifications:
     :path: "../node_modules/react-native-notifications"
+  react-native-safe-area:
+    :path: "../node_modules/react-native-safe-area"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-version-check:
     :path: "../node_modules/react-native-version-check"
   react-native-webview:
@@ -498,7 +508,9 @@ SPEC CHECKSUMS:
   react-native-image-picker: 3637d63fef7e32a230141ab4660d3ceb773c824f
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 77d133105df525d4a11f10fcaa8d0b8883ea6429
-  react-native-notifications: 04d36ee5688b18e5b4ec283b9b65bd3e9df75c19
+  react-native-notifications: 1e4912c8f11741799c823f263beaf9f7f829955b
+  react-native-safe-area: e8230b0017d76c00de6b01e2412dcf86b127c6a3
+  react-native-safe-area-context: 86612d2c9a9e94e288319262d10b5f93f0b395f5
   react-native-version-check: 9f9332ff4552fb00e0bd15b097a8d302b2b8413b
   react-native-webview: ef8d30ecc5baf6bf7821690180c2f9bf2bdf00c0
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
@@ -528,4 +540,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 729614a25e95200d497e72d1b6116d838858d6a2
 
-COCOAPODS: 1.9.0
+COCOAPODS: 1.8.4

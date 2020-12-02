@@ -11,11 +11,14 @@ export default {
   },
   sliderContainer: {
     flex: 1,
-    minHeight: height,
+    // minHeight: height,
     width: '100%',
     paddingHorizontal: 20
   },
   ScrollView: {
     flex: 1
+  },
+  textStyle: {
+    fontSize: 9
   }
 }
