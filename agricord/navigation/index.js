@@ -12,6 +12,7 @@ import paymentOptionStack from 'modules/basics/Welcome.js';
 import ChangeAddressStack from 'modules/basics/Welcome.js';
 import DrumScanLoginStack from 'modules/login/LoginWithDrumScanDrawer.js';
 import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
+import PaddockStack from 'modules/paddockPage/Drawer.js';
 import ApplyTaskStack from 'modules/applyTask/ApplyTaskDrawer.js';
 import OrderDetailsStack from 'modules/orderDetails/OrderDetailsDrawer.js';
 // login stack
@@ -55,6 +56,7 @@ const PrimaryNav = createStackNavigator(
     registerStack: {screen: RegisterStack},
     drawerStack: {screen: Drawer},
     // selectLocation:{screen:selectLocationStack},
+    paddockStack:{screen:PaddockStack},
     // filterPicker:{screen:selectFilterStack},
     // notificationStack: {screen: NotificationStack},
     // Cart:{screen:CartStack},
