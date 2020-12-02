@@ -5,7 +5,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faArrowLeft, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {Color, BasicStyles} from 'common';
 import {connect} from 'react-redux';
-import DrumScanLogin from 'modules/login/DrumScanLogin';
+import OrderDetails from 'modules/orderDetails';
 
 class HeaderOptions extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ class HeaderOptions extends Component {
   };
   render() {
     return (
-      <View style={{flexDirection: 'row', paddingLeft: 20}}>
+      <View style={{flexDirection: 'row', paddingLeft: 10}}>
         <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
           <FontAwesomeIcon
@@ -40,15 +40,16 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const DrumScanLoginStack = createStackNavigator({
-  drumScanLoginScreen: {
-    screen: DrumScanLogin,
+const OrderDetailsStack = createStackNavigator({
+  orderDetailsScreen: {
+    screen: OrderDetails,
     navigationOptions: ({navigation}) => ({
+      title: 'ORDER DETAILS',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       headerStyle: {
-        elevation: 0,
-        paddingTop: 20,
+        elevation: 10,
         backgroundColor: '#FFFFFF',
+        height: 80,
       },
       headerTintColor: BasicStyles.headerTintColor,
       headerTitleContainerStyle: {
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(DrumScanLoginStack);
+)(OrderDetailsStack);

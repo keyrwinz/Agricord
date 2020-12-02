@@ -6,7 +6,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBars} from '@fortawesome/free-solid-svg-icons';
 import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
-import Homepage from 'modules/basics/Welcome.js';
+import Homepage from 'modules/homepage';
+import Inventory from 'modules/inventory';
 import Dashboard from 'modules/basics/Welcome.js';
 import Notification from 'modules/basics/Welcome.js';
 import Profile from 'modules/basics/Welcome.js';
@@ -41,6 +42,7 @@ class MenuDrawerContentStructure extends Component {
   };
   render() {
     const {theme} = this.props.state;
+    const {color} = this.props
     return (
       <View style={{flexDirection: 'row'}}>
         {this.state.loginState === true && (
@@ -52,7 +54,7 @@ class MenuDrawerContentStructure extends Component {
               style={[
                 BasicStyles.iconStyle,
                 {
-                  color: theme ? theme.primary : Color.primary,
+                  color: color ? color : theme ? theme.primary : Color.primary,
                 },
               ]}
             />
@@ -75,26 +77,22 @@ const mapDispatchToProps = (dispatch) => {
 let MenuDrawerStructure = connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MenuDrawerContentStructure);
-
+  )(MenuDrawerContentStructure);
+  
 const Homepage_StackNavigator = createStackNavigator({
-  // Homepage: {
-  //   screen: Homepage,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
+  Homepage: {
+    screen: Homepage,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
+    }),
+  },
   // Merchant: {
   //   screen: Merchant,
   //   navigationOptions: {
   //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
+    //       backgroundColor: Color.white,
+    //     },
   //     headerTintColor: '#000',
   //     headerTitle: 'Merchant',
   //   },
@@ -471,6 +469,7 @@ const Drawer = createDrawerNavigator(
   {
     contentComponent: Slider,
     drawerWidth: width,
+    initialRouteName: 'Homepage'
   },
 );
 

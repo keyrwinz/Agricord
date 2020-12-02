@@ -90,7 +90,7 @@ class Slider extends Component {
             <View>
               <View style={styles.titleContainer}>
                 <View style={styles.topRightBox} />
-                <View style={styles.imageContainer}>
+                <TouchableOpacity onPress={() => this.navigateToStack('Homepage')} style={styles.imageContainer}>
                   <Image
                     source={require('assets/logo.png')}
                     style={styles.LogoContainer}
@@ -99,7 +99,7 @@ class Slider extends Component {
                     source={require('assets/agricordLogo03.png')}
                     style={styles.TitleContainer}
                   />
-                </View>
+                </TouchableOpacity>
               </View>
               {
                 TEST_DEV ? (
