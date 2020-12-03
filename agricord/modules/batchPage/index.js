@@ -12,10 +12,10 @@ const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 import { Divider } from 'react-native-elements';
 import _, { isError } from 'lodash'
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
+import {faEdit,faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import Geolocation from '@react-native-community/geolocation';
-import { Row } from 'native-base';
+import { Icon, Row } from 'native-base';
 import { CheckoutCard } from 'components/Checkout';
 import TearLines from "react-native-tear-lines";
 import TaskIcon from 'components/Products/TaskIcon.js'
@@ -41,30 +41,16 @@ class paddockPage extends Component{
   renderTopCard=()=>{
     return(
     <View style={Style.container}>
-    <View style={Style.imageContainer}>
-    <Image
-      style={Style.image}
-      source={require('../../assets/FieldPea.png')}
-      />
+      <View style={{width:'30%',minHeight:100,borderTopLeftRadius:12,borderBottomLeftRadius:12,backgroundColor:'#ED1C24',justifyContent:'center'}}>
+        <FontAwesomeIcon icon={faExclamationTriangle} style={{alignSelf:'center'}} size={55} ></FontAwesomeIcon>
+      </View>
+      <View style={{width:'70%',marginTop:10}}>
+        <Text style={{fontWeight:'bold',color:'#ED1C24',fontSize:24,marginLeft:15,marginBottom:15}}>Create Batch</Text>
+        <Text style={{marginBottom:15,marginLeft:15}}>1. Confirm mixing order on label</Text>
+        <Text style={{marginBottom:15,marginLeft:15}}>2. Scan the Agricord tag on each drum to record quantity added and details</Text>
+        <Divider height={0.5} style={{marginBottom:10,width:'85%',marginLeft:15,backgroundColor:'#F3F3F3'}}></Divider>
+      </View>
     </View>
-    <View style={Style.textContainer}>
-      <Text style={Style.text}>Field Pea</Text>
-      <Text style={{textAlign:'center',fontSize:13,color:'#969696',fontWeight:'bold'}}>CROP</Text> 
-    </View>
-    <Divider style={{height:0.5,width:'90%',margin:10}}/>
-  <View style={{minHeight:70,width:'100%',flexDirection:'row',justifyContent:'space-around'}}>
-  <View style={{flexDirection:'column'}}>
-  <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Due Date</Text>
-  <Text>03/02/2020</Text>
-  </View>
-
-  <View style={{flexDirection:'column'}}>
-  <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Created By</Text>
-  <Text>Agricord</Text> 
-   </View>  
-  </View>
-  <Divider style={{height:0.5,width:'90%',marginBottom:10}}/>
-</View>
     )
   }
 
@@ -93,9 +79,7 @@ class paddockPage extends Component{
   render() {
     return (
       <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
-        {this.renderTopCard()}
-        {this.renderMixCards()}        
-        <TaskIcon bottom={70}></TaskIcon> 
+       {this.renderTopCard()}
      </View>
 
     );
