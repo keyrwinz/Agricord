@@ -10,7 +10,7 @@ import {Color, BasicStyles} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
-
+import Slide from 'modules/slide';
 const dummyData = [
   {
     id: 1,
@@ -84,10 +84,12 @@ class ApplyTask extends Component {
           <CustomPicker type="Machine" items={dummyData3} key={1} />
           <CustomPicker type="Mix" items={dummyData2} key={2} />
         </Task>
+        <Slide title="Select Paddocks" />
       </View>
     );
   }
 }
+
 const styles = StyleSheet.create({
   ApplyTaskContainer: {
     backgroundColor: '#F1F1F1',
@@ -96,5 +98,19 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  SliderIconContainer: {
+    backgroundColor: '#5A84EE',
+    borderRadius: 12,
+    height: 50,
+    width: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  SliderIconTextStyle: {
+    fontSize: BasicStyles.titleText.fontSize,
+    color: '#FFFFFF',
+    fontWeight: 'bold',
+  },
 });
+
 export default ApplyTask;
