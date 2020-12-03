@@ -40,9 +40,9 @@ const BatchStack = createStackNavigator({
   BatchScreen: {
     screen: BatchPage, 
     navigationOptions: ({ navigation }) => ({
-      title: 'Paddock',
+      title: 'Batch',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      drawerLabel: 'Paddock',
+      drawerLabel: 'Batch',
       headerStyle: {
         backgroundColor: Color.primary,
       },

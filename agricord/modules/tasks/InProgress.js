@@ -37,7 +37,8 @@ class InProgress extends Component {
   }
 
   goTo=(index)=>{
-    this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
+    this.props.navigation.navigate('batchStack',{data:this.props.data[index]})
+    // this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
   }
   
   render() {
