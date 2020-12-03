@@ -10,7 +10,8 @@ import {Color, BasicStyles} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
-import Slide from 'modules/slide';
+import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
+
 const dummyData = [
   {
     id: 1,
@@ -84,13 +85,59 @@ class ApplyTask extends Component {
           <CustomPicker type="Machine" items={dummyData3} key={1} />
           <CustomPicker type="Mix" items={dummyData2} key={2} />
         </Task>
-        <Slide title="Select Paddocks" />
+        <RNSlidingButton
+          style={{
+            marginTop: 60,
+            width: '85%',
+            borderRadius: 12,
+            backgroundColor: '#F1F1F1',
+            borderColor: '#CFCFCF',
+            borderWidth: 1,
+          }}
+          height={45}
+          onSlidingSuccess={() => {}}
+          slideDirection={SlideDirection.RIGHT}>
+          <View
+            style={{
+              backgroundColor: '#5A84EE',
+              height: 45,
+              width: 129,
+              borderRadius: 12,
+              padding: 0,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontSize: BasicStyles.titleText.fontSize,
+                fontWeight: 'bold',
+              }}>
+              Select Paddocks
+            </Text>
+          </View>
+        </RNSlidingButton>
+        <View style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
+          <Text
+            style={{
+              fontSize: BasicStyles.normalText.fontSize,
+              color: '#969696',
+            }}>
+            Swipe Right to Complete
+          </Text>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  titleText: {
+    fontSize: 17,
+    fontWeight: 'normal',
+    textAlign: 'center',
+    color: '#ffffff',
+  },
   ApplyTaskContainer: {
     backgroundColor: '#F1F1F1',
     height: '100%',
