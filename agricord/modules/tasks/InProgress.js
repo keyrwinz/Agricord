@@ -14,6 +14,7 @@ import { Divider } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import PaddockCard from 'components/Products/paddockCard.js';
 import {products} from './data-test.js';
+import TaskIcon from 'components/Products/TaskIcon.js'
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -35,6 +36,10 @@ class InProgress extends Component {
     }
   }
 
+  goTo=(index)=>{
+    this.props.navigation.navigate('batchStack',{data:this.props.data[index]})
+    // this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
+  }
   
   render() {
     const {isLoading} = this.state;
@@ -44,21 +49,15 @@ class InProgress extends Component {
        <ScrollView>
       <View style={Style.MainContainer,{minHeight:height}}>
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
-      {this.props.data.map(item=>(
-        <PaddockCard details={item} key={item.id}></PaddockCard>
+      {this.props.data.map((item,index)=>(
+        <TouchableOpacity onPress={()=>this.goTo(index)}>
+           <PaddockCard details={item} key={item.id}></PaddockCard>
+        </TouchableOpacity>
+       
       ))}
        </View>
        </ScrollView>
-       <View style={{position:'absolute',bottom:150,alignSelf:'flex-end'}}>
-       <TouchableOpacity onPress={()=>alert('redirect')}>
-          <View style={{alignItems:'center'}}>
-          <Image
-          style={{padding:30,height:50,width:'100%'}}
-            source={require('../../assets/taskIcon.png')}
-            />
-          </View>
-       </TouchableOpacity>
-    </View>
+    <TaskIcon></TaskIcon>
        </SafeAreaView>
   
     );
