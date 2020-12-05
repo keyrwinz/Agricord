@@ -34,8 +34,6 @@ class Slider extends Component {
 
   navigateToScreen = (route) => {
     this.props.navigation.toggleDrawer();
-    // RETURN TEMPRARILY
-
 
     // const navigateAction = NavigationActions.navigate({
     //   routeName: route
@@ -90,7 +88,7 @@ class Slider extends Component {
             <View>
               <View style={styles.titleContainer}>
                 <View style={styles.topRightBox} />
-                <TouchableOpacity onPress={() => this.navigateToStack('Homepage')} style={styles.imageContainer}>
+                <TouchableOpacity onPress={() => this.navigateToScreen('Homepage')} style={styles.imageContainer}>
                   <Image
                     source={require('assets/logo.png')}
                     style={styles.LogoContainer}
