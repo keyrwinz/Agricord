@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
+import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
 
 class Progress extends Component {
   render() {
@@ -34,7 +36,38 @@ class Progress extends Component {
           <View style={styles.SubtitleContainer}>
             <Text style={styles.SubtitleTextStyle}>{this.props.subtitle}</Text>
           </View>
-          {/*Slider here*/}
+          <RNSlidingButton
+            style={{
+              marginTop: 60,
+              width: '85%',
+              borderRadius: 12,
+              backgroundColor: '#FFFFFF',
+              borderColor: '#CFCFCF',
+              borderWidth: 1,
+            }}
+            height={45}
+            onSlidingSuccess={() => {}}
+            slideDirection={SlideDirection.RIGHT}>
+            <View
+              style={{
+                backgroundColor: '#5A84EE',
+                height: 45,
+                width: 129,
+                borderRadius: 12,
+                padding: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: BasicStyles.titleText.fontSize,
+                  fontWeight: 'bold',
+                }}>
+                Task Complete
+              </Text>
+            </View>
+          </RNSlidingButton>
           <View style={styles.SwipeTextContainer}>
             <Text style={styles.SwipeTextStyle}>Swipe Right to Confirm</Text>
           </View>
@@ -92,7 +125,7 @@ const styles = StyleSheet.create({
   SwipeTextContainer: {
     justifyContent: 'center',
     alignSelf: 'flex-start',
-    paddingTop: 50,
+    paddingTop: 10,
     paddingHorizontal: '12%',
   },
   SwipeTextStyle: {

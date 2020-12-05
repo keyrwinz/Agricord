@@ -17,7 +17,7 @@ import Style from './Style.js';
 
 const height = Math.round(Dimensions.get('window').height);
 
-const Herbicide = (props) => {
+const Herbicide = ({ navigation, data }) => {
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -26,8 +26,14 @@ const Herbicide = (props) => {
             Product
           </Text>
           {
-            props.data.length ? props.data.map(item => (
-              <PaddockCard details={item} key={item.id} />
+            data != null && data.length ? data.map((item, idx) => (
+              <TouchableOpacity key={idx} onPress={() => {
+                const name = item.title.toUpperCase()
+                const volume = item.volume
+                navigation.push('InventoryItem', { name, volume, data: item })
+              }}>
+                <PaddockCard details={item} key={item.id} />
+              </TouchableOpacity>
             )) : (
               <Text style={{ marginTop: 10 }}>No product found</Text>
             )
@@ -41,7 +47,9 @@ const Herbicide = (props) => {
           alignSelf: 'flex-end'
         }}
       >
-        <TouchableOpacity onPress={() => Alert.alert('test')}>
+        <TouchableOpacity onPress={() => {
+          Alert.alert('test')
+        }}>
           <Image
             style={{
               padding: 30,

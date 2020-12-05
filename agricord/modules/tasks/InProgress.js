@@ -14,7 +14,7 @@ import { Divider } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import PaddockCard from 'components/Products/paddockCard.js';
 import {products} from './data-test.js';
-import TaskIcon from '../basics/TaskIcon.js'
+import TaskIcon from 'components/Products/TaskIcon.js'
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -37,7 +37,8 @@ class InProgress extends Component {
   }
 
   goTo=(index)=>{
-    this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
+    this.props.navigation.navigate('batchStack',{data:this.props.data[index]})
+    // this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
   }
   
   render() {

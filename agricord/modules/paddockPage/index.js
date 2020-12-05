@@ -18,7 +18,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { Row } from 'native-base';
 import { CheckoutCard } from 'components/Checkout';
 import TearLines from "react-native-tear-lines";
-import TaskIcon from '../basics/TaskIcon.js'
+import TaskIcon from 'components/Products/TaskIcon.js'
 
 
 
