@@ -6,7 +6,7 @@ import Setting from './Setting';
 import Order from './Order';
 import Home from './Home';
 import InventoryScreen from 'modules/inventory';
-import Task from './Task';
+import Task from 'modules/tasks';
 
 import SettingIcon from 'assets/btm_nav/setting.svg';
 import OrderIcon from 'assets/btm_nav/order.svg';

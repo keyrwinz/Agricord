@@ -37,8 +37,8 @@ class Tasks extends Component {
     if (user != null) {
     }
 
+    if(this.props.navigation.state!=null){
     switch(this.props.navigation.state.routeName) {
- 
       case 'TasksInProgress':
         this.setState({activeIndex:0})
         break;
@@ -54,6 +54,7 @@ class Tasks extends Component {
         console.log("Route does not exist")
     
       }
+    }
  
   }
     
