@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import Pagination from 'components/Pagination';
+import InventoryItem from './InventoryItem';
 import Herbicide from './Herbicide'
 import { Color } from 'common';
 import { products } from './data-test.js';
@@ -33,7 +34,7 @@ const paginationProps=[{
   name: 'Other'
 }]
 
-const Inventory = () => {
+const Inventory = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState(products)
@@ -99,16 +100,16 @@ const Inventory = () => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide data={HerbicideData} />
+            <Herbicide navigation={navigation} data={HerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide data={FungicideData}/>
+            <Herbicide navigation={navigation} data={FungicideData}/>
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide data={InsecticideData}/>
+            <Herbicide navigation={navigation} data={InsecticideData}/>
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide data={OtherData}/>
+            <Herbicide navigation={navigation} data={OtherData}/>
           </View>
         </Pager>
       </PagerProvider>
@@ -150,6 +151,23 @@ const InventoryScreen = () => {
             )
           })
         }}
+      />
+      <InventoryStack.Screen
+        name="InventoryItem"
+        component={InventoryItem}
+        options={({ route }) => ({
+            headerLeft: null,
+            headerTitle: () => (
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
+                  {route.params.name}
+                </Text>
+                <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
+                  {route.params.volume}
+                </Text>
+              </View>
+            )
+        })}
       />
     </InventoryStack.Navigator>
   )

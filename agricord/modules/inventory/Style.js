@@ -1,7 +1,5 @@
 import { Color } from 'common';
 import { Dimensions } from 'react-native';
-const width = Math.round(Dimensions.get('window').width);
-const height = Math.round(Dimensions.get('window').height);
 export default {
   modal: {
     backgroundColor: Color.gray
@@ -48,7 +46,6 @@ export default {
     borderBottomColor: Color.gray,
   },
   searchbar: {
-    // backgroundColor: 'red',
     width: '70%',
     marginLeft: 30,
     paddingLeft: 15,
@@ -65,5 +62,99 @@ export default {
   nfcIcon: {
     position: 'absolute',
     right: 25
+  },
+  
+  // INVENTORY ITEM SCREEN
+  modalCloseBtn: {
+    position: 'absolute',
+    top: 10,
+    right: 20
+  },
+  modalBody: {
+    width: '90%',
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    paddingTop: 40,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  modalTitle: {
+    fontSize: 16,
+    marginBottom: 15,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    width: '100%'
+  },
+  modalContent: {
+    width: '90%',
+  },
+  modalContentRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  itemDescContainer: {
+    padding: 10,
+    marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: Color.white,
+    borderColor: '#FFFFFF',
+    borderWidth:1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 2,
+    alignItems: 'center',
+  },
+  itemDescription: {
+    alignItems: 'center',
+  },
+  itemDetailsContainer: {
+    flexDirection: 'row',
+    marginBottom: 10,
+    width: '90%'
+  },
+  itemDetailRow: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: Color.lightGray
+  },
+  itemDetailLeft: {
+    flex: 1.1,
+  },
+  itemDetailRight: {
+    flex: 0.9,
+  },
+  itemDetailLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Color.gray
+  },
+  itemDetailValue: {
+    fontSize: 16,
+  },
+  fileUploaded: {
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  fileUploadedText: {
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 }
