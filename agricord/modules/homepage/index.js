@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Setting from './Setting';
+import { NavigationActions, StackActions } from 'react-navigation';
+// import Setting from './Setting';
+import Setting from 'modules/accountSettings'
 import Order from './Order';
 import Home from './Home';
 import InventoryScreen from 'modules/inventory';
-import Task from 'modules/tasks';
+// import Tasks from 'modules/tasks';
+import Task from './Task';
 
 import SettingIcon from 'assets/btm_nav/setting.svg';
 import OrderIcon from 'assets/btm_nav/order.svg';
@@ -41,6 +43,22 @@ export default function Homepage(props) {
             tabBarLabel: "Setting",
             tabBarIcon: () => <SettingIcon />,
           }}
+          listeners={() => ({
+            tabPress: () => {
+              const navigateAction = NavigationActions.navigate({
+                routeName: 'drawerStack',
+                action: StackActions.reset({
+                  index: 0,
+                  key: null,
+                  actions: [
+                      NavigationActions.navigate({ routeName: 'AccountSettings' }),
+                  ]
+                })
+              });
+          
+              props.navigation.dispatch(navigateAction);
+            }
+          })}
         />
         <Tab.Screen
           name="Order"
@@ -49,6 +67,22 @@ export default function Homepage(props) {
             tabBarLabel: "Order",
             tabBarIcon: () => <OrderIcon />,
           }}
+          listeners={() => ({
+            tabPress: () => {
+              const navigateAction = NavigationActions.navigate({
+                routeName: 'drawerStack',
+                action: StackActions.reset({
+                  index: 0,
+                  key: null,
+                  actions: [
+                      NavigationActions.navigate({ routeName: 'UpcomingOrders' }),
+                  ]
+                })
+              });
+          
+              props.navigation.dispatch(navigateAction);
+            }
+          })}
         />
         <Tab.Screen
           name="Home"
@@ -73,6 +107,22 @@ export default function Homepage(props) {
             tabBarLabel: "Task",
             tabBarIcon: () => <TaskIcon />,
           }}
+          listeners={() => ({
+            tabPress: () => {
+              const navigateAction = NavigationActions.navigate({
+                routeName: 'drawerStack',
+                action: StackActions.reset({
+                  index: 0,
+                  key: null,
+                  actions: [
+                      NavigationActions.navigate({ routeName: 'TaskInProgress' }),
+                  ]
+                })
+              });
+          
+              props.navigation.dispatch(navigateAction);
+            }
+          })}
         />
       </Tab.Navigator>
     </NavigationContainer>
