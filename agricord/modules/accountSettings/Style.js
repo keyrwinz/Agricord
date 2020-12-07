@@ -102,7 +102,7 @@ imageContainer:{
   width: '90%',
   minHeight:240,
   marginVertical: 10,
-  marginTop:60,
+  // marginTop:60,
   // box-shadow
   backgroundColor: Color.white,
   borderRadius: 12,
