@@ -36,8 +36,10 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
-    if(this.props.navigation.state.routeName=="HistoricalOrders"){
-      this.setState({activeIndex:1});
+    if (this.props.navigation.state?.routeName != null) {
+      if(this.props.navigation.state.routeName=="HistoricalOrders"){
+        this.setState({activeIndex:1});
+      }
     }
   }
 
