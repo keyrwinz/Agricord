@@ -17,6 +17,7 @@ import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import InProgress from './InProgress'
 import PaddockCard from 'components/Products/paddockCard.js'
 import {products} from './data-test.js';
+import TitleLogo from 'assets/inventory/title_logo.svg';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -36,9 +37,9 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
-
-    if (this.props.navigation.state?.routeName != null) {
-      switch(this.props.navigation.state.routeName) {
+    console.log(this.props)
+    if (this.props.initialPage!=null) {
+      switch(this.props.initialPage) {
         case 'TasksInProgress':
           this.setState({activeIndex:0})
           break;
@@ -79,12 +80,14 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
+        <View style={{backgroundColor:Color.white,height:50}}>
         <Pagination
           activeIndex={activeIndex}
           onChange={(index) => onPageChange(index)}
           pages={paginationProps}
         >
         </Pagination>
+        </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>

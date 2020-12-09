@@ -8,12 +8,12 @@ import TitleLogo from 'assets/inventory/title_logo.svg';
 
 const OrderStack = createStackNavigator()
 
-const OrderScreen = () => {
+const OrderScreen = (props) => {
   return (
     <OrderStack.Navigator>
       <OrderStack.Screen
         name="Orders"
-        component={Order}
+        children={(route)=><Order {...route} initialPage={props.initialPage}/>}
         options={({ route }) => {
           return ({
             headerTitle: () => (
