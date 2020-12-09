@@ -38,26 +38,24 @@ class Tasks extends Component {
     if (user != null) {
     }
 
-   
-    switch(this.props.routeName) {
-      case 'TasksInProgress':
-        this.setState({activeIndex:0})
-        break;
+    if (this.props.navigation.state?.routeName != null) {
+      switch(this.props.navigation.state.routeName) {
+        case 'TasksInProgress':
+          this.setState({activeIndex:0})
+          break;
+        
+        case 'TasksDue':
+          this.setState({activeIndex:1})
+          break;
+    
+        case 'TasksHistory':
+          this.setState({activeIndex:2})
+          break;
+        default:
+          console.log("Route does not exist")
       
-      case 'TasksDue':
-        this.setState({activeIndex:1})
-        break;
- 
-      case 'TasksHistory':
-        this.setState({activeIndex:2})
-        break;
-      default:
-        console.log("Route does not exist")
-    
       }
-    
-      console.log(this.props.routeName)
- 
+    }
   }
     
 
@@ -82,21 +80,6 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
-        <View style={Style.headerContainer}>
-             <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:10,marginLeft:15 }}>
-                <TitleLogo />
-                <Text
-                  style={{
-                    color: '#000',
-                    marginLeft: 7,
-                    fontWeight: 'bold',
-                    fontSize: 20
-                  }}
-                  >
-                  TASKS
-                </Text>
-              </View>
-        </View>
         <View style={{backgroundColor:Color.white,height:50}}>
         <Pagination
           activeIndex={activeIndex}

@@ -8,12 +8,14 @@ export default {
   },
   MainContainer: {
     flex: 1,
+    backgroundColor: Color.white
   },
   sliderContainer: {
     flex: 1,
     minHeight: height,
     width: '100%',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    backgroundColor: '#F1F1F1'
   },
   ScrollView: {
     flex: 1

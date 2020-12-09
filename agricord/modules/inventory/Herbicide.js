@@ -43,7 +43,7 @@ const Herbicide = ({ navigation, data }) => {
       <View
         style={{
           position: 'absolute',
-          bottom: 20,
+          bottom: 26,
           alignSelf: 'flex-end'
         }}
       >
