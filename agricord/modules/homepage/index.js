@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Setting from './Setting';
-import Order from './Order';
+import { NavigationActions, StackActions } from 'react-navigation';
+// import Setting from './Setting';
+import Setting from 'modules/accountSettings/AccountSettingsStack'
+import Order from 'modules/orders/OrdersStack';
 import Home from './Home';
 import InventoryScreen from 'modules/inventory';
-import Task from './Task';
+import Tasks from 'modules/tasks/TasksStack';
 
 import SettingIcon from 'assets/btm_nav/setting.svg';
 import OrderIcon from 'assets/btm_nav/order.svg';
@@ -35,7 +36,7 @@ export default function Homepage(props) {
         }}
       >
         <Tab.Screen
-          name="Setting"
+          name="AccountSetting"
           component={Setting}
           options={{
             tabBarLabel: "Setting",
@@ -43,7 +44,7 @@ export default function Homepage(props) {
           }}
         />
         <Tab.Screen
-          name="Order"
+          name="Orders"
           component={Order}
           options={{
             tabBarLabel: "Order",
@@ -68,7 +69,7 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Task"
-          component={Task}
+          component={Tasks}
           options={{
             tabBarLabel: "Task",
             tabBarIcon: () => <TaskIcon />,
