@@ -18,11 +18,12 @@ import TaskIcon from 'assets/btm_nav/task.svg';
 const Tab = createBottomTabNavigator();
 
 export default function Homepage(props) {
+
   return (
     <NavigationContainer
     >
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={props.navigation.state.params!=null?props.navigation.state.params.initialRouteName:"Home"}
         tabBarOptions={{
           activeTintColor: '#81CB9C',
           style: {
@@ -45,7 +46,7 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Orders"
-          component={Order}
+          children={(route)=><Order {...route} initialPage={props.navigation.state.routeName}/>}
           options={{
             tabBarLabel: "Order",
             tabBarIcon: () => <OrderIcon />,
@@ -69,9 +70,9 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Task"
-          component={Tasks}
+          children={(route)=><Tasks {...route} initialPage={props.navigation.state.routeName}/>}
           options={{
-            tabBarLabel: "Task",
+            tabBarLabel: "Tasks",
             tabBarIcon: () => <TaskIcon />,
           }}
         />
