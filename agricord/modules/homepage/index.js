@@ -8,7 +8,7 @@ import Order from './Order';
 import Home from './Home';
 import InventoryScreen from 'modules/inventory';
 // import Tasks from 'modules/tasks';
-import Task from './Task';
+import Task from 'modules/tasks';
 
 import SettingIcon from 'assets/btm_nav/setting.svg';
 import OrderIcon from 'assets/btm_nav/order.svg';
@@ -19,11 +19,12 @@ import TaskIcon from 'assets/btm_nav/task.svg';
 const Tab = createBottomTabNavigator();
 
 export default function Homepage(props) {
+  console.log(props)
   return (
     <NavigationContainer
     >
       <Tab.Navigator
-        initialRouteName="Home"
+        initialRouteName={props.navigation.state.params!=null?props.navigation.state.params.initialRouteName:"Home"}
         tabBarOptions={{
           activeTintColor: '#81CB9C',
           style: {
@@ -101,28 +102,13 @@ export default function Homepage(props) {
           }}
         />
         <Tab.Screen
-          name="Task"
-          component={Task}
+          name="Task"         
+          children={()=><Task routeName={props.navigation.state.routeName}></Task>}
           options={{
-            tabBarLabel: "Task",
+            tabBarLabel: "Tasks",
             tabBarIcon: () => <TaskIcon />,
           }}
-          listeners={() => ({
-            tabPress: () => {
-              const navigateAction = NavigationActions.navigate({
-                routeName: 'drawerStack',
-                action: StackActions.reset({
-                  index: 0,
-                  key: null,
-                  actions: [
-                      NavigationActions.navigate({ routeName: 'TaskInProgress' }),
-                  ]
-                })
-              });
-          
-              props.navigation.dispatch(navigateAction);
-            }
-          })}
+    
         />
       </Tab.Navigator>
     </NavigationContainer>

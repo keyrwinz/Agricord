@@ -7,7 +7,7 @@ import {faBars} from '@fortawesome/free-solid-svg-icons';
 import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/homepage';
-import Inventory from 'modules/inventory';
+import InventoryScreen from 'modules/inventory';
 import Dashboard from 'modules/basics/Welcome.js';
 import Notification from 'modules/basics/Welcome.js';
 import Profile from 'modules/basics/Welcome.js';
@@ -189,37 +189,28 @@ const Homepage_StackNavigator = createStackNavigator({
 
   //==========================TASKS ROUTES===================//
   TaskInProgress: {
-    screen: Tasks,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+    screen: Homepage,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
     }),
+    params:{initialRouteName:'Task'}
   },
   TasksDue: {
-    screen: Tasks,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+    screen: Homepage,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
     }),
+    params:{initialRouteName:'Task'}
   },
   TasksHistory: {
-    screen: Tasks,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+    screen: Homepage,
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
     }),
+    params:{initialRouteName:'Task'}
   },
   //============================================================//
   AccountSettings: {

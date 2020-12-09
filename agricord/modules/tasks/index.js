@@ -17,6 +17,7 @@ import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import InProgress from './InProgress'
 import PaddockCard from 'components/Products/paddockCard.js'
 import {products} from './data-test.js';
+import TitleLogo from 'assets/inventory/title_logo.svg';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -37,8 +38,8 @@ class Tasks extends Component {
     if (user != null) {
     }
 
-    if(this.props.navigation.state!=null){
-    switch(this.props.navigation.state.routeName) {
+   
+    switch(this.props.routeName) {
       case 'TasksInProgress':
         this.setState({activeIndex:0})
         break;
@@ -54,7 +55,8 @@ class Tasks extends Component {
         console.log("Route does not exist")
     
       }
-    }
+    
+      console.log(this.props.routeName)
  
   }
     
@@ -80,12 +82,29 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
+        <View style={Style.headerContainer}>
+             <View style={{ flexDirection: 'row', alignItems: 'center',marginTop:10,marginLeft:15 }}>
+                <TitleLogo />
+                <Text
+                  style={{
+                    color: '#000',
+                    marginLeft: 7,
+                    fontWeight: 'bold',
+                    fontSize: 20
+                  }}
+                  >
+                  TASKS
+                </Text>
+              </View>
+        </View>
+        <View style={{backgroundColor:Color.white,height:50}}>
         <Pagination
           activeIndex={activeIndex}
           onChange={(index) => onPageChange(index)}
           pages={paginationProps}
         >
         </Pagination>
+        </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
