@@ -8,12 +8,14 @@ import TitleLogo from 'assets/inventory/title_logo.svg';
 
 const TasksStack = createStackNavigator()
 
-const TasksScreen = () => {
+const TasksScreen = (props) => {
+  console.log("check",props)
   return (
+    
     <TasksStack.Navigator>
       <TasksStack.Screen
         name="Tasks"
-        component={Tasks}
+        children={(route)=><Tasks {...route} initialPage={props.initialPage}/>}
         options={({ route }) => {
           return ({
             headerTitle: () => (

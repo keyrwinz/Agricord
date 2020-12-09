@@ -164,26 +164,20 @@ const Homepage_StackNavigator = createStackNavigator({
   },
   //=================ORDERS ROUTES========================//
   UpcomingOrders: {
-    screen: Orders,
+    screen: Homepage,
     navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
     }),
+    params:{initialRouteName:'Orders'}
   },
   HistoricalOrders: {
-    screen: Orders,
+    screen: Homepage,
     navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
+      headerTransparent: true
     }),
+    params:{initialRouteName:'Orders'}
   },
   //=========================================================//
 

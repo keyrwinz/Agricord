@@ -37,9 +37,9 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
-
-    if (this.props.navigation.state?.routeName != null) {
-      switch(this.props.navigation.state.routeName) {
+    console.log(this.props)
+    if (this.props.initialPage!=null) {
+      switch(this.props.initialPage) {
         case 'TasksInProgress':
           this.setState({activeIndex:0})
           break;
