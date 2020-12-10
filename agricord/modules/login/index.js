@@ -15,16 +15,105 @@ import {faLock, faUserAlt} from '@fortawesome/free-solid-svg-icons';
 import LoginInputField from 'modules/login/LoginInputField';
 import SignInButton from 'modules/login/SignInButton';
 import styles from 'modules/login/Styles.js';
+import {Spinner} from 'components';
+import Api from 'services/api/index.js';
+import {Routes} from 'common';
+
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 
 class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false,
+      username: '',
+      password: '',
+      error: 0,
+      errorMessage: '',
+    };
+  }
+
+  submit = () => {
+    const {login} = this.props;
+    const {username, password} = this.state;
+    if (
+      username != null &&
+      username != '' &&
+      (password != null && password != '')
+    ) {
+      this.setState({isLoading: true, error: 0});
+      Api.authenticate(
+        username,
+        password,
+        response => {
+          if (response.error) {
+            this.setState({errorMessage: response.error, isLoading: false});
+          }
+          if (response.token) {
+            const token = response.token;
+            Api.getAuthUser(
+              token,
+              response => {
+                console.log('response id', response.id);
+                login(response, token);
+                let parameter = {
+                  condition: [
+                    {
+                      value: response.id,
+                      clause: '=',
+                      column: 'id',
+                    },
+                  ],
+                };
+                Api.request(
+                  Routes.accountRetrieve,
+                  parameter,
+                  userInfo => {
+                    this.setState({isLoading: false});
+                    if (userInfo.data.length > 0) {
+                      login(userInfo.data[0], token);
+                      setTimeout(() => {
+                        const {user} = this.props.state;
+                        console.log('login user', user);
+                        this.props.navigation.navigate('AccountSettings');
+                      }, 100);
+                    } else {
+                      this.setState({error: 2});
+                      login(null, null);
+                    }
+                  },
+                  error => {},
+                );
+              },
+              error => {},
+            );
+          }
+        },
+        error => {
+          console.log('Login error', error);
+        },
+      );
+    } else {
+      this.setState({error: 1});
+    }
+  };
+
+  usernameHandler = value => {
+    this.setState({username: value});
+  };
+
+  passwordHandler = value => {
+    this.setState({password: value});
+  };
+
   render() {
     return (
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={styles.BackgroundContainer}>
         <ScrollView>
+          {this.state.isLoading ? <Spinner mode="overlay" /> : null}
           <View style={styles.LoginContainer}>
             <Image
               source={require('assets/logo.png')}
@@ -43,6 +132,7 @@ class Login extends Component {
               <LoginInputField
                 icon={faUserAlt}
                 placeholder="Login or Username"
+                handler={this.usernameHandler}
               />
             </View>
             <View style={styles.PasswordContainer}>
@@ -50,6 +140,7 @@ class Login extends Component {
                 icon={faLock}
                 secureTextEntry={true}
                 placeholder="Password"
+                handler={this.passwordHandler}
               />
             </View>
             <TouchableOpacity
@@ -61,7 +152,7 @@ class Login extends Component {
               <SignInButton
                 onPress={() => {
                   console.log('Click');
-                  this.props.navigation.navigate('appSettingsStack');
+                  this.submit();
                 }}
               />
             </View>
@@ -108,7 +199,11 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    login: (response, token) => {
+      dispatch(actions.login(response, token));
+    },
+  };
 };
 
 export default connect(
