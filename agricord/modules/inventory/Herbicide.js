@@ -48,7 +48,7 @@ const Herbicide = ({ navigation, data }) => {
         }}
       >
         <TouchableOpacity onPress={() => {
-          Alert.alert('test')
+         navigation.navigate('ApplyTask')
         }}>
           <Image
             style={{

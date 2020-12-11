@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Order from './index';
+import ApplyTask from 'modules/applyTask';
+
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -33,6 +35,22 @@ const OrderScreen = (props) => {
             )
           })
         }}
+      />
+        <OrderStack.Screen
+        name="ApplyTask"
+        component={ApplyTask}
+        options={({ route }) => ({
+            headerLeft: null,
+            headerTitle: () => (
+              
+              <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
+                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
+                 APPLY TASK
+                </Text>
+             
+              </View>
+            )
+        })}
       />
     </OrderStack.Navigator>
   )

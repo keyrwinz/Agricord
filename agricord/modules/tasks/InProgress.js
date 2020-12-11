@@ -44,7 +44,7 @@ class InProgress extends Component {
     const navigateAction = StackActions.reset({
       index: 0,
       key: null,
-      actions: [NavigationActions.navigate({ routeName: 'batchStack'})]
+      actions: [NavigationActions.navigate({ routeName: 'drawerStack'})]
   })
   this.props.navigation.dispatch(navigateAction)
 
@@ -62,9 +62,7 @@ class InProgress extends Component {
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
       {this.props.data.map((item,index)=>(
         <TouchableOpacity onPress={()=>{
-          const name = item.title.toUpperCase()
-          const volume = item.volume
-          this.props.navigation.push('TasksItem',{name,data:item})
+         this.goTo()
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>
@@ -72,7 +70,7 @@ class InProgress extends Component {
       ))}
        </View>
        </ScrollView>
-    <TaskIcon></TaskIcon>
+    <TaskIcon details={this.props}></TaskIcon>
        </SafeAreaView>
   
     );
