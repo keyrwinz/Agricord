@@ -76,7 +76,7 @@ class Login extends Component {
                       setTimeout(() => {
                         const {user} = this.props.state;
                         console.log('login user', user);
-                        this.props.navigation.navigate('AccountSettings');
+                        this.props.navigation.navigate('drawerStack');
                       }, 100);
                     } else {
                       this.setState({error: 2});
