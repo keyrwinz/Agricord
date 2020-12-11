@@ -3,12 +3,22 @@ import PropTypes from 'prop-types';
 import Collapsible from 'react-native-collapsible';
 import styles from './Style';
 import { NavigationActions, StackActions } from 'react-navigation';
-import { SafeAreaView, ScrollView, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Alert,
+  Platform
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Helper, BasicStyles, Color } from 'common';
 import Config from 'src/config.js';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserCircle, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import LinearGradient from 'react-native-linear-gradient';
 import Pusher from 'services/Pusher.js';
 
 import HouseIcon from '../../assets/drawer/profile/houseIcon.svg';
@@ -19,7 +29,7 @@ class Slider extends Component {
   constructor(props){
     super(props);
     this.state = {
-      collapsed: null
+      collapsed: null,
     }
   }
 
@@ -255,20 +265,8 @@ class Slider extends Component {
               }
               {(user == null && Helper.DrawerMenuLogout.length > 0) &&
                 Helper.DrawerMenuLogout.map((item, index) => {
-                  const activeStyle = this.state.collapsed === item.route ? {
-                    borderLeftWidth: 12,
-                    borderLeftColor: '#D9E597',
-                    paddingLeft: 18,
-                    // box-shadow
-                    backgroundColor: Color.white,
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 1,
-                    },
-                    shadowOpacity: 0.13,
-                    shadowRadius: 10,
-                    elevation: 1,
+                  const notActiveStyle = this.state.collapsed !== item.route ? {
+                    paddingBottom: 15
                   } : {}
 
                   const minCount = 2
@@ -287,7 +285,22 @@ class Slider extends Component {
                   })
 
                   return (
-                    <View style={[styles.navSectionStyleNoBorder, activeStyle]} key={index}>
+                    <View key={index} style={[styles.navSectionStyleNoBorder, notActiveStyle]}>
+                      {
+                        this.state.collapsed === item.route && (
+                          <LinearGradient
+                            colors={['#94D0AB', '#B7DBA1', '#D9E597']}
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              height: '100%',
+                              width: 15,
+                            }}
+                          >
+                          </LinearGradient>
+                        )
+                      }
                       <TouchableOpacity
                         onPress={() => this.toggleExpanded(item.route)}
                         style={styles.drawerItem}
@@ -319,6 +332,7 @@ class Slider extends Component {
                           position: 'relative',
                           width: '100%',
                           paddingHorizontal: 20,
+                          paddingBottom: 15,
                           paddingTop: rightSubRoutes.length > 0 ? 15 : 0,
                           flexDirection: 'row',
                         }}>
@@ -332,11 +346,12 @@ class Slider extends Component {
                               leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
                                 <TouchableOpacity
                                   key={data.title}
-                                   onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route)}
                                   style={styles.subRoutes}
                                 >
-                                  <View style={styles.lineGraph} />
-                                  <View style={styles.bulletView} />
+                                  <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
+                                  <View style={styles.lineHorizontalGraph} />
+                                  <View style={[styles.bulletView]} />
                                   <Text style={styles.subRouteText}>
                                     {data.title}
                                   </Text>
@@ -353,11 +368,12 @@ class Slider extends Component {
                                   style={styles.subRoutes}
                                 >
                                   <View
-                                    style={[styles.lineGraph, {
+                                    style={[styles.lineVerticalGraph, {
                                       marginTop: idx === 0 ? 10 : 0,
-                                      height: idx === 0 ? '90%' : '130%'
+                                      height: idx === 0 ? '90%' : Platform.OS === 'ios' ? '125%' : '118%'
                                     }]}
                                   />
+                                  <View style={styles.lineHorizontalGraph} />
                                   <View style={styles.bulletView} />
                                   <Text style={styles.subRouteText}>
                                     {data.title}

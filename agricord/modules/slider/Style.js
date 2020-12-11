@@ -36,6 +36,7 @@ export default {
     flexDirection: 'row',
     alignItems: 'center',
     width: '50%',
+    paddingTop: 15
   },
   chevronIcon: {
     color: Color.normalGray,
@@ -48,7 +49,7 @@ export default {
     borderBottomWidth: 1
   },
   navSectionStyleNoBorder: {
-    paddingVertical: 15,
+    position: 'relative',
     paddingLeft: 30,
     borderBottomWidth: 1,
     borderBottomColor: Color.lightGray,
@@ -64,16 +65,21 @@ export default {
     alignItems: 'center',
     flexWrap: 'nowrap',
   },
-  lineGraph: {
+  lineVerticalGraph: {
     width: '12%',
-    height: '130%',
     position: 'absolute',
     top: -15,
     left: -3,
     borderLeftWidth: 1,
     borderLeftColor: '#AAD76F',
-    borderBottomWidth: 1,
-    borderBottomColor: '#AAD76F',
+  },
+  lineHorizontalGraph: {
+    width: '12%',
+    height: 1,
+    backgroundColor: '#AAD76F',
+    marginTop: 15,
+    marginLeft: -3,
+    marginRight: -15
   },
   sectionConnector: {
     position: 'absolute',

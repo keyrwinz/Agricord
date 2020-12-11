@@ -56,7 +56,7 @@ export default {
   },
   searchIcon: {
     position: 'absolute',
-    right: '22%',
+    right: '21.5%',
     top: 4.5
   },
   nfcIcon: {
@@ -143,10 +143,10 @@ export default {
   itemDetailLabel: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: Color.gray
+    color: '#969696'
   },
   itemDetailValue: {
-    fontSize: 16,
+    //
   },
   fileUploaded: {
     paddingVertical: 5,

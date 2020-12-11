@@ -24,7 +24,6 @@ import CheckIcon from 'assets/inventory/check_icon.svg';
 const height = Math.round(Dimensions.get('window').height);
 
 const InventoryItem = (props) => {
-  const [expanded, setExpand] = useState(false)
   const [modalState, showModal] = useState(false)
   const data = props.route?.params?.data || null
 
@@ -152,38 +151,30 @@ const InventoryItem = (props) => {
                 </View>
                 <View style={Style.itemDetailRight}>
                   {
-                    expanded ? data.active.map((string, idx) => (
-                      <Text key={idx} style={Style.itemDetailValue}>
-                        {string || 'No data'}
-                      </Text>
-                    )) : (
-                      <Text style={Style.itemDetailValue}>
-                        {data.active[0] || 'No data'}
-                      </Text>
-                    )
+                    data.active != null && data.active.length && data.active.map((string, idx) => (
+                        <Text key={idx} style={Style.itemDetailValue}>
+                          {string || 'No data'}
+                        </Text>
+                    ))
                   }
                 </View>
               </View>
             </View>
 
-            {
-              expanded && (
-                <View style={Style.itemDetailsContainer}>
-                  <View style={Style.itemDetailRow}>
-                    <View style={Style.itemDetailLeft}>
-                      <Text style={Style.itemDetailLabel}>
-                        Solvent
-                      </Text>
-                    </View>
-                    <View style={Style.itemDetailRight}>
-                      <Text style={Style.itemDetailValue}>
-                        {data.solvent || '-'}
-                      </Text>
-                    </View>
-                  </View>
+            <View style={Style.itemDetailsContainer}>
+              <View style={Style.itemDetailRow}>
+                <View style={Style.itemDetailLeft}>
+                  <Text style={Style.itemDetailLabel}>
+                    Solvent
+                  </Text>
                 </View>
-              )
-            }
+                <View style={Style.itemDetailRight}>
+                  <Text style={Style.itemDetailValue}>
+                    {data.solvent || '-'}
+                  </Text>
+                </View>
+              </View>
+            </View>
 
             <View style={Style.itemDetailsContainer}>
               <View style={Style.itemDetailRow}>
@@ -230,64 +221,53 @@ const InventoryItem = (props) => {
               </View>
             </View>
 
-            {
-              expanded && (
-                <View style={Style.itemDetailsContainer}>
-                  <View style={Style.itemDetailRow}>
-                    <View style={Style.itemDetailLeft}>
-                      <Text style={Style.itemDetailLabel}>
-                        Safety Equipment
-                      </Text>
-                    </View>
-                    <View style={Style.itemDetailRight}>
-                      <TouchableOpacity onPress={() => showModal(true)}>
-                        <Text style={Style.itemDetailValue}>
-                          Click to show
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
+            <View style={Style.itemDetailsContainer}>
+              <View style={Style.itemDetailRow}>
+                <View style={Style.itemDetailLeft}>
+                  <Text style={Style.itemDetailLabel}>
+                    Safety Equipment
+                  </Text>
                 </View>
-              )
-            }
+                <View style={Style.itemDetailRight}>
+                  <TouchableOpacity onPress={() => showModal(true)}>
+                    <Text style={Style.itemDetailValue}>
+                      Click to show
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
 
-            {
-              expanded && (
-                <View style={Style.itemDetailsContainer}>
-                  <View style={Style.itemDetailRow}>
-                    <View style={Style.itemDetailLeft}>
-                      <Text style={Style.itemDetailLabel}>
-                        Batch
-                      </Text>
-                    </View>
-                    <View style={Style.itemDetailRight}>
-                      <Text style={Style.itemDetailValue}>
-                        Batch_trace
-                      </Text>
-                    </View>
-                  </View>
+            <View style={Style.itemDetailsContainer}>
+              <View style={Style.itemDetailRow}>
+                <View style={Style.itemDetailLeft}>
+                  <Text style={Style.itemDetailLabel}>
+                    Batch
+                  </Text>
                 </View>
-              )
-            }
+                <View style={Style.itemDetailRight}>
+                  <Text style={Style.itemDetailValue}>
+                    Batch_trace
+                  </Text>
+                </View>
+              </View>
+            </View>
 
-            {
-              expanded && (
-                <View style={Style.itemDetailsContainer}>
-                  <View style={Style.itemDetailRow}>
-                    <View style={Style.itemDetailLeft}>
-                      <Text style={Style.itemDetailLabel}>
-                        Manufactured
-                      </Text>
-                    </View>
-                    <View style={Style.itemDetailRight}>
-                      <Text style={Style.itemDetailValue}>
-                        Man_date_trace
-                      </Text>
-                    </View>
-                  </View>
+            <View style={Style.itemDetailsContainer}>
+              <View style={Style.itemDetailRow}>
+                <View style={Style.itemDetailLeft}>
+                  <Text style={Style.itemDetailLabel}>
+                    Manufactured
+                  </Text>
                 </View>
-              )
-            }
+                <View style={Style.itemDetailRight}>
+                  <Text style={Style.itemDetailValue}>
+                    Man_date_trace
+                  </Text>
+                </View>
+              </View>
+            </View>
+
           </View>
 
           <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10 }}>
@@ -314,15 +294,6 @@ const InventoryItem = (props) => {
               </Text>
             </View>
           </View>
-
-          <TouchableOpacity onPress={() => setExpand(!expanded)}>
-            <ArrowExpand
-              style={{
-                alignSelf: 'center',
-                transform: expanded ? [{ rotate: '180deg'}] : []
-              }}
-            />
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
