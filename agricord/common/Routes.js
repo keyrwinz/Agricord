@@ -35,25 +35,25 @@ export default {
   imageUpload: apiUrl + 'images/upload',
   imageRetrieve: apiUrl + 'images/retrieve',
   // carts
-  cartsCreate: apiUrl + 'carts/create',
-  cartsRetrieve: apiUrl + 'carts/retrieve',
-  cartsDelete: apiUrl + 'carts/delete',
-  cartsUpdate: apiUrl + 'carts/update',
+  // cartsCreate: apiUrl + 'carts/create',
+  // cartsRetrieve: apiUrl + 'carts/retrieve',
+  // cartsDelete: apiUrl + 'carts/delete',
+  // cartsUpdate: apiUrl + 'carts/update',
   // coupons
-  couponsRetrieve: apiUrl + 'coupons/retrieve',
+  // couponsRetrieve: apiUrl + 'coupons/retrieve',
   // products
-  productsRetrieve: apiUrl + 'products/retrieve_basic',
+  // productsRetrieve: apiUrl + 'products/retrieve_basic',
   // dashboard
-  dashboardRetrieveCategoryList: apiUrl + 'dashboard/categories',
-  dashboardRetrieveFeaturedProducts: apiUrl + 'dashboard/featured',
-  dashboardRetrieveCategoryProducts: apiUrl + 'dashboard/category',
-  dashboardRetrieveShops: apiUrl + 'dashboard/shops_in_array',
-  merchantRetrieve: apiUrl + 'merchants/retrieve',
+  // dashboardRetrieveCategoryList: apiUrl + 'dashboard/categories',
+  // dashboardRetrieveFeaturedProducts: apiUrl + 'dashboard/featured',
+  // dashboardRetrieveCategoryProducts: apiUrl + 'dashboard/category',
+  // dashboardRetrieveShops: apiUrl + 'dashboard/shops_in_array',
+  // merchantRetrieve: apiUrl + 'merchants/retrieve',
   // checkout || orders
-  checkoutCreate: apiUrl + 'checkouts/create',
-  ordersRetrieve: apiUrl + 'checkouts/retrieve_orders',
-  orderItemsRetrieve: apiUrl + 'checkout_items/retrieve_on_orders',
-  shippingFee: apiUrl + 'checkouts/get_shipping_fee',
+  // checkoutCreate: apiUrl + 'checkouts/create',
+  // ordersRetrieve: apiUrl + 'checkouts/retrieve_orders',
+  // orderItemsRetrieve: apiUrl + 'checkout_items/retrieve_on_orders',
+  // shippingFee: apiUrl + 'checkouts/get_shipping_fee',
   // notification settings
   notificationSettingsRetrieve: apiUrl + 'notification_settings/retrieve',
   filters:apiUrl + 'dashboard/categories',
@@ -62,5 +62,7 @@ export default {
   ratingsRetrieve: apiUrl + 'ratings/retrieve',
   // valid-id
   getValidID:apiUrl+'payloads/get_valid_id',
-  uploadValidID:apiUrl+'payloads/upload_valid_id'
+  uploadValidID:apiUrl+'payloads/upload_valid_id',
+  //Agricord-Tasks
+  tasksRetrieve:apiUrl+'paddocks/retrieve'
 }

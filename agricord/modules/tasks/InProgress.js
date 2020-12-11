@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {View, Image,TouchableHighlight,Text,ScrollView,FlatList, Dimensions,TouchableOpacity,TextInput,SafeAreaView} from 'react-native';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions,StackActions } from 'react-navigation';
 import { Thumbnail, List, ListItem, Separator } from 'native-base';
 import { connect } from 'react-redux';
 import {faPlus,faMinus} from '@fortawesome/free-solid-svg-icons';
@@ -37,9 +37,20 @@ class InProgress extends Component {
   }
 
   goTo=(index)=>{
-    this.props.navigation.navigate('batchStack',{data:this.props.data[index]})
+    //this.props.navigation.navigate('batchStack',{data:this.props.data[index]})
     // this.props.navigation.navigate('paddockStack',{data:this.props.data[index]})
+    // console.log(this.props.navigation.dangerouslyGetState().routes)
+
+    const navigateAction = StackActions.reset({
+      index: 0,
+      key: null,
+      actions: [NavigationActions.navigate({ routeName: 'batchStack'})]
+  })
+  this.props.navigation.dispatch(navigateAction)
+
   }
+
+  
   
   render() {
     const {isLoading} = this.state;
@@ -50,7 +61,11 @@ class InProgress extends Component {
       <View style={Style.MainContainer,{minHeight:height}}>
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
       {this.props.data.map((item,index)=>(
-        <TouchableOpacity onPress={()=>this.goTo(index)}>
+        <TouchableOpacity onPress={()=>{
+          const name = item.title.toUpperCase()
+          const volume = item.volume
+          this.props.navigation.push('TasksItem',{name,data:item})
+        }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>
        
