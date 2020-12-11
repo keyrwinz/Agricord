@@ -68,7 +68,6 @@ class paddockPage extends Component{
          <PaddockCard details={item}></PaddockCard>
        ))}
        <View style={[Style.paddockContainer,{backgroundColor:'#5A84EE'}]}>
-       {/* <FontAwesomeIcon icon={faTint} style={{alignSelf:'center',marginLeft:20,width:'20%'}} size={35} ></FontAwesomeIcon> */}
        <Image
     style={{width:'5%',resizeMode:'contain',marginRight:5,alignSelf:'center',marginLeft:20}}
     source={require('../../assets/waterDrop.png')}
@@ -78,6 +77,7 @@ class paddockPage extends Component{
         <Text style={{color:'#FFFFFF',fontSize:18,fontWeight:'bold',marginRight:10}}>4403L</Text>
        </View>
        </View>
+      
      </View>
 
     );

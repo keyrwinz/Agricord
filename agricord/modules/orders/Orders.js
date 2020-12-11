@@ -49,7 +49,7 @@ class Orders extends Component {
        </View>
        </ScrollView>
        <View style={{position:'absolute',bottom:230,alignSelf:'flex-end'}}>
-       <TouchableOpacity onPress={()=>alert('redirect')}>
+       <TouchableOpacity onPress={()=>this.props.navigation.navigate('ApplyTask')}>
           <View style={{alignItems:'center'}}>
           <Image
           style={{padding:30,height:50,width:'100%'}}
