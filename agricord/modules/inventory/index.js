@@ -88,7 +88,7 @@ const Inventory = ({ navigation }) => {
             style={Style.searchIcon}
             onPress={() => searchProductHandler()}
           >
-            <SearchIcon height="50" width="50" />
+            <SearchIcon height="50" width="52" />
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.nfcIcon}
