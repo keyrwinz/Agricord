@@ -10,40 +10,15 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
-import {NavigationActions} from 'react-navigation';
-import {Thumbnail, List, ListItem, Separator} from 'native-base';
 import {connect} from 'react-redux';
-import {
-  faUserCircle,
-  faMapMarker,
-  faUniversity,
-  faKaaba,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Style from './Style.js';
 import {Routes, Color, Helper, BasicStyles} from 'common';
-import {Spinner, Empty, SystemNotification} from 'components';
-import {
-  MainCard,
-  Feature,
-  Card,
-  MainFeature,
-  PromoCard,
-} from 'components/ProductThumbnail';
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody,
-  AccordionList,
-} from 'accordion-collapse-react-native';
-import {Divider} from 'react-native-elements';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import Orders from './Orders';
-import PaddockCard from 'components/Products/paddockCard.js';
 import {products} from './data-test.js';
+import Api from 'services/api';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -53,6 +28,8 @@ class Tasks extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
+      pending: [],
+      delivered: [],
     };
   }
 
@@ -64,8 +41,41 @@ class Tasks extends Component {
       if (this.props.initialPage == 'HistoricalOrders') {
         this.setState({activeIndex: 1});
       }
+      this.getOrders('pending');
+      this.getOrders('completed');
     }
   }
+
+  getOrders = value => {
+    let parameters = {
+      condition: [
+        {
+          value: value,
+          clause: '=',
+          column: 'status',
+        },
+      ],
+      status: value,
+    };
+    Api.request(Routes.ordersRetrieve, parameters, response => {
+      this.setData(response.data, value);
+    });
+  };
+
+  setData = (data, type) => {
+    switch (type) {
+      case 'pending':
+        this.setState({pending: data}, () => {
+          console.log('PENDING', this.state.pending);
+        });
+        break;
+      case 'completed':
+        this.setState({delivered: data});
+        break;
+      default:
+        break;
+    }
+  };
 
   render() {
     const {activeIndex} = this.state;
@@ -94,10 +104,10 @@ class Tasks extends Component {
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={pending} />
+              <Orders {...this.props} data={this.state.pending} />
             </View>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={delivered} />
+              <Orders {...this.props} data={this.state.delivered} />
             </View>
           </Pager>
         </PagerProvider>
