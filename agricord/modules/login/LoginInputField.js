@@ -11,6 +11,7 @@ class LoginInputField extends Component {
           <FontAwesomeIcon icon={this.props.icon} style={styles.IconStyle} />
         </View>
         <TextInput
+          autoFocus={true}
           onChangeText={value => {
             this.props.handler(value);
           }}
