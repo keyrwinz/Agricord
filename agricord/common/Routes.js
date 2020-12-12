@@ -16,17 +16,19 @@ export default {
   accountInformationRetrieve: apiUrl + 'account_informations/retrieve',
   accountInformationUpdate: apiUrl + 'account_informations/update',
   emailAlert: apiUrl + 'emails/alert',
-  locationCreate:apiUrl + 'locations/create',
-  locationRetrieve:apiUrl + 'locations/retrieve',
-  locationDelete:apiUrl+'locations/delete',
+  locationCreate: apiUrl + 'locations/create',
+  locationRetrieve: apiUrl + 'locations/retrieve',
+  locationDelete: apiUrl + 'locations/delete',
   // messenger
   customMessengerGroupCreate: apiUrl + 'custom_messenger_groups/create',
   messengerGroupRetrieve: apiUrl + 'messenger_groups/retrieve',
-  messengerGroupRetrieveByParams: apiUrl + 'messenger_groups/retrieve_by_params',
+  messengerGroupRetrieveByParams:
+    apiUrl + 'messenger_groups/retrieve_by_params',
   messengerMessagesCreate: apiUrl + 'messenger_messages/create',
   messengerMessagesRetrieve: apiUrl + 'messenger_messages/retrieve',
   messengerMessagesUpdate: apiUrl + 'messenger_messages/update_by_status',
-  mmCreateWithImageWithoutPayload: apiUrl + 'messenger_messages/create_with_image_without_payload',
+  mmCreateWithImageWithoutPayload:
+    apiUrl + 'messenger_messages/create_with_image_without_payload',
   imageUploadUnLink: apiUrl + 'images/upload_un_link',
   // referral
   invitationCreate: apiUrl + 'invitations/create',
@@ -56,13 +58,14 @@ export default {
   // shippingFee: apiUrl + 'checkouts/get_shipping_fee',
   // notification settings
   notificationSettingsRetrieve: apiUrl + 'notification_settings/retrieve',
-  filters:apiUrl + 'dashboard/categories',
+  filters: apiUrl + 'dashboard/categories',
   // ratings
   ratingsCreate: apiUrl + 'ratings/create',
   ratingsRetrieve: apiUrl + 'ratings/retrieve',
   // valid-id
-  getValidID:apiUrl+'payloads/get_valid_id',
-  uploadValidID:apiUrl+'payloads/upload_valid_id',
+  getValidID: apiUrl + 'payloads/get_valid_id',
+  uploadValidID: apiUrl + 'payloads/upload_valid_id',
   //Agricord-Tasks
-  tasksRetrieve:apiUrl+'paddocks/retrieve'
-}
+  tasksRetrieve: apiUrl + 'paddocks/retrieve',
+  ordersRetrieve: apiUrl + 'order_requests/retrieve',
+};
