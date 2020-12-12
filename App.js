@@ -70,13 +70,7 @@ export default class App extends React.Component {
             flex: 1,
             backgroundColor: '#ffffff',
           }}>
-          {tutorial == true && <AppReduxNavigation />}
-          {tutorial == false && (
-            <Tutorial
-              onFinish={() => this.onFinish()}
-              onSkip={() => this.onSkip()}
-            />
-          )}
+          <AppReduxNavigation />
         </View>
       </Provider>
     );

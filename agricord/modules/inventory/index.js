@@ -16,6 +16,7 @@ import Herbicide from './Herbicide'
 import { Color } from 'common';
 import { products } from './data-test.js';
 import Style from './Style.js';
+import ApplyTask from 'modules/applyTask';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -88,7 +89,7 @@ const Inventory = ({ navigation }) => {
             style={Style.searchIcon}
             onPress={() => searchProductHandler()}
           >
-            <SearchIcon height="50" width="50" />
+            <SearchIcon height="50" width="52" />
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.nfcIcon}
@@ -165,6 +166,22 @@ const InventoryScreen = () => {
                 <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
                   {route.params.volume}
                 </Text>
+              </View>
+            )
+        })}
+      />
+         <InventoryStack.Screen
+        name="ApplyTask"
+        component={ApplyTask}
+        options={({ route }) => ({
+            headerLeft: null,
+            headerTitle: () => (
+              
+              <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
+                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
+                 APPLY TASK
+                </Text>
+             
               </View>
             )
         })}

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {faUserCircle,faMapMarker, faUniversity,faKaaba,faFilter} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Style from './Style.js';
+import Api from 'services/api/index.js'
 import { Routes, Color, Helper, BasicStyles } from 'common';
 import { Spinner, Empty, SystemNotification } from 'components';
 import { MainCard, Feature, Card, MainFeature, PromoCard } from 'components/ProductThumbnail'
@@ -37,6 +38,14 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
+   console.log(Routes.tasksRetrieve)
+    const parameter={}
+    Api.request(Routes.tasksRetrieve, parameter, response => {
+      console.log("Hello",response)
+     }, error => {
+      console.log({ error })
+     
+    }) 
     console.log(this.props)
     if (this.props.initialPage!=null) {
       switch(this.props.initialPage) {

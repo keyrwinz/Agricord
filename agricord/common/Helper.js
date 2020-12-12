@@ -201,14 +201,14 @@ export default {
     rider: 'App\\Events\\Rider',
   },
   tutorials: [
-    {
-      key: 1,
-      title: 'Welcome to Agicord!',
-      text: 'Delivering food and more to your doorstep!',
-      icon: null,
-      // image: require('assets/logo.png'),
-      colors: [Color.primary, Color.lightGray],
-    },
+    // {
+    //   key: 1,
+    //   title: 'Welcome to Agicord!',
+    //   text: 'Delivering food and more to your doorstep!',
+    //   icon: null,
+    //   // image: require('assets/logo.png'),
+    //   colors: [Color.primary, Color.lightGray],
+    // },
   ],
   referral: {
     message:

@@ -58,12 +58,23 @@ class Orders extends Component {
         <ScrollView>
           <View style={(Style.MainContainer, {minHeight: height})}>
             {/* <OrderCard></OrderCard>   */}
-            {console.log(this.props.data)}
             {this.props.data.map((order, index) => (
               <OrderCard details={order} key={index} />
             ))}
           </View>
         </ScrollView>
+        <View
+          style={{position: 'absolute', bottom: 230, alignSelf: 'flex-end'}}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('ApplyTask')}>
+            <View style={{alignItems: 'center'}}>
+              <Image
+                style={{padding: 30, height: 50, width: '100%'}}
+                source={require('../../assets/taskIcon.png')}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
         <View
           style={{position: 'absolute', bottom: 230, alignSelf: 'flex-end'}}>
           <TouchableOpacity onPress={() => alert('redirect')}>
