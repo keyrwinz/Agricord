@@ -34,6 +34,7 @@ class InProgress extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
+    console.log("CHECK",this.props)
   }
 
   goTo=(index)=>{
@@ -62,7 +63,9 @@ class InProgress extends Component {
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
       {this.props.data.map((item,index)=>(
         <TouchableOpacity onPress={()=>{
-         this.goTo()
+          const name = item.title.toUpperCase()
+          const volume = item.volume
+          this.props.navigation.push('TasksItem', { name, data: item })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>

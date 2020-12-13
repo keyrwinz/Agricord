@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Tasks from './index';
 import TasksItem from 'modules/paddockPage';
 import ApplyTask from 'modules/applyTask';
+import MixName from 'modules/mixName';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -70,7 +71,24 @@ const TasksScreen = (props) => {
             )
         })}
       />
+         <TasksStack.Screen
+        name="MixName"
+        component={MixName}
+        options={({ route }) => ({
+            headerLeft: null,
+            headerTitle: () => (
+              
+              <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
+                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
+                 {route.params.details.status=="inprogress"? "Mix Name" : "Spray Mix"}
+                </Text>
+             
+              </View>
+            )
+        })}
+      />
     </TasksStack.Navigator>
+    
   )
 }
 

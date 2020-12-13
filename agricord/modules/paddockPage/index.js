@@ -71,7 +71,9 @@ class paddockPage extends Component{
   renderMixCards=()=>{
     return(
       <TouchableHighlight
-      onPress={()=>alert("Redirect Insert Here")}
+      onPress={()=>{
+        this.props.navigation.push('MixName',{details:this.props.route.params.data})
+      }}
       style={[Style.paddockContainer]}
       underlayColor={'#5A84EE'}
       >
