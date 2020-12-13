@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import Style from './Style.js';
-import { View, Image, TouchableHighlight, Text, ScrollView, FlatList,TouchableOpacity,Button,StyleSheet, ColorPropType,TextInput,PermissionsAndroid} from 'react-native';
+import { View, Image, TouchableHighlight, Text, ScrollView, FlatList,TouchableOpacity,Button,StyleSheet, ColorPropType,TextInput,PermissionsAndroid,ImageBackground} from 'react-native';
 import { Spinner, Empty, SystemNotification,GooglePlacesAutoComplete,ImageUpload} from 'components';
 import { connect } from 'react-redux';
 import { Dimensions } from 'react-native';
@@ -34,13 +34,17 @@ class paddockPage extends Component{
 
   componentDidMount(){
     const { user } = this.props.state; 
-    console.log(this.props)
+    const {data}=this.props.route.params
+    console.log(data)
 
   }
 
   renderTopCard=()=>{
+    const {data}=this.props.route.params
     return(
     <View style={Style.container}>
+      {data.status=="due" && (
+    <React.Fragment>
     <View style={Style.imageContainer}>
     <Image
       style={Style.image}
@@ -64,6 +68,53 @@ class paddockPage extends Component{
    </View>  
   </View>
   <Divider style={{height:0.5,width:'90%',marginBottom:10}}/>
+  </React.Fragment>
+      )}
+
+      {(data.status=="inprogress" || data.status=="completed") && (
+        <React.Fragment>
+            <View style={Style.cardInfo}>
+            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+              Crop
+            </Text>
+            <Text>{data.crop!=null ? data.crop:null}</Text>
+          </View>
+          <Divider style={{height:0.5,width:'90%'}}/>
+
+          <View style={Style.cardInfo}>
+            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+              Machine
+            </Text>
+            <Text>{data.machine!=null ? data.machine:null}</Text>
+          </View>
+          <Divider style={{height:0.5,width:'90%'}}/>
+          <View style={Style.cardInfo}>
+            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+              Operator
+            </Text>
+            <Text>{data.operator!=null ? data.operator:null}</Text>
+          </View>
+          <Divider style={{height:0.5,width:'90%'}}/>
+          <View style={Style.cardInfo}>
+            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+              {data.status=="completed"?"Start Time" : "Started"}
+            </Text>
+            <Text>{data.started!=null ? data.started:null}</Text>
+          </View>
+          <Divider style={{height:0.5,width:'90%'}}/>
+          {
+            data.status=="completed" ? 
+            (  <View style={Style.cardInfo}>
+              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                Finish Time
+              </Text>
+              <Text>{data.finished!=null ? data.finished:null}</Text>
+            </View>
+            ): null
+          }
+        </React.Fragment>
+      )}
+
 </View>
     )
   }
@@ -94,11 +145,15 @@ class paddockPage extends Component{
 
   render() {
     return (
+       <ImageBackground
+      source={require('assets/backgroundlvl1.png')}
+      style={Style.BackgroundContainer}>
       <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
         {this.renderTopCard()}
         {this.renderMixCards()}        
         <TaskIcon bottom={70}></TaskIcon> 
      </View>
+     </ImageBackground>
 
     );
   }

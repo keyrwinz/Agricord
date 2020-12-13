@@ -10,6 +10,13 @@ export default {
     flex: 1,
     backgroundColor: Color.white
   },
+  BackgroundContainer: {
+    flex: 1,
+    resizeMode: 'cover',
+    height: '100%',
+    width: '100%',
+    elevation: 2,
+  },
   sliderContainer: {
     flex: 1,
     minHeight: height,

@@ -5,7 +5,7 @@ const width = Math.round(Dimensions.get('window').width);
 export default {
   container: {
     minHeight:100,
-    width: '80%',
+    width: '90%',
     marginVertical: 10,
     // box-shadow
     backgroundColor: Color.white,
@@ -49,7 +49,12 @@ text:{
 },
 cardInfo:{
   flexDirection:'row',
-  margin:15,
+  justifyContent:'flex-start',
+  width:'100%',
+  marginTop:15,
+  marginBottom:15,
+  marginLeft:10,
+  marginRight:10,
 },
 paddockContainer: {
   minHeight:60,
@@ -88,5 +93,12 @@ paddockDate:{
   borderWidth:1.5,
   justifyContent:'center',
   alignItems:'center',
+},
+BackgroundContainer: {
+  flex: 1,
+  resizeMode: 'cover',
+  height: '100%',
+  width: '100%',
+  elevation: 2,
 },
 }
