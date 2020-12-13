@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Image,TouchableHighlight,Text,ScrollView,FlatList, Dimensions,TouchableOpacity,TextInput} from 'react-native';
+import {View, Image,TouchableHighlight,Text,ScrollView,FlatList, Dimensions,TouchableOpacity,ImageBackground} from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Thumbnail, List, ListItem, Separator } from 'native-base';
 import { connect } from 'react-redux';
@@ -47,7 +47,9 @@ class MixName extends Component {
   render() {
     const {details}=this.props.route.params
     return (
-      <React.Fragment>
+      <ImageBackground
+      source={require('assets/backgroundlvl2.png')}
+      style={Style.BackgroundContainer}>
       <ScrollView>
       <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
         <View style={[Style.paddockContainer]}>
@@ -89,7 +91,7 @@ class MixName extends Component {
      />
     )}
 
-    </React.Fragment>
+    </ImageBackground>
     );
   }
 }

@@ -57,7 +57,7 @@ class InProgress extends Component {
     const {isLoading} = this.state;
     const {user} = this.props.state;
     return (
-      <SafeAreaView style={{ flex: 1, marginBottom: 80 }}>
+      <SafeAreaView style={{ flex: 1, marginBottom: 50 }}>
        <ScrollView>
       <View style={Style.MainContainer,{minHeight:height}}>
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>

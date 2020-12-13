@@ -54,10 +54,9 @@ class Orders extends Component {
     const {isLoading} = this.state;
     const {user} = this.props.state;
     return (
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1,marginBottom:160}}>
         <ScrollView>
           <View style={(Style.MainContainer, {minHeight: height})}>
-            {/* <OrderCard></OrderCard>   */}
             {this.props.data.map((order, index) => (
               <OrderCard details={order} key={index} />
             ))}

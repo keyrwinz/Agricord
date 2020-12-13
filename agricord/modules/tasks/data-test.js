@@ -11,6 +11,10 @@ const products = [
   status:'inprogress',
   appliedRate:'65L',
   batchNum:"1D",
+  crop:'Wheat',
+  machine:'',
+  operator:'Steve123',
+  started:'03/02/2020',
   products:[
     {
       title:'Product D',
@@ -42,6 +46,10 @@ const products = [
     status:'inprogress',
     appliedRate:'65L',
     batchNum:"2D",
+    crop:'Wheat',
+    machine:'',
+    operator:'Steve123',
+    started:'03/02/2020',
     products:[
       {
         title:'Product G',
@@ -94,6 +102,11 @@ const products = [
     status:'completed',
     appliedRate:'65L',
     batchNum:"4D",
+    crop:'Wheat',
+    machine:'',
+    operator:'Steve123',
+    started:'03/02/2020 12:21',
+    finished:'03/02/2020 15:21',
     products:[
       {
         title:'Product M',
