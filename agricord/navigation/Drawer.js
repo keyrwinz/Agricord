@@ -182,29 +182,57 @@ const Homepage_StackNavigator = createStackNavigator({
     params:{initialRouteName:'Orders'}
   },
   //=========================================================//
+  
+  //==========================INVENTORY ROUTES===================//
+  InventoryHerbicides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryFungicides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryInsecticides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryOther: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  //=========================================================//
 
   //==========================TASKS ROUTES===================//
-  TaskInProgress: {
+  TasksInProgress: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },
   TasksDue: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },
   TasksHistory: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -36,13 +36,34 @@ const paginationProps=[{
   name: 'Other'
 }]
 
-const Inventory = ({ navigation }) => {
+const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState(products)
   const [FungicideData, setFungicideData] = useState(products)
   const [InsecticideData, setInsecticideData] = useState(products)
   const [OtherData, setOtherData] = useState(products)
+
+  useEffect(() => {
+    if (props.initialPage !=null) {
+      switch (props.initialPage) {
+        case 'InventoryHerbicides':
+          setActiveIndex(0)
+          break;
+        case 'InventoryFungicides':
+          setActiveIndex(1)
+          break;
+        case 'InventoryInsecticides':
+          setActiveIndex(2)
+          break;
+        case 'InventoryOther':
+          setActiveIndex(3)
+          break;
+        default:
+          break 
+      }
+    }
+  }, [])
 
   const onPageChange = (activeIndex) => setActiveIndex(activeIndex)
   const searchProductHandler = () => {
@@ -102,16 +123,16 @@ const Inventory = ({ navigation }) => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={HerbicideData} />
+            <Herbicide navigation={props.navigation} data={HerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={FungicideData}/>
+            <Herbicide navigation={props.navigation} data={FungicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={InsecticideData}/>
+            <Herbicide navigation={props.navigation} data={InsecticideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={OtherData}/>
+            <Herbicide navigation={props.navigation} data={OtherData} />
           </View>
         </Pager>
       </PagerProvider>
@@ -132,7 +153,7 @@ const InventoryScreen = (props) => {
     <InventoryStack.Navigator>
       <InventoryStack.Screen
         name="Inventory"
-        component={Inventory}
+        children={() => <Inventory {...props} />}
         options={() => ({
           headerTitle: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

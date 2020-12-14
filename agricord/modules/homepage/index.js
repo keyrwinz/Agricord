@@ -80,6 +80,7 @@ export default function Homepage(props) {
           children={(route) => (
             <InventoryScreen
               {...route}
+              initialPage={props.navigation.state.routeName}
               parentNav={props.navigation}
             />
           )}
