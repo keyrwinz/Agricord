@@ -9,8 +9,8 @@ import {
   Alert
 } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronDown, faChevronUp, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
+import { faChevronDown, faChevronUp, faChevronRight, faBars } from '@fortawesome/free-solid-svg-icons';
+import { Color, BasicStyles } from 'common';
 import Style from './HomeStyle'
 
 import Background from 'assets/homescreen/background.svg'
@@ -34,7 +34,7 @@ const getIcon = (type) => {
   }
 }
 
-const Home = () => {
+const Home = (props) => {
   const [isExpanded, setExpand] = useState(false)
   const [InFocusArray, setInFOcus] = useState(InFocusData)
   const [RecentEventsArray, setRecentEvents] = useState(RecentEvents)
@@ -47,6 +47,26 @@ const Home = () => {
         </View>
         <View style={Style.MainContainer}>
           <View style={Style.imageContainer}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: -5
+              }
+            }>
+              <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  size={30}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#fff',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
             <Image
               source={require('assets/drawer/profile/profile_pic.png')}
               style={Style.image}

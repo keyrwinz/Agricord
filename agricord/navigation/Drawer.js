@@ -82,10 +82,12 @@ let MenuDrawerStructure = connect(
 const Homepage_StackNavigator = createStackNavigator({
   Homepage: {
     screen: Homepage,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
-    }),
+    navigationOptions: ({ navigation }) => {
+      console.log({ navigation })
+      return ({
+        headerShown: false
+      })
+    },
   },
   // Merchant: {
   //   screen: Merchant,
