@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text,Button } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { createStackNavigator } from '@react-navigation/stack';
+import { BasicStyles } from 'common';
 import Tasks from './index';
 import TasksItem from 'modules/paddockPage';
 import ApplyTask from 'modules/applyTask';
@@ -14,7 +17,6 @@ const TasksStack = createStackNavigator()
 const TasksScreen = (props) => {
   console.log("PROPS HERE",props)
   return (
-    
     <TasksStack.Navigator>
       <TasksStack.Screen
         name="Tasks"
@@ -35,11 +37,27 @@ const TasksScreen = (props) => {
                   TASKS
                 </Text>
               </View>
-            )
+            ),
+            headerLeft: () => (
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+                  <FontAwesomeIcon
+                    icon={faBars}
+                    size={BasicStyles.iconSize}
+                    style={[
+                      BasicStyles.iconStyle,
+                      {
+                        color: '#000',
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+            ),
           })
         }}
       />
-         <TasksStack.Screen
+      <TasksStack.Screen
         name="TasksItem"
         component={TasksItem}
         options={({ route }) => ({
