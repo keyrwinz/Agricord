@@ -241,28 +241,131 @@ class Slider extends Component {
               }
 
               {(user != null && Helper.DrawerMenu.length > 0) &&
-                Helper.DrawerMenu.map((item, index) => {
-                  return(
-                  <View style={[styles.navSectionStyleNoBorder, {
-                    paddingLeft: 15
-                  }]} key={index}>
-                    <TouchableOpacity
-                      onPress={() => this.navigateToScreen(item.route)}
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        width: '100%'
-                      }}>
-                        <FontAwesomeIcon icon={item.icon} style={[item.iconStyle, {
-                          color: theme ? theme.primary : Color.primary
-                        }]}/>
-                        <Text style={styles.navItemStyle}>
+                Helper.DrawerMenuLogout.map((item, index) => {
+                  const notActiveStyle = this.state.collapsed !== item.route ? {
+                    paddingBottom: 15
+                  } : {}
+
+                  const minCount = 2
+                  let leftSectionCount = Math.ceil(item.subRoutes.length/2)
+                  leftSectionCount = leftSectionCount < minCount ? minCount : leftSectionCount
+
+                  const leftSubRoutes = []
+                  const rightSubRoutes = []
+                  const subRoutes = [...item.subRoutes]
+                  subRoutes.map((sub, idx) => {
+                    if (idx+1 <= leftSectionCount) {
+                      leftSubRoutes.push(sub)
+                    } else {
+                      rightSubRoutes.push(sub)
+                    }
+                  })
+
+                  return (
+                    <View key={index} style={[styles.navSectionStyleNoBorder, notActiveStyle]}>
+                      {
+                        this.state.collapsed === item.route && (
+                          <LinearGradient
+                            colors={['#94D0AB', '#B7DBA1', '#D9E597']}
+                            style={{
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              height: '100%',
+                              width: 15,
+                            }}
+                          >
+                          </LinearGradient>
+                        )
+                      }
+                      <TouchableOpacity
+                        onPress={() => this.toggleExpanded(item.route)}
+                        style={styles.drawerItem}
+                      >
+                        <View>
+                        {
+                          this.state.collapsed === item.route ? (
+                            item.activeIcon
+                          ) : (
+                            item.defaultIcon
+                          )
+                        }
+                        </View>
+                        <Text
+                          style={[
+                            styles.navItemStyle, {
+                            fontWeight: this.state.collapsed === item.route ? 'bold' : 'normal'
+                          }]}
+                        >
                           {item.title}
                         </Text>
-                    </TouchableOpacity>
-                  </View>)
+                        <FontAwesomeIcon
+                          icon={this.state.collapsed === item.route ? faChevronDown : faChevronRight}
+                          style={styles.chevronIcon}
+                        />
+                      </TouchableOpacity>
+                      <Collapsible collapsed={this.state.collapsed !== item.route} align="center">
+                        <View style={{
+                          position: 'relative',
+                          width: '100%',
+                          paddingHorizontal: 20,
+                          paddingBottom: 15,
+                          paddingTop: rightSubRoutes.length > 0 ? 15 : 0,
+                          flexDirection: 'row',
+                        }}>
+                          {
+                            rightSubRoutes.length > 0 && (
+                              <View style={styles.sectionConnector} />
+                            )
+                          }
+                          <View style={{ width: '50%', flexDirection: 'column' }}>
+                            {
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                                <TouchableOpacity
+                                  key={data.title}
+                                  onPress={() => this.navigateToScreen(data.route)}
+                                  style={styles.subRoutes}
+                                >
+                                  <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
+                                  <View style={styles.lineHorizontalGraph} />
+                                  <View style={[styles.bulletView]} />
+                                  <Text style={styles.subRouteText}>
+                                    {data.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              )) : null
+                            }
+                          </View>
+                          <View style={{ width: '50%', flexDirection: 'column' }}>
+                            {
+                              rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
+                                <TouchableOpacity
+                                  key={data.title}
+                                  onPress={() => this.navigateToScreen(data.route)}
+                                  style={styles.subRoutes}
+                                >
+                                  <View
+                                    style={[styles.lineVerticalGraph, {
+                                      marginTop: idx === 0 ? 10 : 0,
+                                      height: idx === 0 ? '90%' : Platform.OS === 'ios' ? '125%' : '118%'
+                                    }]}
+                                  />
+                                  <View style={styles.lineHorizontalGraph} />
+                                  <View style={styles.bulletView} />
+                                  <Text style={styles.subRouteText}>
+                                    {data.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              )) : null
+                            }
+                          </View>
+                        </View>
+                      </Collapsible>
+                    </View>
+                  )
                 })
               }
+
               {(user == null && Helper.DrawerMenuLogout.length > 0) &&
                 Helper.DrawerMenuLogout.map((item, index) => {
                   const notActiveStyle = this.state.collapsed !== item.route ? {
@@ -388,6 +491,7 @@ class Slider extends Component {
                   )
                 })
               }
+
               <View style={styles.navSectionStyleBorderTop}>
                 {
                   Helper.DrawerMenuBottom.length > 0 && Helper.DrawerMenuBottom.map((item, index) => {
@@ -405,19 +509,6 @@ class Slider extends Component {
                     )
                   })
                 }
-                {
-                  user !== null && (
-                    <View style={styles.navSectionStyleNoBorder}>
-                      <Text style={[styles.navItemStyle, {
-                        color: theme ? theme.primary : Color.primary,
-                        fontWeight: 'bold'
-                      }]} onPress={() => this.logoutAction()}>
-                        Logout
-                      </Text>
-                    </View>
-                  )
-                }
-                
               </View>
             </View>
           </ScrollView>

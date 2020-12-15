@@ -2,6 +2,7 @@ import NfcManager, {Ndef} from 'react-native-nfc-manager';
 import { Helper } from 'common';
 
 export default {
+  tag: null,
   scanning(params){
     if(Helper.test == true){
       let parameter = {
