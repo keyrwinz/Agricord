@@ -82,10 +82,12 @@ let MenuDrawerStructure = connect(
 const Homepage_StackNavigator = createStackNavigator({
   Homepage: {
     screen: Homepage,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
-    }),
+    navigationOptions: ({ navigation }) => {
+      console.log({ navigation })
+      return ({
+        headerShown: false
+      })
+    },
   },
   // Merchant: {
   //   screen: Merchant,
@@ -166,58 +168,90 @@ const Homepage_StackNavigator = createStackNavigator({
   UpcomingOrders: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Orders'}
   },
   HistoricalOrders: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Orders'}
   },
   //=========================================================//
+  
+  //==========================INVENTORY ROUTES===================//
+  InventoryHerbicides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryFungicides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryInsecticides: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  InventoryOther: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'Inventory' }
+  },
+  //=========================================================//
 
   //==========================TASKS ROUTES===================//
-  TaskInProgress: {
+  TasksInProgress: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },
   TasksDue: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },
   TasksHistory: {
     screen: Homepage,
     navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} color="#fff" />,
-      headerTransparent: true
+      headerShown: false
     }),
     params:{initialRouteName:'Task'}
   },
   //============================================================//
+  
+  //==========================SETTINGS ROUTES===================//
   AccountSettings: {
-    screen: AccountSettings,
-    navigationOptions: ({ navigation }) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
     }),
+    params: { initialRouteName: 'AccountSetting' }
   },
+  AppSettings: {
+    screen: Homepage,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+    params: { initialRouteName: 'AccountSetting' }
+  },
+  //============================================================//
   MyOrderDetails: {
     screen: MyOrderDetails,
     navigationOptions: ({navigation}) => ({
@@ -342,6 +376,33 @@ const Drawer = createDrawerNavigator(
     },
     ///////////////////
 
+    //ROUTES FOR INVENTORIES
+    InventoryHerbicides: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    InventoryFungicides: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    InventoryInsecticides: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    InventoryOther: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    ///////////////////
+
     // ROUTES FOR TASKS
     TasksInProgress: {
       screen: Homepage_StackNavigator,
@@ -363,15 +424,23 @@ const Drawer = createDrawerNavigator(
         drawerLabel: '',
       },
     },
+    ///////////////////
 
-    ///////////////////////
+    // ROUTES FOR SETTINGS
     AccountSettings: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',
       },
     },
-    
+    AppSettings: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    ///////////////////
+
     HelpCenter: {
       screen: Homepage_StackNavigator,
       navigationOptions: {

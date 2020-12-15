@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationActions, StackActions } from 'react-navigation';
@@ -18,10 +18,8 @@ import TaskIcon from 'assets/btm_nav/task.svg';
 const Tab = createBottomTabNavigator();
 
 export default function Homepage(props) {
-
   return (
-    <NavigationContainer
-    >
+    <NavigationContainer>
       <Tab.Navigator
         initialRouteName={props.navigation.state.params!=null?props.navigation.state.params.initialRouteName:"Home"}
         tabBarOptions={{
@@ -38,7 +36,13 @@ export default function Homepage(props) {
       >
         <Tab.Screen
           name="AccountSetting"
-          component={Setting}
+          children={(route) => (
+            <Setting
+              {...route}
+              initialPage={props.navigation.state.routeName}
+              parentNav={props.navigation}
+            />
+          )}
           options={{
             tabBarLabel: "Setting",
             tabBarIcon: () => <SettingIcon />,
@@ -46,15 +50,26 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Orders"
-          children={(route)=><Order {...route} initialPage={props.navigation.state.routeName}/>}
+          children={(route) => (
+            <Order
+              {...route}
+              initialPage={props.navigation.state.routeName}
+              parentNav={props.navigation}
+            />
+          )}
           options={{
             tabBarLabel: "Order",
             tabBarIcon: () => <OrderIcon />,
           }}
-        />
+          />
         <Tab.Screen
           name="Home"
-          component={Home}
+          children={(route) => (
+            <Home
+              {...route}
+              parentNav={props.navigation}
+            />
+          )}
           options={{
             tabBarLabel: "",
             tabBarIcon: () => <HomeIcon style={{ marginTop: 10 }} />,
@@ -62,7 +77,13 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Inventory"
-          component={InventoryScreen}
+          children={(route) => (
+            <InventoryScreen
+              {...route}
+              initialPage={props.navigation.state.routeName}
+              parentNav={props.navigation}
+            />
+          )}
           options={{
             tabBarLabel: "Inventory",
             tabBarIcon: () => <InventoryIcon />,
@@ -70,7 +91,13 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Task"
-          children={(route)=><Tasks {...route} initialPage={props.navigation.state.routeName}/>}
+          children={(route) => (
+            <Tasks
+              {...route}
+              initialPage={props.navigation.state.routeName}
+              parentNav={props.navigation}
+            />
+          )}
           options={{
             tabBarLabel: "Tasks",
             tabBarIcon: () => <TaskIcon />,
