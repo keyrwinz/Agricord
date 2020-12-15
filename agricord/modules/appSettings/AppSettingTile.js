@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import Switch from 'components/Toggle/Switch.js';
-import CustomSwitch from 'components/Toggle/Switch.js';
+import CustomSwitch from 'components/Toggle/CustomSwitch.js';
 import styles from 'modules/appSettings/Styles.js';
 
 class AppSettingTile extends Component {
@@ -39,7 +39,7 @@ class AppSettingTile extends Component {
           </View>
         </View>
         <View style={styles.AppSettingTileContainerRight}>
-          <Switch
+          <CustomSwitch
             onToggle={this.onToggle}
             isEnabled={this.state.isEnabled}
           />
