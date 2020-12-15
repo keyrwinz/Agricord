@@ -98,7 +98,7 @@ export default {
     activeIcon: <TasksActive />,
     subRoutes: [{
       title: 'Tasks In Progress',
-      route: 'TaskInProgress'
+      route: 'TasksInProgress'
     }, {
       title: 'Tasks Due',
       route: 'TasksDue'

@@ -1,6 +1,9 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { createStackNavigator } from '@react-navigation/stack';
+import { BasicStyles } from 'common';
 import Order from './index';
 import ApplyTask from 'modules/applyTask';
 
@@ -32,7 +35,23 @@ const OrderScreen = (props) => {
                   ORDERS
                 </Text>
               </View>
-            )
+            ),
+            headerLeft: () => (
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+                  <FontAwesomeIcon
+                    icon={faBars}
+                    size={BasicStyles.iconSize}
+                    style={[
+                      BasicStyles.iconStyle,
+                      {
+                        color: '#000',
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+            ),
           })
         }}
       />

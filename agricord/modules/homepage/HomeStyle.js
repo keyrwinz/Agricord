@@ -27,9 +27,12 @@ export default {
   textWhite: { color: Color.white },
   textBlack: { color: Color.black },
   imageContainer: {
-    alignSelf: 'flex-end',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingRight: 15,
-    paddingTop: 10
+    paddingVertical: 15
   },
   image: {
     width: 40,
