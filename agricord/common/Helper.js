@@ -34,61 +34,63 @@ export default {
   APP_HOST: 'com.agricord',
   DrawerMenu: [
     {
-      title: 'Homepage',
-      route: 'Homepage',
-      icon: faHome,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
-    {
-      title: 'My Order History',
-      route: 'MyOrders',
-      icon: faFile,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
-    {
-      title: 'My Profile',
-      route: 'Profile',
-      icon: faUser,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
-    {
-      title: 'My Address',
-      route: 'MyAddress',
-      icon: faMapMarker,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
-    // {
-    //   title: 'Payment Methods',
-    //   route: 'PaymentMethods',
-    //   icon: faCreditCard,
-    //   iconStyle: {
-    //     color: Color.primary
-    //   }
-    // },
-    //  {
-    //   title: 'Help Center',
-    //   route: 'HelpCenter',
-    //   icon: faQuestionCircle,
-    //   iconStyle: {
-    //     color: Color.primary
-    //   }
-    // },
-    {
-      title: 'Invite Friends',
-      route: 'InviteFriends',
-      icon: faUsers,
-      iconStyle: {
-        color: Color.primary,
-      },
-    },
+      title: 'Tasks',
+      route: 'Tasks',
+      defaultIcon: <TasksIcon />,
+      activeIcon: <TasksActive />,
+      subRoutes: [{
+        title: 'Tasks In Progress',
+        route: 'TasksInProgress'
+      }, {
+        title: 'Tasks Due',
+        route: 'TasksDue'
+      }, {
+        title: 'Tasks History',
+        route: 'TasksHistory'
+      }]
+    }, {
+      title: 'Inventory',
+      route: 'Inventory',
+      defaultIcon: <InventoryIcon />,
+      activeIcon: <InventoryActive />,
+      subRoutes: [{
+        title: 'Herbicides',
+        route: 'InventoryHerbicides'
+      }, {
+        title: 'Fungicides',
+        route: 'InventoryFungicides'
+      }, {
+        title: 'Insecticides',
+        route: 'InventoryInsecticides'
+      }, {
+        title: 'Other',
+        route: 'InventoryOther'
+      }]
+    }, {
+      title: 'Orders',
+      route: 'Orders',
+      defaultIcon: <OrdersIcon />,
+      activeIcon: <OrdersActive />,
+      subRoutes: [{
+        title: 'Upcoming Orders',
+        route: 'UpcomingOrders'
+      }, {
+        title: 'Historical Orders',
+        route: 'HistoricalOrders'
+      }]
+    }, {
+      title: 'Settings',
+      route: 'Settings',
+      defaultIcon: <SettingsIcon />,
+      activeIcon: <SettingsActive />,
+      subRoutes: [{
+        title: 'Account Settings',
+        route: 'AccountSettings'
+      }, {
+        title: 'App Settings',
+        route: 'AppSettings'
+      }]
+    }
   ],
   DrawerMenuLogout: [{
     // TEMP. ONLY (SHOULD BE ON DRAWERMENU_LOGGEDIN)
