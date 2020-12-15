@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationActions, StackActions } from 'react-navigation';
+import React, {useEffect} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {NavigationActions, StackActions} from 'react-navigation';
 // import Setting from './Setting';
-import Setting from 'modules/accountSettings/AccountSettingsStack'
+import SettingsPage from 'modules/settingsPage';
 import Order from 'modules/orders/OrdersStack';
 import Home from './Home';
 import InventoryScreen from 'modules/inventory';
 import Tasks from 'modules/tasks/TasksStack';
+import SettingsScreen from 'modules/settingsPage/SettingsPageStack.js';
 
 import SettingIcon from 'assets/btm_nav/setting.svg';
 import OrderIcon from 'assets/btm_nav/order.svg';
@@ -21,36 +22,38 @@ export default function Homepage(props) {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName={props.navigation.state.params!=null?props.navigation.state.params.initialRouteName:"Home"}
+        initialRouteName={
+          props.navigation.state.params != null
+            ? props.navigation.state.params.initialRouteName
+            : 'Home'
+        }
         tabBarOptions={{
           activeTintColor: '#81CB9C',
           style: {
-            height: '12%'
+            height: '12%',
           },
           labelPosition: 'below-icon',
           tabStyle: {
             marginTop: '2%',
-            marginBottom: '2%'
-          }
-        }}
-      >
+            marginBottom: '2%',
+          },
+        }}>
         <Tab.Screen
-          name="AccountSetting"
-          children={(route) => (
-            <Setting
+          name="SettingsPage"
+          children={route => (
+            <SettingsScreen
               {...route}
               initialPage={props.navigation.state.routeName}
-              parentNav={props.navigation}
             />
           )}
           options={{
-            tabBarLabel: "Setting",
+            tabBarLabel: 'Setting',
             tabBarIcon: () => <SettingIcon />,
           }}
         />
         <Tab.Screen
           name="Orders"
-          children={(route) => (
+          children={route => (
             <Order
               {...route}
               initialPage={props.navigation.state.routeName}
@@ -58,26 +61,21 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: "Order",
+            tabBarLabel: 'Order',
             tabBarIcon: () => <OrderIcon />,
           }}
-          />
+        />
         <Tab.Screen
           name="Home"
-          children={(route) => (
-            <Home
-              {...route}
-              parentNav={props.navigation}
-            />
-          )}
+          children={route => <Home {...route} parentNav={props.navigation} />}
           options={{
-            tabBarLabel: "",
-            tabBarIcon: () => <HomeIcon style={{ marginTop: 10 }} />,
+            tabBarLabel: '',
+            tabBarIcon: () => <HomeIcon style={{marginTop: 10}} />,
           }}
         />
         <Tab.Screen
           name="Inventory"
-          children={(route) => (
+          children={route => (
             <InventoryScreen
               {...route}
               initialPage={props.navigation.state.routeName}
@@ -85,13 +83,13 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: "Inventory",
+            tabBarLabel: 'Inventory',
             tabBarIcon: () => <InventoryIcon />,
           }}
         />
         <Tab.Screen
           name="Task"
-          children={(route) => (
+          children={route => (
             <Tasks
               {...route}
               initialPage={props.navigation.state.routeName}
@@ -99,7 +97,7 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: "Tasks",
+            tabBarLabel: 'Tasks',
             tabBarIcon: () => <TaskIcon />,
           }}
         />
