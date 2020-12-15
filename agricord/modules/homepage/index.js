@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationActions, StackActions} from 'react-navigation';
-=======
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationActions, StackActions } from 'react-navigation';
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
 // import Setting from './Setting';
 import SettingsPage from 'modules/settingsPage';
 import Order from 'modules/orders/OrdersStack';
@@ -46,20 +39,11 @@ export default function Homepage(props) {
           },
         }}>
         <Tab.Screen
-<<<<<<< HEAD
           name="SettingsPage"
           children={route => (
             <SettingsScreen
               {...route}
               initialPage={props.navigation.state.routeName}
-=======
-          name="AccountSetting"
-          children={(route) => (
-            <Setting
-              {...route}
-              initialPage={props.navigation.state.routeName}
-              parentNav={props.navigation}
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
             />
           )}
           options={{
@@ -69,31 +53,21 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Orders"
-<<<<<<< HEAD
           children={route => (
-            <Order {...route} initialPage={props.navigation.state.routeName} />
-=======
-          children={(route) => (
             <Order
               {...route}
               initialPage={props.navigation.state.routeName}
               parentNav={props.navigation}
             />
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
           )}
           options={{
             tabBarLabel: 'Order',
             tabBarIcon: () => <OrderIcon />,
           }}
-          />
+        />
         <Tab.Screen
           name="Home"
-          children={(route) => (
-            <Home
-              {...route}
-              parentNav={props.navigation}
-            />
-          )}
+          children={route => <Home {...route} parentNav={props.navigation} />}
           options={{
             tabBarLabel: '',
             tabBarIcon: () => <HomeIcon style={{marginTop: 10}} />,
@@ -101,7 +75,7 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Inventory"
-          children={(route) => (
+          children={route => (
             <InventoryScreen
               {...route}
               initialPage={props.navigation.state.routeName}
@@ -115,17 +89,12 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Task"
-<<<<<<< HEAD
           children={route => (
-            <Tasks {...route} initialPage={props.navigation.state.routeName} />
-=======
-          children={(route) => (
             <Tasks
               {...route}
               initialPage={props.navigation.state.routeName}
               parentNav={props.navigation}
             />
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
           )}
           options={{
             tabBarLabel: 'Tasks',

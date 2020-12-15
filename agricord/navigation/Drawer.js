@@ -83,21 +83,12 @@ let MenuDrawerStructure = connect(
 const Homepage_StackNavigator = createStackNavigator({
   Homepage: {
     screen: Homepage,
-<<<<<<< HEAD
-    navigationOptions: ({navigation}) => ({
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-    }),
-=======
-    navigationOptions: ({ navigation }) => {
-      console.log({ navigation })
-      return ({
-        headerShown: false
-      })
+    navigationOptions: ({navigation}) => {
+      console.log({navigation});
+      return {
+        headerShown: false,
+      };
     },
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
   },
   // Merchant: {
   //   screen: Merchant,
@@ -178,137 +169,88 @@ const Homepage_StackNavigator = createStackNavigator({
   UpcomingOrders: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
-<<<<<<< HEAD
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-=======
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
     params: {initialRouteName: 'Orders'},
   },
   HistoricalOrders: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
-<<<<<<< HEAD
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-=======
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
     params: {initialRouteName: 'Orders'},
   },
   //=========================================================//
-  
+
   //==========================INVENTORY ROUTES===================//
   InventoryHerbicides: {
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
+      headerShown: false,
     }),
-    params: { initialRouteName: 'Inventory' }
+    params: {initialRouteName: 'Inventory'},
   },
   InventoryFungicides: {
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
+      headerShown: false,
     }),
-    params: { initialRouteName: 'Inventory' }
+    params: {initialRouteName: 'Inventory'},
   },
   InventoryInsecticides: {
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
+      headerShown: false,
     }),
-    params: { initialRouteName: 'Inventory' }
+    params: {initialRouteName: 'Inventory'},
   },
   InventoryOther: {
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
+      headerShown: false,
     }),
-    params: { initialRouteName: 'Inventory' }
+    params: {initialRouteName: 'Inventory'},
   },
   //=========================================================//
 
   //==========================TASKS ROUTES===================//
   TasksInProgress: {
     screen: Homepage,
-<<<<<<< HEAD
     navigationOptions: ({navigation}) => ({
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-=======
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
     params: {initialRouteName: 'Task'},
   },
   TasksDue: {
     screen: Homepage,
-<<<<<<< HEAD
     navigationOptions: ({navigation}) => ({
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-=======
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
     params: {initialRouteName: 'Task'},
   },
   TasksHistory: {
     screen: Homepage,
-<<<<<<< HEAD
     navigationOptions: ({navigation}) => ({
-      headerLeft: (
-        <MenuDrawerStructure navigationProps={navigation} color="#fff" />
-      ),
-      headerTransparent: true,
-=======
-    navigationOptions: ({ navigation }) => ({
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
     params: {initialRouteName: 'Task'},
   },
   //============================================================//
-  
+
   //==========================SETTINGS ROUTES===================//
   AccountSettings: {
-<<<<<<< HEAD
-    screen: AccountSettings,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-=======
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
+      headerShown: false,
     }),
-    params: { initialRouteName: 'AccountSetting' }
+    params: {initialRouteName: 'AccountSetting'},
   },
   AppSettings: {
     screen: Homepage,
     navigationOptions: () => ({
-      headerShown: false
+      headerShown: false,
     }),
-    params: { initialRouteName: 'AccountSetting' }
+    params: {initialRouteName: 'AccountSetting'},
   },
   //============================================================//
   MyOrderDetails: {
@@ -503,8 +445,6 @@ const Drawer = createDrawerNavigator(
         drawerLabel: '',
       },
     },
-<<<<<<< HEAD
-=======
     AppSettings: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
@@ -512,7 +452,6 @@ const Drawer = createDrawerNavigator(
       },
     },
     ///////////////////
->>>>>>> 663be4aa47ec7e9fd51fb89d7364e27c57d7b042
 
     HelpCenter: {
       screen: Homepage_StackNavigator,
