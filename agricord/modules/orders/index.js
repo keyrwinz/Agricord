@@ -19,6 +19,7 @@ import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import Orders from './Orders';
 import {products} from './data-test.js';
 import Api from 'services/api';
+import {Spinner} from 'components';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -30,6 +31,7 @@ class Tasks extends Component {
       activeIndex: 0,
       pending: [],
       delivered: [],
+      isLoading: false,
     };
   }
 
@@ -47,6 +49,7 @@ class Tasks extends Component {
   }
 
   getOrders = value => {
+    this.setState({isLoading: true});
     let parameters = {
       condition: [
         {
@@ -59,15 +62,14 @@ class Tasks extends Component {
     };
     Api.request(Routes.ordersRetrieve, parameters, response => {
       this.setData(response.data, value);
+      this.setState({isLoading: false});
     });
   };
 
   setData = (data, type) => {
     switch (type) {
       case 'pending':
-        this.setState({pending: data}, () => {
-          console.log('PENDING', this.state.pending);
-        });
+        this.setState({pending: data}, () => {});
         break;
       case 'completed':
         this.setState({delivered: data});
@@ -96,6 +98,7 @@ class Tasks extends Component {
     const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
+        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
         <Pagination
           activeIndex={activeIndex}
           onChange={index => onPageChange(index)}
