@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import Data from 'services/Data';
-import { Helper, Color } from 'common';
+import {Helper, Color} from 'common';
 
 const types = {
   LOGOUT: 'LOGOUT',
@@ -24,69 +24,73 @@ const types = {
   UPDATE_MESSAGE_BY_CODE: 'UPDATE_MESSAGE_BY_CODE',
   UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD: 'UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD',
   nav: null,
-}
+  SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
+};
 
 export const actions = {
   login: (user, token) => {
-    return { type: types.LOGIN, user, token };
+    return {type: types.LOGIN, user, token};
   },
   logout() {
-    return { type: types.LOGOUT };
+    return {type: types.LOGOUT};
   },
-  updateUser: (user) => {
-    return { type: types.UPDATE_USER, user };
+  updateUser: user => {
+    return {type: types.UPDATE_USER, user};
   },
-  setNotifications(unread, notifications){
-    return { type: types.SET_NOTIFICATIONS, unread, notifications };
-  }, 
-  updateNotifications(unread, notification){
-    return { type: types.UPDATE_NOTIFICATIONS, unread, notification };
+  setNotifications(unread, notifications) {
+    return {type: types.SET_NOTIFICATIONS, unread, notifications};
   },
-  addProductToCart(product){
-    return { type: types.ADD_PRODUCT_TO_CART, product };
+  updateNotifications(unread, notification) {
+    return {type: types.UPDATE_NOTIFICATIONS, unread, notification};
   },
-  updateProductToCart(product){
-    return { type: types.UPDATE_PRODUCT_TO_CART, product };
+  addProductToCart(product) {
+    return {type: types.ADD_PRODUCT_TO_CART, product};
   },
-  retrieveCart: (cartItems) => {
-    return { type: types.RETRIEVE_CART, cartItems };
+  updateProductToCart(product) {
+    return {type: types.UPDATE_PRODUCT_TO_CART, product};
   },
-  removeProductToCart(product){
-    return { type: types.REMOVE_PRODUCT_TO_CART, product };
+  retrieveCart: cartItems => {
+    return {type: types.RETRIEVE_CART, cartItems};
   },
-  setTheme(theme){
-    return { type: types.SET_THEME, theme };
+  removeProductToCart(product) {
+    return {type: types.REMOVE_PRODUCT_TO_CART, product};
   },
-  addProductFilter(productFilter){
-    return { type: types.ADD_PRODUCT_FILTER, productFilter };
+  setTheme(theme) {
+    return {type: types.SET_THEME, theme};
   },
-  removeProductFilter(productFilter){
-    return { type: types.REMOVE_PRODUCT_FILTER, productFilter };
+  addProductFilter(productFilter) {
+    return {type: types.ADD_PRODUCT_FILTER, productFilter};
   },
-  setLocation(location){
-    return { type: types.SET_LOCATION, location };
+  removeProductFilter(productFilter) {
+    return {type: types.REMOVE_PRODUCT_FILTER, productFilter};
   },
-  setMessenger(unread, messages){
-    return { type: types.SET_MESSAGES, unread, messages};
+  setLocation(location) {
+    return {type: types.SET_LOCATION, location};
   },
-  setMessengerGroup(messengerGroup){
-    return { type: types.SET_MESSENGER_GROUP, messengerGroup};
+  setMessenger(unread, messages) {
+    return {type: types.SET_MESSAGES, unread, messages};
   },
-  updateMessengerGroup(messengerGroup){
-    return { type: types.UPDATE_MESSENGER_GROUP, messengerGroup}
+  setMessengerGroup(messengerGroup) {
+    return {type: types.SET_MESSENGER_GROUP, messengerGroup};
   },
-  updateMessagesOnGroupByPayload(messages){
-    return { type: types.UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD, messages}
+  updateMessengerGroup(messengerGroup) {
+    return {type: types.UPDATE_MESSENGER_GROUP, messengerGroup};
   },
-  setMessagesOnGroup(messagesOnGroup){
-    console.log({ settingMessagesOnGroup: messagesOnGroup })
-    return { type: types.SET_MESSAGES_ON_GROUP, messagesOnGroup};
+  updateMessagesOnGroupByPayload(messages) {
+    return {type: types.UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD, messages};
   },
-  updateMessagesOnGroup(message){
-    return { type: types.UPDATE_MESSAGES_ON_GROUP, message};
+  setMessagesOnGroup(messagesOnGroup) {
+    console.log({settingMessagesOnGroup: messagesOnGroup});
+    return {type: types.SET_MESSAGES_ON_GROUP, messagesOnGroup};
   },
-  updateMessageByCode(message){
-    return { type: types.UPDATE_MESSAGE_BY_CODE, message}
+  updateMessagesOnGroup(message) {
+    return {type: types.UPDATE_MESSAGES_ON_GROUP, message};
+  },
+  updateMessageByCode(message) {
+    return {type: types.UPDATE_MESSAGE_BY_CODE, message};
+  },
+  setSelectedOrder(selectedOrder) {
+    return {type: types.SET_SELECTED_ORDER, selectedOrder};
   },
 };
 
@@ -96,38 +100,39 @@ const initialState = {
   notifications: null,
   messenger: {
     unread: null,
-    messages: null
+    messages: null,
   },
   messengerGroup: null,
   messagesOnGroup: {
     groupId: null,
-    messages: null
+    messages: null,
   },
   cart: [],
   theme: null,
   location: null,
-  productFilter: []
-}
+  productFilter: [],
+  selectedOrder: null,
+};
 
 storeData = async (key, value) => {
   try {
-    await AsyncStorage.setItem(`${Helper.APP_NAME}${key}`, value)
+    await AsyncStorage.setItem(`${Helper.APP_NAME}${key}`, value);
   } catch (e) {
     // saving error
   }
-}
+};
 
 const reducer = (state = initialState, action) => {
-  const { type, user, token } = action;
-  const { unread } = action;
-  const { notification } = action;
-  const { product } = action;
-  const { theme } = action;
-  const { productFilter } = action;
-  const { cartItems, location } = action;
-  const { messages, message } = action;
-  const { messengerGroup, messagesOnGroup } = action;
-
+  const {type, user, token} = action;
+  const {unread} = action;
+  const {notification} = action;
+  const {product} = action;
+  const {theme} = action;
+  const {productFilter} = action;
+  const {cartItems, location} = action;
+  const {messages, message} = action;
+  const {messengerGroup, messagesOnGroup} = action;
+  const {selectedOrder} = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -135,158 +140,163 @@ const reducer = (state = initialState, action) => {
     case types.LOGIN:
       storeData('token', token);
       console.log('LOGIN', true);
-      Data.setToken(token)
-      return { ...state, user, token };
+      Data.setToken(token);
+      return {...state, user, token};
     case types.UPDATE_USER:
       return {
         ...state,
-        user
-      }
+        user,
+      };
     case types.SET_NOTIFICATIONS:
       let notifications = {
         unread,
-        notifications: action.notifications
-      }
+        notifications: action.notifications,
+      };
       console.log('notifications', true);
       return {
         ...state,
-        notifications
-      }
+        notifications,
+      };
     case types.UPDATE_NOTIFICATIONS:
-      let updatedNotifications = null
-      if(state.notifications == null){
-        let temp = []
-        temp.push(notification)
+      let updatedNotifications = null;
+      if (state.notifications == null) {
+        let temp = [];
+        temp.push(notification);
         updatedNotifications = {
           unread,
-          notifications: temp
-        }
-      }else{
-        let oldNotif = state.notifications
-        if(oldNotif.notifications == null){
-          let temp = []
-          temp.push(notification)
+          notifications: temp,
+        };
+      } else {
+        let oldNotif = state.notifications;
+        if (oldNotif.notifications == null) {
+          let temp = [];
+          temp.push(notification);
           updatedNotifications = {
             unread,
-            notifications: temp
-          }
-        }else{
-          if(parseInt(notification.id) != parseInt(oldNotif.notifications[oldNotif.notifications.length - 1].id)){
-            oldNotif.notifications.unshift(notification)
+            notifications: temp,
+          };
+        } else {
+          if (
+            parseInt(notification.id) !=
+            parseInt(
+              oldNotif.notifications[oldNotif.notifications.length - 1].id,
+            )
+          ) {
+            oldNotif.notifications.unshift(notification);
             updatedNotifications = {
               unread: oldNotif.unread + unread,
-              notifications: oldNotif.notifications
-            }
-          }else{
+              notifications: oldNotif.notifications,
+            };
+          } else {
             updatedNotifications = {
               unread: oldNotif.unread + unread,
-              notifications: oldNotif.notifications
-            }
+              notifications: oldNotif.notifications,
+            };
           }
         }
       }
       return {
         ...state,
-        notifications: updatedNotifications
-      }
+        notifications: updatedNotifications,
+      };
     case types.ADD_PRODUCT_TO_CART:
-      let cartProduct = state.cart
-      let flag = false
+      let cartProduct = state.cart;
+      let flag = false;
       for (var i = 0; i < state.cart.length; i++) {
-        let item = state.cart[i]
-        if(parseInt(product.id) == parseInt(item.id)){
-          flag = true
-          break
+        let item = state.cart[i];
+        if (parseInt(product.id) == parseInt(item.id)) {
+          flag = true;
+          break;
         }
       }
-      if(flag == false){
-        cartProduct.push(product)
+      if (flag == false) {
+        cartProduct.push(product);
       }
       return {
         ...state,
-        cart: cartProduct
-      }
+        cart: cartProduct,
+      };
     case types.RETRIEVE_CART:
       return {
         ...state,
-        cart: cartItems
-      }
+        cart: cartItems,
+      };
     case types.UPDATE_PRODUCT_TO_CART:
       let updateCart = state.cart.map(item => {
-        if(parseInt(product.id) == parseInt(item.id)){
-          return product
-        }else{
-          return item
+        if (parseInt(product.id) == parseInt(item.id)) {
+          return product;
+        } else {
+          return item;
         }
-      })
+      });
       return {
         ...state,
-        cart: updateCart
-      }
+        cart: updateCart,
+      };
     case types.REMOVE_PRODUCT_TO_CART:
       let removeCart = state.cart.filter(item => {
-        return parseInt(product.id) != parseInt(item.id)
-      })
+        return parseInt(product.id) != parseInt(item.id);
+      });
       return {
         ...state,
-        cart: removeCart
-      }
+        cart: removeCart,
+      };
     case types.SET_THEME:
-      console.log('tertiary', theme.tertiary)
+      console.log('tertiary', theme.tertiary);
       storeData('primary', theme.primary);
       storeData('secondary', theme.secondary);
       storeData('tertiary', theme.tertiary);
       Color.setPrimary(theme.primary);
       Color.setSecondary(theme.secondary);
       Color.setTertiary(theme.tertiary);
-      return{
+      return {
         ...state,
-        theme
-      }
+        theme,
+      };
     case types.ADD_PRODUCT_FILTER:
-      let productFilterTemp = state.productFilter
-      let flagFilter = false
+      let productFilterTemp = state.productFilter;
+      let flagFilter = false;
       for (var i = 0; i < state.productFilter.length; i++) {
-        let item = state.productFilter[i]
-        if(productFilter == item){
-          flagFilter = true
-          break
+        let item = state.productFilter[i];
+        if (productFilter == item) {
+          flagFilter = true;
+          break;
         }
       }
-      if(flagFilter == false){
-        productFilterTemp.push(productFilter)
+      if (flagFilter == false) {
+        productFilterTemp.push(productFilter);
       }
       return {
         ...state,
-        productFilter: productFilterTemp
-      }
+        productFilter: productFilterTemp,
+      };
     case types.REMOVE_PRODUCT_FILTER:
       let removeProductFilter = state.productFilter.filter(item => {
-        return productFilter != item
-      })
+        return productFilter != item;
+      });
       return {
         ...state,
-        productFilter: removeProductFilter
-      }
+        productFilter: removeProductFilter,
+      };
     case types.SET_LOCATION:
-      return{
+      return {
         ...state,
-        location
-      }
+        location,
+      };
     case types.SET_MESSAGES:
       let messenger = {
         unread,
-        messages
-      }
+        messages,
+      };
       return {
         ...state,
-        messenger
-      }
+        messenger,
+      };
     case types.SET_MESSENGER_GROUP:
       return {
         ...state,
-        messengerGroup
-      }
+        messengerGroup,
+      };
     case types.UPDATE_MESSENGER_GROUP:
       return {
         ...state,
@@ -295,81 +305,98 @@ const reducer = (state = initialState, action) => {
           created_at_human: messengerGroup.created_at_human,
           rating: messengerGroup.rating,
           status: parseInt(messengerGroup.status),
-          validations: messengerGroup.validations
-        }
-      }
+          validations: messengerGroup.validations,
+        },
+      };
     case types.SET_MESSAGES_ON_GROUP:
       return {
         ...state,
-        messagesOnGroup
-      }
+        messagesOnGroup,
+      };
     case types.UPDATE_MESSAGES_ON_GROUP:
-      let updatedMessagesOnGroup = null
-      if(state.messagesOnGroup != null){
+      let updatedMessagesOnGroup = null;
+      if (state.messagesOnGroup != null) {
         let oldMessages = state.messagesOnGroup.messages;
-        if(oldMessages == null){
-          let temp = []
-          temp.push(message)
+        if (oldMessages == null) {
+          let temp = [];
+          temp.push(message);
           updatedMessagesOnGroup = {
             ...state.messagesOnGroup,
-            messages: temp
-          } 
-        }else{
-          if(parseInt(message.id) != parseInt(oldMessages[oldMessages.length - 1].id)){
+            messages: temp,
+          };
+        } else {
+          if (
+            parseInt(message.id) !=
+            parseInt(oldMessages[oldMessages.length - 1].id)
+          ) {
             updatedMessagesOnGroup = {
               ...state.messagesOnGroup,
-              messages: oldMessages.push(message)
-            }
-          }else{
+              messages: oldMessages.push(message),
+            };
+          } else {
             updatedMessagesOnGroup = {
-              ...state.messagesOnGroup
-            }
+              ...state.messagesOnGroup,
+            };
           }
-        }        
-      }else{
-        let temp = []
+        }
+      } else {
+        let temp = [];
         temp.push(message);
         updatedMessagesOnGroup = {
           groupId: parseInt(message.messenger_group_id),
-          messages: temp
-        }
+          messages: temp,
+        };
       }
       return {
         ...state,
-        updatedMessagesOnGroup
-      }
+        updatedMessagesOnGroup,
+      };
     case types.UPDATE_MESSAGE_BY_CODE:
-      let newMessagesOnGroup = state.messagesOnGroup.messages.map((item, index) => {
-        if(typeof item.code != undefined || typeof item.code != 'undefined'){
-          if(parseInt(item.code) == parseInt(message.code)){
-            return message;
+      let newMessagesOnGroup = state.messagesOnGroup.messages.map(
+        (item, index) => {
+          if (
+            typeof item.code != undefined ||
+            typeof item.code != 'undefined'
+          ) {
+            if (parseInt(item.code) == parseInt(message.code)) {
+              return message;
+            }
           }
-        }
-        return item;
-      })
+          return item;
+        },
+      );
       return {
         ...state,
         messagesOnGroup: {
           ...state.messagesOnGroup,
-          messages: newMessagesOnGroup
-        }
-      }
+          messages: newMessagesOnGroup,
+        },
+      };
     case types.UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD:
       let tempMessages = state.messagesOnGroup.messages.map((item, index) => {
-        if(parseInt(item.id) == parseInt(action.messages[index].id) && item.payload_value != null){
+        if (
+          parseInt(item.id) == parseInt(action.messages[index].id) &&
+          item.payload_value != null
+        ) {
           return action.messages[index];
         }
         return item;
-      })
+      });
       return {
         ...state,
         messagesOnGroup: {
           ...state.messagesOnGroup,
-          messages: tempMessages
-        }
-      }
+          messages: tempMessages,
+        },
+      };
+    case types.SET_SELECTED_ORDER:
+      console.log('SELECTED ORDER', selectedOrder);
+      return {
+        ...state,
+        selectedOrder,
+      };
     default:
       return {...state, nav: state.nav};
   }
-}
+};
 export default reducer;

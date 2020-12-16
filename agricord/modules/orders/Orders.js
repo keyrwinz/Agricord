@@ -2,36 +2,13 @@ import React, {Component} from 'react';
 import {
   View,
   Image,
-  TouchableHighlight,
-  Text,
   ScrollView,
-  FlatList,
   Dimensions,
   TouchableOpacity,
-  TextInput,
   SafeAreaView,
 } from 'react-native';
-import {NavigationActions} from 'react-navigation';
-import {Thumbnail, List, ListItem, Separator} from 'native-base';
 import {connect} from 'react-redux';
 import Style from './Style.js';
-import {Routes, Color, Helper, BasicStyles} from 'common';
-import {Spinner, Empty, SystemNotification} from 'components';
-import {
-  MainCard,
-  Feature,
-  Card,
-  MainFeature,
-  PromoCard,
-} from 'components/ProductThumbnail';
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody,
-  AccordionList,
-} from 'accordion-collapse-react-native';
-import {Divider} from 'react-native-elements';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import OrderCard from './OrderCard';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -47,18 +24,20 @@ class Orders extends Component {
     const {user} = this.props.state;
     if (user != null) {
     }
-    console.log('Oorder data', this.props.data);
   }
 
   render() {
-    const {isLoading} = this.state;
     const {user} = this.props.state;
     return (
-      <SafeAreaView style={{flex: 1,marginBottom:160}}>
+      <SafeAreaView style={{flex: 1, marginBottom: 160}}>
         <ScrollView>
           <View style={(Style.MainContainer, {minHeight: height})}>
             {this.props.data.map((order, index) => (
-              <OrderCard details={order} key={index} />
+              <OrderCard
+                details={order}
+                key={index}
+                navigation={this.props.navigation}
+              />
             ))}
           </View>
         </ScrollView>

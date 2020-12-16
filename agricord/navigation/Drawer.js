@@ -27,6 +27,8 @@ import MyOrderDetails from 'modules/basics/Welcome.js';
 import MessengerMessages from 'modules/basics/Welcome.js';
 import ForgotPassword from 'modules/basics/ForgotPassword.js';
 import SettingsPage from 'modules/settingsPage';
+import OrderDetails from 'modules/orderDetails';
+import OrderDetailsStack from 'modules/orderDetails/OrderDetailsScreen.js';
 import {connect} from 'react-redux';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -290,6 +292,17 @@ const Homepage_StackNavigator = createStackNavigator({
   // },
   SettingsPage: {
     screen: SettingsPage,
+    navigationOptions: ({navigation}) => ({
+      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
+      headerRight: <OptionRight navigationProps={navigation} />,
+      headerStyle: {
+        backgroundColor: Color.white,
+      },
+      headerTintColor: '#fff',
+    }),
+  },
+  OrderDetails: {
+    screen: OrderDetailsStack,
     navigationOptions: ({navigation}) => ({
       headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
       headerRight: <OptionRight navigationProps={navigation} />,
