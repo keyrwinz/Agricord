@@ -69,4 +69,6 @@ export default {
   tasksRetrieve: apiUrl + 'paddocks/retrieve',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
   orderRequest: apiUrl + 'order_request_items/retrieve',
+  // Inventory
+  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level'
 };

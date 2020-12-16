@@ -14,7 +14,8 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Pagination from 'components/Pagination';
 import InventoryItem from './InventoryItem';
 import Herbicide from './Herbicide'
-import { Color, BasicStyles } from 'common';
+import { Color, BasicStyles, Routes } from 'common';
+import Api from 'services/api/index.js'
 import { products } from './data-test.js';
 import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
@@ -37,12 +38,53 @@ const paginationProps=[{
 }]
 
 const Inventory = (props) => {
+  console.log({ props })
   const [activeIndex, setActiveIndex] = useState(0)
   const [searchString, setSearchString] = useState('')
-  const [HerbicideData, setHerbicideData] = useState(products)
-  const [FungicideData, setFungicideData] = useState(products)
-  const [InsecticideData, setInsecticideData] = useState(products)
-  const [OtherData, setOtherData] = useState(products)
+  const [HerbicideData, setHerbicideData] = useState([])
+  const [FungicideData, setFungicideData] = useState([])
+  const [InsecticideData, setInsecticideData] = useState([])
+  const [OtherData, setOtherData] = useState([])
+
+  const [filteredHerbicideData, setFilteredHerbicideData] = useState([])
+  const [filteredFungicideData, setFilteredFungicideData] = useState([])
+  const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
+  const [filteredOtherData, setFilteredOtherData] = useState([])
+
+  useEffect(() => {
+    const parameter = {
+      condition: {
+        column: 'title',
+        value: '%%'
+      },
+      sort: {
+        title: 'asc'
+      },
+      merchant_id: 2,
+      account_id: 7,
+      inventory_type: 'product_trace',
+      type: 'DISTRIBUTOR',
+      productType: 'all',
+      limit: 5,
+      offset: 0
+    }
+    Api.request(Routes.inventoryRetrieve, parameter, response => {
+      if (response.data.length) {
+        setHerbicideData(response.data)
+        setFungicideData(response.data)
+        setInsecticideData(response.data)
+        // setOtherData(response.data)
+
+        setFilteredHerbicideData(response.data)
+        setFilteredFungicideData(response.data)
+        setFilteredInsecticideData(response.data)
+        // setFilteredOtherData(response.data)
+      }
+      console.log({ inventoryResponse: response })
+    }, error => {
+      console.log({ inventoryError: error })
+    })
+  }, [])
 
   useEffect(() => {
     if (props.initialPage !=null) {
@@ -70,21 +112,21 @@ const Inventory = (props) => {
     const query = searchString.toLocaleLowerCase()
     switch (activeIndex) {
       case 0: // HERBICIDE
-        const data1 = products.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
+        const data1 = HerbicideData.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
         console.log({ query, activeIndex, data1 })
-        setHerbicideData(data1)
+        setFilteredHerbicideData(data1)
         break
       case 1: // FUNGICIDE
-        const data2 = products.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
-        setFungicideData(data2)
+        const data2 = FungicideData.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
+        setFilteredFungicideData(data2)
         break
       case 2: // INSECTICIDE
-        const data3 = products.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
-        setInsecticideData(data3)
+        const data3 = InsecticideData.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
+        setFilteredInsecticideData(data3)
         break
       case 3: // OTHER
-        const data4 = products.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
-        setOtherData(data4)
+        const data4 = OtherData.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
+        setFilteredOtherData(data4)
         break
     }
   }
@@ -123,16 +165,16 @@ const Inventory = (props) => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={HerbicideData} />
+            <Herbicide navigation={props.navigation} data={filteredHerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={FungicideData} />
+            <Herbicide navigation={props.navigation} data={filteredFungicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={InsecticideData} />
+            <Herbicide navigation={props.navigation} data={filteredInsecticideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={OtherData} />
+            <Herbicide navigation={props.navigation} data={filteredOtherData} />
           </View>
         </Pager>
       </PagerProvider>
