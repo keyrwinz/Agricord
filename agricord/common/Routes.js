@@ -69,4 +69,5 @@ export default {
   tasksRetrieve: apiUrl + 'paddocks/retrieve',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
   sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
+  orderRequest: apiUrl + 'order_request_items/retrieve',
 };

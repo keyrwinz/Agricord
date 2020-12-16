@@ -16,6 +16,7 @@ import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
 //import BatchStack from 'modules/batchPage/Drawer.js';
 import ApplyTaskStack from 'modules/applyTask/ApplyTaskDrawer.js';
 import OrderDetailsStack from 'modules/orderDetails/OrderDetailsDrawer.js';
+import SettingsPageStack from 'modules/settingsPage/SettingsPageDrawer.js';
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -69,6 +70,7 @@ const PrimaryNav = createStackNavigator(
     applyTaskStack: {screen: ApplyTaskStack},
     orderDetailsStack: {screen: OrderDetailsStack},
     //batchStack: {screen: BatchStack},
+    settingsPageStack: {screen: SettingsPageStack},
   },
   {
     // Default config for all screens

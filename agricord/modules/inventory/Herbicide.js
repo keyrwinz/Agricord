@@ -30,7 +30,7 @@ const Herbicide = ({ navigation, data }) => {
               <TouchableOpacity key={idx} onPress={() => {
                 const name = item.title.toUpperCase()
                 const volume = item.volume
-                navigation.push('InventoryItem', { name, volume, data: item })
+                navigation.navigate('InventoryItem', { name, volume, data: item })
               }}>
                 <PaddockCard details={item} key={item.id} />
               </TouchableOpacity>

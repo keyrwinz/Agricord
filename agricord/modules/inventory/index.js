@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,14 +6,15 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import Pagination from 'components/Pagination';
 import InventoryItem from './InventoryItem';
 import Herbicide from './Herbicide'
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import { products } from './data-test.js';
 import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
@@ -35,13 +36,34 @@ const paginationProps=[{
   name: 'Other'
 }]
 
-const Inventory = ({ navigation }) => {
+const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState(products)
   const [FungicideData, setFungicideData] = useState(products)
   const [InsecticideData, setInsecticideData] = useState(products)
   const [OtherData, setOtherData] = useState(products)
+
+  useEffect(() => {
+    if (props.initialPage !=null) {
+      switch (props.initialPage) {
+        case 'InventoryHerbicides':
+          setActiveIndex(0)
+          break;
+        case 'InventoryFungicides':
+          setActiveIndex(1)
+          break;
+        case 'InventoryInsecticides':
+          setActiveIndex(2)
+          break;
+        case 'InventoryOther':
+          setActiveIndex(3)
+          break;
+        default:
+          break 
+      }
+    }
+  }, [])
 
   const onPageChange = (activeIndex) => setActiveIndex(activeIndex)
   const searchProductHandler = () => {
@@ -101,16 +123,16 @@ const Inventory = ({ navigation }) => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={HerbicideData} />
+            <Herbicide navigation={props.navigation} data={HerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={FungicideData}/>
+            <Herbicide navigation={props.navigation} data={FungicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={InsecticideData}/>
+            <Herbicide navigation={props.navigation} data={InsecticideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={navigation} data={OtherData}/>
+            <Herbicide navigation={props.navigation} data={OtherData} />
           </View>
         </Pager>
       </PagerProvider>
@@ -126,49 +148,49 @@ const mapDispatchToProps = dispatch => {
 
 connect(mapStateToProps, mapDispatchToProps)(Inventory);
 
-const InventoryScreen = () => {
-  const navigation = useNavigation()
+const InventoryScreen = (props) => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen
         name="Inventory"
-        component={Inventory}
-        options={({ route }) => {
-          return ({
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <TitleLogo />
-                <Text
-                  style={{
-                    color: '#000',
-                    marginLeft: 7,
-                    fontWeight: 'bold',
-                    fontSize: 20
-                  }}
-                  >
-                  INVENTORY
-                </Text>
-              </View>
-            )
-          })
-        }}
+        children={() => <Inventory {...props} />}
+        options={() => ({
+          headerTitle: () => (
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TitleLogo />
+              <Text
+                style={{
+                  color: '#000',
+                  marginLeft: 7,
+                  fontWeight: 'bold',
+                  fontSize: 20
+                }}
+                >
+                INVENTORY
+              </Text>
+            </View>
+          ),
+          headerLeft: () => (
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  size={BasicStyles.iconSize}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#000',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+        })}
       />
       <InventoryStack.Screen
         name="InventoryItem"
         component={InventoryItem}
-        options={({ route }) => ({
-            headerLeft: null,
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
-                  {route.params.name}
-                </Text>
-                <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
-                  {route.params.volume}
-                </Text>
-              </View>
-            )
-        })}
       />
          <InventoryStack.Screen
         name="ApplyTask"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,23 +9,57 @@ import {
   Modal,
   Alert
 } from 'react-native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import { Color } from 'common';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { Color, BasicStyles } from 'common';
 import Style from './Style.js';
 
 import Background from 'assets/inventory/background.svg';
 import ItemImage from 'assets/inventory/temp_item.svg';
 import FileIcon from 'assets/inventory/file_icon.svg';
-import ArrowExpand from 'assets/inventory/arrow_expand.svg';
 import CheckIcon from 'assets/inventory/check_icon.svg';
 
 const height = Math.round(Dimensions.get('window').height);
 
 const InventoryItem = (props) => {
+  const navigation = useNavigation()
+  const route = useRoute()
   const [modalState, showModal] = useState(false)
   const data = props.route?.params?.data || null
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              size={BasicStyles.iconSize}
+              style={[
+                BasicStyles.iconStyle,
+                {
+                  color: '#000',
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+      ),
+      headerTitle: () => (
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
+            {route.params.name}
+          </Text>
+          <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
+            {route.params.volume}
+          </Text>
+        </View>
+      )
+    })
+  }, [navigation])
 
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
