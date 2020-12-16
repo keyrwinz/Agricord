@@ -68,4 +68,5 @@ export default {
   //Agricord-Tasks
   tasksRetrieve: apiUrl + 'paddocks/retrieve',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
+  sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
 };
