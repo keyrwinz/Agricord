@@ -18,11 +18,12 @@ export default {
   },
   background: {
     position: 'absolute',
-    maxHeight: 200
+    maxHeight: 200,
   },
   backgroundImage: {
-    position: 'absolute',
-    // maxHeight: 200
+    position: 'absolute', 
+    left:10,
+    width: '100%'
   },
   textWhite: { color: Color.white },
   textBlack: { color: Color.black },
