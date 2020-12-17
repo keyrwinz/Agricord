@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronDown, faChevronUp, faChevronRight, faBars } from '@fortawesome/free-solid-svg-icons';
-import { Color, BasicStyles } from 'common';
 import Style from './HomeStyle'
-
+import { Routes, Color, Helper, BasicStyles } from 'common';
 import Background from 'assets/homescreen/background.svg'
 import CircleGraph from 'assets/homescreen/circle_graph.svg'
 import Circles from 'assets/homescreen/circles.svg'
@@ -24,6 +24,8 @@ import OrderFocusIcon from 'assets/homescreen/focus_order.svg'
 import InProgressIcon from 'assets/homescreen/in_progress_icon.svg'
 import CompletedEventIcon from 'assets/homescreen/event_complete_icon.svg'
 import CompleteIcon from 'assets/homescreen/complete_icon.svg'
+import {Spinner} from 'components';
+import Api from 'services/api/index.js'
 
 const getIcon = (type) => {
   switch(type) {
@@ -38,9 +40,26 @@ const Home = (props) => {
   const [isExpanded, setExpand] = useState(false)
   const [InFocusArray, setInFOcus] = useState(InFocusData)
   const [RecentEventsArray, setRecentEvents] = useState(RecentEvents)
+  const [data, setData] = useState()
+  const userDetail = props.state.user
+  
 
-  return (
+  useEffect(() => {
+    const userInfo = props.state.user 
+    if(userInfo === null){
+      return
+    }
+    const parameter = {
+        merchant_id: userDetail.sub_account.merchant.id,
+    }
+    Api.request(Routes.dashboardRetrieve, parameter, res => {
+      setData(res.data)
+    })
+  })
+  
+  return data ? (
     <ScrollView style={Style.ScrollView}>
+      <Spinner mode="overlay" />
       <SafeAreaView>
         <View style={Style.background}>
           <Background style={Style.backgroundImage} />
@@ -74,7 +93,7 @@ const Home = (props) => {
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi Steve
+              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
@@ -82,6 +101,7 @@ const Home = (props) => {
           </View>
 
           {/* OVERVIEW CONTAINER */}
+
           <View style={Style.overviewChart}>
             <Circles />
             <View style={Style.flexRow}>
@@ -116,7 +136,7 @@ const Home = (props) => {
           <View style={Style.InFocusContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
             {
-              InFocusArray.length && InFocusArray.map((obj, idx) => {
+              data.length && data.map((obj, idx) => {
                 if (idx > 1 && !isExpanded) return
                 const icon = getIcon(obj.type)
                 return (
@@ -133,7 +153,7 @@ const Home = (props) => {
                             {obj.status}
                           </Text>
                           <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                            {obj.date}
+                            {obj.created_at}
                           </Text>
                           <Text style={Style.eventText}>
                             {obj.name}
@@ -173,10 +193,11 @@ const Home = (props) => {
           </View>
 
           {/* RECENT EVENTS */}
-          <View style={Style.RecentEventsContainer}>
+
+        <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              RecentEventsArray.length && RecentEventsArray.map((obj, idx) => {
+              data.length && data.map((obj, idx) => {
                 return (
                   <View
                     key={idx}
@@ -221,11 +242,197 @@ const Home = (props) => {
               })
             }
           </View>
-
         </View>
       </SafeAreaView>
     </ScrollView>
-  )
+  ): 
+  <ScrollView style={Style.ScrollView}>
+      <Spinner mode="overlay" />
+      <SafeAreaView>
+        <View style={Style.background}>
+          <Background style={Style.backgroundImage} />
+        </View>
+        <View style={Style.MainContainer}>
+          <View style={Style.imageContainer}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: -5
+              }
+            }>
+              <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+                <FontAwesomeIcon
+                  icon={faBars}
+                  size={30}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#fff',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+            <Image
+              source={require('assets/drawer/profile/profile_pic.png')}
+              style={Style.image}
+            />
+          </View>
+          <View>
+            <Text style={[Style.username, Style.textWhite]}>
+              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
+            </Text>
+            <Text style={Style.textWhite}>
+              Welcome to Your Dashboard
+            </Text>
+          </View>
+
+          {/* OVERVIEW CONTAINER */}
+
+          <View style={Style.overviewChart}>
+            <Circles />
+            <View style={Style.flexRow}>
+              <View style={Style.graphContainer}>
+                <CircleGraph />
+                <View style={Style.graphTextContainer}>
+                  <Text style={Style.graphTextBold}>9</Text>
+                  <Text style={Style.graphText}>Activity</Text>
+                </View>
+              </View>
+              <View style={Style.chartDetails}>
+                <Text style={{ color: Color.gray }}>
+                  Overview Chart
+                </Text>
+                <View style={[Style.flexRow, Style.graphLabel]}>
+                  <GreenCircle style={{ marginRight: 10 }} />
+                  <Text>5 Recent Event</Text>
+                </View>
+                <View style={[Style.flexRow, Style.graphLabel]}>
+                  <YellowCircle style={{ marginRight: 10 }} />
+                  <Text>2 Task in Focus</Text>
+                </View>
+                <View style={[Style.flexRow, Style.graphLabel]}>
+                  <BlueCircle style={{ marginRight: 10 }} />
+                  <Text>2 Order in Focus</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          {/* IN FOCUS */}
+          <View style={Style.InFocusContainer}>
+            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
+            {
+              InFocusData.length && InFocusData.map((obj, idx) => {
+                if (idx > 1 && !isExpanded) return
+                const icon = getIcon(obj.type)
+                return (
+                  <TouchableOpacity
+                    key={idx}
+                    onPress={() => Alert.alert(`Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`)}
+                  >
+                    <View style={Style.focusTask}>
+                      {icon}
+                      <View style={Style.focusTaskDetails}>
+                        <View style={Style.flexRow}>
+                          <InProgressIcon />
+                          <Text style={Style.eventText}>
+                            {obj.status}
+                          </Text>
+                          <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                            {obj.created_at}
+                          </Text>
+                          <Text style={Style.eventText}>
+                            {obj.name}
+                          </Text>
+                        </View>
+                        <View style={Style.flexRow}>
+                          <Text style={Style.taskPayloadText}>
+                            {obj.payload}
+                          </Text>
+                          <Text style={Style.taskPayloadText}>
+                            {obj.payload_value}
+                          </Text>
+                        </View>
+                      </View>
+                      <View>
+                        <FontAwesomeIcon
+                          icon={faChevronRight}
+                          color={Color.gray}
+                          size={25}
+                        />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+            <TouchableOpacity
+              style={Style.chevronDown}
+              onPress={() => setExpand(!isExpanded)}
+            >
+              <FontAwesomeIcon
+                icon={isExpanded ? faChevronUp : faChevronDown}
+                color={Color.gray}
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* RECENT EVENTS */}
+
+        <View style={Style.RecentEventsContainer}>
+            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
+            {
+              RecentEvents.length && RecentEvents.map((obj, idx) => {
+                return (
+                  <View
+                    key={idx}
+                    style={[
+                      Style.flexRow,
+                      {
+                        position: 'relative',
+                        marginLeft: 15
+                      }
+                    ]}
+                  >
+                    {
+                      idx + 1 === RecentEventsArray.length ? (
+                        <CompleteIcon style={Style.eventIcon} />
+                      ) : (
+                        <CompletedEventIcon style={Style.eventIcon} />
+                      )
+                    }
+                    <View style={Style.eventDetailsContainer}>
+                      <View style={Style.flexRow}>
+                        <Text style={Style.eventText}>
+                          {obj.type}
+                        </Text>
+                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                          {obj.date}
+                        </Text>
+                        <Text style={Style.eventText}>
+                          {obj.name}
+                        </Text>
+                      </View>
+                      <View style={Style.flexRow}>
+                        <Text style={Style.eventPayloadText}>
+                          {obj.payload}
+                        </Text>
+                        <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
+                          {obj.payload_value}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                )
+              })
+            }
+          </View>
+        </View>
+      </SafeAreaView>
+    </ScrollView>
 }
 
 const InFocusData = [{
@@ -302,4 +509,15 @@ const RecentEvents = [{
   payload_value: '7FA000003'
 }]
 
-export default Home
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);
+
