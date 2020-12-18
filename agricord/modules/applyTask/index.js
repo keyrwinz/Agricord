@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Modal} from 'react-native';
+import {View, Text, StyleSheet, Modal, ScrollView} from 'react-native';
 import {
   faClock,
   faTimesCircle,
@@ -74,59 +74,77 @@ const dummyData3 = [
 ];
 
 class ApplyTask extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <View style={styles.ApplyTaskContainer}>
-        <Task title="Recent" icon={faHistory} height={240} key={1}>
-          <RecentTasks tasks={dummyData} title="Machines" key={1} />
-          <RecentTasks tasks={dummyData} title="Spray Mixes" key={2} />
-        </Task>
-        <Task title="Select" icon={faCommentDots} height={200} key={2}>
-          <CustomPicker type="Machine" items={dummyData3} key={1} />
-          <CustomPicker type="Mix" items={dummyData2} key={2} />
-        </Task>
-        <RNSlidingButton
-          style={{
-            marginTop: 60,
-            width: '85%',
-            borderRadius: 12,
-            backgroundColor: '#F1F1F1',
-            borderColor: '#CFCFCF',
-            borderWidth: 1,
-          }}
-          height={45}
-          onSlidingSuccess={() => {}}
-          slideDirection={SlideDirection.RIGHT}>
-          <View
+      <ScrollView>
+        <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
+          <Task title="Recent" icon={faHistory} height={240} key={1}>
+            <RecentTasks tasks={dummyData} title="Machines" key={1} />
+            <RecentTasks tasks={dummyData} title="Spray Mixes" key={2} />
+          </Task>
+          <Task title="Select" icon={faCommentDots} height={200} key={2}>
+            <CustomPicker
+              type="Machine"
+              items={dummyData3}
+              key={1}
+              styles={{zIndex: 500}}
+            />
+            <CustomPicker
+              type="Mix"
+              items={dummyData2}
+              key={2}
+              styles={{zIndex: 500}}
+            />
+          </Task>
+          <RNSlidingButton
             style={{
-              backgroundColor: '#5A84EE',
-              height: 45,
-              width: 129,
+              marginTop: 60,
+              width: '85%',
               borderRadius: 12,
-              padding: 0,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+              backgroundColor: '#F1F1F1',
+              borderColor: '#CFCFCF',
+              borderWidth: 1,
+              zIndex: 0,
+            }}
+            height={45}
+            onSlidingSuccess={() => {}}
+            slideDirection={SlideDirection.RIGHT}>
+            <View
+              style={{
+                backgroundColor: '#5A84EE',
+                height: 45,
+                width: 129,
+                borderRadius: 12,
+                padding: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontSize: BasicStyles.titleText.fontSize,
+                  fontWeight: 'bold',
+                }}>
+                Select Paddocks
+              </Text>
+            </View>
+          </RNSlidingButton>
+          <View
+            style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
             <Text
               style={{
-                color: '#FFFFFF',
-                fontSize: BasicStyles.titleText.fontSize,
-                fontWeight: 'bold',
+                fontSize: BasicStyles.normalText.fontSize,
+                color: '#969696',
               }}>
-              Select Paddocks
+              Swipe Right to Complete
             </Text>
           </View>
-        </RNSlidingButton>
-        <View style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
-          <Text
-            style={{
-              fontSize: BasicStyles.normalText.fontSize,
-              color: '#969696',
-            }}>
-            Swipe Right to Complete
-          </Text>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }

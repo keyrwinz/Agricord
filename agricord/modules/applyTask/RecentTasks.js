@@ -34,8 +34,9 @@ class RecentTasks extends Component {
           style={{
             marginTop: 10,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
+            width: '100%',
           }}>
           {this.renderRecentTasks()}
         </View>

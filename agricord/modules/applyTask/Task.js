@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     elevation: 2,
+    zIndex: 0,
   },
   TitleContainer: {
     flexDirection: 'row',
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
+    zIndex: 0,
   },
 });
 

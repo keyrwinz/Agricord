@@ -39,7 +39,7 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.state.isPressed ? (
-      <View style={styles.OptionsContainer}>
+      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -151,15 +151,16 @@ const styles = StyleSheet.create({
   ButtonContainer: {
     height: '100%',
     width: 35,
-    borderRadius: 6,
+    borderRadius: 10.5,
     backgroundColor: '#5A84EE',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-end',
     position: 'absolute',
     right: 0,
-    borderWidth: 3,
+    borderWidth: 0,
     borderColor: '#5A84EE',
+    padding: 0,
   },
   OptionsContainer: {
     position: 'absolute',
@@ -174,6 +175,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     elevation: 2,
     marginTop: 60,
+    overflow: 'scroll',
   },
   OptionContainer: {
     width: '100%',
@@ -184,6 +186,7 @@ const styles = StyleSheet.create({
   OptionTextContainer: {
     paddingLeft: 15,
     justifyContent: 'center',
+    borderRadius: 6,
   },
   OptionTextStyle: {
     fontSize: BasicStyles.normalText.fontSize,
