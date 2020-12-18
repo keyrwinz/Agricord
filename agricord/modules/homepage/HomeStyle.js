@@ -1,17 +1,21 @@
 import { Color } from 'common';
-// import { Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 // const width = Math.round(Dimensions.get('window').width);
 // const height = Math.round(Dimensions.get('window').height);
+const width = Math.round(Dimensions.get('window').width)
 
 export default {
   ScrollView: {
-    flex: 1
+    flex: 1,
+    
   },
   MainContainer: {
     flex: 1,
     paddingHorizontal: 15,
     justifyContent: 'center',
     paddingBottom: 30,
+    width: '100%',
+    backgroundImage: 'assets/homescreen/background.svg'
   },
   flexRow: {
     flexDirection: 'row',
@@ -19,11 +23,14 @@ export default {
   background: {
     position: 'absolute',
     maxHeight: 200,
+    width: '100%',
+    objectFit: 'cover',
   },
-  backgroundImage: {
-    position: 'absolute', 
-    left:10,
-    width: '100%'
+  backgroundImage: {  
+    width: width,
+    height: '100%',
+    objectFit: 'cover',
+    backgroundSize: 'cover'  
   },
   textWhite: { color: Color.white },
   textBlack: { color: Color.black },
@@ -32,13 +39,13 @@ export default {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingRight: 15,
+    paddingRight: 0,
     paddingVertical: 15
   },
   image: {
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20 
   },
   username: {
     fontSize: 40,
@@ -110,6 +117,7 @@ export default {
   },
   chevronDown: {
     marginTop: 10,
+    size: 45,
     alignSelf: 'center',
   },
 
