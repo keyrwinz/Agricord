@@ -11,6 +11,7 @@ import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
+import styles from 'modules/applyTask/Styles.js';
 
 const dummyData = [
   {
@@ -148,34 +149,5 @@ class ApplyTask extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  titleText: {
-    fontSize: 17,
-    fontWeight: 'normal',
-    textAlign: 'center',
-    color: '#ffffff',
-  },
-  ApplyTaskContainer: {
-    backgroundColor: '#F1F1F1',
-    height: '100%',
-    width: '100%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  SliderIconContainer: {
-    backgroundColor: '#5A84EE',
-    borderRadius: 12,
-    height: 50,
-    width: 200,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  SliderIconTextStyle: {
-    fontSize: BasicStyles.titleText.fontSize,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
-  },
-});
 
 export default ApplyTask;

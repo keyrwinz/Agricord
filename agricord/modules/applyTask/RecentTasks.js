@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Color, BasicStyles} from 'common';
+import styles from 'modules/applyTask/Styles.js';
 
 class RecentTasks extends Component {
   constructor(props) {
@@ -45,33 +46,4 @@ class RecentTasks extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  RecentTasksContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    marginTop: 10,
-  },
-  RecentTasksTitleContainer: {
-    alignSelf: 'flex-start',
-    paddingLeft: 10,
-  },
-  RecentTasksTitleTextStyle: {
-    fontWeight: 'bold',
-    fontSize: BasicStyles.titleText.fontSize,
-  },
-  Task: {
-    height: 35,
-    width: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#5A84EE',
-    borderRadius: 12,
-    marginHorizontal: 7,
-  },
-  TaskTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-  },
-});
 export default RecentTasks;
