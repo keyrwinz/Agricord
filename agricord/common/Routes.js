@@ -66,8 +66,10 @@ export default {
   getValidID: apiUrl + 'payloads/get_valid_id',
   uploadValidID: apiUrl + 'payloads/upload_valid_id',
   //Agricord-Tasks
-  tasksRetrieve: apiUrl + 'paddocks/retrieve',
+  tasksRetrieve: apiUrl + 'paddocks/retrieve_batches_and_paddocks',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
   sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
   orderRequest: apiUrl + 'order_request_items/retrieve',
+  paddockDetailsRetrieve : apiUrl + 'paddocks/retrieve'
+
 };
