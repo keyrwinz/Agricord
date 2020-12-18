@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {Color, BasicStyles} from 'common';
+import {View, Text, TouchableOpacity} from 'react-native';
 import styles from 'modules/applyTask/Styles.js';
 
 class RecentTasks extends Component {

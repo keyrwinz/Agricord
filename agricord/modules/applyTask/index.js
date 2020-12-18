@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Modal, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {
-  faClock,
-  faTimesCircle,
-  faCommentDots,
-} from '@fortawesome/free-regular-svg-icons';
-import {faHistory, faFlask, faTractor} from '@fortawesome/free-solid-svg-icons';
-import {Color, BasicStyles} from 'common';
+  faHistory,
+  faFlask,
+  faTractor,
+  faTh,
+} from '@fortawesome/free-solid-svg-icons';
+import {BasicStyles} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
@@ -151,7 +151,7 @@ class ApplyTask extends Component {
               handleSelect={this.recentMixHandler}
             />
           </Task>
-          <Task title="Select" icon={faCommentDots} height={200} key={2}>
+          <Task title="Select" icon={faTh} height={200} key={2}>
             <CustomPicker
               type="Machine"
               items={dummyData3}

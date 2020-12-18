@@ -1,17 +1,6 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  faChevronDown,
-  faChevronUp,
-  faFlask,
-  faTractor,
-} from '@fortawesome/free-solid-svg-icons';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
 import styles from 'modules/applyTask/Styles.js';
