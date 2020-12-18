@@ -99,6 +99,10 @@ class ApplyTask extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log('APPLY TASK PROPS', this.props);
+  }
+
   recentMachineHandler = index => {
     let machine = dummyData[index].task;
     this.setState({selectedMachine: machine});
@@ -127,7 +131,9 @@ class ApplyTask extends Component {
         mix: this.state.selectedMix,
       };
       setMachineAndMix(task);
-      //navigate here
+      this.props.navigation.navigate('MixName', {
+        details: {products: [], appliedRate: '', status: ''},
+      });
     } else {
       alert('Please select a machine or mix.');
     }
