@@ -28,7 +28,8 @@ class MixName extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0
+      activeIndex: 0,
+      products:[],
     };
      
     }
@@ -38,7 +39,20 @@ class MixName extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
+    console.log(Routes.sprayMixesRetrieve)
     console.log(this.props)
+    const parameter={
+      offset:0,
+      limit:10,
+      merchant_id:38,
+    }
+    Api.request(Routes.sprayMixesRetrieve, parameter, response => {
+      console.log(response.data)
+      this.setState({products:response.data})
+     }, error => {
+      console.log({ error })
+     
+    }) 
   }
     
 
@@ -65,7 +79,7 @@ class MixName extends Component {
           </View> 
         </View>
 
-        {details.products.map((item,index)=>(
+        {this.state.products.map((item,index)=>(
           <PaddockCard details={{item,dataFrom:'paddockPage',status:details.status}} key={item.id}></PaddockCard>
         ))}
 
