@@ -48,7 +48,7 @@ class CustomPicker extends Component {
                 key={index}
                 style={styles.OptionContainer}
                 onPress={() => {
-                  this.handleSelect(index);
+                  this.props.handleSelect(index);
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon

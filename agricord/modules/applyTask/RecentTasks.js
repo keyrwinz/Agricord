@@ -13,11 +13,20 @@ class RecentTasks extends Component {
   constructor(props) {
     super(props);
   }
+
+  componentDidMount() {
+    console.log('RECENT TASKS PROPS', this.props);
+  }
   renderRecentTasks = () => {
     const tasks = this.props.tasks;
-    return tasks.map(task => {
+    return tasks.map((task, index) => {
       return (
-        <TouchableOpacity style={styles.Task} key={task.id} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.Task}
+          key={index}
+          onPress={() => {
+            this.props.handleSelect(index);
+          }}>
           <Text style={styles.TaskTextStyle}>{task.task}</Text>
         </TouchableOpacity>
       );

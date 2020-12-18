@@ -12,6 +12,7 @@ import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import styles from 'modules/applyTask/Styles.js';
+import {connect} from 'react-redux';
 
 const dummyData = [
   {
@@ -25,6 +26,21 @@ const dummyData = [
   {
     id: 3,
     task: 'Machine C',
+  },
+];
+
+const dummyData4 = [
+  {
+    id: 1,
+    task: 'Mix A',
+  },
+  {
+    id: 2,
+    task: 'Mix B',
+  },
+  {
+    id: 3,
+    task: 'Mix C',
   },
 ];
 
@@ -77,15 +93,63 @@ const dummyData3 = [
 class ApplyTask extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      selectedMachine: '',
+      selectedMix: '',
+    };
   }
+
+  recentMachineHandler = index => {
+    let machine = dummyData[index].task;
+    this.setState({selectedMachine: machine});
+  };
+
+  recentMixHandler = index => {
+    let mix = dummyData4[index].task;
+    this.setState({selectedMix: mix});
+  };
+
+  pickerMachineHandler = index => {
+    let machine = dummyData3[index].type;
+    this.setState({selectedMachine: machine});
+  };
+
+  pickerMixHandler = index => {
+    let mix = dummyData2[index].type;
+    this.setState({selectedMix: mix});
+  };
+
+  selectPaddocks = () => {
+    const {setMachineAndMix} = this.props;
+    if (this.state.selectedMachine !== '' && this.state.selectedMix !== '') {
+      let task = {
+        machine: this.state.selectedMachine,
+        mix: this.state.selectedMix,
+      };
+      setMachineAndMix(task);
+      //navigate here
+    } else {
+      alert('Please select a machine or mix.');
+    }
+  };
 
   render() {
     return (
       <ScrollView>
         <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
           <Task title="Recent" icon={faHistory} height={240} key={1}>
-            <RecentTasks tasks={dummyData} title="Machines" key={1} />
-            <RecentTasks tasks={dummyData} title="Spray Mixes" key={2} />
+            <RecentTasks
+              tasks={dummyData}
+              title="Machines"
+              key={1}
+              handleSelect={this.recentMachineHandler}
+            />
+            <RecentTasks
+              tasks={dummyData4}
+              title="Spray Mixes"
+              key={2}
+              handleSelect={this.recentMixHandler}
+            />
           </Task>
           <Task title="Select" icon={faCommentDots} height={200} key={2}>
             <CustomPicker
@@ -93,12 +157,14 @@ class ApplyTask extends Component {
               items={dummyData3}
               key={1}
               styles={{zIndex: 500}}
+              handleSelect={this.pickerMachineHandler}
             />
             <CustomPicker
               type="Mix"
               items={dummyData2}
               key={2}
               styles={{zIndex: 500}}
+              handleSelect={this.pickerMixHandler}
             />
           </Task>
           <RNSlidingButton
@@ -112,7 +178,9 @@ class ApplyTask extends Component {
               zIndex: 0,
             }}
             height={45}
-            onSlidingSuccess={() => {}}
+            onSlidingSuccess={() => {
+              this.selectPaddocks();
+            }}
             slideDirection={SlideDirection.RIGHT}>
             <View
               style={{
@@ -150,4 +218,18 @@ class ApplyTask extends Component {
   }
 }
 
-export default ApplyTask;
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {
+    setMachineAndMix: task => {
+      dispatch(actions.setMachineAndMix(task));
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ApplyTask);

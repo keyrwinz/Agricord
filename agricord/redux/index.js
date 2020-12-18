@@ -25,6 +25,7 @@ const types = {
   UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD: 'UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD',
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
+  SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
 };
 
 export const actions = {
@@ -92,6 +93,9 @@ export const actions = {
   setSelectedOrder(selectedOrder) {
     return {type: types.SET_SELECTED_ORDER, selectedOrder};
   },
+  setMachineAndMix(task) {
+    return {type: types.SET_MACHINE_AND_MIX, task};
+  },
 };
 
 const initialState = {
@@ -112,6 +116,7 @@ const initialState = {
   location: null,
   productFilter: [],
   selectedOrder: null,
+  task: null,
 };
 
 storeData = async (key, value) => {
@@ -133,6 +138,7 @@ const reducer = (state = initialState, action) => {
   const {messages, message} = action;
   const {messengerGroup, messagesOnGroup} = action;
   const {selectedOrder} = action;
+  const {task} = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -394,6 +400,13 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedOrder,
+      };
+
+    case types.SET_MACHINE_AND_MIX:
+      console.log('MACHINE AND TASK', task);
+      return {
+        ...state,
+        task,
       };
     default:
       return {...state, nav: state.nav};
