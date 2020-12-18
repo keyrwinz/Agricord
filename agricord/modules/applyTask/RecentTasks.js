@@ -7,9 +7,6 @@ class RecentTasks extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log('RECENT TASKS PROPS', this.props);
-  }
   renderRecentTasks = () => {
     const tasks = this.props.tasks;
     return tasks.map((task, index) => {

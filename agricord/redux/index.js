@@ -396,14 +396,12 @@ const reducer = (state = initialState, action) => {
         },
       };
     case types.SET_SELECTED_ORDER:
-      console.log('SELECTED ORDER', selectedOrder);
       return {
         ...state,
         selectedOrder,
       };
 
     case types.SET_MACHINE_AND_MIX:
-      console.log('MACHINE AND TASK', task);
       return {
         ...state,
         task,
