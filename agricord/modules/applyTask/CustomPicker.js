@@ -14,6 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
+import styles from 'modules/applyTask/Styles.js';
 
 class CustomPicker extends Component {
   constructor(props) {
@@ -39,7 +40,7 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.state.isPressed ? (
-      <View style={styles.OptionsContainer}>
+      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -47,7 +48,7 @@ class CustomPicker extends Component {
                 key={index}
                 style={styles.OptionContainer}
                 onPress={() => {
-                  this.handleSelect(index);
+                  this.props.handleSelect(index);
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
@@ -139,55 +140,5 @@ class CustomPicker extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  PickerContainer: {
-    marginTop: 20,
-    width: '90%',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#5A84EE',
-  },
-  ButtonContainer: {
-    height: '100%',
-    width: 35,
-    borderRadius: 6,
-    backgroundColor: '#5A84EE',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'flex-end',
-    position: 'absolute',
-    right: 0,
-    borderWidth: 3,
-    borderColor: '#5A84EE',
-  },
-  OptionsContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: '10%',
-    justifyContent: 'flex-end',
-    height: 105,
-    width: '90%',
-    borderColor: '#AEAEAE',
-    borderWidth: 0.5,
-    backgroundColor: 'white',
-    paddingLeft: 20,
-    elevation: 2,
-    marginTop: 60,
-  },
-  OptionContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingVertical: 15,
-  },
-  OptionIconContainer: {},
-  OptionTextContainer: {
-    paddingLeft: 15,
-    justifyContent: 'center',
-  },
-  OptionTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-  },
-});
 
 export default CustomPicker;

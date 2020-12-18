@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import styles from 'modules/applyTask/Styles.js';
 
 class Task extends Component {
   constructor(props) {
@@ -27,43 +28,5 @@ class Task extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  TaskContainer: {
-    marginTop: 20,
-    backgroundColor: '#FFFFFF',
-    height: 300,
-    width: '85%',
-    borderRadius: 12,
-    alignItems: 'center',
-    elevation: 2,
-  },
-  TitleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderBottomColor: '#5A84EE',
-    borderBottomWidth: 4,
-    width: '100%',
-    height: 55,
-  },
-  TitleIconContainer: {
-    paddingLeft: 15,
-  },
-  TitleIconStyle: {},
-  TitleTextContainer: {
-    paddingLeft: 10,
-  },
-  TitleTextStyle: {
-    fontSize: 23,
-    fontWeight: 'bold',
-  },
-  ChildrenContainer: {
-    width: '90%',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flex: 1,
-  },
-});
 
 export default Task;

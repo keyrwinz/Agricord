@@ -36,6 +36,9 @@ export default {
   // images
   imageUpload: apiUrl + 'images/upload',
   imageRetrieve: apiUrl + 'images/retrieve',
+
+   // dashboard result
+   dashboardRetrieve: apiUrl + 'paddocks/dashboard_batches',
   // carts
   // cartsCreate: apiUrl + 'carts/create',
   // cartsRetrieve: apiUrl + 'carts/retrieve',
@@ -70,6 +73,8 @@ export default {
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
   sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
   orderRequest: apiUrl + 'order_request_items/retrieve',
-  paddockDetailsRetrieve : apiUrl + 'paddocks/retrieve'
+  paddockDetailsRetrieve : apiUrl + 'paddocks/retrieve',
 
+  // Inventory
+  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level'
 };
