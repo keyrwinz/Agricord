@@ -12,7 +12,7 @@ class HeaderOptions extends Component {
     super(props);
   }
   back = () => {
-    this.props.navigationProps.pop();
+    // this.props.navigationProps.navgiate('drawerStack');
   };
   render() {
     return (
