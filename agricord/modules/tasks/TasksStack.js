@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars,faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { BasicStyles } from 'common';
 import Tasks from './index';
@@ -61,7 +61,22 @@ const TasksScreen = (props) => {
         name="TasksItem"
         component={TasksItem}
         options={({ route }) => ({
-            headerLeft: null,
+        headerLeft: () => (
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              size={BasicStyles.iconSize}
+              style={[
+                BasicStyles.iconStyle,
+                {
+                  color: '#000',
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+      ),
             headerTitle: () => (
               
               <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
@@ -77,7 +92,22 @@ const TasksScreen = (props) => {
         name="ApplyTask"
         component={ApplyTask}
         options={({ route }) => ({
-            headerLeft: null,
+          headerLeft: () => (
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => props.navigation.navigate("Tasks")}>
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  size={BasicStyles.iconSize}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#000',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
             headerTitle: () => (
               
               <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
@@ -93,7 +123,22 @@ const TasksScreen = (props) => {
         name="MixName"
         component={MixName}
         options={({ route }) => ({
-            headerLeft: null,
+          headerLeft: () => (
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => props.navigation.navigate("Tasks")}>
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  size={BasicStyles.iconSize}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#000',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
             headerTitle: () => (
               
               <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>

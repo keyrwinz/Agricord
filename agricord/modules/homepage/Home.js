@@ -6,7 +6,8 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  Alert
+  Alert,
+  ImageBackground
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -26,6 +27,7 @@ import CompletedEventIcon from 'assets/homescreen/event_complete_icon.svg'
 import CompleteIcon from 'assets/homescreen/complete_icon.svg'
 import {Spinner} from 'components';
 import Api from 'services/api/index.js'
+import _ from "lodash"
 
 const getIcon = (type) => {
   switch(type) {
@@ -42,6 +44,11 @@ const Home = (props) => {
   const [RecentEventsArray, setRecentEvents] = useState(RecentEvents)
   const [data, setData] = useState()
   const userDetail = props.state.user
+  const [totalRecentData, setTotalRecentData] = useState()
+  const [totalTasksData, setTotalTasksData] = useState()
+  const [totalOrderData, setTotalOrderData] = useState()
+  const [totalActivities, setTotalActivities] = useState()
+  // const totalRecentData = null
   
 
   useEffect(() => {
@@ -55,7 +62,29 @@ const Home = (props) => {
     Api.request(Routes.dashboardRetrieve, parameter, res => {
       setData(res.data)
     })
-  })
+
+    const recent = _.countBy(RecentEventsArray, (res) => {
+      return ('recent');
+    })
+    setTotalRecentData(recent)
+  
+    const tasks = _.countBy(InFocusArray, (infocus) => {
+      return infocus.type = 'Task'
+    })
+    setTotalTasksData(tasks)
+  
+    const orders = _.countBy(InFocusArray, (infocus) => {
+      return infocus.type = 'Order'
+    })
+    setTotalOrderData(orders)
+  
+    if(totalRecentData !== undefined && totalTasksData !== undefined && totalOrderData !== undefined){
+      const activities = totalRecentData.recent + totalTasksData.Task + totalOrderData.Order
+      setTotalActivities(activities)
+    }
+
+  }, [])
+
   
   return data ? (
     <ScrollView style={Style.ScrollView}>
@@ -64,6 +93,7 @@ const Home = (props) => {
         <View style={Style.background}>
           <Background style={Style.backgroundImage} />
         </View>
+        <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10}}>
         <View style={Style.MainContainer}>
           <View style={Style.imageContainer}>
             <View
@@ -136,7 +166,7 @@ const Home = (props) => {
           <View style={Style.InFocusContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
             {
-              data.length && data.map((obj, idx) => {
+              data.length && data['infocus'].map((obj, idx) => {
                 if (idx > 1 && !isExpanded) return
                 const icon = getIcon(obj.type)
                 return (
@@ -197,7 +227,7 @@ const Home = (props) => {
         <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              data.length && data.map((obj, idx) => {
+              data.length && data['recent'].map((obj, idx) => {
                 return (
                   <View
                     key={idx}
@@ -243,15 +273,17 @@ const Home = (props) => {
             }
           </View>
         </View>
+        </ImageBackground>
       </SafeAreaView>
     </ScrollView>
   ): 
   <ScrollView style={Style.ScrollView}>
       <Spinner mode="overlay" />
       <SafeAreaView>
-        <View style={Style.background}>
+      <View style={Style.background}>
           <Background style={Style.backgroundImage} />
         </View>
+      <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10}}>
         <View style={Style.MainContainer}>
           <View style={Style.imageContainer}>
             <View
@@ -296,7 +328,7 @@ const Home = (props) => {
               <View style={Style.graphContainer}>
                 <CircleGraph />
                 <View style={Style.graphTextContainer}>
-                  <Text style={Style.graphTextBold}>9</Text>
+                  <Text style={Style.graphTextBold}>{totalActivities}</Text>
                   <Text style={Style.graphText}>Activity</Text>
                 </View>
               </View>
@@ -306,15 +338,15 @@ const Home = (props) => {
                 </Text>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <GreenCircle style={{ marginRight: 10 }} />
-                  <Text>5 Recent Event</Text>
+                  <Text>{totalRecentData !== undefined ? totalRecentData.recent : 0} Recent Event</Text>
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <YellowCircle style={{ marginRight: 10 }} />
-                  <Text>2 Task in Focus</Text>
+                  <Text>{totalTasksData ? totalTasksData.Task : 0} Task in Focus</Text>
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <BlueCircle style={{ marginRight: 10 }} />
-                  <Text>2 Order in Focus</Text>
+                  <Text>{totalOrderData ? totalOrderData.Order : 0} Order in Focus</Text>
                 </View>
               </View>
             </View>
@@ -360,7 +392,7 @@ const Home = (props) => {
                         <FontAwesomeIcon
                           icon={faChevronRight}
                           color={Color.gray}
-                          size={25}
+                          size={45}
                         />
                       </View>
                     </View>
@@ -375,7 +407,7 @@ const Home = (props) => {
               <FontAwesomeIcon
                 icon={isExpanded ? faChevronUp : faChevronDown}
                 color={Color.gray}
-                size={25}
+                size={45}
               />
             </TouchableOpacity>
           </View>
@@ -431,6 +463,7 @@ const Home = (props) => {
             }
           </View>
         </View>
+        </ImageBackground>
       </SafeAreaView>
     </ScrollView>
 }
