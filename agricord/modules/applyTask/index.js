@@ -151,66 +151,72 @@ class ApplyTask extends Component {
               handleSelect={this.recentMixHandler}
             />
           </Task>
-          <Task title="Select" icon={faCommentDots} height={200} key={2}>
-            <CustomPicker
-              type="Machine"
-              items={dummyData3}
-              key={1}
-              styles={{zIndex: 500}}
-              handleSelect={this.pickerMachineHandler}
-            />
-            <CustomPicker
-              type="Mix"
-              items={dummyData2}
-              key={2}
-              styles={{zIndex: 500}}
-              handleSelect={this.pickerMixHandler}
-            />
-          </Task>
-          <RNSlidingButton
-            style={{
-              marginTop: 60,
-              width: '85%',
-              borderRadius: 12,
-              backgroundColor: '#F1F1F1',
-              borderColor: '#CFCFCF',
-              borderWidth: 1,
-              zIndex: 0,
-            }}
-            height={45}
-            onSlidingSuccess={() => {
-              this.selectPaddocks();
-            }}
-            slideDirection={SlideDirection.RIGHT}>
-            <View
+          <View style={{ width: '100%', alignItems: 'center', zIndex: 200 }}>
+            <Task title="Select" icon={faCommentDots} height={200} key={2}>
+              <View style={{ zIndex: 100, width: '100%' }}>
+                <CustomPicker
+                  type="Machine"
+                  items={dummyData3}
+                  key={1}
+                  handleSelect={this.pickerMachineHandler}
+                />
+              </View>
+              <View style={{ zIndex: 10, width: '100%' }}>
+                <CustomPicker
+                  type="Mix"
+                  items={dummyData2}
+                  key={2}
+                  handleSelect={this.pickerMixHandler}
+                />
+              </View>
+            </Task>
+          </View>
+          <View style={{ width: '100%', alignItems: 'center', zIndex: 20 }}>
+            <RNSlidingButton
               style={{
-                backgroundColor: '#5A84EE',
-                height: 45,
-                width: 129,
+                marginTop: 60,
+                width: '85%',
                 borderRadius: 12,
-                padding: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
+                backgroundColor: '#F1F1F1',
+                borderColor: '#CFCFCF',
+                borderWidth: 1,
+                zIndex: 0,
+              }}
+              height={45}
+              onSlidingSuccess={() => {
+                this.selectPaddocks();
+              }}
+              slideDirection={SlideDirection.RIGHT}>
+              <View
+                style={{
+                  backgroundColor: '#5A84EE',
+                  height: 45,
+                  width: 129,
+                  borderRadius: 12,
+                  padding: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: BasicStyles.titleText.fontSize,
+                    fontWeight: 'bold',
+                  }}>
+                  Select Paddocks
+                </Text>
+              </View>
+            </RNSlidingButton>
+            <View
+              style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
               <Text
                 style={{
-                  color: '#FFFFFF',
-                  fontSize: BasicStyles.titleText.fontSize,
-                  fontWeight: 'bold',
+                  fontSize: BasicStyles.normalText.fontSize,
+                  color: '#969696',
                 }}>
-                Select Paddocks
+                Swipe Right to Complete
               </Text>
             </View>
-          </RNSlidingButton>
-          <View
-            style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
-            <Text
-              style={{
-                fontSize: BasicStyles.normalText.fontSize,
-                color: '#969696',
-              }}>
-              Swipe Right to Complete
-            </Text>
           </View>
         </View>
       </ScrollView>
