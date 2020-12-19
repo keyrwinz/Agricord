@@ -29,7 +29,12 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.state.isPressed ? (
-      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
+      <View
+        style={[
+          styles.OptionsContainer,
+          {...this.props.styles},
+          {zIndex: 100},
+        ]}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -37,6 +42,7 @@ class CustomPicker extends Component {
                 key={index}
                 style={styles.OptionContainer}
                 onPress={() => {
+                  this.handleSelect(index);
                   this.props.handleSelect(index);
                 }}>
                 <View style={styles.OptionIconContainer}>
