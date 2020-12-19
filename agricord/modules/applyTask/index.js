@@ -96,6 +96,7 @@ class ApplyTask extends Component {
     this.state = {
       selectedMachine: '',
       selectedMix: '',
+      selectedPicker: 0,
     };
   }
 
@@ -121,6 +122,10 @@ class ApplyTask extends Component {
   pickerMixHandler = index => {
     let mix = dummyData2[index].type;
     this.setState({selectedMix: mix});
+  };
+
+  handleSelectedPicker = index => {
+    this.setState({selectedPicker: index});
   };
 
   selectPaddocks = () => {
@@ -164,6 +169,9 @@ class ApplyTask extends Component {
               key={1}
               styles={{zIndex: 500}}
               handleSelect={this.pickerMachineHandler}
+              index={1}
+              allowOpen={this.state.selectedPicker === 1 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
             />
             <CustomPicker
               type="Mix"
@@ -171,6 +179,9 @@ class ApplyTask extends Component {
               key={2}
               styles={{zIndex: 500}}
               handleSelect={this.pickerMixHandler}
+              index={2}
+              allowOpen={this.state.selectedPicker === 2 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
             />
           </Task>
           <RNSlidingButton
