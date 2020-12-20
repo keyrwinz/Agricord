@@ -48,6 +48,7 @@ class CustomPicker extends Component {
                 onPress={() => {
                   this.handleSelect(index);
                   this.props.handleSelect(index);
+                  this.setState({isPressed: false, selectedItem: index});
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
@@ -95,6 +96,30 @@ class CustomPicker extends Component {
   };
 
   render() {
+    const {selectedItem, isPressed} = this.state;
+    let textColor = '';
+    let backgroundColor = '';
+
+    // textColor
+    if (isPressed) {
+      textColor = '#FFFFFF';
+    } else if (selectedItem !== null) {
+      textColor = '#094EFF';
+    } else {
+      textColor = '#A1A1A1';
+    }
+
+    // backgroundColor
+    if (selectedItem !== null && isPressed) {
+      backgroundColor = '#5A84EE';
+    } else if (selectedItem !== null) {
+      backgroundColor = '#E1EAFF';
+    } else if (isPressed) {
+      backgroundColor = '#5A84EE';
+    } else {
+      backgroundColor = '#FFFFFF';
+    }
+
     return (
       <View style={{width: '100%', alignItems: 'center'}}>
         <TouchableOpacity
@@ -118,13 +143,14 @@ class CustomPicker extends Component {
             }}>
             <View
               style={{
-                alignItems: 'flex-start',
+                alignItems: 'center',
+                justifyContent: 'center',
                 paddingVertical: 3,
                 paddingHorizontal: 4,
-                borderColor:
-                  this.state.selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
-                borderWidth: this.state.selectedItem !== null ? 1 : 0,
-                borderRadius: this.state.selectedItem !== null ? 7 : 0,
+                borderColor: selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
+                borderWidth: selectedItem !== null ? 1 : 0,
+                borderRadius: selectedItem !== null ? 7 : 0,
+                backgroundColor,
               }}>
               <Text
                 style={{

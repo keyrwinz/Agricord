@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: '10%',
     justifyContent: 'flex-end',
-    height: 105,
+    height: 170,
     width: '90%',
     borderColor: '#AEAEAE',
     borderWidth: 0.5,
@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    marginBottom: 50
   },
   SliderIconContainer: {
     backgroundColor: '#5A84EE',

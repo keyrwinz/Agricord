@@ -201,22 +201,37 @@ class ApplyTask extends Component {
             slideDirection={SlideDirection.RIGHT}>
             <View
               style={{
-                backgroundColor: '#5A84EE',
-                height: 45,
-                width: 129,
+                width: '100%',
                 borderRadius: 12,
-                padding: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
+                backgroundColor: '#F1F1F1',
+                borderColor: '#CFCFCF',
+                borderWidth: 1,
+                zIndex: 0,
+              }}
+              height={45}
+              onSlidingSuccess={() => {
+                this.selectPaddocks();
+              }}
+              slideDirection={SlideDirection.RIGHT}>
+              <View
                 style={{
-                  color: '#FFFFFF',
-                  fontSize: BasicStyles.titleText.fontSize,
-                  fontWeight: 'bold',
+                  backgroundColor: '#5A84EE',
+                  height: 45,
+                  width: 129,
+                  borderRadius: 12,
+                  padding: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                Select Paddocks
-              </Text>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: BasicStyles.titleText.fontSize,
+                    fontWeight: 'bold',
+                  }}>
+                  Select Paddocks
+                </Text>
+              </View>
             </View>
           </RNSlidingButton>
           <View
