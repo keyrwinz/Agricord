@@ -9,7 +9,8 @@ class Task extends Component {
   }
   render() {
     return (
-      <View style={[styles.TaskContainer, {height: this.props.height}]}>
+      <View
+        style={[styles.TaskContainer, {height: this.props.height, zIndex: 0}]}>
         <View style={styles.TitleContainer}>
           <View style={styles.TitleIconContainer}>
             <FontAwesomeIcon

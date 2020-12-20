@@ -69,9 +69,9 @@ class InProgress extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks
     return (
-      <SafeAreaView style={{marginBottom: 50, flex: 1, position: 'relative' }}>
-      <ScrollView style={{marginBottom:100}} showsVerticalScrollIndicator={false}>
-         <View>
+      <SafeAreaView style={{ position: 'relative',height:'80%'}}>
+      <ScrollView   showsVerticalScrollIndicator={false}>
+      <View style={Style.MainContainer,{marginBottom:15}}>
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{

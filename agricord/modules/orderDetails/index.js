@@ -24,6 +24,7 @@ class OrderDetails extends Component {
   }
 
   componentDidMount() {
+    console.log('ORDER DETAILS', this.props);
     this.getOrderDetails();
   }
 
@@ -44,6 +45,7 @@ class OrderDetails extends Component {
     return this.state.products.map((product, index) => {
       return (
         <OrderContainer height={80} key={index}>
+          {this.state.isLoading ? <Spinner mode="overlay" /> : null}
           <View style={styles.ProductContainer}>
             <View style={styles.ProductDetailsContainer}>
               <Text style={styles.ProductNameTextStyle}>{product.title}</Text>
@@ -139,7 +141,6 @@ class OrderDetails extends Component {
                 </View>
               )}
             </OrderContainer>
-            {this.state.isLoading ? <Spinner mode="overlay" /> : null}
             {this.renderProducts()}
           </ScrollView>
         </View>

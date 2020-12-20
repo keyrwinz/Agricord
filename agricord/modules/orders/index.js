@@ -60,10 +60,17 @@ class Tasks extends Component {
       ],
       status: value,
     };
-    Api.request(Routes.ordersRetrieve, parameters, response => {
-      this.setData(response.data, value);
-      this.setState({isLoading: false});
-    });
+    Api.request(
+      Routes.ordersRetrieve,
+      parameters,
+      response => {
+        this.setData(response.data, value);
+        this.setState({isLoading: false});
+      },
+      error => {
+        this.setState({isLoading: false});
+      },
+    );
   };
 
   setData = (data, type) => {

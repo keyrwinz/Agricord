@@ -10,7 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Pagination from 'components/Pagination';
 import InventoryItem from './InventoryItem';
 import Herbicide from './Herbicide'
@@ -38,7 +38,6 @@ const paginationProps=[{
 }]
 
 const Inventory = (props) => {
-  console.log({ props })
   const [activeIndex, setActiveIndex] = useState(0)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
@@ -113,7 +112,6 @@ const Inventory = (props) => {
     switch (activeIndex) {
       case 0: // HERBICIDE
         const data1 = HerbicideData.filter(obj => obj.title.toLocaleLowerCase().indexOf(query) >= 0)
-        console.log({ query, activeIndex, data1 })
         setFilteredHerbicideData(data1)
         break
       case 1: // FUNGICIDE
@@ -234,13 +232,28 @@ const InventoryScreen = (props) => {
         name="InventoryItem"
         component={InventoryItem}
       />
-         <InventoryStack.Screen
+      <InventoryStack.Screen
         name="ApplyTask"
         component={ApplyTask}
-        options={({ route }) => ({
-            headerLeft: null,
+        options={({ navigation }) => {
+          return ({
+            headerLeft: () => (
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.pop()}>
+                  <FontAwesomeIcon
+                    icon={faChevronLeft}
+                    size={BasicStyles.iconSize}
+                    style={[
+                      BasicStyles.iconStyle,
+                      {
+                        color: '#000',
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+            ),
             headerTitle: () => (
-              
               <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
                 <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
                  APPLY TASK
@@ -248,7 +261,7 @@ const InventoryScreen = (props) => {
              
               </View>
             )
-        })}
+        })}}
       />
     </InventoryStack.Navigator>
   )

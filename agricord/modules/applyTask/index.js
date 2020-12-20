@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Modal, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {
-  faClock,
-  faTimesCircle,
-  faCommentDots,
-} from '@fortawesome/free-regular-svg-icons';
-import {faHistory, faFlask, faTractor} from '@fortawesome/free-solid-svg-icons';
-import {Color, BasicStyles} from 'common';
+  faHistory,
+  faFlask,
+  faTractor,
+  faTh,
+} from '@fortawesome/free-solid-svg-icons';
+import {BasicStyles} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
@@ -96,7 +96,12 @@ class ApplyTask extends Component {
     this.state = {
       selectedMachine: '',
       selectedMix: '',
+      selectedPicker: 0,
     };
+  }
+
+  componentDidMount() {
+    console.log('APPLY TASK PROPS', this.props);
   }
 
   recentMachineHandler = index => {
@@ -119,6 +124,10 @@ class ApplyTask extends Component {
     this.setState({selectedMix: mix});
   };
 
+  handleSelectedPicker = index => {
+    this.setState({selectedPicker: index});
+  };
+
   selectPaddocks = () => {
     const {setMachineAndMix} = this.props;
     if (this.state.selectedMachine !== '' && this.state.selectedMix !== '') {
@@ -127,7 +136,9 @@ class ApplyTask extends Component {
         mix: this.state.selectedMix,
       };
       setMachineAndMix(task);
-      //navigate here
+      this.props.navigation.navigate('MixName', {
+        details: {products: [], appliedRate: '', status: ''},
+      });
     } else {
       alert('Please select a machine or mix.');
     }
@@ -151,13 +162,16 @@ class ApplyTask extends Component {
               handleSelect={this.recentMixHandler}
             />
           </Task>
-          <Task title="Select" icon={faCommentDots} height={200} key={2}>
+          <Task title="Select" icon={faTh} height={200} key={2}>
             <CustomPicker
               type="Machine"
               items={dummyData3}
               key={1}
               styles={{zIndex: 500}}
               handleSelect={this.pickerMachineHandler}
+              index={1}
+              allowOpen={this.state.selectedPicker === 1 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
             />
             <CustomPicker
               type="Mix"
@@ -165,6 +179,9 @@ class ApplyTask extends Component {
               key={2}
               styles={{zIndex: 500}}
               handleSelect={this.pickerMixHandler}
+              index={2}
+              allowOpen={this.state.selectedPicker === 2 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
             />
           </Task>
           <RNSlidingButton
@@ -184,22 +201,37 @@ class ApplyTask extends Component {
             slideDirection={SlideDirection.RIGHT}>
             <View
               style={{
-                backgroundColor: '#5A84EE',
-                height: 45,
-                width: 129,
+                width: '100%',
                 borderRadius: 12,
-                padding: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text
+                backgroundColor: '#F1F1F1',
+                borderColor: '#CFCFCF',
+                borderWidth: 1,
+                zIndex: 0,
+              }}
+              height={45}
+              onSlidingSuccess={() => {
+                this.selectPaddocks();
+              }}
+              slideDirection={SlideDirection.RIGHT}>
+              <View
                 style={{
-                  color: '#FFFFFF',
-                  fontSize: BasicStyles.titleText.fontSize,
-                  fontWeight: 'bold',
+                  backgroundColor: '#5A84EE',
+                  height: 45,
+                  width: 129,
+                  borderRadius: 12,
+                  padding: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                Select Paddocks
-              </Text>
+                <Text
+                  style={{
+                    color: '#FFFFFF',
+                    fontSize: BasicStyles.titleText.fontSize,
+                    fontWeight: 'bold',
+                  }}>
+                  Select Paddocks
+                </Text>
+              </View>
             </View>
           </RNSlidingButton>
           <View

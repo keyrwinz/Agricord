@@ -67,9 +67,9 @@ class Due extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks
     return (
-      <SafeAreaView style={{ flex: 1, marginBottom: 50 }}>
-       <ScrollView style={{marginBottom:100}} showsVerticalScrollIndicator={false}>
-      <View style={Style.MainContainer,{minHeight:height}}>
+      <SafeAreaView style={{ position: 'relative',height:'80%'}}>
+      <ScrollView  showsVerticalScrollIndicator={false}>
+      <View style={Style.MainContainer,{marginBottom:15}}>
         <Text style={{fontWeight:'bold'}}>Paddocks Due</Text>
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{
