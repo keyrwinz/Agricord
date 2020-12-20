@@ -11,6 +11,7 @@ import {
   faChevronUp,
   faFlask,
   faTractor,
+  faTimesCircle
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
@@ -40,7 +41,7 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.state.isPressed ? (
-      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
+      <View style={styles.OptionsContainer}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -49,6 +50,7 @@ class CustomPicker extends Component {
                 style={styles.OptionContainer}
                 onPress={() => {
                   this.props.handleSelect(index);
+                  this.setState({ isPressed: false, selectedItem: index })
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
@@ -95,12 +97,36 @@ class CustomPicker extends Component {
   };
 
   render() {
+    const { selectedItem, isPressed } = this.state
+    let textColor = ''
+    let backgroundColor = ''
+
+    // textColor
+    if (isPressed) {
+      textColor = '#FFFFFF'
+    } else if (selectedItem !== null) {
+      textColor = '#094EFF'
+    } else {
+      textColor = '#A1A1A1'
+    }
+
+    // backgroundColor
+    if (selectedItem !== null && isPressed) {
+      backgroundColor = '#5A84EE'
+    } else if (selectedItem !== null) {
+      backgroundColor = '#E1EAFF'
+    } else if (isPressed) {
+      backgroundColor = '#5A84EE'
+    } else {
+      backgroundColor = '#FFFFFF'
+    }
+
     return (
       <View style={{width: '100%', alignItems: 'center'}}>
         <TouchableOpacity
           style={[
             styles.PickerContainer,
-            {backgroundColor: this.state.isPressed ? '#5A84EE' : '#FFFFFF'},
+            {backgroundColor: isPressed ? '#5A84EE' : '#FFFFFF'},
           ]}
           onPress={this.handlePress}>
           <View
@@ -114,23 +140,47 @@ class CustomPicker extends Component {
             }}>
             <View
               style={{
-                alignItems: 'flex-start',
+                alignItems: 'center',
+                justifyContent: 'center',
                 paddingVertical: 3,
                 paddingHorizontal: 4,
-                borderColor:
-                  this.state.selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
-                borderWidth: this.state.selectedItem !== null ? 1 : 0,
-                borderRadius: this.state.selectedItem !== null ? 7 : 0,
+                borderColor: selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
+                borderWidth: selectedItem !== null ? 1 : 0,
+                borderRadius: selectedItem !== null ? 7 : 0,
+                backgroundColor
               }}>
-              <Text
-                style={{
-                  textAlign: 'left',
-                  color: this.state.isPressed ? '#FFFFFF' : '#A1A1A1',
-                }}>
-                {this.state.selectedItem !== null
-                  ? this.props.items[this.state.selectedItem].type
-                  : `Selected ${this.props.type}`}
-              </Text>
+              {
+                selectedItem !== null ? (
+                  <TouchableOpacity
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                    onPress={() => this.setState({ selectedItem: null })}
+                  >
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: textColor
+                      }}
+                    >
+                      {this.props.items[selectedItem].type}
+                    </Text>
+                    <FontAwesomeIcon
+                      color="#000"
+                      icon={faTimesCircle}
+                      size={15}
+                      style={{ marginLeft: 10 }}
+                    />
+                  </TouchableOpacity>
+                ) : (
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      color: textColor
+                    }}
+                  >
+                    {`Selected ${this.props.type}`}
+                  </Text>
+                )
+              }
             </View>
             {this.renderButton()}
           </View>
