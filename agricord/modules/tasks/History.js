@@ -71,15 +71,15 @@ class History extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks
     return (
-      <SafeAreaView style={{ flex: 1, marginBottom: 50 }}>
-       <ScrollView style={{marginBottom:100}}>
+      <SafeAreaView style={{marginBottom: 50, position: 'relative',height:'80%'}}>
+      <ScrollView  showsVerticalScrollIndicator={false}>
          {console.log('check',data)}
-      <View style={Style.MainContainer,{minHeight:height}}>
+         <View style={Style.MainContainer,{marginBottom:15}}>
         <Text style={{fontWeight:'bold'}}>Paddocks History</Text>
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{
             const name = item.name.toUpperCase()   
-          this.props.navigation.push('TasksItem', { name, data: item })
+            this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'history' })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>

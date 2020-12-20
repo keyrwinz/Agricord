@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import PaddockPage from 'modules/paddockPage';
+import MixName from 'modules/mixName';
 import { Color, BasicStyles } from 'common';
 import { connect } from 'react-redux';
 
@@ -13,10 +13,8 @@ class HeaderOptions extends Component {
   }
   back = () => {
     this.props.navigationProps.pop();
+    // console.log(this.props)
     };
-  goTo = () => {
-    this.props.navigationProps.navigate('addressMap')
-  }
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -36,11 +34,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const PaddockStack = createStackNavigator({
-  PaddockScren: {
-    screen: PaddockPage, 
+const MixNameStack = createStackNavigator({
+  MixNameScreen: {
+    screen: MixName, 
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.name,
+      title: navigation.state.params.dataFrom==="inprogress" ? "MIX NAME" : "SPRAY MIX",
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       drawerLabel: 'Paddock',
       headerStyle: {
@@ -54,4 +52,4 @@ const PaddockStack = createStackNavigator({
 export default connect(
   
   mapDispatchToProps
-)(PaddockStack);
+)(MixNameStack);

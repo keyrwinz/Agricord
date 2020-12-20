@@ -41,7 +41,7 @@ class Tasks extends Component {
     if (user != null) {
     }
    console.log(Routes.tasksRetrieve)
-    console.log(this.props)
+    console.log("henlo",this.props)
     if (this.props.initialPage!=null) {
       switch(this.props.initialPage) {
         case 'TasksInProgress':

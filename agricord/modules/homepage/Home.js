@@ -123,7 +123,7 @@ const Home = (props) => {
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
+              {/* Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username} */}Hi
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
@@ -313,7 +313,7 @@ const Home = (props) => {
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
+              {/* Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username} */}Hi
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
