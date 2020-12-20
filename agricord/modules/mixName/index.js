@@ -59,7 +59,8 @@ class MixName extends Component {
 
  
   render() {
-    const {details}=this.props.route.params
+    const {details}=this.props.navigation.state.params
+    const {dataFrom}=this.props.navigation.state.params
     return (
       <ImageBackground
       source={require('assets/backgroundlvl2.png')}
@@ -86,7 +87,7 @@ class MixName extends Component {
       </View>
       </ScrollView>
       
-    {details.status=="due" && (
+    {dataFrom=="due" && (
        <SwipeButton
        thumbIconBackgroundColor="#5A84EE"
        thumbIconBorderColor="#5A84EE"

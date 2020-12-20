@@ -39,7 +39,7 @@ class InProgress extends Component {
     }
     this.retrieveData();
   
-  
+  console.log("hello world",this.props)
   }
 
   retrieveData=async()=>{
@@ -56,6 +56,7 @@ class InProgress extends Component {
     }
   Api.request(Routes.tasksRetrieve, parameter, response => {
       this.setState({products:response.data.paddocks,isLoading:false})
+      console.log(response.data.paddocks)
      }, error => {
       console.log("ERROR HAPPENS",error )
      
@@ -68,15 +69,14 @@ class InProgress extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks
     return (
-      <SafeAreaView style={{ flex: 1, marginBottom: 50 }}>
-       <ScrollView style={{marginBottom:100}}>
-         {console.log('check',this.props)}
-      <View style={Style.MainContainer,{minHeight:height}}>
+      <SafeAreaView style={{paddingBottom:150, flex: 1, position: 'relative' }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+         <View>
         <Text style={{fontWeight:'bold'}}>Paddocks</Text>
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{
           const name = item.name.toUpperCase()
-          this.props.navigation.push('TasksItem', { name, data: item })
+          this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'inprogress' })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>
@@ -85,7 +85,7 @@ class InProgress extends Component {
        </View>
        </ScrollView>
     <TaskIcon details={this.props}></TaskIcon>
-       </SafeAreaView>
+    </SafeAreaView>
  
   
     );

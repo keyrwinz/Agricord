@@ -38,8 +38,9 @@ class paddockPage extends Component{
 
   componentDidMount(){
     const { user } = this.props.state; 
-    const {data}=this.props.route.params
-    console.log(data)
+    console.log(this.props)
+    // const {data}=this.props.navigation.state.params.data
+    // console.log(data)
 
     this.retrieveData()
 
@@ -51,16 +52,16 @@ class paddockPage extends Component{
     })
 
     const parameter={
-      status:this.props.route.params.data.status,
+      status:this.props.navigation.state.params.data.status,
       merchant_id:1,
-      id:this.props.route.params.data.id,
+      id:this.props.navigation.state.params.data.id,
     }
     console.log(Routes.paddockDetailsRetrieve)
   Api.request(Routes.paddockDetailsRetrieve, parameter, response => {
     if(response.data!=null){
     this.setState({paddock:response.data.paddock_data[0]});
     }
-    console.log(response)
+   
 
      }, error => {
       console.log("ERROR HAPPENS",error )
@@ -70,7 +71,7 @@ class paddockPage extends Component{
   }
 
   renderTopCard=()=>{
-    const {data}=this.props.route.params
+    const {data}=this.props.navigation.state.params
     const {paddock}=this.state
     return(
     <View style={Style.container}>
@@ -156,7 +157,8 @@ class paddockPage extends Component{
     return(
       <TouchableHighlight
       onPress={()=>{
-        this.props.navigation.push('MixName',{details:this.props.route.params.data})
+        this.props.navigation.navigate('mixNameStack',{details:this.props.navigation.state.params.data,dataFrom:this.props.navigation.state.params.dataFrom})
+        // console.log(this.props.navigation)
       }}
       style={[Style.paddockContainer]}
       underlayColor={'#5A84EE'}
@@ -184,6 +186,7 @@ class paddockPage extends Component{
       <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
         {this.renderTopCard()}
         {this.renderMixCards()}        
+    
         <TaskIcon bottom={70}></TaskIcon> 
      </View>
      </ImageBackground>

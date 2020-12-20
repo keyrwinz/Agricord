@@ -20,7 +20,7 @@ const TasksScreen = (props) => {
     <TasksStack.Navigator>
       <TasksStack.Screen
         name="Tasks"
-        children={(route)=><Tasks {...route} initialPage={props.initialPage}/>}
+        children={(route)=><Tasks {...route} parentNav={props.parentNav} initialPage={props.initialPage}/>}
         options={({ route }) => {
           return ({
             headerTitle: () => (
