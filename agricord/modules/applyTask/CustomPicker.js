@@ -1,18 +1,6 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  faChevronDown,
-  faChevronUp,
-  faFlask,
-  faTractor,
-  faTimesCircle
-} from '@fortawesome/free-solid-svg-icons';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
 import styles from 'modules/applyTask/Styles.js';
@@ -31,7 +19,7 @@ class CustomPicker extends Component {
       <View style={styles.ButtonContainer}>
         <FontAwesomeIcon
           color="#FFFFFF"
-          icon={this.state.isPressed ? faChevronUp : faChevronDown}
+          icon={this.checkIfAllowDropdown() ? faChevronUp : faChevronDown}
           size={25}
           style={styles.iconStyle}
         />
@@ -39,9 +27,18 @@ class CustomPicker extends Component {
     );
   };
 
+  checkIfAllowDropdown = () => {
+    return this.state.isPressed && this.props.allowOpen;
+  };
+
   renderOptions = () => {
-    return this.state.isPressed ? (
-      <View style={styles.OptionsContainer}>
+    return this.checkIfAllowDropdown() ? (
+      <View
+        style={[
+          styles.OptionsContainer,
+          {...this.props.styles},
+          {zIndex: 100},
+        ]}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -49,8 +46,9 @@ class CustomPicker extends Component {
                 key={index}
                 style={styles.OptionContainer}
                 onPress={() => {
+                  this.handleSelect(index);
                   this.props.handleSelect(index);
-                  this.setState({ isPressed: false, selectedItem: index })
+                  this.setState({isPressed: false, selectedItem: index});
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
@@ -94,31 +92,32 @@ class CustomPicker extends Component {
     this.setState({
       isPressed: !this.state.isPressed,
     });
+    this.props.handleSelectedPicker(this.props.index);
   };
 
   render() {
-    const { selectedItem, isPressed } = this.state
-    let textColor = ''
-    let backgroundColor = ''
+    const {selectedItem, isPressed} = this.state;
+    let textColor = '';
+    let backgroundColor = '';
 
     // textColor
     if (isPressed) {
-      textColor = '#FFFFFF'
+      textColor = '#FFFFFF';
     } else if (selectedItem !== null) {
-      textColor = '#094EFF'
+      textColor = '#094EFF';
     } else {
-      textColor = '#A1A1A1'
+      textColor = '#A1A1A1';
     }
 
     // backgroundColor
     if (selectedItem !== null && isPressed) {
-      backgroundColor = '#5A84EE'
+      backgroundColor = '#5A84EE';
     } else if (selectedItem !== null) {
-      backgroundColor = '#E1EAFF'
+      backgroundColor = '#E1EAFF';
     } else if (isPressed) {
-      backgroundColor = '#5A84EE'
+      backgroundColor = '#5A84EE';
     } else {
-      backgroundColor = '#FFFFFF'
+      backgroundColor = '#FFFFFF';
     }
 
     return (
@@ -126,7 +125,11 @@ class CustomPicker extends Component {
         <TouchableOpacity
           style={[
             styles.PickerContainer,
-            {backgroundColor: isPressed ? '#5A84EE' : '#FFFFFF'},
+            {
+              backgroundColor: this.checkIfAllowDropdown()
+                ? '#5A84EE'
+                : '#FFFFFF',
+            },
           ]}
           onPress={this.handlePress}>
           <View
@@ -147,40 +150,17 @@ class CustomPicker extends Component {
                 borderColor: selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
                 borderWidth: selectedItem !== null ? 1 : 0,
                 borderRadius: selectedItem !== null ? 7 : 0,
-                backgroundColor
+                backgroundColor,
               }}>
-              {
-                selectedItem !== null ? (
-                  <TouchableOpacity
-                    style={{ flexDirection: 'row', justifyContent: 'center' }}
-                    onPress={() => this.setState({ selectedItem: null })}
-                  >
-                    <Text
-                      style={{
-                        textAlign: 'left',
-                        color: textColor
-                      }}
-                    >
-                      {this.props.items[selectedItem].type}
-                    </Text>
-                    <FontAwesomeIcon
-                      color="#000"
-                      icon={faTimesCircle}
-                      size={15}
-                      style={{ marginLeft: 10 }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <Text
-                    style={{
-                      textAlign: 'left',
-                      color: textColor
-                    }}
-                  >
-                    {`Selected ${this.props.type}`}
-                  </Text>
-                )
-              }
+              <Text
+                style={{
+                  textAlign: 'left',
+                  color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#A1A1A1',
+                }}>
+                {this.state.selectedItem !== null
+                  ? this.props.items[this.state.selectedItem].type
+                  : `Selected ${this.props.type}`}
+              </Text>
             </View>
             {this.renderButton()}
           </View>

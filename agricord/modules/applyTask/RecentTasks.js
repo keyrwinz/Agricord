@@ -1,12 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {Color, BasicStyles} from 'common';
+import {View, Text, TouchableOpacity} from 'react-native';
 import styles from 'modules/applyTask/Styles.js';
 
 class RecentTasks extends Component {
@@ -14,9 +7,6 @@ class RecentTasks extends Component {
     super(props);
   }
 
-  componentDidMount() {
-    console.log('RECENT TASKS PROPS', this.props);
-  }
   renderRecentTasks = () => {
     const tasks = this.props.tasks;
     return tasks.map((task, index) => {

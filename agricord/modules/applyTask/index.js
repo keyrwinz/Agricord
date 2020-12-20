@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Modal, ScrollView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import {
-  faClock,
-  faTimesCircle,
-  faCommentDots,
-} from '@fortawesome/free-regular-svg-icons';
-import {faHistory, faFlask, faTractor} from '@fortawesome/free-solid-svg-icons';
-import {Color, BasicStyles} from 'common';
+  faHistory,
+  faFlask,
+  faTractor,
+  faTh,
+} from '@fortawesome/free-solid-svg-icons';
+import {BasicStyles} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
@@ -96,7 +96,12 @@ class ApplyTask extends Component {
     this.state = {
       selectedMachine: '',
       selectedMix: '',
+      selectedPicker: 0,
     };
+  }
+
+  componentDidMount() {
+    console.log('APPLY TASK PROPS', this.props);
   }
 
   recentMachineHandler = index => {
@@ -119,6 +124,10 @@ class ApplyTask extends Component {
     this.setState({selectedMix: mix});
   };
 
+  handleSelectedPicker = index => {
+    this.setState({selectedPicker: index});
+  };
+
   selectPaddocks = () => {
     const {setMachineAndMix} = this.props;
     if (this.state.selectedMachine !== '' && this.state.selectedMix !== '') {
@@ -127,7 +136,9 @@ class ApplyTask extends Component {
         mix: this.state.selectedMix,
       };
       setMachineAndMix(task);
-      //navigate here
+      this.props.navigation.navigate('MixName', {
+        details: {products: [], appliedRate: '', status: ''},
+      });
     } else {
       alert('Please select a machine or mix.');
     }
@@ -151,31 +162,46 @@ class ApplyTask extends Component {
               handleSelect={this.recentMixHandler}
             />
           </Task>
-          <View style={{ width: '100%', alignItems: 'center', zIndex: 200 }}>
-            <Task title="Select" icon={faCommentDots} height={200} key={2}>
-              <View style={{ zIndex: 100, width: '100%' }}>
-                <CustomPicker
-                  type="Machine"
-                  items={dummyData3}
-                  key={1}
-                  handleSelect={this.pickerMachineHandler}
-                />
-              </View>
-              <View style={{ zIndex: 10, width: '100%' }}>
-                <CustomPicker
-                  type="Mix"
-                  items={dummyData2}
-                  key={2}
-                  handleSelect={this.pickerMixHandler}
-                />
-              </View>
-            </Task>
-          </View>
-          <View style={{ width: '100%', alignItems: 'center', zIndex: 20 }}>
-            <RNSlidingButton
+          <Task title="Select" icon={faTh} height={200} key={2}>
+            <CustomPicker
+              type="Machine"
+              items={dummyData3}
+              key={1}
+              styles={{zIndex: 500}}
+              handleSelect={this.pickerMachineHandler}
+              index={1}
+              allowOpen={this.state.selectedPicker === 1 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
+            />
+            <CustomPicker
+              type="Mix"
+              items={dummyData2}
+              key={2}
+              styles={{zIndex: 500}}
+              handleSelect={this.pickerMixHandler}
+              index={2}
+              allowOpen={this.state.selectedPicker === 2 ? true : false}
+              handleSelectedPicker={this.handleSelectedPicker}
+            />
+          </Task>
+          <RNSlidingButton
+            style={{
+              marginTop: 60,
+              width: '85%',
+              borderRadius: 12,
+              backgroundColor: '#F1F1F1',
+              borderColor: '#CFCFCF',
+              borderWidth: 1,
+              zIndex: 0,
+            }}
+            height={45}
+            onSlidingSuccess={() => {
+              this.selectPaddocks();
+            }}
+            slideDirection={SlideDirection.RIGHT}>
+            <View
               style={{
-                marginTop: 60,
-                width: '85%',
+                width: '100%',
                 borderRadius: 12,
                 backgroundColor: '#F1F1F1',
                 borderColor: '#CFCFCF',
@@ -206,17 +232,17 @@ class ApplyTask extends Component {
                   Select Paddocks
                 </Text>
               </View>
-            </RNSlidingButton>
-            <View
-              style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
-              <Text
-                style={{
-                  fontSize: BasicStyles.normalText.fontSize,
-                  color: '#969696',
-                }}>
-                Swipe Right to Complete
-              </Text>
             </View>
+          </RNSlidingButton>
+          <View
+            style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
+            <Text
+              style={{
+                fontSize: BasicStyles.normalText.fontSize,
+                color: '#969696',
+              }}>
+              Swipe Right to Complete
+            </Text>
           </View>
         </View>
       </ScrollView>

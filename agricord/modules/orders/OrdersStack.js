@@ -15,7 +15,7 @@ const OrderStack = createStackNavigator();
 
 const OrderScreen = props => {
   const {selectedOrder} = props.state;
-  console.log('Order Screen', selectedOrder);
+  console.log('Order Screen', props);
   return (
     <OrderStack.Navigator>
       <OrderStack.Screen
@@ -85,9 +85,9 @@ const OrderScreen = props => {
           ),
           headerLeft: () => (
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
+              <TouchableOpacity onPress={() => props.navigation.goBack()}>
                 <FontAwesomeIcon
-                  icon={faBars}
+                  icon={faChevronLeft}
                   size={BasicStyles.iconSize}
                   style={[
                     BasicStyles.iconStyle,

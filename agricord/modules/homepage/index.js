@@ -19,6 +19,17 @@ import TaskIcon from 'assets/btm_nav/task.svg';
 const Tab = createBottomTabNavigator();
 
 export default function Homepage(props) {
+  const getTabBarVisibility = route => {
+    const routeName = route.state
+      ? route.state.routes[route.state.index].name
+      : '';
+
+    if (routeName === 'OrderDetails') {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -60,10 +71,11 @@ export default function Homepage(props) {
               parentNav={props.navigation}
             />
           )}
-          options={{
+          options={({route}) => ({
             tabBarLabel: 'Order',
             tabBarIcon: () => <OrderIcon />,
-          }}
+            tabBarVisible: getTabBarVisibility(route),
+          })}
         />
         <Tab.Screen
           name="Home"
