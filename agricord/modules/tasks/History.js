@@ -79,7 +79,7 @@ class History extends Component {
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{
             const name = item.name.toUpperCase()   
-          this.props.navigation.push('TasksItem', { name, data: item,dataFrom:'history' })
+            this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'history' })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>

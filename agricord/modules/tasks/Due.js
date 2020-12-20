@@ -75,7 +75,7 @@ class Due extends Component {
            <TouchableOpacity onPress={()=>{
             const name = item.name.toUpperCase()
           
-          this.props.navigation.push('TasksItem', { name, data: item,dataFrom:'due' })
+            this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'due' })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>
