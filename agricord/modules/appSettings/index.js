@@ -8,7 +8,7 @@ class AppSettings extends Component {
   render() {
     return (
       <View style={{height: '100%', width: '100%'}}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.AppSettings}>
             <View style={styles.SettingContainer}>
               <View style={styles.AppSettingsTitleContainer}>
