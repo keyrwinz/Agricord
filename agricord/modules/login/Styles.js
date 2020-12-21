@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingLeft: 20,
     paddingRight: 10,
+    width: '15%'
   },
   IconStyle: {
     height: 30,
