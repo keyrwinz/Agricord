@@ -101,7 +101,7 @@ class ApplyTask extends Component {
   }
 
   componentDidMount() {
-    console.log('APPLY TASK PROPS', this.props);
+    console.log('APPLY TASK PEROPRSDA', this.props);
   }
 
   recentMachineHandler = index => {
@@ -137,7 +137,7 @@ class ApplyTask extends Component {
       };
       setMachineAndMix(task);
       this.props.navigation.navigate('MixName', {
-        details: {products: [], appliedRate: '', status: ''},
+        details: {appliedRate: 1, status: 'Auto'},
       });
     } else {
       alert('Please select a machine or mix.');
