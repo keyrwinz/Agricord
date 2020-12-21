@@ -7,6 +7,7 @@ import {BasicStyles} from 'common';
 import Order from './index';
 import OrderDetails from 'modules/orderDetails';
 import {connect} from 'react-redux';
+import ApplyTask from 'modules/applyTask';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -15,12 +16,17 @@ const OrderStack = createStackNavigator();
 
 const OrderScreen = props => {
   const {selectedOrder} = props.state;
-  console.log('Order Screen', props);
   return (
     <OrderStack.Navigator>
       <OrderStack.Screen
         name="Orders"
-        children={route => <Order {...route} initialPage={props.initialPage} />}
+        children={route => (
+          <Order
+            {...route}
+            parentNav={props.parentNav}
+            initialPage={props.initialPage}
+          />
+        )}
         options={({route}) => {
           return {
             headerTitle: () => (
@@ -85,7 +91,7 @@ const OrderScreen = props => {
           ),
           headerLeft: () => (
             <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <TouchableOpacity onPress={() => props.navigation.pop()}>
                 <FontAwesomeIcon
                   icon={faChevronLeft}
                   size={BasicStyles.iconSize}
@@ -97,6 +103,48 @@ const OrderScreen = props => {
                   ]}
                 />
               </TouchableOpacity>
+            </View>
+          ),
+        })}
+      />
+      <OrderStack.Screen
+        name="ApplyTask"
+        component={ApplyTask}
+        options={({route}) => ({
+          headerLeft: () => (
+            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('Orders')}>
+                <FontAwesomeIcon
+                  icon={faChevronLeft}
+                  size={BasicStyles.iconSize}
+                  style={[
+                    BasicStyles.iconStyle,
+                    {
+                      color: '#000',
+                    },
+                  ]}
+                />
+              </TouchableOpacity>
+            </View>
+          ),
+          headerTitle: () => (
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginRight: '20%',
+              }}>
+              <Text
+                style={{
+                  color: '#000',
+                  fontWeight: 'bold',
+                  fontSize: 16,
+                  textAlign: 'center',
+                }}>
+                APPLY TASK
+              </Text>
             </View>
           ),
         })}

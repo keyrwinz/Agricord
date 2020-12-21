@@ -23,7 +23,9 @@ class OrderCard extends Component {
         style={{alignItems: 'center', width: '100%'}}
         onPress={() => {
           this.setOrder();
-          this.props.navigation.navigate('OrderDetails');
+          this.props.parentNav.navigate('orderDetailsStack', {
+            details: this.props.details,
+          });
         }}>
         <View style={Style.paddockContainer}>
           <View style={Style.paddockInfo}>

@@ -36,7 +36,7 @@ class Orders extends Component {
               <OrderCard
                 details={order}
                 key={index}
-                navigation={this.props.navigation}
+                parentNav={this.props.parentNav}
               />
             ))}
           </View>
@@ -45,17 +45,6 @@ class Orders extends Component {
           style={{position: 'absolute', bottom: 230, alignSelf: 'flex-end'}}>
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('ApplyTask')}>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                style={{padding: 30, height: 50, width: '100%'}}
-                source={require('../../assets/taskIcon.png')}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{position: 'absolute', bottom: 230, alignSelf: 'flex-end'}}>
-          <TouchableOpacity onPress={() => alert('redirect')}>
             <View style={{alignItems: 'center'}}>
               <Image
                 style={{padding: 30, height: 50, width: '100%'}}
