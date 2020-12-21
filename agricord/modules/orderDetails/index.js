@@ -24,7 +24,6 @@ class OrderDetails extends Component {
   }
 
   componentDidMount() {
-    console.log('ORDER DETAILS', this.props);
     this.getOrderDetails();
   }
 

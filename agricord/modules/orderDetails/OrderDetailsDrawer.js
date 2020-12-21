@@ -12,7 +12,7 @@ class HeaderOptions extends Component {
     super(props);
   }
   back = () => {
-    // this.props.navigationProps.navgiate('drawerStack');
+    this.props.navigationProps.pop();
   };
   render() {
     return (
@@ -44,7 +44,10 @@ const OrderDetailsStack = createStackNavigator({
   orderDetailsScreen: {
     screen: OrderDetails,
     navigationOptions: ({navigation}) => ({
-      title: 'ORDER DETAILS',
+      title:
+        navigation.state.params.details.status === 'completed'
+          ? `ORDER NUMBER ${navigation.state.params.details.order_number}`
+          : 'ORDER DETAILS',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       headerStyle: {
         elevation: 10,
