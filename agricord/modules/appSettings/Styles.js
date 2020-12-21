@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-
+import {BasicStyles} from 'common';
 const styles = StyleSheet.create({
   AppSettings: {
     backgroundColor: '#F1F1F1',
@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   SettingContainer: {
-    width: '85%',
+    width: '95%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: '3%',
   },
   AppSettingsContainer: {
-    marginVertical: 15,
+    marginVertical: 10,
     width: '100%',
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -33,15 +33,16 @@ const styles = StyleSheet.create({
     paddingVertical: 30,
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    width: '90%',
+    width: '95%',
     height: 75,
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: '4%',
   },
   AppSettingTileContainerLeft: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '80%',
   },
   AppSettingTileIconContainer: {
     paddingRight: '10%',
@@ -56,13 +57,14 @@ const styles = StyleSheet.create({
   },
   AppSettingTileTitleTextStyle: {
     fontWeight: 'bold',
-    fontSize: 14,
+    fontSize: BasicStyles.titleText.fontSize,
   },
   AppSettingTileDescriptionTextStyle: {
-    fontSize: 12,
+    fontSize: BasicStyles.normalText.fontSize,
+    color: '#C6C6C6',
   },
   AppSettingTileContainerRight: {
-    paddingLeft: '10%',
+    width: '20%',
   },
 });
 
