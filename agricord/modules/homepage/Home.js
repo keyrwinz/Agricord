@@ -53,7 +53,7 @@ const Home = (props) => {
 
   useEffect(() => {
     const userInfo = props.state.user 
-    if(userInfo === null){
+    if(userInfo === null || userDetail == null){
       return
     }
     const parameter = {

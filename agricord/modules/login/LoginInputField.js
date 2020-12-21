@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, TextInput, Text, StyleSheet} from 'react-native';
+import {View, TextInput, Text, StyleSheet, Platform} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import styles from 'modules/login/Styles.js';
 
@@ -14,6 +14,9 @@ class LoginInputField extends Component {
           autoFocus={true}
           onChangeText={value => {
             this.props.handler(value);
+          }}
+          style={{
+            width: '85%'
           }}
           secureTextEntry={this.props.secureTextEntry}
           placeholder={this.props.placeholder}
