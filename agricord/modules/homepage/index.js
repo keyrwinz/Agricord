@@ -61,7 +61,7 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: 'Order',
+            tabBarLabel: 'ORDERS',
             tabBarIcon: () => <OrderIcon />,
           }}
         />

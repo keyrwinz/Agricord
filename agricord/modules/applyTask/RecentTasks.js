@@ -1,22 +1,22 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
-import {Color, BasicStyles} from 'common';
+import {View, Text, TouchableOpacity} from 'react-native';
+import styles from 'modules/applyTask/Styles.js';
 
 class RecentTasks extends Component {
   constructor(props) {
     super(props);
   }
+
   renderRecentTasks = () => {
     const tasks = this.props.tasks;
-    return tasks.map(task => {
+    return tasks.map((task, index) => {
       return (
-        <TouchableOpacity style={styles.Task} key={task.id} onPress={() => {}}>
+        <TouchableOpacity
+          style={styles.Task}
+          key={index}
+          onPress={() => {
+            this.props.handleSelect(index);
+          }}>
           <Text style={styles.TaskTextStyle}>{task.task}</Text>
         </TouchableOpacity>
       );
@@ -34,8 +34,9 @@ class RecentTasks extends Component {
           style={{
             marginTop: 10,
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
+            width: '100%',
           }}>
           {this.renderRecentTasks()}
         </View>
@@ -44,33 +45,4 @@ class RecentTasks extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  RecentTasksContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    marginTop: 10,
-  },
-  RecentTasksTitleContainer: {
-    alignSelf: 'flex-start',
-    paddingLeft: 10,
-  },
-  RecentTasksTitleTextStyle: {
-    fontWeight: 'bold',
-    fontSize: BasicStyles.titleText.fontSize,
-  },
-  Task: {
-    height: 35,
-    width: 90,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#5A84EE',
-    borderRadius: 12,
-    marginHorizontal: 7,
-  },
-  TaskTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-  },
-});
 export default RecentTasks;

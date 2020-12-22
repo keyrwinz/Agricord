@@ -1,23 +1,32 @@
 import React, {Component} from 'react';
-import {Text, View, Image} from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faStar,
-  faStopwatch,
-  faCircle,
-  faPlay,
-  faImage,
-} from '@fortawesome/free-solid-svg-icons';
+import {Text, View, TouchableOpacity} from 'react-native';
 import {Divider} from 'react-native-elements';
-import {Color} from 'common';
-import Config from 'src/config.js';
 import Style from './OrderCardStyle';
+import {connect} from 'react-redux';
 
 class OrderCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  setOrder = () => {
+    const {setSelectedOrder} = this.props;
+    const selectedOrder = this.props.details;
+    setSelectedOrder(selectedOrder);
+  };
+
   render() {
     const {details, theme} = this.props;
     return (
-      <View style={{alignItems: 'center', width: '100%'}}>
+      <TouchableOpacity
+        style={{alignItems: 'center', width: '100%'}}
+        onPress={() => {
+          this.setOrder();
+          this.props.parentNav.navigate('orderDetailsStack', {
+            details: this.props.details,
+          });
+        }}>
         <View style={Style.paddockContainer}>
           <View style={Style.paddockInfo}>
             <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
@@ -72,9 +81,22 @@ class OrderCard extends Component {
             />
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
 
-export default OrderCard;
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {
+    setSelectedOrder: selectedOrder => {
+      dispatch(actions.setSelectedOrder(selectedOrder));
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(OrderCard);

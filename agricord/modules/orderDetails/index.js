@@ -5,59 +5,60 @@ import {
   StyleSheet,
   ImageBackground,
   ColorPropType,
+  ScrollView,
 } from 'react-native';
 import OrderContainer from 'modules/orderDetails/OrderContainer';
-import {BasicStyles} from 'common';
+import {BasicStyles, Routes} from 'common';
 import {color} from 'react-native-reanimated';
-
-const dummyData = [
-  {
-    productName: 'Product X',
-    manufacturer: 'Manufacturer',
-    quantity: '(110L)',
-    numberOfItems: 10,
-    status: '#5A84EE',
-    numberOutline: '#4570DD',
-  },
-  {
-    productName: 'Product Y',
-    manufacturer: 'Manufacturer',
-    quantity: '(20kg)',
-    numberOfItems: 3,
-    status: '#5A84EE',
-    numberOutline: '#4570DD',
-  },
-  {
-    productName: 'Product Z',
-    manufacturer: 'Manufacturer',
-    quantity: '',
-    numberOfItems: 0,
-    status: '#FF6262',
-    numberOutline: '#EE3A3A',
-  },
-];
-
+import Api from 'services/api';
+import {connect} from 'react-redux';
+import {Spinner} from 'components';
+import styles from 'modules/orderDetails/Styles.js';
 class OrderDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+      isLoading: false,
+    };
+  }
+
+  componentDidMount() {
+    this.getOrderDetails();
+  }
+
+  getOrderDetails = () => {
+    const {selectedOrder} = this.props.state;
+    let parameters = {
+      merchant_id: selectedOrder.merchant_to.id,
+      status: selectedOrder.status,
+      order_id: selectedOrder.order_number,
+    };
+    this.setState({isLoading: true});
+    Api.request(Routes.orderRequest, parameters, response => {
+      this.setState({products: response.data, isLoading: false});
+    });
+  };
+
   renderProducts = () => {
-    return dummyData.map((data, index) => {
+    return this.state.products.map((product, index) => {
       return (
         <OrderContainer height={80} key={index}>
+          {this.state.isLoading ? <Spinner mode="overlay" /> : null}
           <View style={styles.ProductContainer}>
             <View style={styles.ProductDetailsContainer}>
-              <Text style={styles.ProductNameTextStyle}>
-                {data.productName}
-              </Text>
+              <Text style={styles.ProductNameTextStyle}>{product.title}</Text>
               <View style={styles.ProductDataContainer}>
                 <Text
                   style={[
                     styles.ProductManufacturerTextStyle,
                     {color: '#B0B0B0'},
                   ]}>
-                  {data.manufacturer}
+                  {product.merchant}
                 </Text>
                 <Text
                   style={[styles.ProductQuantityTextStyle, {color: '#5A84EE'}]}>
-                  {data.quantity}
+                  {product.qty}
                 </Text>
               </View>
             </View>
@@ -66,14 +67,14 @@ class OrderDetails extends Component {
                 style={{
                   height: 30,
                   width: 30,
-                  backgroundColor: data.status,
+                  backgroundColor: '#5A84EE',
                   justifyContent: 'center',
                   alignItems: 'center',
                   borderRadius: 6,
-                  borderColor: data.numberOutline,
+                  borderColor: '#4570DD',
                 }}>
                 <Text style={styles.ProductNumberOfItemsTextStyle}>
-                  {data.numberOfItems}
+                  {product.qty}
                 </Text>
               </View>
             </View>
@@ -84,110 +85,76 @@ class OrderDetails extends Component {
   };
 
   render() {
+    const {selectedOrder} = this.props.state;
     return (
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={styles.BackgroundContainer}>
         <View style={styles.OrderDetailsContainer}>
-          <OrderContainer title="Coastal Ag Supplies" height={140}>
-            <View style={styles.Details}>
-              <View style={styles.DetailsTitleContainer}>
-                <Text style={styles.DetailsTextStyle}>Delivery Due</Text>
+          <ScrollView>
+            <OrderContainer
+              title="Coastal Ag Supplies"
+              height={selectedOrder.status === 'pending' ? 140 : 180}>
+              <View style={styles.Details}>
+                <View style={styles.DetailsTitleContainer}>
+                  <Text style={styles.DetailsTextStyle}>
+                    {selectedOrder.status === 'pending'
+                      ? 'Delivery Due'
+                      : 'Delivered By'}
+                  </Text>
+                </View>
+                <View style={styles.DetailsTextContainer}>
+                  <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                    {selectedOrder.status === 'pending'
+                      ? selectedOrder.date_of_delivery
+                      : selectedOrder.delivered_by}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.DetailsTextContainer}>
-                <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
-                  03/02/2020
-                </Text>
+              <View style={styles.Details}>
+                <View style={styles.DetailsTitleContainer}>
+                  <Text style={styles.DetailsTextStyle}>
+                    {selectedOrder.status === 'pending'
+                      ? 'Order'
+                      : 'Delivery Date'}
+                  </Text>
+                </View>
+                <View style={styles.DetailsTextContainer}>
+                  <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                    {selectedOrder.status === 'pending'
+                      ? selectedOrder.order_number
+                      : selectedOrder.delivered_date}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.Details}>
-              <View style={styles.DetailsTitleContainer}>
-                <Text style={styles.DetailsTextStyle}>Order</Text>
-              </View>
-              <View style={styles.DetailsTextContainer}>
-                <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
-                  CAS0000078
-                </Text>
-              </View>
-            </View>
-          </OrderContainer>
-          {this.renderProducts()}
+              {selectedOrder.status === 'pending' ? null : (
+                <View style={styles.Details}>
+                  <View style={styles.DetailsTitleContainer}>
+                    <Text style={styles.DetailsTextStyle}>Product Scanned</Text>
+                  </View>
+                  <View style={styles.DetailsTextContainer}>
+                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                      {this.state.products.length}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </OrderContainer>
+            {this.renderProducts()}
+          </ScrollView>
         </View>
       </ImageBackground>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  BackgroundContainer: {
-    flex: 1,
-    resizeMode: 'cover',
-    height: '100%',
-    width: '100%',
-    elevation: 2,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-  },
-  OrderDetailsContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '80%',
-  },
-  Details: {
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomColor: '#F3F3F3',
-    borderBottomWidth: 0.5,
-  },
-  DetailsTitleContainer: {
-    width: '60%',
-  },
-  DetailsTitleTextStyle: {
-    fontSize: BasicStyles.titleText.fontSize,
-    color: '#969696',
-  },
-  DetailsTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-    color: '#969696',
-  },
-  DetailsTextContainer: {
-    width: '40%',
-  },
-  ProductContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 20,
-  },
-  ProductDetailsContainer: {
-    width: '60%',
-  },
-  ProductNameTextStyle: {
-    fontWeight: 'bold',
-    fontSize: BasicStyles.titleText.fontSize,
-  },
-  ProductDataContainer: {
-    flexDirection: 'row',
-  },
-  ProductManufacturerTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-  },
-  ProductQuantityTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
-  },
-  ProductNumberOfItemsContainer: {
-    width: '40%',
-    alignItems: 'flex-end',
-    paddingRight: 10,
-  },
-  ProductNumberOfItemsTextStyle: {
-    color: '#FFFFFF',
-    fontSize: BasicStyles.titleText.fontSize,
-    fontWeight: 'bold',
-  },
-});
+const mapStateToProps = state => ({state: state});
 
-export default OrderDetails;
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {};
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(OrderDetails);

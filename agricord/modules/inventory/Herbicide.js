@@ -26,17 +26,24 @@ const Herbicide = ({ navigation, data }) => {
             Product
           </Text>
           {
-            data != null && data.length ? data.map((item, idx) => (
-              <TouchableOpacity key={idx} onPress={() => {
-                const name = item.title.toUpperCase()
-                const volume = item.volume
-                navigation.navigate('InventoryItem', { name, volume, data: item })
-              }}>
-                <PaddockCard details={item} key={item.id} />
-              </TouchableOpacity>
-            )) : (
-              <Text style={{ marginTop: 10 }}>No product found</Text>
-            )
+            data != null && data.length ? data.map((item, idx) => {
+              const name = item.title.toUpperCase()
+              const volume = item.volume || '(100L)'
+              const details = {
+                dataFrom: 'inventory',
+                name,
+                volume,
+                ...item
+              }
+              return (
+                <TouchableOpacity key={idx} onPress={() => {
+                  navigation.navigate('InventoryItem', { name, volume, data: item })
+                }}>
+                  <PaddockCard details={details} key={item.id} />
+                </TouchableOpacity>
+              )}) : (
+                <Text style={{ marginTop: 10 }}>No product found</Text>
+              )
           }
         </View>
       </ScrollView>

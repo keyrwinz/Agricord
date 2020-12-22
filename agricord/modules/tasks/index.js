@@ -16,6 +16,8 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import InProgress from './InProgress'
+import Due from './Due'
+import History from './History'
 import PaddockCard from 'components/Products/paddockCard.js'
 import {products} from './data-test.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -39,14 +41,7 @@ class Tasks extends Component {
     if (user != null) {
     }
    console.log(Routes.tasksRetrieve)
-    const parameter={}
-    Api.request(Routes.tasksRetrieve, parameter, response => {
-      console.log("Hello",response)
-     }, error => {
-      console.log({ error })
-     
-    }) 
-    console.log(this.props)
+    console.log("henlo",this.props)
     if (this.props.initialPage!=null) {
       switch(this.props.initialPage) {
         case 'TasksInProgress':
@@ -89,6 +84,7 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
+        {console.log(progress)}
         <View style={{backgroundColor:Color.white,height:50}}>
         <Pagination
           activeIndex={activeIndex}
@@ -103,10 +99,10 @@ class Tasks extends Component {
               <InProgress {...this.props} data={progress} />
             </View>
             <View style={Style.sliderContainer}>
-              <InProgress {...this.props} data={due}/>
+              <Due {...this.props} data={due}/>
             </View>
             <View style={Style.sliderContainer}>
-              <InProgress {...this.props} data={completed}/>
+              <History {...this.props} data={completed}/>
             </View>
           </Pager>
         </PagerProvider>

@@ -21,7 +21,7 @@ import TaskIcon from 'components/Products/TaskIcon.js'
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-class InProgress extends Component {
+class Due extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,25 +38,23 @@ class InProgress extends Component {
       
     }
     this.retrieveData();
-  
-  console.log("hello world",this.props)
   }
 
   retrieveData=async()=>{
-
     this.setState({
       isLoading: true
     })
 
     const parameter={
-      status:"Auto",
+      status:"approved",
       offset:0,
       limit:10,
       merchant_id:38
     }
   Api.request(Routes.tasksRetrieve, parameter, response => {
+    if(response.data!=null){
       this.setState({products:response.data.paddocks,isLoading:false})
-      console.log(response.data.paddocks)
+    }
      }, error => {
       console.log("ERROR HAPPENS",error )
      
@@ -70,13 +68,14 @@ class InProgress extends Component {
     const data = this.state.products.paddocks
     return (
       <SafeAreaView style={{ position: 'relative',height:'80%'}}>
-      <ScrollView   showsVerticalScrollIndicator={false}>
+      <ScrollView  showsVerticalScrollIndicator={false}>
       <View style={Style.MainContainer,{marginBottom:15}}>
-        <Text style={{fontWeight:'bold'}}>Paddocks</Text>
+        <Text style={{fontWeight:'bold'}}>Paddocks Due</Text>
       {this.state.products.map((item,index)=>(
            <TouchableOpacity onPress={()=>{
-          const name = item.name.toUpperCase()
-          this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'inprogress' })
+            const name = item.name.toUpperCase()
+          
+            this.props.parentNav.navigate('paddockStack', { name, data: item,dataFrom:'due' })
         }}>
            <PaddockCard details={item} key={item.id}></PaddockCard>
         </TouchableOpacity>
@@ -85,7 +84,7 @@ class InProgress extends Component {
        </View>
        </ScrollView>
     <TaskIcon details={this.props}></TaskIcon>
-    </SafeAreaView>
+       </SafeAreaView>
  
   
     );
@@ -101,4 +100,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(InProgress);
+)(Due);

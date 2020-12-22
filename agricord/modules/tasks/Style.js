@@ -8,7 +8,7 @@ export default {
   },
   MainContainer: {
     flex: 1,
-    backgroundColor: Color.white
+  
   },
   BackgroundContainer: {
     flex: 1,
