@@ -37,13 +37,8 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.checkIfAllowDropdown() ? (
-      <View
-        style={[
-          styles.OptionsContainer,
-          {...this.props.styles},
-          {zIndex: 1000},
-        ]}>
-        <ScrollView overScrollMode="always" style={{zIndex: 2000}}>
+      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
+        <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
               <TouchableOpacity

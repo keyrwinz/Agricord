@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     top: '10%',
     justifyContent: 'flex-end',
-    minHeight: 170,
+    height: 170,
     width: '90%',
     borderColor: '#AEAEAE',
     borderWidth: 0.5,
