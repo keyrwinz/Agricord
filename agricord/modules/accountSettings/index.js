@@ -57,8 +57,6 @@ class Tasks extends Component {
 
   componentDidMount() {
     const {user} = this.props.state;
-
-    console.log('ACCOUNT SETTINGS', user);
     if (user != null) {
       this.setState({
         name: `${user.account_information.first_name} ${
@@ -74,49 +72,59 @@ class Tasks extends Component {
       <View style={{alignItems: 'center', width: '100%', height: '100%'}}>
         <View style={Style.productInfoContainer}>
           <View style={Style.cardInfo}>
-            <Image
-              style={{width: '10%', resizeMode: 'contain', marginRight: 5}}
-              source={require('../../assets/nameIcon.png')}
-            />
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '40%'}}>
-              Name
-            </Text>
-            <Text>{this.state.name}</Text>
+            <View style={Style.HeadingContainer}>
+              <Image
+                style={Style.ImageStyle}
+                source={require('../../assets/nameIcon.png')}
+              />
+              <Text style={Style.HeadingTextStyle}>Name</Text>
+            </View>
+            <View style={Style.DescriptionContainer}>
+              <Text style={Style.DescriptionTextStyle}>{this.state.name}</Text>
+            </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
-            <Image
-              style={{width: '10%', resizeMode: 'contain', marginRight: 5}}
-              source={require('../../assets/businessAccountIcon.png')}
-            />
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '40%'}}>
-              Business Account
-            </Text>
-            <Text>Agricord. Inc</Text>
+            <View style={Style.HeadingContainer}>
+              <Image
+                style={Style.ImageStyle}
+                source={require('../../assets/businessAccountIcon.png')}
+              />
+              <Text style={Style.HeadingTextStyle}>Business Account</Text>
+            </View>
+            <View style={Style.DescriptionContainer}>
+              <Text style={Style.DescriptionTextStyle}>Agricord. Inc</Text>
+            </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
-            <Image
-              style={{width: '10%', resizeMode: 'contain', marginRight: 5}}
-              source={require('../../assets/permissionIcon.png')}
-            />
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '40%'}}>
-              Permissions Level
-            </Text>
-            <Text>{this.state.permissionLevel}</Text>
+            <View style={Style.HeadingContainer}>
+              <Image
+                style={Style.ImageStyle}
+                source={require('../../assets/permissionIcon.png')}
+              />
+              <Text style={Style.HeadingTextStyle}>Permissions Level</Text>
+            </View>
+            <View style={Style.DescriptionContainer}>
+              <Text style={Style.DescriptionTextStyle}>
+                {this.state.permissionLevel}
+              </Text>
+            </View>
           </View>
-          <Divider style={{height: 0.5}} />
+          <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
-            <Image
-              style={{width: '10%', resizeMode: 'contain', marginRight: 5}}
-              source={require('../../assets/lastLoginIcon.png')}
-            />
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '40%'}}>
-              Last Login
-            </Text>
-            <Text>22 October 2020</Text>
+            <View style={Style.HeadingContainer}>
+              <Image
+                style={Style.ImageStyle}
+                source={require('../../assets/lastLoginIcon.png')}
+              />
+              <Text style={Style.HeadingTextStyle}>Last Login</Text>
+            </View>
+            <View style={Style.DescriptionContainer}>
+              <Text style={Style.DescriptionTextStyle}>22 October 2020</Text>
+            </View>
           </View>
-          <Divider style={{height: 0.5}} />
+          <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
         </View>
       </View>
     );
