@@ -368,7 +368,7 @@ const Home = (props) => {
                         <View style={Style.flexRow}>
                           <InProgressIcon />
                           <Text style={Style.eventText}>
-                            {obj.status}
+                            {obj.type}
                           </Text>
                           <Text style={[Style.eventText, { color: '#54BAEC' }]}>
                             {obj.created_at}
