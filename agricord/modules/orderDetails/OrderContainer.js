@@ -20,12 +20,12 @@ class OrderDetails extends Component {
 
 const styles = StyleSheet.create({
   OrderContainer: {
-    marginTop: 30,
-    width: '100%',
+    marginTop: 15,
+    width: '95%',
     height: 300,
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    elevation: 2,
+    elevation: 3,
     paddingHorizontal: 20,
   },
   OrderTitleContainer: {
