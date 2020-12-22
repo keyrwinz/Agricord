@@ -47,7 +47,7 @@ const Home = (props) => {
   const [totalRecentData, setTotalRecentData] = useState()
   const [totalTasksData, setTotalTasksData] = useState()
   const [totalOrderData, setTotalOrderData] = useState()
-  const [totalActivities, setTotalActivities] = useState()
+  const [totalActivities, setTotalActivities] = useState(0)
   // const totalRecentData = null
   
 
@@ -78,13 +78,11 @@ const Home = (props) => {
     })
     setTotalOrderData(orders)
   
-    if(totalRecentData !== undefined && totalTasksData !== undefined && totalOrderData !== undefined){
-      const activities = totalRecentData.recent + totalTasksData.Task + totalOrderData.Order
-      setTotalActivities(activities)
-    }
-
+    const activities = recent.recent + tasks.Task + orders.Order
+    setTotalActivities(activities)
+    
   }, [])
-
+  
   
   return data ? (
     <ScrollView style={Style.ScrollView}>
@@ -123,7 +121,7 @@ const Home = (props) => {
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
+              Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
@@ -313,7 +311,7 @@ const Home = (props) => {
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi {userDetail.account_information !== null ? userDetail.account_information.first_name : userDetail.username}
+              Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
