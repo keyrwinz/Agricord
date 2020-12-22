@@ -1,52 +1,13 @@
 import React, {Component} from 'react';
-import {
-  View,
-  Image,
-  TouchableHighlight,
-  Text,
-  ScrollView,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-import {NavigationActions} from 'react-navigation';
-import {Thumbnail, List, ListItem, Separator} from 'native-base';
+import {View, Image, Text, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
-import {
-  faUserCircle,
-  faMapMarker,
-  faUniversity,
-  faKaaba,
-  faFilter,
-} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Style from './Style.js';
-import {Routes, Color, Helper, BasicStyles} from 'common';
-import {Spinner, Empty, SystemNotification} from 'components';
-import {
-  MainCard,
-  Feature,
-  Card,
-  MainFeature,
-  PromoCard,
-} from 'components/ProductThumbnail';
-import {
-  Collapse,
-  CollapseHeader,
-  CollapseBody,
-  AccordionList,
-} from 'accordion-collapse-react-native';
 import {Divider} from 'react-native-elements';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import Pagination from 'components/Pagination';
-import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
-import {accountInfo} from './data-test.js';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-class Tasks extends Component {
+class AccountSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -140,4 +101,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Tasks);
+)(AccountSettings);
