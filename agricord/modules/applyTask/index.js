@@ -100,10 +100,6 @@ class ApplyTask extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log('APPLY TASK PEROPRSDA', this.props);
-  }
-
   recentMachineHandler = index => {
     let machine = dummyData[index].task;
     this.setState({selectedMachine: machine});
@@ -144,6 +140,19 @@ class ApplyTask extends Component {
     }
   };
 
+  handleRemoveItem = item => {
+    switch (item) {
+      case 'Machine':
+        this.setState({selectedMachine: ''});
+        break;
+      case 'Mix':
+        this.setState({selectedMix: ''});
+        break;
+      default:
+        break;
+    }
+  };
+
   render() {
     return (
       <ScrollView>
@@ -151,15 +160,19 @@ class ApplyTask extends Component {
           <Task title="Recent" icon={faHistory} height={240} key={1}>
             <RecentTasks
               tasks={dummyData}
+              type="Machine"
               title="Machines"
               key={1}
               handleSelect={this.recentMachineHandler}
+              handleRemoveItem={this.handleRemoveItem}
             />
             <RecentTasks
+              type="Mix"
               tasks={dummyData4}
               title="Spray Mixes"
               key={2}
               handleSelect={this.recentMixHandler}
+              handleRemoveItem={this.handleRemoveItem}
             />
           </Task>
           <Task title="Select" icon={faTh} height={200} key={2}>
@@ -172,6 +185,7 @@ class ApplyTask extends Component {
               index={1}
               allowOpen={this.state.selectedPicker === 1 ? true : false}
               handleSelectedPicker={this.handleSelectedPicker}
+              handleRemoveItem={this.handleRemoveItem}
             />
             <CustomPicker
               type="Mix"
@@ -182,30 +196,19 @@ class ApplyTask extends Component {
               index={2}
               allowOpen={this.state.selectedPicker === 2 ? true : false}
               handleSelectedPicker={this.handleSelectedPicker}
+              handleRemoveItem={this.handleRemoveItem}
             />
           </Task>
-          <RNSlidingButton
-            style={{
-              marginTop: 60,
-              width: '85%',
-              borderRadius: 12,
-              backgroundColor: '#F1F1F1',
-              borderColor: '#CFCFCF',
-              borderWidth: 1,
-              zIndex: 0,
-            }}
-            height={45}
-            onSlidingSuccess={() => {
-              this.selectPaddocks();
-            }}
-            slideDirection={SlideDirection.RIGHT}>
-            <View
+          {this.state.selectedMachine !== '' &&
+          this.state.selectedMix !== '' ? (
+            <RNSlidingButton
               style={{
-                width: '100%',
+                marginTop: 60,
+                width: '85%',
                 borderRadius: 12,
                 backgroundColor: '#F1F1F1',
                 borderColor: '#CFCFCF',
-                borderWidth: 1,
+                borderWidth: 2,
                 zIndex: 0,
               }}
               height={45}
@@ -215,35 +218,53 @@ class ApplyTask extends Component {
               slideDirection={SlideDirection.RIGHT}>
               <View
                 style={{
-                  backgroundColor: '#5A84EE',
-                  height: 45,
-                  width: 129,
+                  width: '100%',
                   borderRadius: 12,
-                  padding: 0,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text
+                  backgroundColor: '#F1F1F1',
+                  borderColor: '#CFCFCF',
+                  borderWidth: 1,
+                  zIndex: 0,
+                }}
+                height={45}
+                onSlidingSuccess={() => {
+                  this.selectPaddocks();
+                }}
+                slideDirection={SlideDirection.RIGHT}>
+                <View
                   style={{
-                    color: '#FFFFFF',
-                    fontSize: BasicStyles.titleText.fontSize,
-                    fontWeight: 'bold',
+                    backgroundColor: '#5A84EE',
+                    height: 45,
+                    width: 129,
+                    borderRadius: 12,
+                    padding: 0,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  Select Paddocks
-                </Text>
+                  <Text
+                    style={{
+                      color: '#FFFFFF',
+                      fontSize: BasicStyles.titleText.fontSize,
+                      fontWeight: 'bold',
+                    }}>
+                    Select Paddocks
+                  </Text>
+                </View>
               </View>
+            </RNSlidingButton>
+          ) : null}
+          {this.state.selectedMachine !== '' &&
+          this.state.selectedMix !== '' ? (
+            <View
+              style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
+              <Text
+                style={{
+                  fontSize: BasicStyles.normalText.fontSize,
+                  color: '#969696',
+                }}>
+                Swipe Right to Complete
+              </Text>
             </View>
-          </RNSlidingButton>
-          <View
-            style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
-            <Text
-              style={{
-                fontSize: BasicStyles.normalText.fontSize,
-                color: '#969696',
-              }}>
-              Swipe Right to Complete
-            </Text>
-          </View>
+          ) : null}
         </View>
       </ScrollView>
     );

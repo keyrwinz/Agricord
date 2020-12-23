@@ -14,10 +14,9 @@ const styles = StyleSheet.create({
   OrderDetailsContainer: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    width: '80%',
+    width: '100%',
   },
   Details: {
-    paddingHorizontal: 10,
     paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -26,7 +25,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
   },
   DetailsTitleContainer: {
-    width: '60%',
+    width: '50%',
   },
   DetailsTitleTextStyle: {
     fontSize: BasicStyles.titleText.fontSize,
@@ -37,7 +36,7 @@ const styles = StyleSheet.create({
     color: '#969696',
   },
   DetailsTextContainer: {
-    width: '40%',
+    width: '50%',
   },
   ProductContainer: {
     flexDirection: 'row',

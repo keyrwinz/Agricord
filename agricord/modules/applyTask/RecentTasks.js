@@ -5,6 +5,9 @@ import styles from 'modules/applyTask/Styles.js';
 class RecentTasks extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isClicked: false,
+    };
   }
 
   renderRecentTasks = () => {
@@ -15,7 +18,12 @@ class RecentTasks extends Component {
           style={styles.Task}
           key={index}
           onPress={() => {
-            this.props.handleSelect(index);
+            if (this.state.isClicked) {
+              this.props.handleRemoveItem(this.props.type);
+            } else {
+              this.props.handleSelect(index);
+            }
+            this.setState({isClicked: !this.state.isClicked});
           }}>
           <Text style={styles.TaskTextStyle}>{task.task}</Text>
         </TouchableOpacity>

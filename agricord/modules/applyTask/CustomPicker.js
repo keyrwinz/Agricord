@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import {faChevronDown, faChevronUp} from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronDown,
+  faChevronUp,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
 import styles from 'modules/applyTask/Styles.js';
@@ -33,12 +37,7 @@ class CustomPicker extends Component {
 
   renderOptions = () => {
     return this.checkIfAllowDropdown() ? (
-      <View
-        style={[
-          styles.OptionsContainer,
-          {...this.props.styles},
-          {zIndex: 100},
-        ]}>
+      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
         <ScrollView overScrollMode="always">
           {this.props.items.map((data, index) => {
             return (
@@ -93,6 +92,11 @@ class CustomPicker extends Component {
       isPressed: !this.state.isPressed,
     });
     this.props.handleSelectedPicker(this.props.index);
+  };
+
+  handleRemove = () => {
+    this.setState({selectedItem: null});
+    this.props.handleRemoveItem(this.props.type);
   };
 
   render() {
@@ -151,16 +155,30 @@ class CustomPicker extends Component {
                 borderWidth: selectedItem !== null ? 1 : 0,
                 borderRadius: selectedItem !== null ? 7 : 0,
                 backgroundColor,
+                flexDirection: 'row',
               }}>
               <Text
                 style={{
                   textAlign: 'left',
-                  color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#A1A1A1',
+                  color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
                 {this.state.selectedItem !== null
                   ? this.props.items[this.state.selectedItem].type
                   : `Selected ${this.props.type}`}
               </Text>
+              {this.state.selectedItem !== null && (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.handleRemove();
+                  }}>
+                  <FontAwesomeIcon
+                    color="#5A84EE"
+                    icon={faTimes}
+                    size={13}
+                    style={styles.iconStyle}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
             {this.renderButton()}
           </View>

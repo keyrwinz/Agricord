@@ -5,14 +5,17 @@ const styles = StyleSheet.create({
   PickerContainer: {
     marginTop: 20,
     width: '90%',
-    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#5A84EE',
+    borderTopLeftRadius: 13,
+    borderBottomLeftRadius: 13,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
   },
   ButtonContainer: {
     height: '100%',
-    width: 35,
-    borderRadius: 10.5,
+    width: 45,
+    borderRadius: 6,
     backgroundColor: '#5A84EE',
     justifyContent: 'center',
     alignItems: 'center',
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 50
+    marginBottom: 50,
   },
   SliderIconContainer: {
     backgroundColor: '#5A84EE',
