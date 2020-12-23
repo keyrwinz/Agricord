@@ -42,9 +42,9 @@ class Orders extends Component {
           </View>
         </ScrollView>
         <View
-          style={{position: 'absolute', bottom: 230, alignSelf: 'flex-end'}}>
+          style={{position: 'absolute', bottom: 130, alignSelf: 'flex-end'}}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('ApplyTask')}>
+            onPress={() => this.props.parentNav.navigate('applyTaskStack')}>
             <View style={{alignItems: 'center'}}>
               <Image
                 style={{padding: 30, height: 50, width: '100%'}}

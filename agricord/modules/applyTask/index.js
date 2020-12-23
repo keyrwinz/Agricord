@@ -155,7 +155,7 @@ class ApplyTask extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={{backgroundColor: '#F1F1F1'}}>
         <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
           <Task title="Recent" icon={faHistory} height={240} key={1}>
             <RecentTasks

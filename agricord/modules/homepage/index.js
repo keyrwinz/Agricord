@@ -44,6 +44,7 @@ export default function Homepage(props) {
             <SettingsScreen
               {...route}
               initialPage={props.navigation.state.routeName}
+              parentNav={props.navigation}
             />
           )}
           options={{
