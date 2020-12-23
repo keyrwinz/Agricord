@@ -1,4 +1,4 @@
-import {Color} from 'common';
+import {BasicStyles, Color} from 'common';
 
 export default {
   container: {
@@ -154,6 +154,7 @@ export default {
   },
   HeadingTextStyle: {
     fontWeight: 'bold',
+    fontSize: BasicStyles.titleText.fontSize,
   },
   DescriptionContainer: {
     width: '50%',
@@ -164,5 +165,8 @@ export default {
     resizeMode: 'contain',
     marginRight: 15,
   },
-  DescriptionTextStyle: {color: '#969696'},
+  DescriptionTextStyle: {
+    color: '#969696',
+    fontSize: BasicStyles.normalText.fontSize,
+  },
 };
