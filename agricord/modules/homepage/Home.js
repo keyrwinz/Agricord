@@ -27,6 +27,7 @@ import CompletedEventIcon from 'assets/homescreen/event_complete_icon.svg'
 import CompleteIcon from 'assets/homescreen/complete_icon.svg'
 import {Spinner} from 'components';
 import Api from 'services/api/index.js'
+import Config from 'src/config.js';
 import _ from "lodash"
 
 const getIcon = (type) => {
@@ -44,6 +45,7 @@ const Home = (props) => {
   const [RecentEventsArray, setRecentEvents] = useState(RecentEvents)
   const [data, setData] = useState()
   const userDetail = props.state.user
+  const {user} = props.state
   const [totalRecentData, setTotalRecentData] = useState()
   const [totalTasksData, setTotalTasksData] = useState()
   const [totalOrderData, setTotalOrderData] = useState()
@@ -114,10 +116,29 @@ const Home = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <Image
+            {
+              (user && user.account_profile && user.account_profile.url != null) && (
+                <Image
+                  source={{uri: Config.BACKEND_URL  + user.account_profile.url}}
+                  style={Style.image}
+                />
+              )
+            }
+            {
+              (user && (user.account_profile == null || (user.account_profile != null && user.account_profile.url == null))) && (
+                <FontAwesomeIcon
+                  icon={faUserCircle}
+                  size={40}
+                  style={{
+                    color: Color.primary
+                  }}
+                />
+              )
+            }
+            {/*<Image
               source={require('assets/drawer/profile/profile_pic.png')}
               style={Style.image}
-            />
+            />*/}
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
@@ -304,10 +325,29 @@ const Home = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <Image
+            {
+              (user && user.account_profile && user.account_profile.url != null) && (
+                <Image
+                  source={{uri: Config.BACKEND_URL  + user.account_profile.url}}
+                  style={Style.image}
+                />
+              )
+            }
+            {
+              (user && (user.account_profile == null || (user.account_profile != null && user.account_profile.url == null))) && (
+                <FontAwesomeIcon
+                  icon={faUserCircle}
+                  size={40}
+                  style={{
+                    color: Color.primary
+                  }}
+                />
+              )
+            }
+            {/*<Image
               source={require('assets/drawer/profile/profile_pic.png')}
               style={Style.image}
-            />
+            />*/}
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
@@ -390,7 +430,7 @@ const Home = (props) => {
                         <FontAwesomeIcon
                           icon={faChevronRight}
                           color={Color.gray}
-                          size={45}
+                          size={25}
                         />
                       </View>
                     </View>
@@ -405,7 +445,7 @@ const Home = (props) => {
               <FontAwesomeIcon
                 icon={isExpanded ? faChevronUp : faChevronDown}
                 color={Color.gray}
-                size={45}
+                size={25}
               />
             </TouchableOpacity>
           </View>

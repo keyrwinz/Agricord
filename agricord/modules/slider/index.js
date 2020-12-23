@@ -20,7 +20,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserCircle, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
 import Pusher from 'services/Pusher.js';
-
 import HouseIcon from '../../assets/drawer/profile/houseIcon.svg';
 
 const TEST_DEV = true
@@ -116,10 +115,26 @@ class Slider extends Component {
                       <View style={styles.userContainer3}>
                         <View style={styles.userInfoContainer}>
                           <View>
-                            <Image
-                              source={require('assets/drawer/profile/profile_pic.png')}
-                              style={styles.userImage}
-                            />
+                          {
+                            (user && user.account_profile && user.account_profile.url != null) && (
+                              <Image
+                                source={{uri: Config.BACKEND_URL  + user.account_profile.url}}
+                                style={styles.userImage}
+                              />
+                            )
+                          }
+                          {
+                            (user && (user.account_profile == null || (user.account_profile != null && user.account_profile.url == null))) && (
+                              <FontAwesomeIcon
+                                icon={faUserCircle}
+                                size={80}
+                                style={{
+                                  color: Color.primary
+                                }}
+                              />
+                            )
+                          }
+                            
                           </View>
                           <View style={styles.userInfo}>
                           {
