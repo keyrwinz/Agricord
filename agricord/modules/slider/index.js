@@ -122,21 +122,30 @@ class Slider extends Component {
                             />
                           </View>
                           <View style={styles.userInfo}>
-                            <View>
-                              <Text style={styles.userName}>
-                                Steve.A
-                              </Text>
-                              <Text style={styles.userEmail}>
-                                Steven@abacus.au
-                              </Text>
-                            </View>
-                            <View style={styles.extraIcons}>
-                              <HouseIcon />
-                              <View style={styles.badgeContainer}>
-                                <Text style={styles.badgeText}>
-                                  Greenacres Farming Co
+                          {
+                            user && (
+                              <View>
+                                <Text style={styles.userName}>
+                                  {user.username}
+                                </Text>
+                                <Text style={styles.userEmail}>
+                                  {user.email}
                                 </Text>
                               </View>
+                            )
+                          }
+                            
+                            <View style={styles.extraIcons}>
+                              <HouseIcon />
+                              {
+                                (user && user.sub_account && user.sub_account.merchant) && (
+                                  <View style={styles.badgeContainer}>
+                                    <Text style={styles.badgeText}>
+                                      {user.sub_account.merchant.name}
+                                    </Text>
+                                  </View>
+                                )
+                              }
                             </View>
                           </View>
                         </View>

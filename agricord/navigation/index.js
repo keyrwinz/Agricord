@@ -14,6 +14,7 @@ import DrumScanLoginStack from 'modules/login/LoginWithDrumScanDrawer.js';
 import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
 import PaddockStack from 'modules/paddockPage/Drawer.js';
 import MixNameStack from 'modules/mixName/Drawer.js';
+import MixPageStack from 'modules/mixPage/Drawer.js';
 //import BatchStack from 'modules/batchPage/Drawer.js';
 import ApplyTaskStack from 'modules/applyTask/ApplyTaskDrawer.js';
 import OrderDetailsStack from 'modules/orderDetails/OrderDetailsDrawer.js';
@@ -72,7 +73,8 @@ const PrimaryNav = createStackNavigator(
     orderDetailsStack: {screen: OrderDetailsStack},
     //batchStack: {screen: BatchStack},
     paddockStack: {screen: PaddockStack},
-    mixNameStack: {screen:MixNameStack},
+    mixNameStack: {screen: MixNameStack},
+    mixPageStack: {screen: MixPageStack},
     settingsPageStack: {screen: SettingsPageStack},
   },
   {

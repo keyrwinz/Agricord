@@ -132,7 +132,7 @@ class ApplyTask extends Component {
         mix: this.state.selectedMix,
       };
       setMachineAndMix(task);
-      this.props.navigation.navigate('MixName', {
+      this.props.navigation.navigate('mixPageStack', {
         details: {appliedRate: 1, status: 'Auto'},
       });
     } else {
