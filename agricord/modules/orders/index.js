@@ -24,7 +24,7 @@ import {Spinner} from 'components';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-class Tasks extends Component {
+class OrdersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,6 +49,8 @@ class Tasks extends Component {
   }
 
   getOrders = value => {
+    const {user} = this.props.state;
+    console.log('TASKS', user.sub_account.merchant.id);
     this.setState({isLoading: true});
     let parameters = {
       condition: [
@@ -65,6 +67,7 @@ class Tasks extends Component {
       parameters,
       response => {
         this.setData(response.data, value);
+        console.log('API ORDER RESPSPOSADFS', response.data);
         this.setState({isLoading: false});
       },
       error => {
@@ -135,4 +138,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Tasks);
+)(OrdersPage);

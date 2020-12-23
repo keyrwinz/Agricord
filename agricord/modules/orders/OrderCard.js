@@ -7,13 +7,21 @@ import {connect} from 'react-redux';
 class OrderCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      formattedDate: '',
+    };
   }
 
   setOrder = () => {
     const {setSelectedOrder} = this.props;
     const selectedOrder = this.props.details;
     setSelectedOrder(selectedOrder);
+  };
+
+  formatDate = unformattedDate => {
+    let date = unformattedDate;
+    date = date.substring(0, date.length - 3);
+    return date;
   };
 
   render() {
@@ -60,14 +68,16 @@ class OrderCard extends Component {
               {this.props.details.status == 'pending' ? (
                 <Text>{this.props.details.date_of_delivery}</Text>
               ) : (
-                <Text>{this.props.details.delivered_date}</Text>
+                <Text>
+                  {this.formatDate(this.props.details.delivered_date)}
+                </Text>
               )}
             </View>
             <Divider style={{height: 1, marginLeft: 15, marginRight: 15}} />
             <View style={Style.cardInfo}>
               <Text
                 style={{fontWeight: 'bold', color: '#969696', width: '50%'}}>
-                Ordered
+                Order ID
               </Text>
               <Text>{this.props.details.order_number}</Text>
             </View>
