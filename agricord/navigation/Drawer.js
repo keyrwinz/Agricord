@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Dimensions} from 'react-native';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faBars} from '@fortawesome/free-solid-svg-icons';
+import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/homepage';
@@ -29,6 +29,7 @@ import ForgotPassword from 'modules/basics/ForgotPassword.js';
 import SettingsPage from 'modules/settingsPage';
 import OrderDetails from 'modules/orderDetails';
 import OrderDetailsStack from 'modules/orderDetails/OrderDetailsScreen.js';
+import MixPage from 'modules/mixPage';
 import {connect} from 'react-redux';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -370,6 +371,28 @@ const Homepage_StackNavigator = createStackNavigator({
       headerTintColor: '#fff',
     }),
   },
+  MixPage: {
+    screen: MixPage,
+    navigationOptions: ({ navigation }) => ({
+      title: navigation.getParam('title'),
+      headerLeft: (
+        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.pop()}>
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              size={BasicStyles.iconSize}
+              style={[
+                BasicStyles.iconStyle,
+                {
+                  color: '#000',
+                },
+              ]}
+            />
+          </TouchableOpacity>
+        </View>
+      ),
+    })
+  }
 });
 
 const Drawer = createDrawerNavigator(

@@ -163,16 +163,16 @@ const Inventory = (props) => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={filteredHerbicideData} />
+            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredHerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={filteredFungicideData} />
+            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredFungicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={filteredInsecticideData} />
+            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredInsecticideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} data={filteredOtherData} />
+            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredOtherData} />
           </View>
         </Pager>
       </PagerProvider>
@@ -193,7 +193,7 @@ const InventoryScreen = (props) => {
     <InventoryStack.Navigator>
       <InventoryStack.Screen
         name="Inventory"
-        children={() => <Inventory {...props} />}
+        children={() => <Inventory {...props} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>

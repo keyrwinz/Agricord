@@ -17,7 +17,7 @@ import Style from './Style.js';
 
 const height = Math.round(Dimensions.get('window').height);
 
-const Herbicide = ({ navigation, data }) => {
+const Herbicide = ({ navigation, data, parentNav }) => {
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
