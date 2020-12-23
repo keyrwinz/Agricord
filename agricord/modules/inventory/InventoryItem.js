@@ -262,9 +262,9 @@ const InventoryItem = (props) => {
                     Safety Equipment
                   </Text>
                 </View>
-                <View style={Style.itemDetailRight}>
+                <View style={[Style.itemDetailRight, { justifyContent: 'center', alignItems: 'center' }]}>
                   <TouchableOpacity onPress={() => showModal(true)}>
-                    <Text style={Style.itemDetailValue}>
+                    <Text style={[Style.itemDetailValue, { color: '#5A84EE' }]}>
                       Click to show
                     </Text>
                   </TouchableOpacity>

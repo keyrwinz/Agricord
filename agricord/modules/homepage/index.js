@@ -83,9 +83,22 @@ export default function Homepage(props) {
               parentNav={props.navigation}
             />
           )}
-          options={{
-            tabBarLabel: 'Inventory',
-            tabBarIcon: () => <InventoryIcon />,
+          options={(inventoryScreenProps) => {
+            const { route: { state } } = inventoryScreenProps
+            const routes = state?.routes || null
+
+            let options = {
+              tabBarLabel: 'Inventory',
+              tabBarIcon: () => <InventoryIcon />,
+            }
+            
+            if (routes) {
+              const lastScreenIndex = routes.length - 1
+              if (routes[lastScreenIndex].name === 'InventoryItem') {
+                options.tabBarVisible = false
+              }
+            }
+            return options
           }}
         />
         <Tab.Screen

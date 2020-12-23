@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 50,
+    marginBottom: 100,
   },
   SliderIconContainer: {
     backgroundColor: '#5A84EE',
