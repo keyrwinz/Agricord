@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import Pagination from 'components/Pagination';
 import InventoryItem from './InventoryItem';
-import Herbicide from './Herbicide'
+import InventoryList from './InventoryList';
 import { Color, BasicStyles, Routes } from 'common';
 import Api from 'services/api/index.js'
 import { products } from './data-test.js';
@@ -163,16 +163,20 @@ const Inventory = (props) => {
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredHerbicideData} />
+            {/* ===== HERBICIDE ===== */}
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredHerbicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredFungicideData} />
+            {/* ===== FUNGICIDE ===== */}
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredFungicideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredInsecticideData} />
+            {/* ===== INSECTICIDE ===== */}
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredInsecticideData} />
           </View>
           <View style={Style.sliderContainer}>
-            <Herbicide navigation={props.navigation} parentNav={props.parentNav} data={filteredOtherData} />
+            {/* ===== OTHER ===== */}
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredOtherData} />
           </View>
         </Pager>
       </PagerProvider>
@@ -193,7 +197,7 @@ const InventoryScreen = (props) => {
     <InventoryStack.Navigator>
       <InventoryStack.Screen
         name="Inventory"
-        children={() => <Inventory {...props} parentNav={props.parentNav} />}
+        children={(childProps) => <Inventory {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
