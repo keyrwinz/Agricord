@@ -29,7 +29,6 @@ class OrderDetails extends Component {
 
   componentDidMount() {
     this.getOrderDetails();
-    console.log('ORDER DETAILS PARAMRA', this.props.navigation.state.params);
   }
 
   getOrderDetails = () => {
@@ -154,13 +153,13 @@ class OrderDetails extends Component {
         <View
           style={{
             position: 'absolute',
-            bottom: 230,
-            right: 0,
-            marginRight: 20,
+            bottom: 130,
+            alignSelf: 'flex-end',
+            right: 20,
           }}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate('ApplyTask');
+              this.props.navigation.navigate('applyTaskStack');
               console.log('NAV2');
             }}>
             <View style={{alignItems: 'center'}}>
