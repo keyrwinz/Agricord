@@ -49,7 +49,7 @@ class OrderCard extends Component {
                 }}
               />
               <Text style={{fontWeight: 'bold', fontSize: 17}}>
-                {this.props.details.merchant_to.name}
+                {this.props.details.merchant.name}
               </Text>
             </View>
 

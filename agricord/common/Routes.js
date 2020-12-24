@@ -37,8 +37,8 @@ export default {
   imageUpload: apiUrl + 'images/upload',
   imageRetrieve: apiUrl + 'images/retrieve',
 
-   // dashboard result
-   dashboardRetrieve: apiUrl + 'paddocks/dashboard_batches',
+  // dashboard result
+  dashboardRetrieve: apiUrl + 'paddocks/dashboard_batches',
   // carts
   // cartsCreate: apiUrl + 'carts/create',
   // cartsRetrieve: apiUrl + 'carts/retrieve',
@@ -71,10 +71,11 @@ export default {
   //Agricord-Tasks
   tasksRetrieve: apiUrl + 'paddocks/retrieve_batches_and_paddocks',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
-  sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
+  ordersRetrieveMerchant: apiUrl + 'order_requests/retrieve_orders',
+  sprayMixesRetrieve: apiUrl + 'spray_mixes/retrieve_details',
   orderRequest: apiUrl + 'order_request_items/retrieve',
-  paddockDetailsRetrieve : apiUrl + 'paddocks/retrieve',
+  paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',
 
   // Inventory
-  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level'
+  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
 };

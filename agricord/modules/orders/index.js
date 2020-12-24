@@ -43,50 +43,79 @@ class OrdersPage extends Component {
       if (this.props.initialPage == 'HistoricalOrders') {
         this.setState({activeIndex: 1});
       }
-      this.getOrders('pending');
-      this.getOrders('completed');
+      this.getOrders();
     }
   }
 
-  getOrders = value => {
+  // getOrders = value => {
+  //   const {user} = this.props.state;
+  //   console.log('TASKS', user.sub_account.merchant.id);
+  //   this.setState({isLoading: true});
+  //   let parameters = {
+  //     condition: [
+  //       {
+  //         value: value,
+  //         clause: '=',
+  //         column: 'status',
+  //       },
+  //     ],
+  //     status: value,
+  //   };
+  //   Api.request(
+  //     Routes.ordersRetrieve,
+  //     parameters,
+  //     response => {
+  //       this.setData(response.data, value);
+  //       console.log('API ORDER RESPSPOSADFS', response.data);
+  //       this.setState({isLoading: false});
+  //     },
+  //     error => {
+  //       this.setState({isLoading: false});
+  //     },
+  //   );
+  // };
+
+  getOrders = () => {
     const {user} = this.props.state;
-    console.log('TASKS', user.sub_account.merchant.id);
     this.setState({isLoading: true});
+    // user.sub_account.merchant.id
     let parameters = {
       condition: [
         {
-          value: value,
+          column: 'merchant_id',
+          value: 1,
           clause: '=',
-          column: 'status',
         },
       ],
-      status: value,
     };
-    Api.request(
-      Routes.ordersRetrieve,
-      parameters,
-      response => {
-        this.setData(response.data, value);
-        console.log('API ORDER RESPSPOSADFS', response.data);
-        this.setState({isLoading: false});
-      },
-      error => {
-        this.setState({isLoading: false});
-      },
-    );
+    console.log('PARAMS', parameters);
+    Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
+      console.log('Response', response.data);
+      this.filterOrders(response.data);
+    });
   };
 
-  setData = (data, type) => {
-    switch (type) {
-      case 'pending':
-        this.setState({pending: data}, () => {});
-        break;
-      case 'completed':
-        this.setState({delivered: data});
-        break;
-      default:
-        break;
-    }
+  filterOrders = orders => {
+    this.setState(
+      {
+        pending: orders.filter(order => {
+          return order.status === 'pending';
+        }),
+      },
+      () => {
+        console.log('COMPLETED', this.state.pending);
+      },
+    );
+    this.setState(
+      {
+        delivered: orders.filter(order => {
+          return order.status === 'completed';
+        }),
+      },
+      () => {
+        console.log('DELIVERED', this.state.delivered);
+      },
+    );
   };
 
   render() {
@@ -99,12 +128,7 @@ class OrdersPage extends Component {
         name: 'Delivered',
       },
     ];
-    const pending = products.filter(product => {
-      return product.status == 'pending';
-    });
-    const delivered = products.filter(product => {
-      return product.status == 'delivered';
-    });
+
     const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
