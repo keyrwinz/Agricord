@@ -47,34 +47,6 @@ class OrdersPage extends Component {
     }
   }
 
-  // getOrders = value => {
-  //   const {user} = this.props.state;
-  //   console.log('TASKS', user.sub_account.merchant.id);
-  //   this.setState({isLoading: true});
-  //   let parameters = {
-  //     condition: [
-  //       {
-  //         value: value,
-  //         clause: '=',
-  //         column: 'status',
-  //       },
-  //     ],
-  //     status: value,
-  //   };
-  //   Api.request(
-  //     Routes.ordersRetrieve,
-  //     parameters,
-  //     response => {
-  //       this.setData(response.data, value);
-  //       console.log('API ORDER RESPSPOSADFS', response.data);
-  //       this.setState({isLoading: false});
-  //     },
-  //     error => {
-  //       this.setState({isLoading: false});
-  //     },
-  //   );
-  // };
-
   getOrders = () => {
     const {user} = this.props.state;
     this.setState({isLoading: true});
@@ -90,32 +62,21 @@ class OrdersPage extends Component {
     };
     console.log('PARAMS', parameters);
     Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
-      console.log('Response', response.data);
       this.filterOrders(response.data);
     });
   };
 
   filterOrders = orders => {
-    this.setState(
-      {
-        pending: orders.filter(order => {
-          return order.status === 'pending';
-        }),
-      },
-      () => {
-        console.log('COMPLETED', this.state.pending);
-      },
-    );
-    this.setState(
-      {
-        delivered: orders.filter(order => {
-          return order.status === 'completed';
-        }),
-      },
-      () => {
-        console.log('DELIVERED', this.state.delivered);
-      },
-    );
+    this.setState({
+      pending: orders.filter(order => {
+        return order.status === 'pending';
+      }),
+    });
+    this.setState({
+      delivered: orders.filter(order => {
+        return order.status === 'completed';
+      }),
+    });
   };
 
   render() {

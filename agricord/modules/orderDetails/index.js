@@ -40,9 +40,7 @@ class OrderDetails extends Component {
     };
     this.setState({isLoading: true});
     Api.request(Routes.orderRequest, parameters, response => {
-      this.setState({products: response.data, isLoading: false}, () => {
-        console.log('THISSATE>PROSADA', this.state.products);
-      });
+      this.setState({products: response.data, isLoading: false});
     });
   };
 
