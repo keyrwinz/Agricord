@@ -61,7 +61,6 @@ class OrdersPage extends Component {
       ],
     };
     Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
-      console.log('RESAPONS', response.data);
       this.filterOrders(response.data);
     });
   };
