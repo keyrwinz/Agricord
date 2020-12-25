@@ -65,7 +65,8 @@ class OrderCard extends Component {
                   Delivered
                 </Text>
               )}
-              {this.props.details.status == 'pending' ? (
+              {this.props.details.status == 'pending' ||
+              this.props.details.status == 'in_progress' ? (
                 <Text>{this.props.details.date_of_delivery}</Text>
               ) : (
                 <Text>
@@ -73,17 +74,19 @@ class OrderCard extends Component {
                 </Text>
               )}
             </View>
-            <Divider style={{height: 1, marginLeft: 15, marginRight: 15}} />
+            <Divider style={{height: 0.4, marginLeft: 15, marginRight: 15}} />
             <View style={Style.cardInfo}>
               <Text
                 style={{fontWeight: 'bold', color: '#969696', width: '50%'}}>
-                Order ID
+                {this.props.details.status === 'pending'
+                  ? 'Order Ref'
+                  : 'Order ID'}
               </Text>
               <Text>{this.props.details.order_number}</Text>
             </View>
             <Divider
               style={{
-                height: 1,
+                height: 0.4,
                 marginLeft: 15,
                 marginRight: 15,
                 marginBottom: 20,

@@ -30,7 +30,13 @@ const OrderScreen = props => {
         options={({route}) => {
           return {
             headerTitle: () => (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '25%',
+                }}>
                 <TitleLogo />
                 <Text
                   style={{
@@ -38,6 +44,7 @@ const OrderScreen = props => {
                     marginLeft: 7,
                     fontWeight: 'bold',
                     fontSize: 20,
+                    letterSpacing: 3,
                   }}>
                   ORDERS
                 </Text>

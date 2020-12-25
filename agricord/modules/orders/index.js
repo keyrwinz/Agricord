@@ -60,8 +60,8 @@ class OrdersPage extends Component {
         },
       ],
     };
-    console.log('PARAMS', parameters);
     Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
+      console.log('RESAPONS', response.data);
       this.filterOrders(response.data);
     });
   };
@@ -69,7 +69,7 @@ class OrdersPage extends Component {
   filterOrders = orders => {
     this.setState({
       pending: orders.filter(order => {
-        return order.status === 'pending';
+        return order.status === 'pending' || order.status === 'in_progress';
       }),
     });
     this.setState({
