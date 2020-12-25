@@ -24,7 +24,7 @@ import {Spinner} from 'components';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-class Tasks extends Component {
+class OrdersPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,47 +43,39 @@ class Tasks extends Component {
       if (this.props.initialPage == 'HistoricalOrders') {
         this.setState({activeIndex: 1});
       }
-      this.getOrders('pending');
-      this.getOrders('completed');
+      this.getOrders();
     }
   }
 
-  getOrders = value => {
+  getOrders = () => {
+    const {user} = this.props.state;
     this.setState({isLoading: true});
+    // user.sub_account.merchant.id
     let parameters = {
       condition: [
         {
-          value: value,
+          column: 'merchant_id',
+          value: 1, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
-          column: 'status',
         },
       ],
-      status: value,
     };
-    Api.request(
-      Routes.ordersRetrieve,
-      parameters,
-      response => {
-        this.setData(response.data, value);
-        this.setState({isLoading: false});
-      },
-      error => {
-        this.setState({isLoading: false});
-      },
-    );
+    Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
+      this.filterOrders(response.data);
+    });
   };
 
-  setData = (data, type) => {
-    switch (type) {
-      case 'pending':
-        this.setState({pending: data}, () => {});
-        break;
-      case 'completed':
-        this.setState({delivered: data});
-        break;
-      default:
-        break;
-    }
+  filterOrders = orders => {
+    this.setState({
+      pending: orders.filter(order => {
+        return order.status === 'pending' || order.status === 'in_progress';
+      }),
+    });
+    this.setState({
+      delivered: orders.filter(order => {
+        return order.status === 'completed';
+      }),
+    });
   };
 
   render() {
@@ -96,12 +88,7 @@ class Tasks extends Component {
         name: 'Delivered',
       },
     ];
-    const pending = products.filter(product => {
-      return product.status == 'pending';
-    });
-    const delivered = products.filter(product => {
-      return product.status == 'delivered';
-    });
+
     const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
@@ -135,4 +122,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Tasks);
+)(OrdersPage);

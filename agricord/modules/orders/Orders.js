@@ -40,6 +40,7 @@ class Orders extends Component {
               />
             ))}
           </View>
+          <View style={{marginBottom: 100}} />
         </ScrollView>
         <View
           style={{position: 'absolute', bottom: 130, alignSelf: 'flex-end'}}>
