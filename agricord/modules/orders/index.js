@@ -14,7 +14,7 @@ import {connect} from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Style from './Style.js';
 import {Routes, Color, Helper, BasicStyles} from 'common';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/Pagination/GradientBorder';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import Orders from './Orders';
 import {products} from './data-test.js';
@@ -96,7 +96,7 @@ class OrdersPage extends Component {
     const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
-        <View style={{backgroundColor:Color.white,height:50}}>
+        <View style={BasicStyles.paginationHolder}>
           <Pagination
             activeIndex={activeIndex}
             onChange={index => onPageChange(index)}
@@ -106,7 +106,7 @@ class OrdersPage extends Component {
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={this.state.pending} />
+              <Orders {...this.props} data={this.state.pending}/>
             </View>
             <View style={Style.sliderContainer}>
               <Orders {...this.props} data={this.state.delivered} />

@@ -128,5 +128,18 @@ export default {
     width: 30,
     borderRadius: 15
   },
-  profileIconSize: 30
+  profileIconSize: 30,
+  paginationHolder: {
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 15,
+    backgroundColor:Color.white,
+    height: 60
+  },
+  standardFontSize: 13
 }
