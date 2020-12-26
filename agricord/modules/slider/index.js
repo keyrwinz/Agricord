@@ -50,6 +50,12 @@ class Slider extends Component {
     // this.props.navigation.dispatch(navigateAction);
     // const { setActiveRoute } = this.props;
     // setActiveRoute(null)
+    const { setSetting } = this.props;
+    if(route == 'AppSettings'){
+      setSetting(1)
+    }else if(route == 'AccountSettings'){
+      setSetting(0)
+    }
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'drawerStack',
@@ -570,7 +576,8 @@ const mapDispatchToProps = dispatch => {
   const { actions } = require('@redux');
   return {
     logout: () => dispatch(actions.logout()),
-    setActiveRoute: (route) => dispatch(actions.setActiveRoute(route))
+    setActiveRoute: (route) => dispatch(actions.setActiveRoute(route)),
+    setSetting: (setting) => dispatch(actions.setSetting(setting)),
   };
 };
 

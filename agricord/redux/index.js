@@ -26,6 +26,7 @@ const types = {
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
   SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
+  SET_SETTING: 'SET_SETTING'
 };
 
 export const actions = {
@@ -96,6 +97,9 @@ export const actions = {
   setMachineAndMix(task) {
     return {type: types.SET_MACHINE_AND_MIX, task};
   },
+  setSetting(setting){
+    return { type: types.SET_SETTING, setting };
+  }
 };
 
 const initialState = {
@@ -117,6 +121,7 @@ const initialState = {
   productFilter: [],
   selectedOrder: null,
   task: null,
+  appSetting: 0
 };
 
 storeData = async (key, value) => {
@@ -138,7 +143,7 @@ const reducer = (state = initialState, action) => {
   const {messages, message} = action;
   const {messengerGroup, messagesOnGroup} = action;
   const {selectedOrder} = action;
-  const {task} = action;
+  const {task, setting} = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -405,6 +410,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         task,
+      };
+    case types.SET_SETTING:
+      return {
+        ...state,
+        appSetting: setting,
       };
     default:
       return {...state, nav: state.nav};
