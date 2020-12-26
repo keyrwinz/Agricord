@@ -14,29 +14,34 @@ import { connect } from 'react-redux';
 
 const height = Math.round(Dimensions.get('window').height);
 
-const TaskButton = (props) => {
-  return (
-      <View
-        style={{
-          position: 'absolute',
-          bottom: 10,
-          alignSelf: 'flex-end'
-        }}
-      >
-        <TouchableOpacity onPress={() => {
-         props.parentNav.navigate('ApplyTask')
-        }}>
-          <Image
-            style={{
-              padding: 30,
-              height: 50,
-              width:'100%'
-            }}
-            source={require('../../assets/taskIcon.png')}
-          />
-        </TouchableOpacity>
-      </View>
-  );
+class TaskButton extends Component{
+  constructor(props){
+    super(props);
+  }
+  render(){
+    return (
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 10,
+            alignSelf: 'flex-end'
+          }}
+        >
+          <TouchableOpacity onPress={() => {
+            this.props.navigation.navigate('applyTaskStack')
+          }}>
+            <Image
+              style={{
+                padding: 30,
+                height: 50,
+                width:'100%'
+              }}
+              source={require('assets/taskIcon.png')}
+            />
+          </TouchableOpacity>
+        </View>
+    );
+  }
 }
 const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {

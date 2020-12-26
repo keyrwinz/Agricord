@@ -181,8 +181,8 @@ const Inventory = (props) => {
           </View>
         </Pager>
       </PagerProvider>
-      
-      <TaskButton />
+
+      <TaskButton navigation={props.parentNav}/>
     </View>
   );
 }

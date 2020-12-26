@@ -185,7 +185,7 @@ class paddockPage extends Component{
           {this.renderTopCard()}
           {this.renderMixCards()}        
         </View>
-        <TaskButton />
+        <TaskButton navigation={this.props.navigation}/>
      </ImageBackground>
 
     );

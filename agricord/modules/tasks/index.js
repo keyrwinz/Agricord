@@ -107,7 +107,7 @@ class Tasks extends Component {
             </View>
           </Pager>
         </PagerProvider>
-        <TaskButton />
+        <TaskButton navigation={this.props.parentNav}/>
       </View>
     );
   }

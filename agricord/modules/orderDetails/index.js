@@ -151,7 +151,7 @@ class OrderDetails extends Component {
           </ScrollView>
         </View>
 
-        <TaskButton />
+        <TaskButton navigation={this.props.navigation}/>
       </ImageBackground>
     );
   }

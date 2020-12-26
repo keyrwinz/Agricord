@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronDown, faChevronUp, faChevronRight, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faChevronRight, faBars, faUserCircle } from '@fortawesome/free-solid-svg-icons';
 import Style from './HomeStyle'
 import { Routes, Color, Helper, BasicStyles } from 'common';
 import Background from 'assets/homescreen/background.svg'
