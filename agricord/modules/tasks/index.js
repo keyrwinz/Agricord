@@ -41,8 +41,6 @@ class Tasks extends Component {
     const { user } = this.props.state;
     if (user != null) {
     }
-   console.log(Routes.tasksRetrieve)
-    console.log("henlo",this.props)
     if (this.props.initialPage!=null) {
       switch(this.props.initialPage) {
         case 'TasksInProgress':

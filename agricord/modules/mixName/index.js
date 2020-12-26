@@ -63,8 +63,6 @@ class MixName extends Component {
     const {user} = this.props.state;
     if (user != null) {
     }
-    console.log(Routes.sprayMixesRetrieve);
-    console.log(this.props);
     const parameter = {
       offset: 0,
       limit: 10,
@@ -74,7 +72,6 @@ class MixName extends Component {
       Routes.sprayMixesRetrieve,
       parameter,
       response => {
-        console.log(response.data);
         this.setState({products: response.data});
       },
       error => {
@@ -84,8 +81,7 @@ class MixName extends Component {
   }
 
   render() {
-    const {details} = this.props.route.params;
-    const {dataFrom} = this.props.route.params;
+    const { paddock } = this.props.state;
     return (
       <ImageBackground
         source={require('assets/backgroundlvl2.png')}
@@ -108,7 +104,7 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  {details.appliedRate}
+                  {/*details.appliedRate*/}
                 </Text>
               </View>
               <View
@@ -129,7 +125,7 @@ class MixName extends Component {
                 details={{
                   item,
                   dataFrom: 'paddockPage',
-                  status: details.status,
+                  status: 'test',
                 }}
                 key={item.id}
               />
@@ -137,21 +133,22 @@ class MixName extends Component {
           </View>
         </ScrollView>
 
-        {dataFrom == 'due' && (
-          <SwipeButton
-            thumbIconBackgroundColor="#5A84EE"
-            thumbIconBorderColor="#5A84EE"
-            thumbIconImageSource={arrowRight}
-            shouldResetAfterSuccess={true}
-            resetAfterSuccessAnimDelay={100}
-            title=""
-            height={55}
-            railStyles={{
-              backgroundColor: '#5A84EE',
-              borderColor: '#5A84EE',
-            }}
-            onSwipeSuccess={() => alert('Action Complete Here')}
-          />
+        {
+          (paddock && paddock.from == 'due') && (
+            <SwipeButton
+              thumbIconBackgroundColor="#5A84EE"
+              thumbIconBorderColor="#5A84EE"
+              thumbIconImageSource={arrowRight}
+              shouldResetAfterSuccess={true}
+              resetAfterSuccessAnimDelay={100}
+              title=""
+              height={55}
+              railStyles={{
+                backgroundColor: '#5A84EE',
+                borderColor: '#5A84EE',
+              }}
+              onSwipeSuccess={() => alert('Action Complete Here')}
+            />
         )}
       </ImageBackground>
     );

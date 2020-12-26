@@ -85,8 +85,8 @@ paddockInfo:{
 
 paddockDate:{
   width:'30%',
-  minHeight:40,
-  marginRight:5,
+  minHeight: 40,
+  marginRight: 3,
   borderRadius:12,
   backgroundColor:Color.white,
   borderColor:'#C0C0C0',

@@ -26,7 +26,9 @@ const types = {
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
   SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
-  SET_SETTING: 'SET_SETTING'
+  SET_SETTING: 'SET_SETTING',
+  SET_MIX_NAME: 'SET_MIX_NAME',
+  SET_PADDOCK: 'SET_PADDOCK'
 };
 
 export const actions = {
@@ -99,6 +101,12 @@ export const actions = {
   },
   setSetting(setting){
     return { type: types.SET_SETTING, setting };
+  },
+  setMixName(mix){
+    return { type: types.SET_MIX_NAME, mix };
+  },
+  setPaddock(paddock){
+    return { type: types.SET_PADDOCK, paddock };
   }
 };
 
@@ -121,7 +129,9 @@ const initialState = {
   productFilter: [],
   selectedOrder: null,
   task: null,
-  appSetting: 0
+  appSetting: 0,
+  mix: null,
+  paddock: null
 };
 
 storeData = async (key, value) => {
@@ -143,7 +153,7 @@ const reducer = (state = initialState, action) => {
   const {messages, message} = action;
   const {messengerGroup, messagesOnGroup} = action;
   const {selectedOrder} = action;
-  const {task, setting} = action;
+  const {task, setting, paddock} = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -416,6 +426,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         appSetting: setting,
       };
+    case types.SET_MIX_NAME:
+      return {
+        ...state,
+        mix
+      }
+    case types.SET_PADDOCK:
+      return {
+        ...state,
+        paddock
+      }
     default:
       return {...state, nav: state.nav};
   }

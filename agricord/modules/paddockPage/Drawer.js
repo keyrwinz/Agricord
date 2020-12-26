@@ -29,6 +29,9 @@ class HeaderOptions extends Component {
   }
 }
 
+
+const mapStateToProps = state => ({ state: state });
+
 const mapDispatchToProps = dispatch => {
   const { actions } = require('@redux');
   return {
@@ -36,12 +39,14 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+let HeaderOptionsConnect = connect(mapStateToProps, mapDispatchToProps)(HeaderOptions);
+
 const PaddockStack = createStackNavigator({
   PaddockScren: {
     screen: PaddockPage, 
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params.name,
-      headerLeft: <HeaderOptions navigationProps={navigation} />,
+      title: navigation.state.params.paddock ? navigation.state.params.paddock.name : '',
+      headerLeft: <HeaderOptionsConnect navigationProps={navigation} />,
       drawerLabel: 'Paddock',
       headerStyle: {
         backgroundColor: '#FFFFFF',
@@ -52,6 +57,6 @@ const PaddockStack = createStackNavigator({
 })
 
 export default connect(
-  
+  mapStateToProps,
   mapDispatchToProps
 )(PaddockStack);

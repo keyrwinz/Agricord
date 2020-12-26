@@ -36,7 +36,6 @@ class paddockPage extends Component{
 
   componentDidMount(){
     const { user } = this.props.state; 
-    console.log(this.props)
     // const {data}=this.props.navigation.state.params.data
     // console.log(data)
 
@@ -44,134 +43,138 @@ class paddockPage extends Component{
 
   }
 
-  retrieveData=()=>{
+  retrieveData = () => {
+    const { paddock, user } = this.props.state;
+
+    if(paddock == null || user == null || (user && user.sub_account && user.sub_account.merchant)){
+      return
+    }
+
     this.setState({
       isLoading: true
     })
 
-    const parameter={
-      status:this.props.navigation.state.params.data.status,
-      merchant_id:1,
-      id:this.props.navigation.state.params.data.id,
-    }
-    console.log(Routes.paddockDetailsRetrieve)
-  Api.request(Routes.paddockDetailsRetrieve, parameter, response => {
-    if(response.data!=null){
-    this.setState({paddock:response.data.paddock_data[0]});
-    }
-   
+    console.log('paddock', paddock)
 
+    const parameter={
+      status: paddock.from,
+      merchant_id: user.sub_account.merchant.id,
+      id: paddock.id
+    }
+    Api.request(Routes.paddockDetailsRetrieve, parameter, response => {
+      if(response.data != null){
+        this.setState({paddock: response.data.paddock_data[0]});
+      }
      }, error => {
-      console.log("ERROR HAPPENS",error )
-     
+      console.log("ERROR HAPPENS", error )
     })
-  console.log(parameter)
   }
 
   renderTopCard=()=>{
-    const {data}=this.props.navigation.state.params
-    const {paddock}=this.state
+    const { data } = this.props.state.paddock;
+    const { paddock } = this.state
     return(
-    <View style={Style.container}>
-      {data.status=="due" && (
-    <React.Fragment>
-    <View style={Style.imageContainer}>
-      
-    <Image
-      style={Style.image}
-      source={require('../../assets/FieldPea.png')}
-      />
-    </View>
-    <View style={Style.textContainer}>
-      <Text style={Style.text}>Field Pea</Text>
-      <Text style={{textAlign:'center',fontSize:13,color:'#969696',fontWeight:'bold'}}>CROP</Text> 
-    </View>
-    <Divider style={{height:0.5,width:'90%',margin:10}}/>
-  <View style={{minHeight:70,width:'100%',flexDirection:'row',justifyContent:'space-around'}}>
-  <View style={{flexDirection:'column'}}>
-  <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Due Date</Text>
-  <Text>03/02/2020</Text>
-  </View>
+      <View style={Style.container}>
+        {
+          (data && data.from == "due") && (
+            <React.Fragment>
+              <View style={Style.imageContainer}>  
+                <Image
+                  style={Style.image}
+                  source={require('assets/FieldPea.png')}
+                  />
+              </View>
+              <View style={Style.textContainer}>
+                <Text style={Style.text}>Field Pea</Text>
+                <Text style={{textAlign:'center',fontSize:13,color:'#969696',fontWeight:'bold'}}>CROP</Text> 
+              </View>
+              <Divider style={{height:0.5,width:'90%',margin:10}}/>
+                <View style={{minHeight:70,width:'100%',flexDirection:'row',justifyContent:'space-around'}}>
+                  <View style={{flexDirection:'column'}}>
+                    <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Due Date</Text>
+                    <Text>03/02/2020</Text>
+                  </View>
 
-  <View style={{flexDirection:'column'}}>
-  <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Created By</Text>
-  <Text>Agricord</Text> 
-   </View>  
-  </View>
-  <Divider style={{height:0.5,width:'90%',marginBottom:10}}/>
-  </React.Fragment>
-      )}
+                  <View style={{flexDirection:'column'}}>
+                    <Text style={{fontWeight:'bold',color:'#5A84EE',marginBottom:7}}>Created By</Text>
+                    <Text>Agricord</Text> 
+                  </View>  
+                </View>
+              <Divider style={{height:0.5,width:'90%',marginBottom:10}}/>
+          </React.Fragment>
+        )
+      }
 
-      {(data.status!="due") && (
-        <React.Fragment>
-         
+      {
+        (data && data.from != "due") && (
+          <React.Fragment>
             <View style={Style.cardInfo}>
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-              Crop
-            </Text>
-            <Text>{paddock.crop_name[0]!=null ? paddock.crop_name[0].name:null}</Text>
-          </View>
-          <Divider style={{height:0.5,width:'90%'}}/>
-
-          <View style={Style.cardInfo}>
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-              Machine
-            </Text>
-            <Text>{data.machine!=null ? data.machine:null}</Text>
-          </View>
-          <Divider style={{height:0.5,width:'90%'}}/>
-          <View style={Style.cardInfo}>
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-              Operator
-            </Text>
-            <Text>{data.operator!=null ? data.operator:null}</Text>
-          </View>
-          <Divider style={{height:0.5,width:'90%'}}/>
-          <View style={Style.cardInfo}>
-            <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-              {data.status=="completed"?"Start Time" : "Started"}
-            </Text>
-            <Text>{paddock.start_date!=null ? paddock.start_date:null}</Text>
-          </View>
-          <Divider style={{height:0.5,width:'90%'}}/>
-          {
-            data.status=="completed" ? 
-            (  <View style={Style.cardInfo}>
               <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-                Finish Time
+                Crop
               </Text>
-              <Text>{data.finished!=null ? data.finished:null}</Text>
+              <Text>{paddock.crop_name[0]!=null ? paddock.crop_name[0].name:null}</Text>
             </View>
-            ): null
-          }
-        </React.Fragment>
-      )}
-
-</View>
+            <Divider style={{height:0.5,width:'90%'}}/>
+            <View style={Style.cardInfo}>
+              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                Machine
+              </Text>
+              <Text>{data.machine!=null ? data.machine:null}</Text>
+            </View>
+            <Divider style={{height:0.5,width:'90%'}}/>
+            <View style={Style.cardInfo}>
+              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                Operator
+              </Text>
+              <Text>{data.operator!=null ? data.operator:null}</Text>
+            </View>
+            <Divider style={{height:0.5,width:'90%'}}/>
+            <View style={Style.cardInfo}>
+              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                {data.status=="completed"?"Start Time" : "Started"}
+              </Text>
+              <Text>{paddock.start_date!=null ? paddock.start_date:null}</Text>
+            </View>
+            <Divider style={{height:0.5,width:'90%'}}/>
+            {
+              data.status=="completed" ? 
+              (  <View style={Style.cardInfo}>
+                <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  Finish Time
+                </Text>
+                <Text>{data.finished!=null ? data.finished:null}</Text>
+              </View>
+              ): null
+            }
+          </React.Fragment>
+        )}
+        </View>
     )
   }
 
-  renderMixCards=()=>{
+  renderMixCards = () => {
+    const { paddock } = this.props.state;
     return(
       <TouchableHighlight
       onPress={()=>{
-        this.props.navigation.navigate('mixNameStack',{details:this.props.navigation.state.params.data,dataFrom:this.props.navigation.state.params.dataFrom})
-        // console.log(this.props.navigation)
+        this.props.navigation.navigate('mixNameStack', {
+          paddock: paddock
+        })
       }}
       style={[Style.paddockContainer]}
-      underlayColor={'#5A84EE'}
+      underlayColor={Color.secondary}
       >
-      <React.Fragment>
+        <React.Fragment>
           <View style={Style.paddockInfo}>
             <View style={{flexDirection:'row'}}>
-            <View style={{marginTop:6,marginRight:10,width:10,height:10,borderRadius:100/2,backgroundColor:'#D3E584'}}/>
-              <Text style={{fontWeight:'bold',fontSize:18}}>Spray Mix</Text>
+              <View style={{marginTop:6,marginRight:10,width:10,height:10,borderRadius:100/2,backgroundColor:'#D3E584'}}/>
+                <Text style={{fontWeight:'bold',fontSize:18}}>Spray Mix</Text>
             </View>
-          </View>
-          <View style={[Style.paddockDate]}>   
-              <Text style={{fontSize:16}}>Contents</Text>
-          </View>  
-      </React.Fragment>
+            </View>
+            <View style={[Style.paddockDate]}>   
+                <Text style={{fontSize:16}}>Contents</Text>
+            </View>  
+        </React.Fragment>
       </TouchableHighlight>
     )
   }
@@ -187,16 +190,16 @@ class paddockPage extends Component{
         </View>
         <TaskButton navigation={this.props.navigation}/>
      </ImageBackground>
-
     );
   }
 }
+
 const mapStateToProps = state => ({ state: state });
 
 const mapDispatchToProps = dispatch => {
   const { actions } = require('@redux');
   return {
-
+    setMixName: (mix) => dispatch(actions.setSetting(mix)),
   };
 };
 

@@ -73,7 +73,6 @@ class InProgress extends Component {
       parameter,
       response => {
         this.setState({products: response.data.paddocks, isLoading: false});
-        console.log(response.data.paddocks);
       },
       error => {
         console.log('ERROR HAPPENS', error);
@@ -93,11 +92,13 @@ class InProgress extends Component {
             {this.state.products.map((item, index) => (
               <TouchableOpacity
                 onPress={() => {
-                  const name = item.name.toUpperCase();
+                  const { setPaddock } = this.props;
+                  setPaddock({
+                    ...item,
+                    from: 'inprogress'
+                  })
                   this.props.parentNav.navigate('paddockStack', {
-                    name,
-                    data: item,
-                    dataFrom: 'inprogress',
+                    paddock: item
                   });
                 }}>
                 <PaddockCard details={item} key={item.id} />
@@ -113,7 +114,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setPaddock: (paddock) => dispatch(actions.setPaddock(paddock)),
+  };
 };
 
 export default connect(

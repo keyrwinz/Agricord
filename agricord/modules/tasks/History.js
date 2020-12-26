@@ -96,12 +96,12 @@ class History extends Component {
             {this.state.products.map((item, index) => (
               <TouchableOpacity
                 onPress={() => {
-                  const name = item.name.toUpperCase();
-                  this.props.parentNav.navigate('paddockStack', {
-                    name,
-                    data: item,
-                    dataFrom: 'history',
-                  });
+                  const { setPaddock } = this.props;
+                  setPaddock({
+                    ...item,
+                    from: 'inprogress'
+                  })
+                  this.props.parentNav.navigate('paddockStack');
                 }}>
                 <PaddockCard details={item} key={item.id} />
               </TouchableOpacity>
@@ -116,7 +116,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setPaddock: (paddock) => dispatch(actions.setPaddock(paddock)),
+  };
 };
 
 export default connect(
