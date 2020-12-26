@@ -7,7 +7,7 @@ export default {
   danger: '#cae166',
   warning: '#ffc107',
   secondary: secondary,
-  white: '#ffffff',
+  white: '#fff',
   gray: '#cccccc',
   lightGray: '#eeeeee',
   darkGray: '#2b2b2b',

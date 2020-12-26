@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/Pagination/GradientBorder';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import AccountSettings from 'modules/accountSettings';
 import AppSettings from 'modules/appSettings';
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import styles from 'modules/settingsPage/Styles.js';
 class SettingsPage extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class SettingsPage extends Component {
     ];
     return (
       <View style={styles.MainContainer}>
-        <View style={{backgroundColor:Color.white,height:50}}>
+        <View style={BasicStyles.paginationHolder}>
           <Pagination
             activeIndex={activeIndex}
             onChange={index => this.onPageChange(index)}

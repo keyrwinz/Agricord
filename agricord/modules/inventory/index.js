@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/Pagination/GradientBorder';
 import InventoryItem from './InventoryItem';
 import InventoryList from './InventoryList';
 import { Color, BasicStyles, Routes } from 'common';
@@ -132,14 +132,21 @@ const Inventory = (props) => {
 
   return (
     <View style={Style.MainContainer}>
-      <Pagination
-        activeIndex={activeIndex}
-        onChange={(index) => onPageChange(index)}
-        pages={paginationProps}
-      >
-      </Pagination>
-      <PagerProvider activeIndex={activeIndex}>
-
+      <View style={{
+        backgroundColor: Color.white,
+        width: '100%',
+        height: 140
+      }}>
+        <View style={[BasicStyles.paginationHolder,{
+          shadowColor: Color.gray,
+        }]}>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={(index) => onPageChange(index)}
+            pages={paginationProps}
+          >
+          </Pagination>
+        </View>
         {/* SEARCHBAR */}
         <View style={Style.searchbarContainer}>
           <TextInput
@@ -161,6 +168,8 @@ const Inventory = (props) => {
             <NfcIcon width="35" />
           </TouchableOpacity>
         </View>
+      </View>
+      <PagerProvider activeIndex={activeIndex}>
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
