@@ -29,6 +29,8 @@ class AccountSettings extends Component {
   }
 
   render() {
+    const { user } = this.props.state;
+    console.log('user', user)
     return (
       <View style={{alignItems: 'center', width: '100%', height: '100%'}}>
         <View style={Style.productInfoContainer}>
@@ -41,7 +43,13 @@ class AccountSettings extends Component {
               <Text style={Style.HeadingTextStyle}>Name</Text>
             </View>
             <View style={Style.DescriptionContainer}>
-              <Text style={Style.DescriptionTextStyle}>{this.state.name}</Text>
+              {
+                (user) && (
+                  <Text style={Style.DescriptionTextStyle}>
+                    {user.username}
+                  </Text>
+                )
+              }
             </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
@@ -54,6 +62,13 @@ class AccountSettings extends Component {
               <Text style={Style.HeadingTextStyle}>Business Account</Text>
             </View>
             <View style={Style.DescriptionContainer}>
+              {
+                (user && user.sub_account && user.sub_account.merchant) && (
+                  <Text style={Style.DescriptionTextStyle}>
+                    {user.sub_account.merchant.name}
+                  </Text>
+                )
+              }
               <Text style={Style.DescriptionTextStyle}>Agricord. Inc</Text>
             </View>
           </View>
@@ -67,9 +82,14 @@ class AccountSettings extends Component {
               <Text style={Style.HeadingTextStyle}>Permissions Level</Text>
             </View>
             <View style={Style.DescriptionContainer}>
-              <Text style={Style.DescriptionTextStyle}>
-                {this.state.permissionLevel}
-              </Text>
+            {
+              (user && user.sub_account) && (
+                <Text style={Style.DescriptionTextStyle}>
+                  {user.sub_account.status}
+                </Text>
+              )
+            }
+              
             </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
