@@ -4,6 +4,7 @@ import Pagination from 'components/Pagination';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import AccountSettings from 'modules/accountSettings';
 import AppSettings from 'modules/appSettings';
+import { Color } from 'common';
 import styles from 'modules/settingsPage/Styles.js';
 class SettingsPage extends Component {
   constructor(props) {
@@ -29,11 +30,13 @@ class SettingsPage extends Component {
     ];
     return (
       <View style={styles.MainContainer}>
-        <Pagination
-          activeIndex={activeIndex}
-          onChange={index => this.onPageChange(index)}
-          pages={paginationProps}
-        />
+        <View style={{backgroundColor:Color.white,height:50}}>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={index => this.onPageChange(index)}
+            pages={paginationProps}
+          />
+        </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={styles.sliderContainer}>
