@@ -13,7 +13,7 @@ import { MainCard, Feature, Card, MainFeature, PromoCard } from 'components/Prod
 import {Collapse,CollapseHeader, CollapseBody, AccordionList} from 'accordion-collapse-react-native';
 import { Divider } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/Pagination/GradientBorder';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import InProgress from './InProgress'
 import Due from './Due'
@@ -85,7 +85,7 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
-        <View style={{backgroundColor:Color.white,height:50}}>
+        <View style={BasicStyles.paginationHolder}>
         <Pagination
           activeIndex={activeIndex}
           onChange={(index) => onPageChange(index)}

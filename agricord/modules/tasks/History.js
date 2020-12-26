@@ -91,7 +91,7 @@ class History extends Component {
        style={{ flex: 1, position: 'relative' }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {console.log('check', data)}
-          <View style={(Style.MainContainer, {marginBottom: 15})}>
+          <View style={(Style.MainContainer, {marginBottom: 15, marginTop: 25})}>
             <Text style={{fontWeight: 'bold'}}>Paddocks History</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity

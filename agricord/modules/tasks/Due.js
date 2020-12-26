@@ -89,7 +89,7 @@ class Due extends Component {
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={(Style.MainContainer, {marginBottom: 15})}>
+          <View style={(Style.MainContainer, {marginBottom: 15, marginTop: 25})}>
             <Text style={{fontWeight: 'bold'}}>Paddocks Due</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity

@@ -39,7 +39,7 @@ export default function Homepage(props) {
           },
         }}>
         <Tab.Screen
-          name="SettingsPage"
+          name="Settings"
           children={route => (
             <SettingsScreen
               {...route}
@@ -48,7 +48,7 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: 'Setting',
+            tabBarLabel: 'SETTINGS',
             tabBarIcon: () => <SettingIcon />,
           }}
         />
@@ -75,7 +75,7 @@ export default function Homepage(props) {
           }}
         />
         <Tab.Screen
-          name="Inventory"
+          name="INVENTORY"
           children={route => (
             <InventoryScreen
               {...route}
@@ -88,7 +88,7 @@ export default function Homepage(props) {
             const routes = state?.routes || null
 
             let options = {
-              tabBarLabel: 'Inventory',
+              tabBarLabel: 'INVENTORY',
               tabBarIcon: () => <InventoryIcon />,
             }
             
@@ -102,7 +102,7 @@ export default function Homepage(props) {
           }}
         />
         <Tab.Screen
-          name="Task"
+          name="TASKS"
           children={route => (
             <Tasks
               {...route}
@@ -111,7 +111,7 @@ export default function Homepage(props) {
             />
           )}
           options={{
-            tabBarLabel: 'Tasks',
+            tabBarLabel: 'TASKS',
             tabBarIcon: () => <TaskIcon />,
           }}
         />
