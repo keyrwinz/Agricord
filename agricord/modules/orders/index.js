@@ -62,7 +62,10 @@ class OrdersPage extends Component {
       ],
     };
     Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
+      this.setState({isLoading: false});
       this.filterOrders(response.data);
+    }, error => {
+      this.setState({isLoading: false});
     });
   };
 
@@ -93,12 +96,13 @@ class OrdersPage extends Component {
     const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
-        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
-        <Pagination
-          activeIndex={activeIndex}
-          onChange={index => onPageChange(index)}
-          pages={paginationProps}
-        />
+        <View style={{backgroundColor:Color.white,height:50}}>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={index => onPageChange(index)}
+            pages={paginationProps}
+          />
+        </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
@@ -110,6 +114,7 @@ class OrdersPage extends Component {
           </Pager>
         </PagerProvider>
         <TaskButton navigation={this.props.parentNav}/>
+        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </View>
     );
   }

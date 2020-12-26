@@ -85,7 +85,6 @@ class Tasks extends Component {
     const onPageChange = (activeIndex) => this.setState({ activeIndex })
     return (
       <View style={Style.MainContainer}>
-        {console.log(progress)}
         <View style={{backgroundColor:Color.white,height:50}}>
         <Pagination
           activeIndex={activeIndex}
