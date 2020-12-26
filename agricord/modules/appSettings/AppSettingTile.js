@@ -3,6 +3,11 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import Switch from 'components/Toggle/Switch.js';
 import CustomSwitch from 'components/Toggle/CustomSwitch.js';
 import styles from 'modules/appSettings/Styles.js';
+import LogoutSvg from 'assets/settings/logout.svg';
+import WifiSvg from 'assets/settings/wifi.svg';
+import WifiOfflineSvg from 'assets/settings/wifioffline.svg';
+import BellSvg from 'assets/settings/bell.svg';
+import ImageSvg from 'assets/settings/image.svg';
 
 class AppSettingTile extends Component {
   constructor(props) {
@@ -22,10 +27,32 @@ class AppSettingTile extends Component {
       <View style={styles.AppSettingTileContainer}>
         <View style={styles.AppSettingTileContainerLeft}>
           <View style={styles.AppSettingTileIconContainer}>
-            <Image
-              source={this.props.icon}
-              style={styles.AppSettingTileIconStyle}
-            />
+            {
+              this.props.icon == 'logout' && (
+                <LogoutSvg style={styles.AppSettingTileIconStyle}/>
+              )
+            }
+            {
+              this.props.icon == 'wifi' && (
+                <WifiSvg style={styles.AppSettingTileIconStyle}/>
+              )
+            }
+            {
+              this.props.icon == 'wifioffline' && (
+                <WifiOfflineSvg style={styles.AppSettingTileIconStyle}/>
+              )
+            }
+            {
+              this.props.icon == 'bell' && (
+                <BellSvg style={styles.AppSettingTileIconStyle}/>
+              )
+            }
+
+            {
+              this.props.icon == 'image' && (
+                <ImageSvg style={styles.AppSettingTileIconStyle}/>
+              )
+            }
           </View>
           <View style={styles.AppSettingTileTextContainer}>
             <Text style={styles.AppSettingTileTitleTextStyle}>

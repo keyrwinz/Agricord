@@ -34,7 +34,6 @@ class AccountSettings extends Component {
 
   render() {
     const { user } = this.props.state;
-    console.log('user', user)
     return (
       <View style={{alignItems: 'center', width: '100%', height: '100%'}}>
         <View style={Style.productInfoContainer}>

@@ -33,7 +33,7 @@ class SettingsPage extends Component {
   onPageChange = activeIndex => {
     this.setState({activeIndex});
     const { setSetting } = this.props;
-    setSetting(index)
+    setSetting(activeIndex)
   };
 
   render() {
