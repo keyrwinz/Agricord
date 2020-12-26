@@ -86,9 +86,9 @@ class InProgress extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks;
     return (
-      <SafeAreaView style={{position: 'relative', height: '80%'}}>
+      <SafeAreaView style={{position: 'relative'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={(Style.MainContainer, {marginBottom: 15})}>
+          <View style={Style.MainContainer, { minHeight: height }}>
             <Text style={{fontWeight: 'bold'}}>Paddocks</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity
@@ -105,26 +105,6 @@ class InProgress extends Component {
             ))}
           </View>
         </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 117,
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.parentNav.navigate('applyTaskStack');
-            }}>
-            <Image
-              style={{
-                padding: 30,
-                height: 50,
-                width: '100%',
-              }}
-              source={require('../../assets/taskIcon.png')}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     );
   }

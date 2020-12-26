@@ -88,7 +88,7 @@ class History extends Component {
     const data = this.state.products.paddocks;
     return (
       <SafeAreaView
-        style={{marginBottom: 50, position: 'relative', height: '80%'}}>
+       style={{ flex: 1, position: 'relative' }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {console.log('check', data)}
           <View style={(Style.MainContainer, {marginBottom: 15})}>
@@ -108,26 +108,6 @@ class History extends Component {
             ))}
           </View>
         </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 117,
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.parentNav.navigate('applyTaskStack');
-            }}>
-            <Image
-              style={{
-                padding: 30,
-                height: 50,
-                width: '100%',
-              }}
-              source={require('../../assets/taskIcon.png')}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     );
   }

@@ -24,6 +24,7 @@ import ApplyTask from 'modules/applyTask';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SearchIcon from 'assets/inventory/search_icon.svg';
 import NfcIcon from 'assets/inventory/nfc_icon.svg';
+import TaskButton from 'modules/generic/TaskButton.js';
 
 const InventoryStack = createStackNavigator()
 
@@ -180,6 +181,8 @@ const Inventory = (props) => {
           </View>
         </Pager>
       </PagerProvider>
+      
+      <TaskButton />
     </View>
   );
 }

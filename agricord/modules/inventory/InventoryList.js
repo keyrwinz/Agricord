@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import PaddockCard from 'components/Products/paddockCard.js';
 import Style from './Style.js';
-import TaskButton from 'modules/generic/TaskButton.js';
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -48,27 +47,6 @@ const InventoryList = (props) => {
           }
         </View>
       </ScrollView>
-      <TaskButton />
-      {/*<View
-        style={{
-          position: 'absolute',
-          bottom: 26,
-          alignSelf: 'flex-end'
-        }}
-      >
-        <TouchableOpacity onPress={() => {
-         props.navigation.navigate('ApplyTask')
-        }}>
-          <Image
-            style={{
-              padding: 30,
-              height: 50,
-              width:'100%'
-            }}
-            source={require('../../assets/taskIcon.png')}
-          />
-        </TouchableOpacity>
-      </View>*/}
     </SafeAreaView>
   );
 }

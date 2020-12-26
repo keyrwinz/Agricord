@@ -20,6 +20,7 @@ import Orders from './Orders';
 import {products} from './data-test.js';
 import Api from 'services/api';
 import {Spinner} from 'components';
+import TaskButton from 'modules/generic/TaskButton.js';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -108,6 +109,7 @@ class OrdersPage extends Component {
             </View>
           </Pager>
         </PagerProvider>
+        <TaskButton />
       </View>
     );
   }

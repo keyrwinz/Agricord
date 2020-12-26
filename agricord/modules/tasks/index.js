@@ -21,6 +21,7 @@ import History from './History'
 import PaddockCard from 'components/Products/paddockCard.js'
 import {products} from './data-test.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
+import TaskButton from 'modules/generic/TaskButton.js';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -106,6 +107,7 @@ class Tasks extends Component {
             </View>
           </Pager>
         </PagerProvider>
+        <TaskButton />
       </View>
     );
   }

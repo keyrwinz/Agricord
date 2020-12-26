@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 
 const height = Math.round(Dimensions.get('window').height);
 
-const InventoryList = (props) => {
+const TaskButton = (props) => {
   return (
       <View
         style={{
@@ -24,7 +24,7 @@ const InventoryList = (props) => {
         }}
       >
         <TouchableOpacity onPress={() => {
-         props.navigation.navigate('ApplyTask')
+         props.parentNav.navigate('ApplyTask')
         }}>
           <Image
             style={{
@@ -47,4 +47,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(InventoryList);
+)(TaskButton);
