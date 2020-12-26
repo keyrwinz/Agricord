@@ -17,6 +17,7 @@ import {connect} from 'react-redux';
 import {Spinner} from 'components';
 import styles from 'modules/orderDetails/Styles.js';
 import TaskIcon from 'components/Products/TaskIcon.js';
+import TaskButton from 'modules/generic/TaskButton.js';
 
 class OrderDetails extends Component {
   constructor(props) {
@@ -150,26 +151,7 @@ class OrderDetails extends Component {
           </ScrollView>
         </View>
 
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 130,
-            alignSelf: 'flex-end',
-            right: 20,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('applyTaskStack');
-              console.log('NAV2');
-            }}>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                style={{padding: 30, height: 50, width: '100%'}}
-                source={require('../../assets/taskIcon.png')}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TaskButton />
       </ImageBackground>
     );
   }
