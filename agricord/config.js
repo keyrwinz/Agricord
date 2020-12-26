@@ -16,4 +16,6 @@ export default {
     cluster: 'ap1',
     encrypted: true,
   },
+  versionChecker: 'store',
+  retrieveDataFlag: 1
 };

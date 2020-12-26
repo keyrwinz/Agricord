@@ -17,7 +17,12 @@ import SignInButton from 'modules/login/SignInButton';
 import styles from 'modules/login/Styles.js';
 import {Spinner} from 'components';
 import Api from 'services/api/index.js';
-import {Routes} from 'common';
+import {Routes, Helper} from 'common';
+import config from 'src/config';
+import SystemVersion from 'services/System.js';
+import { Player } from '@react-native-community/audio-toolkit';
+import AsyncStorage from '@react-native-community/async-storage';
+import {Notifications, NotificationAction, NotificationCategory} from 'react-native-notifications';
 
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
@@ -31,73 +36,161 @@ class Login extends Component {
       password: '',
       error: 0,
       errorMessage: '',
+      token: null,
+      isResponseError: false,
     };
   }
 
-  submit = () => {
-    const {login} = this.props;
-    const {username, password} = this.state;
-    if (
-      username != null &&
-      username != '' &&
-      (password != null && password != '')
-    ) {
+  componentDidMount(){
+    // if(config.versionChecker == 'store'){
+    //   this.setState({isLoading: true})
+    //   SystemVersion.checkVersion(response => {
+    //     this.setState({isLoading: false})
+    //     if(response == true){
+    //       this.getData();
+    //     }
+    //   })
+    // }else{
+    //   this.getData(); 
+    // }
+    // this.audio = new Player('assets/notification.mp3');
+    // const initialNotification = await Notifications.getInitialNotification();
+    // if (initialNotification) {
+    //   this.setState({notifications: [initialNotification, ...this.state.notifications]});
+    // }
+    this.getData(); 
+  }
+
+
+  getData = async () => {
+    try {
+      const token = await AsyncStorage.getItem(Helper.APP_NAME + 'token');
+      if(token != null) {
+        this.setState({token});
+        this.login();
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
+
+  login = () => {
+    this.test();
+    const { login } = this.props;
+    console.log('test')
+    if(this.state.token != null){
+      this.setState({isLoading: true});
+      Api.getAuthUser(this.state.token, (response) => {
+        login(response, this.state.token);
+        let parameter = {
+          condition: [{
+            value: response.id,
+            clause: '=',
+            column: 'id'
+          }]
+        }
+        console.log('parameter', parameter)
+        Api.request(Routes.accountRetrieve, parameter, userInfo => {
+          if(userInfo.data.length > 0){
+            login(userInfo.data[0], this.state.token);
+            this.retrieveUserData(userInfo.data[0].id)
+          }else{
+            this.setState({isLoading: false});
+            login(null, null)
+          }
+        }, error => {
+          this.setState({isResponseError: true})
+        })
+      }, error => {
+        this.setState({isResponseError: true})
+      })
+    }
+  }
+
+  test = () => {
+    if(config.TEST == true){
+      this.props.navigation.navigate('drawerStack');
+      return true;
+    }
+  }
+
+  retrieveUserData = (accountId) => {
+    if(Helper.retrieveDataFlag == 1){
+      this.setState({isLoading: false});
+      this.props.navigation.navigate('drawerStack');  
+    }else{
+      // const { setNotifications, setMessenger } = this.props;
+      // let parameter = {
+      //   account_id: accountId
+      // }
+      // this.retrieveSystemNotification();
+      // Api.request(Routes.notificationsRetrieve, parameter, notifications => {
+      //   setNotifications(notifications.size, notifications.data)
+      //   Api.request(Routes.messagesRetrieve, parameter, messages => {
+      //     setMessenger(messages.total_unread_messages, messages.data)
+      //     this.setState({isLoading: false});
+      //     Pusher.listen(response => {
+      //       this.managePusherResponse(response)
+      //     });
+      //     // this.props.navigation.replace('loginScreen')
+      //     this.checkOtp()
+      //   }, error => {
+      //     this.setState({isResponseError: true})
+      //   })
+      // }, error => {
+      //   this.setState({isResponseError: true})
+      // })
+    }
+  }
+
+
+  submit(){
+    this.test();
+    const { username, password } = this.state;
+    const { login } = this.props;
+    if((username != null && username != '') && (password != null && password != '')){
       this.setState({isLoading: true, error: 0});
-      Api.authenticate(
-        username,
-        password,
-        response => {
-          if (response.error) {
-            this.setState({errorMessage: response.error, isLoading: false});
-          }
-          if (response.token) {
-            const token = response.token;
-            Api.getAuthUser(
-              token,
-              response => {
-                console.log('response id', response.id);
-                login(response, token);
-                let parameter = {
-                  condition: [
-                    {
-                      value: response.id,
-                      clause: '=',
-                      column: 'id',
-                    },
-                  ],
-                };
-                Api.request(
-                  Routes.accountRetrieve,
-                  parameter,
-                  userInfo => {
-                    this.setState({isLoading: false});
-                    if (userInfo.data.length > 0) {
-                      login(userInfo.data[0], token);
-                      setTimeout(() => {
-                        const {user} = this.props.state;
-                        console.log('login user', user);
-                        this.props.navigation.navigate('drawerStack');
-                      }, 100);
-                    } else {
-                      this.setState({error: 2});
-                      login(null, null);
-                    }
-                  },
-                  error => {},
-                );
-              },
-              error => {},
-            );
-          }
-        },
-        error => {
-          console.log('Login error', error);
-        },
-      );
-    } else {
+      // Login
+      Api.authenticate(username, password, (response) => {
+        if(response.error){
+          this.setState({error: 2, isLoading: false});
+        }
+        if(response.token){
+          const token = response.token;
+          Api.getAuthUser(response.token, (response) => {
+            login(response, token);
+            let parameter = {
+              condition: [{
+                value: response.id,
+                clause: '=',
+                column: 'id'
+              }]
+            }
+            Api.request(Routes.accountRetrieve, parameter, userInfo => {
+              if(userInfo.data.length > 0){
+                login(userInfo.data[0], token);
+                this.retrieveUserData(userInfo.data[0].id)
+              }else{
+                this.setState({isLoading: false});
+                this.setState({error: 2})
+              }
+            }, error => {
+              this.setState({isResponseError: true})
+            })
+            
+          }, error => {
+            this.setState({isResponseError: true})
+          })
+        }
+      }, error => {
+        console.log('error', error)
+        this.setState({isResponseError: true})
+      })
+      // this.props.navigation.navigate('drawerStack');
+    }else{
       this.setState({error: 1});
     }
-  };
+  }
 
   usernameHandler = value => {
     this.setState({username: value});
@@ -108,6 +201,7 @@ class Login extends Component {
   };
 
   render() {
+    const { isLoading, error, isResponseError } = this.state;
     return (
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
@@ -128,10 +222,19 @@ class Login extends Component {
                 Sign In to Your Account
               </Text>
             </View>
+            {error > 0 ? <View style={Style.messageContainer}>
+              {error == 1 ? (
+                <Text style={Style.messageText}>Please fill up the required fields.</Text>
+              ) : null}
+
+              {error == 2 ? (
+                <Text style={Style.messageText}>Username and password didn't match.</Text>
+              ) : null}
+            </View> : null}
             <View style={styles.UsernameContainer}>
               <LoginInputField
                 icon={faUserAlt}
-                placeholder="Login or Username"
+                placeholder="Username or Username"
                 handler={this.usernameHandler}
               />
             </View>

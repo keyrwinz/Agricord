@@ -19,9 +19,7 @@ import { Row } from 'native-base';
 import { CheckoutCard } from 'components/Checkout';
 import TearLines from "react-native-tear-lines";
 import TaskIcon from 'components/Products/TaskIcon.js'
-
-
-
+import TaskButton from 'modules/generic/TaskButton.js';
 
 class paddockPage extends Component{
   
@@ -180,15 +178,14 @@ class paddockPage extends Component{
 
   render() {
     return (
-       <ImageBackground
-      source={require('assets/backgroundlvl1.png')}
-      style={Style.BackgroundContainer}>
-      <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
-        {this.renderTopCard()}
-        {this.renderMixCards()}        
-    
-        <TaskIcon bottom={70}></TaskIcon> 
-     </View>
+      <ImageBackground
+        source={require('assets/backgroundlvl1.png')}
+        style={Style.BackgroundContainer}>
+        <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
+          {this.renderTopCard()}
+          {this.renderMixCards()}        
+        </View>
+        <TaskButton />
      </ImageBackground>
 
     );

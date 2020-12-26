@@ -141,9 +141,14 @@ const Home = (props) => {
             />*/}
           </View>
           <View>
-            <Text style={[Style.username, Style.textWhite]}>
-              Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
-            </Text>
+            {
+              user && (
+                <Text style={[Style.username, Style.textWhite]}>
+                  Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
+                </Text>
+              )
+            }
+            
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
             </Text>
@@ -350,9 +355,13 @@ const Home = (props) => {
             />*/}
           </View>
           <View>
-            <Text style={[Style.username, Style.textWhite]}>
-              Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
-            </Text>
+            {
+              user && (
+                <Text style={[Style.username, Style.textWhite]}>
+                  Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
+                </Text>
+              )
+            }
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
             </Text>

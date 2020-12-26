@@ -88,6 +88,17 @@ class Slider extends Component {
     this.props.navigation.navigate('loginStack');
   }
 
+  footerAction(route){
+    switch(route){
+      case 'Logout': 
+        this.logoutAction();
+        break;
+      case 'CompleteSprayTask':
+        Alert.alert(route)
+        break;
+    }
+  }
+
   render () {
     const { user, theme } = this.props.state;
     return (
@@ -524,7 +535,7 @@ class Slider extends Component {
                         <View>{item.defaultIcon}</View>
                         <Text
                           style={styles.navItemStyle}
-                          onPress={() => Alert.alert(item.route)}
+                          onPress={() => this.footerAction(item.route)}
                           // onPress={() => this.navigateToScreen(item.route)}
                         >
                           {item.title}
