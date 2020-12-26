@@ -35,7 +35,6 @@ class paddockPage extends Component{
   }
 
   componentDidMount(){
-    const { user } = this.props.state; 
     // const {data}=this.props.navigation.state.params.data
     // console.log(data)
 
@@ -45,8 +44,9 @@ class paddockPage extends Component{
 
   retrieveData = () => {
     const { paddock, user } = this.props.state;
+    console.log('user', user)
 
-    if(paddock == null || user == null || (user && user.sub_account && user.sub_account.merchant)){
+    if(paddock == null || user == null){
       return
     }
 
@@ -55,6 +55,7 @@ class paddockPage extends Component{
     })
 
     console.log('paddock', paddock)
+
 
     const parameter={
       status: paddock.from,
@@ -71,12 +72,11 @@ class paddockPage extends Component{
   }
 
   renderTopCard=()=>{
-    const { data } = this.props.state.paddock;
-    const { paddock } = this.state
+    const { paddock } = this.props.state;
     return(
       <View style={Style.container}>
         {
-          (data && data.from == "due") && (
+          (paddock && paddock.from == "due") && (
             <React.Fragment>
               <View style={Style.imageContainer}>  
                 <Image
@@ -106,45 +106,64 @@ class paddockPage extends Component{
       }
 
       {
-        (data && data.from != "due") && (
+        (paddock && paddock.from != "due") && (
           <React.Fragment>
             <View style={Style.cardInfo}>
               <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
                 Crop
               </Text>
-              <Text>{paddock.crop_name[0]!=null ? paddock.crop_name[0].name:null}</Text>
+              {
+                (paddock && paddock.paddock_plans && paddock.paddock_plans.length > 0 && paddock.paddock_plans[0].crop_name) && (
+                  <Text>{paddock.paddock_plans[0].crop_name[0]!=null ? paddock.paddock_plans[0].crop_name[0].name : null}</Text>
+                )
+              }
+              
             </View>
             <Divider style={{height:0.5,width:'90%'}}/>
             <View style={Style.cardInfo}>
               <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
                 Machine
               </Text>
-              <Text>{data.machine!=null ? data.machine:null}</Text>
+              <Text>{paddock.machine!=null ? paddock.machine:null}</Text>
             </View>
             <Divider style={{height:0.5,width:'90%'}}/>
             <View style={Style.cardInfo}>
               <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
                 Operator
               </Text>
-              <Text>{data.operator!=null ? data.operator:null}</Text>
+              <Text>{paddock.operator != null ? paddock.operator : null}</Text>
             </View>
             <Divider style={{height:0.5,width:'90%'}}/>
             <View style={Style.cardInfo}>
-              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-                {data.status=="completed"?"Start Time" : "Started"}
-              </Text>
-              <Text>{paddock.start_date!=null ? paddock.start_date:null}</Text>
+            {
+              paddock && (
+                <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  {paddock.status == "completed" ? "Start Time" : "Started"}
+                </Text>
+              )
+            }
+              
+            {
+              (paddock && paddock.paddock_plans && paddock.paddock_plans.length > 0) && (
+                <Text>{paddock.paddock_plans[0].start_date != null ? paddock.paddock_plans[0].start_date : null}</Text>  
+              ) 
+            }
             </View>
             <Divider style={{height:0.5,width:'90%'}}/>
             {
-              data.status=="completed" ? 
-              (  <View style={Style.cardInfo}>
-                <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
-                  Finish Time
-                </Text>
-                <Text>{data.finished!=null ? data.finished:null}</Text>
-              </View>
-              ): null
+              (paddock && paddock.status=="completed") ? 
+                (  <View style={Style.cardInfo}>
+                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                    Finish Time
+                  </Text>
+                  {
+                    (paddock && paddock.paddock_plans && paddock.paddock_plans.length > 0) && (
+                      <Text>{paddock.paddock_plans[0].end_date != null ? paddock.paddock_plans[0].end_date : null}</Text>
+                    )
+                  }
+                  
+                </View>
+                ): null
             }
           </React.Fragment>
         )}

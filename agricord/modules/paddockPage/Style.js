@@ -84,15 +84,15 @@ paddockInfo:{
 },
 
 paddockDate:{
-  width:'30%',
+  width: '30%',
   minHeight: 40,
-  marginRight: 3,
-  borderRadius:12,
-  backgroundColor:Color.white,
-  borderColor:'#C0C0C0',
-  borderWidth:1.5,
-  justifyContent:'center',
-  alignItems:'center',
+  marginRight: 5,
+  borderRadius: 5,
+  backgroundColor: Color.white,
+  borderColor: Color.gray,
+  borderWidth: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
 },
 BackgroundContainer: {
   flex: 1,

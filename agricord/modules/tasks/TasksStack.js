@@ -15,7 +15,6 @@ import TitleLogo from 'assets/inventory/title_logo.svg';
 const TasksStack = createStackNavigator();
 
 const TasksScreen = props => {
-  console.log('PROPS HERE', props);
   return (
     <TasksStack.Navigator>
       <TasksStack.Screen
