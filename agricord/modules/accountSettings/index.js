@@ -6,6 +6,10 @@ import {Divider} from 'react-native-elements';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
+import FileSvg from 'assets/settings/file.svg';
+import HouseSvg from 'assets/settings/house.svg';
+import KeySvg from 'assets/settings/key.svg';
+import LogoutSvg from 'assets/settings/logout.svg';
 
 class AccountSettings extends Component {
   constructor(props) {
@@ -36,10 +40,7 @@ class AccountSettings extends Component {
         <View style={Style.productInfoContainer}>
           <View style={Style.cardInfo}>
             <View style={Style.HeadingContainer}>
-              <Image
-                style={Style.ImageStyle}
-                source={require('../../assets/nameIcon.png')}
-              />
+              <FileSvg style={Style.ImageStyle}/>
               <Text style={Style.HeadingTextStyle}>Name</Text>
             </View>
             <View style={Style.DescriptionContainer}>
@@ -55,10 +56,7 @@ class AccountSettings extends Component {
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
             <View style={Style.HeadingContainer}>
-              <Image
-                style={Style.ImageStyle}
-                source={require('../../assets/businessAccountIcon.png')}
-              />
+              <HouseSvg style={Style.ImageStyle}/>
               <Text style={Style.HeadingTextStyle}>Business Account</Text>
             </View>
             <View style={Style.DescriptionContainer}>
@@ -75,10 +73,7 @@ class AccountSettings extends Component {
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
             <View style={Style.HeadingContainer}>
-              <Image
-                style={Style.ImageStyle}
-                source={require('../../assets/permissionIcon.png')}
-              />
+              <KeySvg style={Style.ImageStyle}/>
               <Text style={Style.HeadingTextStyle}>Permissions Level</Text>
             </View>
             <View style={Style.DescriptionContainer}>
@@ -95,10 +90,7 @@ class AccountSettings extends Component {
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
           <View style={Style.cardInfo}>
             <View style={Style.HeadingContainer}>
-              <Image
-                style={Style.ImageStyle}
-                source={require('../../assets/lastLoginIcon.png')}
-              />
+              <LogoutSvg style={Style.ImageStyle}/>
               <Text style={Style.HeadingTextStyle}>Last Login</Text>
             </View>
             <View style={Style.DescriptionContainer}>
