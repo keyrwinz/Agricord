@@ -11,21 +11,21 @@ class RecentTasks extends Component {
   }
 
   renderRecentTasks = () => {
-    const tasks = this.props.tasks;
-    return tasks.map((task, index) => {
+    const { data } = this.props;
+    return data.slice(0, 3).map((item, index) => {
       return (
         <TouchableOpacity
           style={styles.Task}
           key={index}
           onPress={() => {
             if (this.state.isClicked) {
-              this.props.handleRemoveItem(this.props.type);
+              this.props.handleRemoveItem();
             } else {
-              this.props.handleSelect(index);
+              this.props.handleSelect(item);
             }
             this.setState({isClicked: !this.state.isClicked});
           }}>
-          <Text style={styles.TaskTextStyle}>{task.task}</Text>
+          <Text style={styles.TaskTextStyle}>{item.name}</Text>
         </TouchableOpacity>
       );
     });

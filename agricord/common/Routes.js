@@ -78,4 +78,7 @@ export default {
   paddocksRetrieveWithSprayMix: apiUrl + 'paddocks/retrieve_with_spray_mix',
   // Inventory
   inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
+
+  // batches
+  batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks'
 };

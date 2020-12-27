@@ -6,13 +6,16 @@ import {
   faTractor,
   faTh,
 } from '@fortawesome/free-solid-svg-icons';
-import {BasicStyles} from 'common';
+import {BasicStyles, Routes} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import styles from 'modules/applyTask/Styles.js';
 import {connect} from 'react-redux';
+import ThCircleSvg from 'assets/settings/thcircle.svg';
+import {Spinner} from 'components';
+import Api from 'services/api';
 
 const dummyData = [
   {
@@ -97,27 +100,44 @@ class ApplyTask extends Component {
       selectedMachine: '',
       selectedMix: '',
       selectedPicker: 0,
+      isLoading: false,
+      data: null
     };
   }
 
-  recentMachineHandler = index => {
-    let machine = dummyData[index].task;
-    this.setState({selectedMachine: machine});
+  componentDidMount(){
+    const {user} = this.props.state;
+    if (user == null) {
+      return
+    }
+    const parameter = {
+      merchant_id: user.sub_account.merchant.id
+    };
+    this.setState({isLoading: true});
+    Api.request(Routes.batchesRetrieveApplyTasks, parameter, response => {
+        this.setState({isLoading: false});
+        this.setState({data: response.data});
+      }, error => {
+        this.setState({isLoading: false});
+        console.log({error});
+      },
+    );
+  }
+
+  recentMachineHandler = item => {
+    this.setState({selectedMachine: item});
   };
 
-  recentMixHandler = index => {
-    let mix = dummyData4[index].task;
-    this.setState({selectedMix: mix});
+  recentMixHandler = item => {
+    this.setState({selectedMix: item});
   };
 
-  pickerMachineHandler = index => {
-    let machine = dummyData3[index].type;
-    this.setState({selectedMachine: machine});
+  pickerMachineHandler = item => {
+    this.setState({selectedMachine: item});
   };
 
-  pickerMixHandler = index => {
-    let mix = dummyData2[index].type;
-    this.setState({selectedMix: mix});
+  pickerMixHandler = item => {
+    this.setState({selectedMix: item});
   };
 
   handleSelectedPicker = index => {
@@ -154,56 +174,66 @@ class ApplyTask extends Component {
   };
 
   render() {
+    const { isLoading, data } = this.state;
     return (
       <ScrollView style={{backgroundColor: '#F1F1F1'}}>
         <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
-          <Task title="Recent" icon={faHistory} height={240} key={1}>
-            <RecentTasks
-              tasks={dummyData}
-              type="Machine"
-              title="Machines"
-              key={1}
-              handleSelect={this.recentMachineHandler}
-              handleRemoveItem={this.handleRemoveItem}
-            />
-            <RecentTasks
-              type="Mix"
-              tasks={dummyData4}
-              title="Spray Mixes"
-              key={2}
-              handleSelect={this.recentMixHandler}
-              handleRemoveItem={this.handleRemoveItem}
-            />
-          </Task>
-          <View style={{ zIndex: 200, width: '100%', alignItems: 'center' }}>
-            <Task title="Select" icon={faTh} height={200} key={2}>
-              <View style={{ zIndex: 20, width: '100%' }}>
-                <CustomPicker
+          {
+            data && (
+              <Task title="Recent" icon={faHistory} height={240} key={1}>
+                <RecentTasks
+                  data={data.recent_machines}
                   type="Machine"
-                  items={dummyData3}
+                  title="Machines"
                   key={1}
-                  styles={{zIndex: 500}}
-                  handleSelect={this.pickerMachineHandler}
-                  index={1}
-                  allowOpen={this.state.selectedPicker === 1 ? true : false}
-                  handleSelectedPicker={this.handleSelectedPicker}
-                  handleRemoveItem={this.handleRemoveItem}
+                  handleSelect={this.recentMachineHandler}
+                  handleRemoveItem={() => this.recentMachineHandler(null)}
                 />
-              </View>
-              <View style={{ zIndex: 10, width: '100%' }}>
-                <CustomPicker
+                <RecentTasks
                   type="Mix"
-                  items={dummyData2}
+                  data={data.recent_spray_mixes}
+                  title="Spray Mixes"
                   key={2}
-                  styles={{zIndex: 500}}
-                  handleSelect={this.pickerMixHandler}
-                  index={2}
-                  allowOpen={this.state.selectedPicker === 2 ? true : false}
-                  handleSelectedPicker={this.handleSelectedPicker}
-                  handleRemoveItem={this.handleRemoveItem}
+                  handleSelect={this.recentMixHandler}
+                  handleRemoveItem={() => this.recentMachineHandler(null)}
                 />
-              </View>
-            </Task>
+              </Task>
+            )
+          }
+          
+          <View style={{ zIndex: 200, width: '100%', alignItems: 'center' }}>
+            {
+              data && (
+                <Task title="Select" icon={faTh} height={200} key={2}>
+                  <View style={{ zIndex: 20, width: '100%' }}>
+                    <CustomPicker
+                      type="Machine"
+                      data={data.machines}
+                      key={1}
+                      styles={{zIndex: 500}}
+                      handleSelect={this.pickerMachineHandler}
+                      index={1}
+                      allowOpen={this.state.selectedPicker === 1 ? true : false}
+                      handleSelectedPicker={this.handleSelectedPicker}
+                      handleRemoveItem={() => this.pickerMachineHandler(null)}
+                    />
+                  </View>
+                  <View style={{ zIndex: 10, width: '100%' }}>
+                    <CustomPicker
+                      type="Mix"
+                      data={data.spray_mixes}
+                      key={2}
+                      styles={{zIndex: 500}}
+                      handleSelect={this.pickerMixHandler}
+                      index={2}
+                      allowOpen={this.state.selectedPicker === 2 ? true : false}
+                      handleSelectedPicker={this.handleSelectedPicker}
+                      handleRemoveItem={() => this.pickerMixHandler(null)}
+                    />
+                  </View>
+                </Task>
+              )
+            }
           </View>
           {this.state.selectedMachine !== '' &&
           this.state.selectedMix !== '' ? (
@@ -274,6 +304,8 @@ class ApplyTask extends Component {
             </View>
           ) : null}
         </View>
+
+        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ScrollView>
     );
   }

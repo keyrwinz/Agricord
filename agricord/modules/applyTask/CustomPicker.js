@@ -4,6 +4,8 @@ import {
   faChevronDown,
   faChevronUp,
   faTimes,
+  faFlask,
+  faTractor,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles} from 'common';
@@ -36,10 +38,11 @@ class CustomPicker extends Component {
   };
 
   renderOptions = () => {
+    const { type } = this.props;
     return this.checkIfAllowDropdown() ? (
       <View style={[styles.OptionsContainer, {...this.props.styles}]}>
         <ScrollView overScrollMode="always">
-          {this.props.items.map((data, index) => {
+          {this.props.data.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
@@ -54,7 +57,7 @@ class CustomPicker extends Component {
                     color={
                       this.state.selectedItem === index ? '#5A84EE' : '#9F9F9F'
                     }
-                    icon={data.icon}
+                    icon={type == 'Machine' ? faTractor : faFlask}
                     size={25}
                     style={styles.iconStyle}
                   />
@@ -70,7 +73,7 @@ class CustomPicker extends Component {
                             : '#000000',
                       },
                     ]}>
-                    {data.type}
+                    {item.name}
                   </Text>
                 </View>
               </TouchableOpacity>
