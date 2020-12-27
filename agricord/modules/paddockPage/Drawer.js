@@ -48,32 +48,28 @@ const PaddockStack = createStackNavigator({
   PaddockScren: {
     screen: PaddockPage, 
     navigationOptions: ({ navigation }) => ({
-      title: null,
-      headerTitle: () => (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: width,
-            marginLeft: -64
-          }}>
-          <Text
-            style={{
-              color: '#000',
-              marginLeft: 7,
-              fontWeight: 'bold',
-              fontSize: 20
-            }}>
-            {navigation.state.params ? navigation.state.params.data.name : ''}
-          </Text>
-        </View>
-      ),
+      title: navigation.state.params ? navigation.state.params.data.name : '',
+      // headerTitle: () => (
+      //   <View
+      //     style={{
+      //       alignItems: 'center',
+      //       justifyContent: 'center',
+      //       width: width,
+      //       marginLeft: -64
+      //     }}>
+      //     <Text
+      //       style={{
+      //         color: '#000',
+      //         marginLeft: 7,
+      //         fontWeight: 'bold',
+      //         fontSize: 20
+      //       }}>
+      //       {navigation.state.params ? navigation.state.params.data.name : ''}
+      //     </Text>
+      //   </View>
+      // ),
       headerLeft: <HeaderOptionsConnect navigationProps={navigation} />,
-      drawerLabel: 'Paddock',
-      headerStyle: {
-        backgroundColor: '#FFFFFF',
-      },
-      headerTintColor: 'black',
+      ...BasicStyles.headerDrawerStyle
     })
   }
 })

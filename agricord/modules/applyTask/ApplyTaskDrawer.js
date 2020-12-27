@@ -46,21 +46,7 @@ const ApplyTaskStack = createStackNavigator({
     navigationOptions: ({navigation}) => ({
       title: 'APPLY TASK',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      headerStyle: {
-        elevation: 10,
-        backgroundColor: '#FFFFFF',
-        height: 80,
-      },
-      headerTintColor: BasicStyles.headerTintColor,
-      headerTitleContainerStyle: {
-        backgroundColor: '#FFFFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingRight: '18%',
-      },
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+      ...BasicStyles.headerDrawerStyle
     }),
   },
 });

@@ -40,11 +40,7 @@ const MixPageStack = createStackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: "Mix C",
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      drawerLabel: 'MixPage',
-      headerStyle: {
-        backgroundColor: '#FFFFFF',
-      },
-      headerTintColor: 'black',
+      ...BasicStyles.headerDrawerStyle
     })
   }
 })

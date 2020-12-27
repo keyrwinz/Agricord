@@ -7,16 +7,7 @@ import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/homepage';
-import InventoryScreen from 'modules/inventory';
 import OptionRight from './OptionRight';
-import Tasks from 'modules/tasks';
-import Orders from 'modules/orders';
-import AccountSettings from 'modules/accountSettings';
-import ForgotPassword from 'modules/basics/ForgotPassword.js';
-import SettingsPage from 'modules/settingsPage';
-import OrderDetails from 'modules/orderDetails';
-import OrderDetailsStack from 'modules/orderDetails/OrderDetailsScreen.js';
-import MixPage from 'modules/mixPage';
 import {connect} from 'react-redux';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -86,16 +77,15 @@ const Homepage_StackNavigator = createStackNavigator({
     navigationOptions: ({navigation}) => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Orders'},
+    params: {initialRouteName: 'OrdersPage'},
   },
   HistoricalOrders: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Orders'},
+    params: {initialRouteName: 'OrdersPage'},
   },
-  //=========================================================//
 
   //==========================INVENTORY ROUTES===================//
   InventoryHerbicides: {
@@ -103,30 +93,29 @@ const Homepage_StackNavigator = createStackNavigator({
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Inventory'},
+    params: {initialRouteName: 'InventoryPage'},
   },
   InventoryFungicides: {
     screen: Homepage,
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Inventory'},
+    params: {initialRouteName: 'InventoryPage'},
   },
   InventoryInsecticides: {
     screen: Homepage,
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Inventory'},
+    params: {initialRouteName: 'InventoryPage'},
   },
   InventoryOther: {
     screen: Homepage,
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Inventory'},
+    params: {initialRouteName: 'InventoryPage'},
   },
-  //=========================================================//
 
   //==========================TASKS ROUTES===================//
   TasksInProgress: {
@@ -134,23 +123,22 @@ const Homepage_StackNavigator = createStackNavigator({
     navigationOptions: ({navigation}) => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Task'},
+    params: {initialRouteName: 'OrdersPage'},
   },
   TasksDue: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Task'},
+    params: {initialRouteName: 'OrdersPage'},
   },
   TasksHistory: {
     screen: Homepage,
     navigationOptions: ({navigation}) => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'Task'},
+    params: {initialRouteName: 'OrdersPage'},
   },
-  //============================================================//
 
   //==========================SETTINGS ROUTES===================//
   AccountSettings: {
@@ -158,82 +146,16 @@ const Homepage_StackNavigator = createStackNavigator({
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'AccountSetting'},
+    params: {initialRouteName: 'SettingsPage'},
   },
   AppSettings: {
     screen: Homepage,
     navigationOptions: () => ({
       headerShown: false,
     }),
-    params: {initialRouteName: 'AccountSetting'},
+    params: {initialRouteName: 'SettingsPage'},
   },
   //============================================================//
-  SettingsPage: {
-    screen: SettingsPage,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-  OrderDetails: {
-    screen: OrderDetailsStack,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-  ForgotPassword: {
-    screen: ForgotPassword,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-  Settings: {
-    screen: AccountSettings,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-  MixPage: {
-    screen: MixPage,
-    navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('title'),
-      headerLeft: (
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={() => navigation.pop()}>
-            <FontAwesomeIcon
-              icon={faChevronLeft}
-              size={BasicStyles.iconSize}
-              style={[
-                BasicStyles.iconStyle,
-                {
-                  color: '#000',
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
-      ),
-    })
-  }
 });
 
 const Drawer = createDrawerNavigator(
@@ -313,6 +235,13 @@ const Drawer = createDrawerNavigator(
         drawerLabel: '',
       },
     },
+
+    Task: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
     ///////////////////
 
     // ROUTES FOR SETTINGS
@@ -323,86 +252,6 @@ const Drawer = createDrawerNavigator(
       },
     },
     AppSettings: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    ///////////////////
-
-    HelpCenter: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    MyOrders: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    Profile: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    MyAddress: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    TermsAndConditions: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    PrivacyPolicy: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    Notification: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    Settings: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    InviteFriends: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    PaymentMethods: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    MessengerMessages: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    MyOrderDetails: {
-      screen: Homepage_StackNavigator,
-      navigationOptions: {
-        drawerLabel: '',
-      },
-    },
-    ForgotPassword: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',

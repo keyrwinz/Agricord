@@ -141,5 +141,41 @@ export default {
     backgroundColor:Color.white,
     height: 60
   },
-  standardFontSize: 13
+  standardFontSize: 13,
+  standardBorderRadius: 12,
+  headerDrawerStyle: {
+    headerStyle: {
+      elevation: 10,
+      backgroundColor: Color.white,
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    headerTitleContainerStyle: {
+      backgroundColor: Color.white,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingRight: 64
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },  
+  },
+  headerDrawerStyleNoPadding: {
+    headerStyle: {
+      elevation: 10,
+      backgroundColor: Color.white,
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    headerTitleContainerStyle: {
+      backgroundColor: Color.white,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },  
+  },
 }

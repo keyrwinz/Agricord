@@ -22,7 +22,7 @@ import TaskButton from 'modules/generic/TaskButton.js';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-class Tasks extends Component {
+class TasksPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,25 +39,33 @@ class Tasks extends Component {
     if (user == null) {
       return
     }
-    if (this.props.parentNav.state.params && this.props.parentNav.state.params.route != null) {
-      switch(this.props.parentNav.state.params.route) {
-        case 'TasksInProgress':
-          this.setState({activeIndex: 0})
-          break;
-        
-        case 'TasksDue':
-          this.setState({activeIndex: 1})
-          break;
-    
-        case 'TasksHistory':
-          this.setState({activeIndex: 2})
-          break;
-        default:
-          console.log("Route does not exist")
+    if (this.props.initialPage != null) {
+      if (this.props.initialPage == 'TasksInProgress') {
+        this.setState({activeIndex: 0});
       }
+      this.retrieveData();
     }else{
       this.setState({activeIndex: 0, label: 'inprogress'})
     }
+    // if (this.props.parentNav.state.params && this.props.parentNav.state.params.route != null) {
+    //   switch(this.props.parentNav.state.params.route) {
+    //     case 'TasksInProgress':
+    //       this.setState({activeIndex: 0})
+    //       break;
+        
+    //     case 'TasksDue':
+    //       this.setState({activeIndex: 1})
+    //       break;
+    
+    //     case 'TasksHistory':
+    //       this.setState({activeIndex: 2})
+    //       break;
+    //     default:
+    //       console.log("Route does not exist")
+    //   }
+    // }else{
+    //   this.setState({activeIndex: 0, label: 'inprogress'})
+    // }
     this.retrieveData()
   }
 
@@ -151,4 +159,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Tasks);
+)(TasksPage);

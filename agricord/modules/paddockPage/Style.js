@@ -1,4 +1,4 @@
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import { Dimensions } from 'react-native';
 import { Row } from 'native-base';
 const width = Math.round(Dimensions.get('window').width);
@@ -9,7 +9,7 @@ export default {
     marginVertical: 10,
     // box-shadow
     backgroundColor: Color.white,
-    borderRadius: 12,
+    borderRadius: BasicStyles.standardBorderRadius,
     borderColor: '#FFFFFF',
     borderWidth:1,
     shadowColor: "#000",
@@ -25,7 +25,7 @@ export default {
   imageContainer:{
     marginTop:-10,
     width:'50%',
-    borderRadius:10,
+    borderRadius: BasicStyles.standardBorderRadius,
     marginBottom:5,
     alignItems:'center',
 },
@@ -62,7 +62,7 @@ paddockContainer: {
   marginVertical: 10,
   // box-shadow
   backgroundColor: Color.white,
-  borderRadius: 10,
+  borderRadius: BasicStyles.standardBorderRadius,
   borderColor: '#FFFFFF',
   borderWidth:1,
   shadowColor: "#000",

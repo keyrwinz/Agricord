@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import AppSettingTile from 'modules/appSettings/AppSettingTile';
 import {connect} from 'react-redux';
 import styles from 'modules/appSettings/Styles.js';
+import { BasicStyles } from 'common';
 
 class AppSettings extends Component {
   render() {
@@ -19,7 +20,7 @@ class AppSettings extends Component {
               <View
                 style={[
                   styles.AppSettingsContainer,
-                  {height: 80, borderRadius: 20},
+                  {height: 80, borderRadius: BasicStyles.standardBorderRadius},
                 ]}>
                 <AppSettingTile
                   title="Dedicated NFC"
@@ -33,7 +34,7 @@ class AppSettings extends Component {
               <View
                 style={[
                   styles.AppSettingsContainer,
-                  {height: 160, borderRadius: 20},
+                  {height: 160, borderRadius: BasicStyles.standardBorderRadius},
                 ]}>
                 <AppSettingTile
                   title="Stay logged in"
@@ -54,7 +55,7 @@ class AppSettings extends Component {
               <View
                 style={[
                   styles.AppSettingsContainer,
-                  {height: 160, borderRadius: 20},
+                  {height: 160, borderRadius: BasicStyles.standardBorderRadius},
                 ]}>
                 <AppSettingTile
                   title="Allow push notifications"

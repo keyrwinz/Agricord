@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   SettingContainer: {
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: '3%',

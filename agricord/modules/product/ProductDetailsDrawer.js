@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Dimensions } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import ProductDetails from 'modules/product/ProductDetails.js';
 import { Color, BasicStyles } from 'common';
 import { connect } from 'react-redux';
-
+const width = Math.round(Dimensions.get('window').width);
 class HeaderOptions extends Component {
   constructor(props){
     super(props);
@@ -23,32 +23,6 @@ class HeaderOptions extends Component {
           {/*Donute Button Image */}
           <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color:'black'}]}/>
         </TouchableOpacity>
-        <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
-          {data.title}
-        </Text>
-        <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
-          ({data.volume ? data.volume : '100L'})
-        </Text>
-      </View>
-    );
-  }
-}
-
-class HeaderTitle extends Component {
-  constructor(props){
-    super(props);
-  }
-
-  render() {
-    const { data } = this.props;
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
-          {data.product_title}
-        </Text>
-        <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
-          {data.volume ? data.volume : '100L'}
-        </Text>
       </View>
     );
   }
@@ -66,12 +40,26 @@ const ProductDetailsDrawerStack = createStackNavigator({
   MixNameScreen: {
     screen: ProductDetails, 
     navigationOptions: ({ navigation }) => ({
+      headerTitle: () => (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: width,
+            paddingLeft: 64 / 2,
+            marginLeft: -64,
+            flexDirection: 'row'
+          }}>
+          <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
+            {navigation.state.params.data ? navigation.state.params.data.title : ''}
+          </Text>
+          <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
+            ({navigation.state.params.data.volume ? navigation.state.params.data.volume : '100L'})
+          </Text>
+        </View>
+      ),
       headerLeft: <HeaderOptions navigationProps={navigation} data={navigation.state.params.data} />,
-      drawerLabel: 'Paddock',
-      headerStyle: {
-        backgroundColor: '#FFFFFF',
-      },
-      headerTintColor: 'black',
+      ...BasicStyles.headerDrawerStyleNoPadding
     })
   }
 })

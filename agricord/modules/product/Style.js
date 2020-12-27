@@ -1,4 +1,4 @@
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import { Dimensions } from 'react-native';
 export default {
   modal: {
@@ -57,7 +57,7 @@ export default {
     marginLeft: 30,
     paddingLeft: 15,
     height: 35,
-    borderRadius: 12,
+    borderRadius: BasicStyles.standardBorderRadius,
     borderColor: Color.gray,
     borderWidth: 1,
   },
@@ -81,7 +81,7 @@ export default {
     width: '90%',
     margin: 20,
     backgroundColor: 'white',
-    borderRadius: 20,
+    borderRadius: BasicStyles.standardBorderRadius,
     padding: 35,
     paddingTop: 40,
     alignItems: 'center',
@@ -112,7 +112,7 @@ export default {
   itemDescContainer: {
     padding: 10,
     marginBottom: 20,
-    borderRadius: 10,
+    borderRadius: BasicStyles.standardBorderRadius,
     backgroundColor: Color.white,
     borderColor: '#FFFFFF',
     borderWidth:1,

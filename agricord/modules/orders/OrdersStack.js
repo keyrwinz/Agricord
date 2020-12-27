@@ -17,7 +17,7 @@ const OrderScreen = props => {
   return (
     <OrderStack.Navigator>
       <OrderStack.Screen
-        name="Orders"
+        name="OrdersPage"
         children={route => (
           <Order
             {...route}

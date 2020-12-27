@@ -41,7 +41,7 @@ class Slider extends Component {
     this.setState({ collapsed: route });
   };
 
-  navigateToScreen = (route) => {
+  navigateToScreen = (route, index) => {
     this.props.navigation.toggleDrawer();
 
     // const navigateAction = NavigationActions.navigate({
@@ -50,14 +50,12 @@ class Slider extends Component {
     // this.props.navigation.dispatch(navigateAction);
     // const { setActiveRoute } = this.props;
     // setActiveRoute(null)
-    const { setSetting } = this.props;
-    if(route == 'AppSettings'){
-      setSetting(1)
-    }else if(route == 'AccountSettings'){
-      setSetting(0)
+    if(route == 'AppSettings' || route == 'AccountSettings'){
+      const { setSetting } = this.props;
+      setSetting(index)
     }
 
-    console.log('selectedroute', route)
+    console.log('selectedroute/index', route + '/' + index)
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'drawerStack',
@@ -363,10 +361,10 @@ class Slider extends Component {
                           }
                           <View style={{ width: '50%', flexDirection: 'column' }}>
                             {
-                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
@@ -384,7 +382,7 @@ class Slider extends Component {
                               rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View
@@ -489,10 +487,10 @@ class Slider extends Component {
                           }
                           <View style={{ width: '50%', flexDirection: 'column' }}>
                             {
-                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
@@ -510,7 +508,7 @@ class Slider extends Component {
                               rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View

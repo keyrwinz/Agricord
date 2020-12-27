@@ -219,14 +219,14 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-connect(mapStateToProps, mapDispatchToProps)(Inventory);
+let InventoryPage = connect(mapStateToProps, mapDispatchToProps)(Inventory);
 
 const InventoryScreen = (props) => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen
-        name="Inventory"
-        children={(childProps) => <Inventory {...childProps} parentNav={props.parentNav} />}
+        name="InventoryPage"
+        children={(childProps) => <InventoryPage {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
             <View style={{

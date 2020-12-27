@@ -45,7 +45,7 @@ import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
 import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SwipeButton from 'components/SwipeableButton';
-import arrowRight from 'assets/ArrowRight.png';
+import WifiSvg from 'assets/settings/wifi.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
 
 const width = Math.round(Dimensions.get('window').width);
@@ -121,11 +121,24 @@ class MixName extends Component {
             <View style={{
               width: '100%',
             }}>
-              <Text style={{
-                textAlign: 'left',
-                fontWeight: 'bold',
-                marginTop: 10
-              }}>PRODUCT RATE (PER HA)</Text>
+            {
+              (paddock && paddock.from != 'due') && (
+                <Text style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                  marginTop: 10
+                }}>PRODUCT RATE (PER HA)</Text>
+              )
+            }
+            {
+              (paddock && paddock.from == 'due') && (
+                <Text style={{
+                  textAlign: 'left',
+                  fontWeight: 'bold',
+                  marginTop: 10
+                }}>SPRAY RATE PER HECTARE</Text>
+              )
+            }
             </View>
 
             {this.state.products.map((item, index) => (
@@ -146,22 +159,27 @@ class MixName extends Component {
         {
           (paddock && paddock.from == 'due') && (
             <SwipeButton
-              thumbIconBackgroundColor="#5A84EE"
-              thumbIconBorderColor="#5A84EE"
-              thumbIconImageSource={arrowRight}
+              thumbIconBackgroundColor={Color.blue}
+              thumbIconBorderColor={Color.blue}
+              thumbIconImageSource={<WifiSvg />}
               shouldResetAfterSuccess={true}
               resetAfterSuccessAnimDelay={100}
+              titleColor={Color.white}
               title=""
               height={55}
               railStyles={{
-                backgroundColor: '#5A84EE',
-                borderColor: '#5A84EE',
+                backgroundColor: Color.blue,
+                borderColor: Color.blue,
               }}
               onSwipeSuccess={() => alert('Action Complete Here')}
             />
         )}
 
-        <TaskButton navigation={this.props.navigation}/>
+        {
+          (paddock && paddock.from != 'due') && (
+            <TaskButton navigation={this.props.navigation}/>
+          )
+        }
       </ImageBackground>
     );
   }
