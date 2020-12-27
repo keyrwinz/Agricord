@@ -21,7 +21,7 @@ class OrderDetails extends Component {
 const styles = StyleSheet.create({
   OrderContainer: {
     marginTop: 15,
-    width: '95%',
+    width: '100%',
     height: 300,
     backgroundColor: '#FFFFFF',
     borderRadius: 12,

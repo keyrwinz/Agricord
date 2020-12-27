@@ -18,6 +18,7 @@ import {Spinner} from 'components';
 import styles from 'modules/orderDetails/Styles.js';
 import TaskIcon from 'components/Products/TaskIcon.js';
 import TaskButton from 'modules/generic/TaskButton.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 
 class OrderDetails extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class OrderDetails extends Component {
     });
   };
 
-  renderProducts = () => {
+  _renderProducts = () => {
     return this.state.products.map((product, index) => {
       return (
         <OrderContainer height={73} key={index}>
@@ -85,6 +86,23 @@ class OrderDetails extends Component {
     });
   };
 
+
+  renderProducts = () => {
+    return this.state.products.map((item, index) => {
+      return (
+        <ProductCard
+          item={{
+            ...item,
+            from: 'order'
+          }}
+          key={item.id}
+          navigation={this.props.navigation}
+          theme={'v3'}
+        />
+      );
+    });
+  };
+
   render() {
     const {selectedOrder} = this.props.state;
     const {parentNav} = this.props.navigation.state.params;
@@ -94,7 +112,15 @@ class OrderDetails extends Component {
         style={styles.BackgroundContainer}>
         <View style={styles.OrderDetailsContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{height: '100%', width: '100%', alignItems: 'center'}}>
+            <View style={{
+              height: '100%',
+              width: '90%',
+              alignItems: 'center',
+              marginBottom: 100,
+              marginLeft: '5%',
+              marignRight: '5%',
+              marginTop: 15
+          }}>
               <OrderContainer
                 title="Coastal Ag Supplies"
                 height={selectedOrder.status === 'pending' ? 140 : 180}>
@@ -152,6 +178,8 @@ class OrderDetails extends Component {
         </View>
 
         <TaskButton navigation={this.props.navigation}/>
+
+        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );
   }

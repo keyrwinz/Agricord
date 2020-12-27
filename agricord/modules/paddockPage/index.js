@@ -186,7 +186,14 @@ class paddockPage extends Component{
         <React.Fragment>
           <View style={Style.paddockInfo}>
             <View style={{flexDirection:'row'}}>
-              <View style={{marginTop:6,marginRight:10,width:10,height:10,borderRadius:100/2,backgroundColor:'#D3E584'}}/>
+              <View style={{
+                marginTop: 6,
+                marginRight: 10,
+                width: 10,
+                height: 10,
+                borderRadius: 100/2,
+                backgroundColor: Color.primary
+              }}/>
                 <Text style={{fontWeight:'bold',fontSize:18}}>Spray Mix</Text>
             </View>
             </View>
@@ -203,7 +210,15 @@ class paddockPage extends Component{
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={Style.BackgroundContainer}>
-        <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
+        <View style={{
+          alignItems: 'center',
+          height: '100%',
+          width: '90%',
+          marginRight: '5%',
+          marginLeft: '5%',
+          marginBottom: 100,
+          marginTop: 15
+        }}>
           {this.renderTopCard()}
           {this.renderMixCards()}        
         </View>

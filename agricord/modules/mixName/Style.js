@@ -52,12 +52,11 @@ cardInfo:{
   margin:15,
 },
 paddockContainer: {
-  minHeight:60,
-  width: '90%',
+  minHeight: 60,
+  width: '100%',
   marginVertical: 10,
-  // box-shadow
   backgroundColor: Color.white,
-  borderRadius: 12,
+  borderRadius: 10,
   borderColor: '#FFFFFF',
   borderWidth:1,
   shadowColor: "#000",
@@ -70,6 +69,8 @@ paddockContainer: {
   elevation: 2,
   alignItems:'center',
   flexDirection:'row',
+  borderBottomColor: Color.primary,
+  borderBottomWidth: 10
 },
 
 paddockInfo:{
@@ -95,5 +96,6 @@ BackgroundContainer: {
   height: '100%',
   width: '100%',
   elevation: 2,
+  backgroundColor: Color.containerBackground
 },
 }

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 
 const styles = StyleSheet.create({
   BackgroundContainer: {
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: Color.containerBackground
   },
   OrderDetailsContainer: {
     justifyContent: 'flex-start',

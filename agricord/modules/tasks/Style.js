@@ -8,7 +8,7 @@ export default {
   },
   MainContainer: {
     flex: 1,
-  
+    backgroundColor: Color.containerBackground
   },
   BackgroundContainer: {
     flex: 1,
@@ -16,6 +16,7 @@ export default {
     height: '100%',
     width: '100%',
     elevation: 2,
+    backgroundColor: Color.containerBackground
   },
   sliderContainer: {
     flex: 1,

@@ -89,7 +89,15 @@ class MixName extends Component {
         style={Style.BackgroundContainer}>
         <ScrollView>
           <View
-            style={{alignItems: 'center', margin: 10, height: '100%', flex: 1}}>
+            style={{
+              alignItems: 'center',
+              height: '100%',
+              width: '90%',
+              marginRight: '5%',
+              marginLeft: '5%',
+              marginBottom: 100,
+              marginTop: 15
+            }}>
             <View style={[Style.paddockContainer]}>
               <View style={Style.paddockInfo}>
                 <View style={{flexDirection: 'row'}}>
@@ -108,21 +116,10 @@ class MixName extends Component {
                   65L
                 </Text>
               </View>
-              <View
-                style={{
-                  backgroundColor: '#C4E392',
-                  height: 10,
-                  borderBottomEndRadius: 20,
-                  borderBottomStartRadius: 20,
-                  bottom: -1,
-                  width: '100%',
-                  position: 'absolute',
-                }}
-              />
             </View>
 
             <View style={{
-              width: '90%',
+              width: '100%',
             }}>
               <Text style={{
                 textAlign: 'left',
