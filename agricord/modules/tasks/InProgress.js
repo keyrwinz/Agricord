@@ -87,7 +87,13 @@ class InProgress extends Component {
     return (
       <SafeAreaView style={{position: 'relative'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={Style.MainContainer, { minHeight: height , marginTop: 25}}>
+          <View style={[
+            Style.MainContainer, 
+            { 
+              minHeight: height,
+              marginTop: 25,
+              marginBottom: 300
+            }]}>
             <Text style={{fontWeight: 'bold'}}>Paddocks</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity

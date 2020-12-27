@@ -5,9 +5,7 @@ import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {createStackNavigator} from '@react-navigation/stack';
 import {BasicStyles} from 'common';
 import Order from './index';
-import OrderDetails from 'modules/orderDetails';
 import {connect} from 'react-redux';
-import ApplyTask from 'modules/applyTask';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -70,49 +68,6 @@ const OrderScreen = props => {
             ),
           };
         }}
-      />
-
-      <OrderStack.Screen
-        name="ApplyTask"
-        component={ApplyTask}
-        options={({route}) => ({
-          headerLeft: () => (
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('Orders')}>
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  size={BasicStyles.iconSize}
-                  style={[
-                    BasicStyles.iconStyle,
-                    {
-                      color: '#000',
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerTitle: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '20%',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  textAlign: 'center',
-                }}>
-                APPLY TASK
-              </Text>
-            </View>
-          ),
-        })}
       />
     </OrderStack.Navigator>
   );

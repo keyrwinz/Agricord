@@ -19,11 +19,10 @@ export default {
     backgroundColor: Color.containerBackground
   },
   sliderContainer: {
-    flex: 1,
     minHeight: height,
     width: '100%',
     paddingHorizontal: 20,
-    backgroundColor: '#F1F1F1'
+    backgroundColor: Color.containerBackground
   },
   ScrollView: {
     flex: 1

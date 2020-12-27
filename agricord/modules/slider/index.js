@@ -57,6 +57,8 @@ class Slider extends Component {
       setSetting(0)
     }
 
+    console.log('selectedroute', route)
+
     const navigateAction = NavigationActions.navigate({
       routeName: 'drawerStack',
       action: StackActions.reset({

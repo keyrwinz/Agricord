@@ -212,7 +212,12 @@ const InventoryScreen = (props) => {
         children={(childProps) => <Inventory {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '25%',
+                }}>
               <TitleLogo />
               <Text
                 style={{
@@ -243,41 +248,6 @@ const InventoryScreen = (props) => {
             </View>
           ),
         })}
-      />
-      <InventoryStack.Screen
-        name="InventoryItem"
-        component={InventoryItem}
-      />
-      <InventoryStack.Screen
-        name="ApplyTask"
-        component={ApplyTask}
-        options={({ navigation }) => {
-          return ({
-            headerLeft: () => (
-              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => navigation.pop()}>
-                  <FontAwesomeIcon
-                    icon={faChevronLeft}
-                    size={BasicStyles.iconSize}
-                    style={[
-                      BasicStyles.iconStyle,
-                      {
-                        color: '#000',
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
-            ),
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
-                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
-                 APPLY TASK
-                </Text>
-             
-              </View>
-            )
-        })}}
       />
     </InventoryStack.Navigator>
   )

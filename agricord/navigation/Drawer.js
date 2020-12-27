@@ -8,23 +8,10 @@ import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/homepage';
 import InventoryScreen from 'modules/inventory';
-import Dashboard from 'modules/basics/Welcome.js';
-import Notification from 'modules/basics/Welcome.js';
-import Profile from 'modules/basics/Welcome.js';
-import HelpCenter from 'modules/basics/Welcome.js';
 import OptionRight from './OptionRight';
 import Tasks from 'modules/tasks';
 import Orders from 'modules/orders';
 import AccountSettings from 'modules/accountSettings';
-import TermsAndConditions from 'modules/basics/Welcome.js';
-import PrivacyPolicy from 'modules/basics/Welcome.js';
-import Merchant from 'modules/basics/Welcome.js';
-import MyAddress from 'modules/basics/Welcome.js';
-import Settings from 'modules/basics/Welcome.js';
-import Referral from 'modules/basics/Welcome.js';
-import MyOrders from 'modules/basics/Welcome.js';
-import MyOrderDetails from 'modules/basics/Welcome.js';
-import MessengerMessages from 'modules/basics/Welcome.js';
 import ForgotPassword from 'modules/basics/ForgotPassword.js';
 import SettingsPage from 'modules/settingsPage';
 import OrderDetails from 'modules/orderDetails';
@@ -92,81 +79,6 @@ const Homepage_StackNavigator = createStackNavigator({
         headerShown: false,
       };
     },
-  },
-  // Merchant: {
-  //   screen: Merchant,
-  //   navigationOptions: {
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#000',
-  //     headerTitle: 'Merchant',
-  //   },
-  // },
-  // Dashboard: {
-  //   screen: Dashboard,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  // HelpCenter: {
-  //   screen: HelpCenter,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  // PrivacyPolicy: {
-  //   screen: PrivacyPolicy,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  // TermsAndConditions: {
-  //   screen: TermsAndConditions,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  // Notification: {
-  //   screen: Notification,
-  //   navigationOptions: {
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#000',
-  //     headerTitle: 'Notifications',
-  //   },
-  // },
-  MyOrders: {
-    screen: MyOrders,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
   },
   //=================ORDERS ROUTES========================//
   UpcomingOrders: {
@@ -256,41 +168,6 @@ const Homepage_StackNavigator = createStackNavigator({
     params: {initialRouteName: 'AccountSetting'},
   },
   //============================================================//
-  MyOrderDetails: {
-    screen: MyOrderDetails,
-    navigationOptions: ({navigation}) => ({
-      headerTintColor: Color.primary,
-      headerBackTitleStyle: {
-        color: '#fff',
-      },
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-    }),
-  },
-  Profile: {
-    screen: Profile,
-    navigationOptions: ({navigation}) => ({
-      headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-      headerRight: <OptionRight navigationProps={navigation} />,
-      headerStyle: {
-        backgroundColor: Color.white,
-      },
-      headerTintColor: '#fff',
-    }),
-  },
-  // MyAddress: {
-  //   screen: MyAddress,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
   SettingsPage: {
     screen: SettingsPage,
     navigationOptions: ({navigation}) => ({
@@ -311,42 +188,6 @@ const Homepage_StackNavigator = createStackNavigator({
         backgroundColor: Color.white,
       },
       headerTintColor: '#fff',
-    }),
-  },
-  // InviteFriends: {
-  //   screen: Referral,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  // PaymentMethods: {
-  //   screen: Referral,
-  //   navigationOptions: ({navigation}) => ({
-  //     headerLeft: <MenuDrawerStructure navigationProps={navigation} />,
-  //     headerRight: <OptionRight navigationProps={navigation} />,
-  //     headerStyle: {
-  //       backgroundColor: Color.white,
-  //     },
-  //     headerTintColor: '#fff',
-  //   }),
-  // },
-  MessengerMessages: {
-    screen: MessengerMessages,
-    navigationOptions: ({navigation}) => ({
-      title: navigation.getParam('messengerHeaderTitle'),
-      headerTintColor: Color.primary,
-      headerBackTitleStyle: {
-        color: '#fff',
-      },
-      headerStyle: {
-        backgroundColor: Color.white,
-        color: Color.black,
-      },
     }),
   },
   ForgotPassword: {

@@ -5,9 +5,8 @@ import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {createStackNavigator} from '@react-navigation/stack';
 import {BasicStyles} from 'common';
 import Tasks from './index';
-import TasksItem from 'modules/paddockPage';
-import ApplyTask from 'modules/applyTask';
 import MixName from 'modules/mixName';
+import {connect} from 'react-redux';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -19,11 +18,22 @@ const TasksScreen = props => {
     <TasksStack.Navigator>
       <TasksStack.Screen
         name="Tasks"
-        children={(route)=><Tasks {...route} parentNav={props.parentNav} initialPage={props.initialPage}/>}
+        children={route => (
+          <Tasks
+            {...route}
+            parentNav={props.parentNav}
+            initialPage={props.initialPage}
+          />
+        )}
         options={({route}) => {
           return {
             headerTitle: () => (
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: '25%',
+                }}>
                 <TitleLogo />
                 <Text
                   style={{
@@ -57,133 +67,19 @@ const TasksScreen = props => {
           };
         }}
       />
-      <TasksStack.Screen
-        name="TasksItem"
-        component={TasksItem}
-        options={({route}) => ({
-          headerLeft: () => (
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity onPress={() => props.navigation.goBack()}>
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  size={BasicStyles.iconSize}
-                  style={[
-                    BasicStyles.iconStyle,
-                    {
-                      color: '#000',
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerTitle: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  textAlign: 'center',
-                }}>
-                {route.params.name}
-              </Text>
-            </View>
-          ),
-        })}
-      />
-      <TasksStack.Screen
-        name="ApplyTask"
-        component={ApplyTask}
-        options={({route}) => ({
-          headerLeft: () => (
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('Tasks')}>
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  size={BasicStyles.iconSize}
-                  style={[
-                    BasicStyles.iconStyle,
-                    {
-                      color: '#000',
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerTitle: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '20%',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  textAlign: 'center',
-                }}>
-                APPLY TASK
-              </Text>
-            </View>
-          ),
-        })}
-      />
-      <TasksStack.Screen
-        name="MixName"
-        component={MixName}
-        options={({route}) => ({
-          headerLeft: () => (
-            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-              <TouchableOpacity
-                onPress={() => props.navigation.navigate('Tasks')}>
-                <FontAwesomeIcon
-                  icon={faChevronLeft}
-                  size={BasicStyles.iconSize}
-                  style={[
-                    BasicStyles.iconStyle,
-                    {
-                      color: '#000',
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-          ),
-          headerTitle: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: 16,
-                  textAlign: 'center',
-                }}>
-                {route.params.details.status == 'inprogress'
-                  ? 'Mix Name'
-                  : 'Spray Mix'}
-              </Text>
-            </View>
-          ),
-        })}
-      />
+      
     </TasksStack.Navigator>
   );
 };
 
-export default TasksScreen;
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {};
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TasksScreen);
