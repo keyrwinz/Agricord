@@ -4,7 +4,7 @@ let tertiary = '#5A84EE'
 export default {
   primaryDark: '#cae166',
   primary: primary,
-  danger: '#cae166',
+  danger: '#FF6262',
   warning: '#ffc107',
   secondary: secondary,
   white: '#fff',

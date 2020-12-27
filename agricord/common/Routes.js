@@ -75,7 +75,7 @@ export default {
   sprayMixesRetrieve: apiUrl + 'spray_mixes/retrieve_details',
   orderRequest: apiUrl + 'order_request_items/retrieve',
   paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',
-
+  paddocksRetrieveWithSprayMix: apiUrl + 'paddocks/retrieve_with_spray_mix',
   // Inventory
   inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
 };

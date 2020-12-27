@@ -19,6 +19,7 @@ import Api from 'services/api/index.js'
 import { products } from './data-test.js';
 import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
+import { Spinner } from 'components';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -40,18 +41,24 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
   const [FungicideData, setFungicideData] = useState([])
   const [InsecticideData, setInsecticideData] = useState([])
   const [OtherData, setOtherData] = useState([])
 
+  const [data, setData] = useState([])
   const [filteredHerbicideData, setFilteredHerbicideData] = useState([])
   const [filteredFungicideData, setFilteredFungicideData] = useState([])
   const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
   const [filteredOtherData, setFilteredOtherData] = useState([])
 
   useEffect(() => {
+    retrieveData()
+  }, [])
+
+  const retrieveData = () => {
     const parameter = {
       condition: {
         column: 'title',
@@ -68,23 +75,28 @@ const Inventory = (props) => {
       limit: 5,
       offset: 0
     }
+    setLoading(true)
+    setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
       if (response.data.length) {
-        setHerbicideData(response.data)
-        setFungicideData(response.data)
-        setInsecticideData(response.data)
+        setLoading(false)
+        setData(response.data)
+        // setHerbicideData(response.data)
+        // setFungicideData(response.data)
+        // setInsecticideData(response.data)
         // setOtherData(response.data)
 
-        setFilteredHerbicideData(response.data)
-        setFilteredFungicideData(response.data)
-        setFilteredInsecticideData(response.data)
+        // setFilteredHerbicideData(response.data)
+        // setFilteredFungicideData(response.data)
+        // setFilteredInsecticideData(response.data)
         // setFilteredOtherData(response.data)
       }
       console.log({ inventoryResponse: response })
     }, error => {
       console.log({ inventoryError: error })
+      setLoading(false)
     })
-  }, [])
+  }
 
   useEffect(() => {
     if (props.initialPage !=null) {
@@ -107,7 +119,11 @@ const Inventory = (props) => {
     }
   }, [])
 
-  const onPageChange = (activeIndex) => setActiveIndex(activeIndex)
+  const onPageChange = (activeIndex) => {
+    setActiveIndex(activeIndex)
+    retrieveData()
+  }
+
   const searchProductHandler = () => {
     const query = searchString.toLocaleLowerCase()
     switch (activeIndex) {
@@ -174,24 +190,25 @@ const Inventory = (props) => {
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
             {/* ===== HERBICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredHerbicideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== FUNGICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredFungicideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== INSECTICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredInsecticideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== OTHER ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredOtherData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
           </View>
         </Pager>
       </PagerProvider>
 
       <TaskButton navigation={props.parentNav}/>
+      {loading ? <Spinner mode="overlay" /> : null}
     </View>
   );
 }

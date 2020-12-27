@@ -22,22 +22,27 @@ const InventoryList = (props) => {
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={Style.MainContainer, { minHeight: height }}>
-          <Text style={{ fontWeight:'bold', fontSize: 20 }}>
-            Product
-          </Text>
+          {
+            !props.loading && (
+              <Text style={{ fontWeight:'bold', fontSize: 20 }}>
+                Product
+              </Text>
+            ) 
+          }
           {
             props.data != null && props.data.length ? props.data.map((item, idx) => {
               return (
                 <ProductCard item={{
                     ...item,
-                    from: 'inventory'
+                    from: 'inventory',
+                    qty: parseFloat(item.qty).toFixed(1)
                   }}
                   key={item.id}
                   navigation={props.parentNav}
                   theme={'v1'}
                 />
               )}) : (
-                <Text style={{ marginTop: 10 }}>No product found</Text>
+                <Text style={{ marginTop: 10 }}>{props.loading ? '' : 'No product found'}</Text>
               )
           }
         </View>

@@ -56,7 +56,7 @@ class Tasks extends Component {
           console.log("Route does not exist")
       }
     }else{
-      this.setState({activeIndex: 0})
+      this.setState({activeIndex: 0, label: 'inprogress'})
     }
     this.retrieveData()
   }
