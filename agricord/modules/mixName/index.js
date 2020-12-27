@@ -42,10 +42,11 @@ import {Divider} from 'react-native-elements';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
-import PaddockCard from 'components/Products/paddockCard.js';
+import ProductCard from 'components/Products/ProductCardClickable.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SwipeButton from 'components/SwipeableButton';
 import arrowRight from 'assets/ArrowRight.png';
+import TaskButton from 'modules/generic/TaskButton.js';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -104,7 +105,7 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  {/*details.appliedRate*/}
+                  65L
                 </Text>
               </View>
               <View
@@ -120,14 +121,24 @@ class MixName extends Component {
               />
             </View>
 
+            <View style={{
+              width: '90%',
+            }}>
+              <Text style={{
+                textAlign: 'left',
+                fontWeight: 'bold',
+                marginTop: 10
+              }}>PRODUCT RATE (PER HA)</Text>
+            </View>
+
             {this.state.products.map((item, index) => (
-              <PaddockCard
-                details={{
-                  item,
-                  dataFrom: 'paddockPage',
-                  status: 'test',
+              <ProductCard
+                item={{
+                  ...item,
+                  from: 'paddockPage'
                 }}
                 key={item.id}
+                navigation={this.props.navigation}
               />
             ))}
           </View>
@@ -150,6 +161,8 @@ class MixName extends Component {
               onSwipeSuccess={() => alert('Action Complete Here')}
             />
         )}
+
+        <TaskButton navigation={this.props.navigation}/>
       </ImageBackground>
     );
   }

@@ -28,7 +28,8 @@ const types = {
   SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
   SET_SETTING: 'SET_SETTING',
   SET_MIX_NAME: 'SET_MIX_NAME',
-  SET_PADDOCK: 'SET_PADDOCK'
+  SET_PADDOCK: 'SET_PADDOCK',
+  SET_PRODUCT: 'SET_PRODUCT',
 };
 
 export const actions = {
@@ -107,6 +108,9 @@ export const actions = {
   },
   setPaddock(paddock){
     return { type: types.SET_PADDOCK, paddock };
+  },
+  setProduct(product){
+    return { type: types.SET_PRODUCT, product };
   }
 };
 
@@ -131,7 +135,8 @@ const initialState = {
   task: null,
   appSetting: 0,
   mix: null,
-  paddock: null
+  paddock: null,
+  product: null
 };
 
 storeData = async (key, value) => {
@@ -146,7 +151,6 @@ const reducer = (state = initialState, action) => {
   const {type, user, token} = action;
   const {unread} = action;
   const {notification} = action;
-  const {product} = action;
   const {theme} = action;
   const {productFilter} = action;
   const {cartItems, location} = action;
@@ -154,6 +158,7 @@ const reducer = (state = initialState, action) => {
   const {messengerGroup, messagesOnGroup} = action;
   const {selectedOrder} = action;
   const {task, setting, paddock} = action;
+  const { product } = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -435,6 +440,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         paddock
+      }
+    case types.SET_PRODUCT:
+      return {
+        ...state,
+        product
       }
     default:
       return {...state, nav: state.nav};

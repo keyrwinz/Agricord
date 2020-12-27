@@ -19,6 +19,7 @@ import MixPageStack from 'modules/mixPage/Drawer.js';
 import ApplyTaskStack from 'modules/applyTask/ApplyTaskDrawer.js';
 import OrderDetailsStack from 'modules/orderDetails/OrderDetailsDrawer.js';
 import SettingsPageStack from 'modules/settingsPage/SettingsPageDrawer.js';
+import ProductDetails from 'modules/product/ProductDetailsDrawer.js';
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -76,6 +77,7 @@ const PrimaryNav = createStackNavigator(
     mixNameStack: {screen: MixNameStack},
     mixPageStack: {screen: MixPageStack},
     settingsPageStack: {screen: SettingsPageStack},
+    productDetailsStack: {screen: ProductDetails},
   },
   {
     // Default config for all screens
