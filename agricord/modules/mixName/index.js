@@ -42,7 +42,7 @@ import {Divider} from 'react-native-elements';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
-import ProductCard from 'components/Products/ProductCardClickable.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SwipeButton from 'components/SwipeableButton';
 import arrowRight from 'assets/ArrowRight.png';
@@ -135,10 +135,12 @@ class MixName extends Component {
               <ProductCard
                 item={{
                   ...item,
-                  from: 'paddockPage'
+                  from: 'paddockPage',
+                  title: item.product_title
                 }}
                 key={item.id}
                 navigation={this.props.navigation}
+                theme={'v2'}
               />
             ))}
           </View>

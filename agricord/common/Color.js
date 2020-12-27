@@ -16,6 +16,7 @@ export default {
   success: '#4BB543',
   goldenYellow: '#FFDF00',
   tertiary: tertiary,
+  blue: '#5A84EE',
   setPrimary(color){
     this.primary = color
   },

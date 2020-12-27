@@ -33,7 +33,6 @@ class ProductDetails extends Component {
   }
 
   componentDidMount(){
-    console.log('params', this.props.navigation.state.params.data)
   }
 
   render() {

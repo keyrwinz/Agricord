@@ -24,7 +24,7 @@ class HeaderOptions extends Component {
           <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color:'black'}]}/>
         </TouchableOpacity>
         <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
-          {data.product_title}
+          {data.title}
         </Text>
         <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
           ({data.volume ? data.volume : '100L'})

@@ -181,7 +181,7 @@ class paddockPage extends Component{
         })
       }}
       style={[Style.paddockContainer]}
-      underlayColor={Color.secondary}
+      underlayColor={Color.blue}
       >
         <React.Fragment>
           <View style={Style.paddockInfo}>

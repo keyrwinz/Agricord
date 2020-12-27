@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import PaddockCard from 'components/Products/paddockCard.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import Style from './Style.js';
 
 const height = Math.round(Dimensions.get('window').height);
@@ -27,20 +27,15 @@ const InventoryList = (props) => {
           </Text>
           {
             props.data != null && props.data.length ? props.data.map((item, idx) => {
-              const name = item.title.toUpperCase()
-              const volume = item.volume || '(100L)'
-              const details = {
-                dataFrom: 'inventory',
-                name,
-                volume,
-                ...item
-              }
               return (
-                <TouchableOpacity key={idx} onPress={() => {
-                  props.navigation.navigate('InventoryItem', { name, volume, data: item })
-                }}>
-                  <PaddockCard details={details} key={item.id} />
-                </TouchableOpacity>
+                <ProductCard item={{
+                    ...item,
+                    from: 'inventory'
+                  }}
+                  key={item.id}
+                  navigation={props.parentNav}
+                  theme={'v1'}
+                />
               )}) : (
                 <Text style={{ marginTop: 10 }}>No product found</Text>
               )
