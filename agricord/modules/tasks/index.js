@@ -84,6 +84,7 @@ class TasksPage extends Component {
     Api.request(Routes.tasksRetrieve, parameter, response => {
         this.setState({data: response.data.paddocks, isLoading: false});
       }, error => {
+        this.setState({isLoading: false});
         console.log('ERROR HAPPENS', error);
       },
     );

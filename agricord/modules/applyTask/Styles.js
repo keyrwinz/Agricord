@@ -1,7 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 
 const styles = StyleSheet.create({
+  MainContainer: {
+    flex: 1,
+    backgroundColor: Color.containerBackground
+  },
   PickerContainer: {
     marginTop: 20,
     width: '90%',

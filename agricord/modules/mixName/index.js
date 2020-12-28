@@ -47,6 +47,7 @@ import TitleLogo from 'assets/inventory/title_logo.svg';
 import SwipeButton from 'components/SwipeableButton';
 import WifiSvg from 'assets/settings/wifi.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
+import SlidingButton from 'modules/generic/SlidingButton';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -80,6 +81,12 @@ class MixName extends Component {
       },
     );
   }
+
+  redirect = () => {
+    this.props.navigation.navigate('mixPageStack', {
+      details: {appliedRate: 1, status: 'Auto'},
+    });
+  };
 
   render() {
     const { paddock } = this.props.state;
@@ -158,21 +165,12 @@ class MixName extends Component {
 
         {
           (paddock && paddock.from == 'due') && (
-            <SwipeButton
-              thumbIconBackgroundColor={Color.blue}
-              thumbIconBorderColor={Color.blue}
-              thumbIconImageSource={<WifiSvg />}
-              shouldResetAfterSuccess={true}
-              resetAfterSuccessAnimDelay={100}
-              titleColor={Color.white}
-              title=""
-              height={55}
-              railStyles={{
-                backgroundColor: Color.blue,
-                borderColor: Color.blue,
-              }}
-              onSwipeSuccess={() => alert('Action Complete Here')}
-            />
+            <SlidingButton
+              title={'Apply Mix'}
+              label={'Swipe Right'}
+              onSuccess={() => this.redirect()}
+              />
+
         )}
 
         {

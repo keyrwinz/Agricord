@@ -24,6 +24,7 @@ class TaskButton extends Component{
           style={{
             position: 'absolute',
             bottom: 10,
+            right: 10,
             alignSelf: 'flex-end'
           }}
         >

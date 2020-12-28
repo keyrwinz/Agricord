@@ -221,14 +221,13 @@ class paddockPage extends Component{
   renderMixCards = () => {
     const { paddock } = this.props.state;
     return(
-      <TouchableHighlight
+      <TouchableOpacity
       onPress={()=>{
         this.props.navigation.navigate('mixNameStack', {
           data: paddock
         })
       }}
       style={[Style.paddockContainer]}
-      underlayColor={Color.blue}
       >
         <React.Fragment>
           <View style={Style.paddockInfo}>
@@ -253,7 +252,7 @@ class paddockPage extends Component{
               }}>Contents</Text>
             </View>  
         </React.Fragment>
-      </TouchableHighlight>
+      </TouchableOpacity>
     )
   }
 

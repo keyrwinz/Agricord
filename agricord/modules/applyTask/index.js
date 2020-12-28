@@ -1,21 +1,22 @@
 import React, {Component} from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, Dimensions} from 'react-native';
 import {
   faHistory,
   faFlask,
   faTractor,
   faTh,
 } from '@fortawesome/free-solid-svg-icons';
-import {BasicStyles, Routes} from 'common';
+import {BasicStyles, Routes, Color} from 'common';
 import Task from 'modules/applyTask/Task';
 import RecentTasks from 'modules/applyTask/RecentTasks';
 import CustomPicker from 'modules/applyTask/CustomPicker.js';
-import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import styles from 'modules/applyTask/Styles.js';
 import {connect} from 'react-redux';
 import ThCircleSvg from 'assets/settings/thcircle.svg';
 import {Spinner} from 'components';
 import Api from 'services/api';
+import SlidingButton from 'modules/generic/SlidingButton';
+const height = Math.round(Dimensions.get('window').height);
 
 const dummyData = [
   {
@@ -97,8 +98,8 @@ class ApplyTask extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedMachine: '',
-      selectedMix: '',
+      selectedMachine: null,
+      selectedMix: null,
       selectedPicker: 0,
       isLoading: false,
       data: null
@@ -146,10 +147,11 @@ class ApplyTask extends Component {
 
   selectPaddocks = () => {
     const {setMachineAndMix} = this.props;
-    if (this.state.selectedMachine !== '' && this.state.selectedMix !== '') {
+    const { selectedMachine, selectedMix } = this.state;
+    if (selectedMachine && selectedMix) {
       let task = {
-        machine: this.state.selectedMachine,
-        mix: this.state.selectedMix,
+        machine: selectedMachine,
+        mix: selectedMix,
       };
       setMachineAndMix(task);
       this.props.navigation.navigate('mixPageStack', {
@@ -174,139 +176,88 @@ class ApplyTask extends Component {
   };
 
   render() {
-    const { isLoading, data } = this.state;
+    const { isLoading, data, selectedMix, selectedMachine } = this.state;
     return (
-      <ScrollView style={{backgroundColor: '#F1F1F1'}}>
-        <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
-          {
-            data && (
-              <Task title="Recent" icon={faHistory} height={240} key={1}>
-                <RecentTasks
-                  data={data.recent_machines}
-                  type="Machine"
-                  title="Machines"
-                  key={1}
-                  handleSelect={this.recentMachineHandler}
-                  handleRemoveItem={() => this.recentMachineHandler(null)}
-                />
-                <RecentTasks
-                  type="Mix"
-                  data={data.recent_spray_mixes}
-                  title="Spray Mixes"
-                  key={2}
-                  handleSelect={this.recentMixHandler}
-                  handleRemoveItem={() => this.recentMachineHandler(null)}
-                />
-              </Task>
-            )
-          }
-          
-          <View style={{ zIndex: 200, width: '100%', alignItems: 'center' }}>
+      <View style={styles.MainContainer}>
+        <ScrollView style={{backgroundColor: Color.containerBackground, minHeight: height}}>
+          <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
             {
               data && (
-                <Task title="Select" icon={faTh} height={200} key={2}>
-                  <View style={{ zIndex: 20, width: '100%' }}>
-                    <CustomPicker
-                      type="Machine"
-                      data={data.machines}
-                      key={1}
-                      styles={{zIndex: 500}}
-                      handleSelect={this.pickerMachineHandler}
-                      index={1}
-                      allowOpen={this.state.selectedPicker === 1 ? true : false}
-                      handleSelectedPicker={this.handleSelectedPicker}
-                      handleRemoveItem={() => this.pickerMachineHandler(null)}
-                    />
-                  </View>
-                  <View style={{ zIndex: 10, width: '100%' }}>
-                    <CustomPicker
-                      type="Mix"
-                      data={data.spray_mixes}
-                      key={2}
-                      styles={{zIndex: 500}}
-                      handleSelect={this.pickerMixHandler}
-                      index={2}
-                      allowOpen={this.state.selectedPicker === 2 ? true : false}
-                      handleSelectedPicker={this.handleSelectedPicker}
-                      handleRemoveItem={() => this.pickerMixHandler(null)}
-                    />
-                  </View>
+                <Task title="Recent" icon={faHistory} height={240} key={1}>
+                  <RecentTasks
+                    data={data.recent_machines}
+                    type="Machine"
+                    title="Machines"
+                    key={1}
+                    handleSelect={this.recentMachineHandler}
+                    handleRemoveItem={() => this.recentMachineHandler(null)}
+                  />
+                  <RecentTasks
+                    type="Mix"
+                    data={data.recent_spray_mixes}
+                    title="Spray Mixes"
+                    key={2}
+                    handleSelect={this.recentMixHandler}
+                    handleRemoveItem={() => this.recentMachineHandler(null)}
+                  />
                 </Task>
               )
             }
-          </View>
-          {this.state.selectedMachine !== '' &&
-          this.state.selectedMix !== '' ? (
-            <View style={{ width: '100%', alignItems: 'center', zIndex: 100 }}>
-              <RNSlidingButton
-                style={{
-                  marginTop: 60,
-                  width: '85%',
-                  borderRadius: 12,
-                  backgroundColor: '#F1F1F1',
-                  borderColor: '#CFCFCF',
-                  borderWidth: 2,
-                  zIndex: 0,
-                }}
-                height={45}
-                onSlidingSuccess={() => {
-                  this.selectPaddocks();
-                }}
-                slideDirection={SlideDirection.RIGHT}>
-                <View
-                  style={{
-                    width: '100%',
-                    borderRadius: 12,
-                    backgroundColor: '#F1F1F1',
-                    borderColor: '#CFCFCF',
-                    borderWidth: 1,
-                    zIndex: 0,
-                  }}
-                  height={45}
-                  onSlidingSuccess={() => {
-                    this.selectPaddocks();
-                  }}
-                  slideDirection={SlideDirection.RIGHT}>
-                  <View
-                    style={{
-                      backgroundColor: '#5A84EE',
-                      height: 45,
-                      width: 129,
-                      borderRadius: 12,
-                      padding: 0,
-                      justifyContent: 'center',
-                      alignItems: 'center',
+            
+            <View style={{
+                zIndex: 200,
+                width: '100%',
+                alignItems: 'center'
+              }}>
+              {
+                data && (
+                  <Task title="Select" icon={faTh} height={200} key={2}>
+                    <View style={{
+                      zIndex: 20,
+                      width: '100%'
                     }}>
-                    <Text
-                      style={{
-                        color: '#FFFFFF',
-                        fontSize: BasicStyles.titleText.fontSize,
-                        fontWeight: 'bold',
-                      }}>
-                      Select Paddocks
-                    </Text>
-                  </View>
-                </View>
-              </RNSlidingButton>
+                      <CustomPicker
+                        type="Machine"
+                        data={data.machines}
+                        key={1}
+                        styles={{zIndex: 500}}
+                        handleSelect={this.pickerMachineHandler}
+                        index={1}
+                        allowOpen={this.state.selectedPicker === 1 ? true : false}
+                        handleSelectedPicker={this.handleSelectedPicker}
+                        handleRemoveItem={() => this.pickerMachineHandler(null)}
+                      />
+                    </View>
+                    <View style={{ zIndex: 10, width: '100%' }}>
+                      <CustomPicker
+                        type="Mix"
+                        data={data.spray_mixes}
+                        key={2}
+                        styles={{zIndex: 500}}
+                        handleSelect={this.pickerMixHandler}
+                        index={2}
+                        allowOpen={this.state.selectedPicker === 2 ? true : false}
+                        handleSelectedPicker={this.handleSelectedPicker}
+                        handleRemoveItem={() => this.pickerMixHandler(null)}
+                      />
+                    </View>
+                  </Task>
+                )
+              }
             </View>
-          ) : null}
-          {this.state.selectedMachine !== '' &&
-          this.state.selectedMix !== '' ? (
-            <View
-              style={{height: 20, width: '85%', marginTop: 5, marginLeft: 15}}>
-              <Text
-                style={{
-                  fontSize: BasicStyles.normalText.fontSize,
-                  color: '#969696',
-                }}>
-                Swipe Right to Complete
-              </Text>
-            </View>
-          ) : null}
-        </View>
-
+          </View>
+        </ScrollView>
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
-      </ScrollView>
+        {
+          (selectedMachine && selectedMix) && (
+            <SlidingButton
+              title={'Select Paddocks'}
+              label={'Swipe Right to Complete'}
+              onSuccess={() => this.selectPaddocks()}
+              />
+          )
+        }
+      </View>
     );
   }
 }
