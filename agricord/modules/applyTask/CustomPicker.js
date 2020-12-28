@@ -166,7 +166,7 @@ class CustomPicker extends Component {
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
                 {this.state.selectedItem !== null
-                  ? this.props.items[this.state.selectedItem].type
+                  ? this.props.data[this.state.selectedItem].name
                   : `Selected ${this.props.type}`}
               </Text>
               {this.state.selectedItem !== null && (
