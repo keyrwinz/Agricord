@@ -1,4 +1,4 @@
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import { Dimensions } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
 
@@ -19,16 +19,12 @@ export default {
     marginLeft: '10%'
   },
   mixCardContainer: {
-    width: width * .8,
-    height: 150,
+    width: '100%',
     backgroundColor: 'red',
     alignSelf: 'center',
-    marginHorizontal: 10,
     marginVertical: 10,
-
-    // box-shadow
     backgroundColor: Color.white,
-    borderRadius: 12,
+    borderRadius: BasicStyles.standardBorderRadius,
     borderColor: '#FFFFFF',
     borderWidth:1,
     shadowColor: "#000",
@@ -48,17 +44,17 @@ export default {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-    height: '30%',
-    paddingHorizontal: 20
+    borderTopLeftRadius: BasicStyles.standardBorderRadius,
+    borderTopRightRadius: BasicStyles.standardBorderRadius,
+    paddingHorizontal: 20,
+    minHeight: 50
   },
   mixDetails: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
+    borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+    borderBottomRightRadius: BasicStyles.standardBorderRadius,
     height: '70%',
     padding: 20,
   },

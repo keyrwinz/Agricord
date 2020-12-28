@@ -5,16 +5,18 @@ import {
   ScrollView,
   Dimensions,
   SafeAreaView,
+  TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Switch from 'react-native-customisable-switch';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheck, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCheckCircle, faTimesCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import { Color } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
+import SlidingButton from 'modules/generic/SlidingButton';
 
 const width = Math.round(Dimensions.get('window').width);
 
@@ -59,7 +61,9 @@ const availablePaddocks = [
 const MixPage = (props) => {
 
   const carouselRef = useRef(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [scanProductFlag, setScanProductFlag] = useState(true)
+  const [selectedFlag, setSelectedFlag ] = useState(false)
   const [appRateSwitch, setAppRateSwitch] = useState(false)
   const [availablePaddockIndex, setAvailablePaddockIndex] = useState(0)
   const [selectedPaddockIndex, setSelectedPaddockIndex] = useState(0)
@@ -71,14 +75,20 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
+  const redirect = () => {
+
+  }
+
   if (loading) return null
 
   return (
-    <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+    <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
 
         {/* AVAILABLE PADDOCKS */}
-        <View>
+        <View style={{
+            marginTop: 15
+          }}>
           <Text style={Style.textHeader}>Available Paddocks</Text>
           <View style={{ alignItems: 'center', position: 'relative' }}>
             <Carousel
@@ -86,7 +96,7 @@ const MixPage = (props) => {
               ref={carouselRef}
               data={availablePaddocks}
               sliderWidth={width}
-              itemWidth={width * 0.8}
+              itemWidth={width * 0.9}
               activeDo
               renderItem={(data) => (
                 <MixCard data={data} hasCheck={false} />
@@ -127,58 +137,17 @@ const MixPage = (props) => {
           </View>
         </View>
 
-        {/* SELECTED PADDOCKS */}
-        <View style={{ marginTop: 15 }}>
-          <Text style={Style.textHeader}>Selected Paddocks</Text>
-          <View style={{ alignItems: 'center', position: 'relative' }}>
-            <Carousel
-              layout={"default"}
-              ref={carouselRef}
-              data={availablePaddocks}
-              sliderWidth={width}
-              itemWidth={width * 0.8}
-              renderItem={(data) => (
-                <MixCard data={data} hasCheck={true} />
-              )}
-              onSnapToItem = { index => setSelectedPaddockIndex(index) }
-            />
-            <Pagination
-              dotsLength={availablePaddocks.length}
-              activeDotIndex={selectedPaddockIndex}
-              containerStyle={{ 
-                width: '50%',
-                position: 'absolute',
-                bottom: -40,
-              }}
-              dotStyle={{
-                width: 10,
-                height: 10,
-                borderRadius: 5,
-                marginHorizontal: -5,
-                backgroundColor: '#5A84EE'
-              }}
-              inactiveDotStyle={{
-                backgroundColor: '#C4C4C4'
-              }}
-              inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
-            />
-          </View>
-        </View>
-
-        {/* CHECK ICON */}
-        <View style={Style.checkBar}>
-          <View style={Style.checkBox}>
-            <FontAwesomeIcon
-              icon={faCheck}
-              size={30}
-              color={'#fff'}
-            />
-          </View>
-        </View>
-
         {/* APPLICATION RATE */}
-        <View style={[Style.mixCardContainer, { marginVertical: 40, height: 210 }]}>
+        <View style={[
+          Style.mixCardContainer,
+          {
+            marginTop: 40,
+            minHeight: 50,
+            width: '90%',
+            marginLeft: '5%',
+            marginRight: '5%'
+          }]
+        }>
           <View style={
             [ Style.mixTitle, 
             { borderBottomWidth: 3, borderBottomColor: '#9AD267' }]
@@ -267,7 +236,78 @@ const MixPage = (props) => {
           </View>
         </View>
 
+        {/* SELECTED PADDOCKS */}
+        {
+          selectedFlag && (
+            <View>
+              <Text style={Style.textHeader}>Selected Paddocks</Text>
+              <View style={{ alignItems: 'center', position: 'relative' }}>
+                <Carousel
+                  layout={"default"}
+                  ref={carouselRef}
+                  data={availablePaddocks}
+                  sliderWidth={width}
+                  itemWidth={width * 0.9}
+                  renderItem={(data) => (
+                    <MixCard data={data} hasCheck={true} />
+                  )}
+                  onSnapToItem = { index => setSelectedPaddockIndex(index) }
+                />
+                <Pagination
+                  dotsLength={availablePaddocks.length}
+                  activeDotIndex={selectedPaddockIndex}
+                  containerStyle={{ 
+                    width: '50%',
+                    position: 'absolute',
+                    bottom: -40,
+                  }}
+                  dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    marginHorizontal: -5,
+                    backgroundColor: '#5A84EE'
+                  }}
+                  inactiveDotStyle={{
+                    backgroundColor: '#C4C4C4'
+                  }}
+                  inactiveDotOpacity={0.4}
+                  inactiveDotScale={0.6}
+                />
+              </View>
+            </View>
+          )
+        }
+
+
+        <TouchableOpacity
+          style={{
+            marginBottom: 100,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 25
+          }}
+          onPress={() => setSelectedFlag(selectedFlag ? false : true)}
+          >
+          <FontAwesomeIcon
+            icon={selectedFlag ? faChevronUp : faChevronDown}
+            size={50}
+            color={Color.white}
+            />
+        </TouchableOpacity>
+
+
       </ScrollView>
+      {
+        scanProductFlag && (
+          <SlidingButton
+            title={'Scan Products'}
+            label={'Swipe Right'}
+            onSuccess={() => this.redirect()}
+          />
+        )
+      }
     </SafeAreaView>
   );
 }
