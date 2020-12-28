@@ -45,8 +45,8 @@ const OrderDetailsStack = createStackNavigator({
     screen: OrderDetails,
     navigationOptions: ({navigation}) => ({
       title:
-        navigation.state.params.details.status === 'completed'
-          ? `ORDER NUMBER ${navigation.state.params.details.order_number}`
+        navigation.state.params.data.status === 'completed'
+          ? `ORDER NUMBER ${navigation.state.params.data.order_number}`
           : 'ORDER DETAILS',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       ...BasicStyles.headerDrawerStyle

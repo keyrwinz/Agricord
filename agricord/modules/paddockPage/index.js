@@ -112,7 +112,7 @@ class paddockPage extends Component{
                     paddingTop: 10,
                     paddingBottom: 10
                   }}>
-                  <View>
+                  <View style={Style.label}>
                     <Text style={{
                         fontWeight:'bold',
                         color: Color.blue
@@ -124,7 +124,7 @@ class paddockPage extends Component{
                     <Text>{data.creator}</Text> 
                   </View>  
                 </View>
-              <Divider style={{height:0.5,width:'90%',marginBottom:10}}/>
+              <Divider style={[BasicStyles.starndardDivider, {marginBottom: 10}]}/>
           </React.Fragment>
         )
       }
@@ -135,66 +135,66 @@ class paddockPage extends Component{
             {
               (data.crop_name) && (
                 <View style={Style.cardInfo}>
-                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  <Text style={Style.labelTitle}>
                     Crop
                   </Text>
-                  <Text>{data.crop_name}</Text>
+                  <Text style={Style.label}>{data.crop_name}</Text>
                 </View>
               )
             }
             {
               (data.crop_name) && (
-                <Divider style={{height:0.5,width:'90%'}}/>
+                <Divider style={BasicStyles.starndardDivider}/>
               )
             }
 
 
             <View style={Style.cardInfo}>
-              <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+              <Text style={Style.labelTitle}>
                 Machine
               </Text>
-              <Text>{data.machine ? data.machine : ''}</Text>
+              <Text style={Style.label}>{data.machine ? data.machine : ''}</Text>
             </View>
 
-            <Divider style={{height:0.5, width:'90%'}}/>
+            <Divider style={BasicStyles.starndardDivider}/>
             
             {
               (data.operator) && (
                 <View style={Style.cardInfo}>
-                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  <Text style={Style.labelTitle}>
                     Operator
                   </Text>
-                  <Text>{data.operator}</Text>
+                  <Text style={Style.label}>{data.operator}</Text>
                 </View>
               )
             }
             {
               (data.operator) && (
-                <Divider style={{height:0.5,width:'90%'}}/>
+                <Divider style={BasicStyles.starndardDivider}/>
               )
             }
             {
               (data.start_date && paddock.from == 'history') && (
                 <View style={Style.cardInfo}>
-                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  <Text style={Style.labelTitle}>
                     Start Time
                   </Text>
-                  <Text>{data.start_date}</Text>
+                  <Text style={Style.label}>{data.start_date}</Text>
                 </View>
               )
             }
             {
               (data.start_date && paddock.from == 'history') && (
-                <Divider style={{height:0.5,width:'90%'}}/>
+                <Divider style={BasicStyles.starndardDivider}/>
               )
             }
             {
               (data.end_date && paddock.from == 'history') && (
                 <View style={Style.cardInfo}>
-                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  <Text style={Style.labelTitle}>
                     Finish Time
                   </Text>
-                  <Text>{data.end_date}</Text>
+                  <Text style={Style.label}>{data.end_date}</Text>
                 </View>
               )
             }
@@ -202,15 +202,15 @@ class paddockPage extends Component{
             {
               (data.started && paddock.from == 'inprogress') && (
                 <View style={Style.cardInfo}>
-                  <Text style={{fontWeight: 'bold', color: '#969696', width: '50%',marginLeft:20}}>
+                  <Text style={Style.labelTitle}>
                     Started
                   </Text>
-                  <Text>{data.started}</Text>
+                  <Text style={Style.label}>{data.started}</Text>
                 </View>
               )
             }
 
-            <Divider style={{height:0.5 ,width:'90%',marginBottom:10}}/>
+            <Divider style={[BasicStyles.starndardDivider, {marginBottom: 10}]}/>
             
           </React.Fragment>
         )}
@@ -230,8 +230,12 @@ class paddockPage extends Component{
       style={[Style.paddockContainer]}
       >
         <React.Fragment>
-          <View style={Style.paddockInfo}>
-            <View style={{flexDirection:'row'}}>
+          <View style={[Style.paddockInfo, {
+            width: '50%'
+          }]}>
+            <View style={{
+              flexDirection:'row'
+              }}>
               <View style={{
                 marginTop: 6,
                 marginRight: 10,
@@ -240,17 +244,19 @@ class paddockPage extends Component{
                 borderRadius: 100/2,
                 backgroundColor: Color.primary
               }}/>
-                <Text style={{
-                  fontWeight:'bold',
-                  fontSize: BasicStyles.standardFontSize
-                }}>Spray Mix</Text>
-            </View>
-            </View>
-            <View style={[Style.paddockDate]}>   
               <Text style={{
-                fontSize: BasicStyles.standardFontSize
-              }}>Contents</Text>
-            </View>  
+                fontWeight:'bold',
+                fontSize: BasicStyles.standardTitleFontSize
+              }}>Spray Mix</Text>
+            </View>
+          </View>
+          <View style={[Style.paddockDate, {
+            width: '50%'
+          }]}>   
+            <Text style={{
+              fontSize: BasicStyles.standardFontSize
+            }}>Contents</Text>
+          </View>  
         </React.Fragment>
       </TouchableOpacity>
     )

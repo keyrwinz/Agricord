@@ -70,7 +70,7 @@ class SlidingButton extends Component{
               <Text
                 style={{
                   color: '#FFFFFF',
-                  fontSize: BasicStyles.titleText.fontSize,
+                  fontSize: BasicStyles.standardTitle2FontSize,
                   fontWeight: 'bold',
                 }}>
                 {this.props.title}
@@ -80,7 +80,7 @@ class SlidingButton extends Component{
         </RNSlidingButton>
          <Text
           style={{
-            fontSize: BasicStyles.normalText.fontSize,
+            fontSize: BasicStyles.standardFontSize - 1,
             color: '#969696',
             textAlign: 'left',
             width: '80%',

@@ -133,7 +133,7 @@ class OrderDetails extends Component {
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
-                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                       {selectedOrder.status === 'pending'
                         ? selectedOrder.date_of_delivery
                         : selectedOrder.delivered_by}
@@ -149,7 +149,7 @@ class OrderDetails extends Component {
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
-                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                       {selectedOrder.status === 'pending'
                         ? selectedOrder.order_number
                         : selectedOrder.delivered_date}
@@ -165,7 +165,7 @@ class OrderDetails extends Component {
                     </View>
                     <View style={styles.DetailsTextContainer}>
                       <Text
-                        style={[styles.DetailsTextStyle, {color: '#000000'}]}>
+                        style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                         {this.state.products.length}
                       </Text>
                     </View>

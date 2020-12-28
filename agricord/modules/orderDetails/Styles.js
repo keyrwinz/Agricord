@@ -18,7 +18,10 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   Details: {
-    paddingVertical: 10,
+    paddingLeft: 10,
+    paddingTop: 15,
+    paddingRight: 10,
+    paddingBottom: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -29,11 +32,11 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   DetailsTitleTextStyle: {
-    fontSize: BasicStyles.titleText.fontSize,
+    fontSize: BasicStyles.standardFontSize,
     color: '#969696',
   },
   DetailsTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
+    fontSize: BasicStyles.standardFontSize,
     color: '#969696',
   },
   DetailsTextContainer: {
@@ -56,10 +59,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   ProductManufacturerTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
+    fontSize: BasicStyles.standardFontSize,
   },
   ProductQuantityTextStyle: {
-    fontSize: BasicStyles.normalText.fontSize,
+    fontSize: BasicStyles.standardFontSize,
   },
   ProductNumberOfItemsContainer: {
     width: '40%',

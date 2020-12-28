@@ -108,8 +108,11 @@ class MixName extends Component {
             <View style={[Style.paddockContainer]}>
               <View style={Style.paddockInfo}>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                    Applied Rate
+                  <Text style={{
+                    fontWeight: 'bold',
+                    fontSize: BasicStyles.standardTitleFontSize
+                  }}>
+                    { (paddock && paddock.from == 'due') ? 'Application Volume' : 'Applied Volume' }
                   </Text>
                 </View>
               </View>
@@ -128,24 +131,12 @@ class MixName extends Component {
             <View style={{
               width: '100%',
             }}>
-            {
-              (paddock && paddock.from != 'due') && (
-                <Text style={{
-                  textAlign: 'left',
-                  fontWeight: 'bold',
-                  marginTop: 10
-                }}>PRODUCT RATE (PER HA)</Text>
-              )
-            }
-            {
-              (paddock && paddock.from == 'due') && (
-                <Text style={{
-                  textAlign: 'left',
-                  fontWeight: 'bold',
-                  marginTop: 10
-                }}>SPRAY RATE PER HECTARE</Text>
-              )
-            }
+              <Text style={{
+                textAlign: 'left',
+                fontWeight: 'bold',
+                marginTop: 10,
+                fontSize: BasicStyles.standardTitleFontSize
+              }}>PRODUCT RATE (PER HA)</Text>
             </View>
 
             {this.state.products.map((item, index) => (

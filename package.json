@@ -43,6 +43,7 @@
     "intl": "^1.2.5",
     "jetifier": "^1.6.5",
     "laravel-echo": "^1.6.1",
+    "lodash": "^4.17.20",
     "moment": "^2.27.0",
     "native-base": "^2.13.12",
     "pusher-js": "^5.0.3",

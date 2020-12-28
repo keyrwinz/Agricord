@@ -12,14 +12,7 @@ export default {
     borderRadius: BasicStyles.standardBorderRadius,
     borderColor: '#FFFFFF',
     borderWidth:1,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 2,
+    ...BasicStyles.standardShadow,
     alignItems:'center',
   },
   imageContainer:{
@@ -28,78 +21,81 @@ export default {
     borderRadius: BasicStyles.standardBorderRadius,
     marginBottom:5,
     alignItems:'center',
-},
-image:{   
- width: '100%',
- height: 100,
- padding:100,
- borderRadius:5,
- resizeMode:'contain'
-},
-textContainer:{
-  width:'80%',
-  flexShrink:1,
-  marginBottom:15,
-},
-text:{
- fontFamily:'Roboto',
- textAlign:'center',
- fontWeight:"bold",
- fontSize:18,
-},
-cardInfo:{
-  flexDirection:'row',
-  justifyContent:'flex-start',
-  width:'100%',
-  marginTop:15,
-  marginBottom:15,
-  marginLeft:10,
-  marginRight:10,
-},
-paddockContainer: {
-  minHeight:60,
-  width: '100%',
-  marginVertical: 10,
-  // box-shadow
-  backgroundColor: Color.white,
-  borderRadius: BasicStyles.standardBorderRadius,
-  borderColor: '#FFFFFF',
-  borderWidth:1,
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
   },
-  shadowOpacity: 0.23,
-  shadowRadius: 2.62,
-  elevation: 2,
-  alignItems:'center',
-  flexDirection:'row',
-},
+  image:{   
+   width: '100%',
+   height: 100,
+   padding:100,
+   borderRadius:5,
+   resizeMode:'contain'
+  },
+  textContainer:{
+    width:'80%',
+    flexShrink:1,
+    marginBottom: 15,
+  },
+  text:{
+   fontFamily:'Roboto',
+   textAlign:'center',
+   fontWeight:"bold",
+   fontSize:18,
+  },
+  labelTitle: {
+    fontWeight: 'bold',
+    color: '#969696',
+    width: '50%',
+    fontSize: BasicStyles.standardFontSize
+  },
+  label: {
+    fontSize: BasicStyles.standardFontSize
+  },
+  cardInfo:{
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    width: '100%',
+    marginTop: 15,
+    marginBottom: 15,
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+  paddockContainer: {
+    minHeight: 60,
+    width: '100%',
+    marginVertical: 10,
+    // box-shadow
+    backgroundColor: Color.white,
+    borderRadius: BasicStyles.standardBorderRadius,
+    borderColor: '#FFFFFF',
+    borderWidth:1,
+    ...BasicStyles.standardShadow,
+    alignItems:'center',
+    flexDirection:'row',
+    paddingLeft: 10,
+    paddingRight: 10
+  },
 
-paddockInfo:{
-  marginLeft:20,
-  flexDirection:'column',
-  width:'60%',
-},
+  paddockInfo:{
+    flexDirection: 'column',
+    width:'60%',
+  },
 
-paddockDate:{
-  width: '30%',
-  minHeight: 40,
-  marginRight: 5,
-  borderRadius: 5,
-  backgroundColor: Color.white,
-  borderColor: Color.gray,
-  borderWidth: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-BackgroundContainer: {
-  flex: 1,
-  resizeMode: 'cover',
-  height: '100%',
-  width: '100%',
-  elevation: 2,
-  backgroundColor: Color.containerBackground
-},
+  paddockDate:{
+    width: '30%',
+    minHeight: 40,
+    marginRight: 5,
+    borderRadius: 5,
+    backgroundColor: Color.white,
+    borderColor: Color.gray,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  BackgroundContainer: {
+    flex: 1,
+    resizeMode: 'cover',
+    height: '100%',
+    width: '100%',
+    elevation: 2,
+    backgroundColor: Color.containerBackground
+  },
 }

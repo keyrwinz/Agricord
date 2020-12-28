@@ -141,7 +141,11 @@ export default {
     backgroundColor:Color.white,
     height: 60
   },
-  standardFontSize: 13,
+  standardFontSize: 12,
+  standardTitleFontSize: 16,
+  standardTitle2FontSize: 14,
+  standardSubTitleFontSize: 14,
+  standardHeaderFontSize: 18,
   standardBorderRadius: 12,
   headerDrawerStyle: {
     headerStyle: {
@@ -149,7 +153,8 @@ export default {
       backgroundColor: Color.white,
       height: 60,
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
+      fontSize: 18
     },
     headerTitleContainerStyle: {
       backgroundColor: Color.white,
@@ -176,6 +181,22 @@ export default {
     },
     headerTitleStyle: {
       fontWeight: 'bold',
-    },  
+    },
   },
+  standardShadow: {
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 2,
+  },
+  starndardDivider: {
+    width: '90%',
+    height: 0.5,
+    marginLeft: '5%',
+    marginRight: '5%',
+  }
 }

@@ -50,10 +50,16 @@ const ProductDetailsDrawerStack = createStackNavigator({
             marginLeft: -64,
             flexDirection: 'row'
           }}>
-          <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16 }}>
+          <Text style={{
+            color: '#000',
+            fontWeight: 'bold',
+            fontSize: BasicStyles.standardHeaderFontSize
+          }}
+          numberOfLines={1}
+          >
             {navigation.state.params.data ? navigation.state.params.data.title : ''}
           </Text>
-          <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: 16 }}>
+          <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: BasicStyles.standardHeaderFontSize }}>
             ({navigation.state.params.data.volume ? navigation.state.params.data.volume : '100L'})
           </Text>
         </View>

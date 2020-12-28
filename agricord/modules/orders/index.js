@@ -21,6 +21,7 @@ import {products} from './data-test.js';
 import Api from 'services/api';
 import {Spinner} from 'components';
 import TaskButton from 'modules/generic/TaskButton.js';
+import _ from 'lodash';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -30,60 +31,91 @@ class OrdersPage extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
-      pending: [],
-      delivered: [],
+      data: [],
       isLoading: false,
+      limit: 1,
+      offset: 0,
+      numberOfPages: null
     };
   }
 
   componentDidMount() {
     const {user} = this.props.state;
-    if (user != null) {
+    if(user == null){
+      return
     }
     if (this.props.initialPage != null) {
       if (this.props.initialPage == 'HistoricalOrders') {
         this.setState({activeIndex: 1});
       }
-      this.getOrders();
     }
+    this.retrieve(true);
   }
 
-  getOrders = () => {
+  retrieve = (flag) => {
     const {user} = this.props.state;
-    this.setState({isLoading: true});
-    // user.sub_account.merchant.id
+    const { activeIndex } = this.state;
+    if(user == null){
+      return
+    }
+
+    this.setState({
+      isLoading: true
+    });
+
     let parameters = {
-      condition: [
-        {
+      condition: [{
           column: 'merchant_id',
           value: 1, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
-        },
+        }, {
+          column: 'status',
+          value: 'completed',
+          clause: activeIndex == 0 ? '!' : '='
+        }
       ],
+      sort: {
+        created_at: 'desc'
+      },
+      limit: this.state.limit,
+      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
     };
-    Api.request(Routes.ordersRetrieveMerchant, parameters, response => {
-      this.setState({isLoading: false});
-      this.filterOrders(response.data);
+
+    Api.request(Routes.ordersRetrieveByParams, parameters, response => {
+      this.setState({
+        isLoading: false
+      });
+      console.log('response', response.data)
+      if(response.data.length > 0){
+        this.setState({
+          data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
+          numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
+          offset: flag == false ? 1 : (this.state.offset + 1)
+        })
+      }else{
+        this.setState({
+          data: flag == false ? [] : this.state.data,
+          numberOfPages: null,
+          offset: flag == false ? 0 : this.state.offset
+        })
+      }
     }, error => {
-      this.setState({isLoading: false});
+      this.setState({
+        isLoading: false
+      });
     });
   };
 
-  filterOrders = orders => {
-    this.setState({
-      pending: orders.filter(order => {
-        return order.status === 'pending' || order.status === 'in_progress';
-      }),
-    });
-    this.setState({
-      delivered: orders.filter(order => {
-        return order.status === 'completed';
-      }),
-    });
-  };
+  onPageChange = (index) => {
+    this.setState({activeIndex: index, offset: 0, data: []});
+    setTimeout(() => {
+      this.retrieve(true);
+    }, 100)
+  }
+
 
   render() {
-    const {activeIndex} = this.state;
+    const { activeIndex , data, isLoading } = this.state;
     const paginationProps = [
       {
         name: 'Pending',
@@ -93,28 +125,27 @@ class OrdersPage extends Component {
       },
     ];
 
-    const onPageChange = activeIndex => this.setState({activeIndex});
     return (
       <View style={Style.MainContainer}>
         <View style={BasicStyles.paginationHolder}>
           <Pagination
             activeIndex={activeIndex}
-            onChange={index => onPageChange(index)}
+            onChange={index => this.onPageChange(index)}
             pages={paginationProps}
           />
         </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={this.state.pending}/>
+              <Orders {...this.props} data={data} from={'pending'} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
             <View style={Style.sliderContainer}>
-              <Orders {...this.props} data={this.state.delivered} />
+              <Orders {...this.props} data={data} from={'delivered'} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
           </Pager>
         </PagerProvider>
         <TaskButton navigation={this.props.parentNav}/>
-        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
+        {isLoading ? <Spinner mode="overlay" /> : null}
       </View>
     );
   }

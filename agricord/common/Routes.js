@@ -72,6 +72,7 @@ export default {
   tasksRetrieve: apiUrl + 'paddocks/retrieve_batches_and_paddocks',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
   ordersRetrieveMerchant: apiUrl + 'order_requests/retrieve_orders',
+  ordersRetrieveByParams: apiUrl + 'order_requests/retrieve_orders_by_params',
   sprayMixesRetrieve: apiUrl + 'spray_mixes/retrieve_details',
   orderRequest: apiUrl + 'order_request_items/retrieve',
   paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',

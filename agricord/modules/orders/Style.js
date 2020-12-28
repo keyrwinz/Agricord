@@ -13,9 +13,10 @@ export default {
   sliderContainer: {
     flex: 1,
     minHeight: height,
-    width: '100%',
-    paddingHorizontal: 20,
-    backgroundColor: '#F1F1F1'
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%',
+    backgroundColor: Color.containerBackground
   },
   ScrollView: {
     flex: 1
@@ -31,8 +32,8 @@ export default {
 image:{   
   width: '100%',
   height: 80,
-  padding:50,
-  borderRadius:5,
+  padding: 50,
+  borderRadius: 5,
   resizeMode:'contain'
  },
 }
