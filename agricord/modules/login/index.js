@@ -222,13 +222,13 @@ class Login extends Component {
                 Sign In to Your Account
               </Text>
             </View>
-            {error > 0 ? <View style={Style.messageContainer}>
+            {error > 0 ? <View style={styles.messageContainer}>
               {error == 1 ? (
-                <Text style={Style.messageText}>Please fill up the required fields.</Text>
+                <Text style={styles.messageText}>Please fill up the required fields.</Text>
               ) : null}
 
               {error == 2 ? (
-                <Text style={Style.messageText}>Username and password didn't match.</Text>
+                <Text style={styles.messageText}>Username and password didn't match.</Text>
               ) : null}
             </View> : null}
             <View style={styles.UsernameContainer}>

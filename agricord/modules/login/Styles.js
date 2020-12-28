@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 const styles = StyleSheet.create({
@@ -129,6 +129,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: BasicStyles.titleText.fontSize,
     fontWeight: 'bold',
+  },
+  messageContainer: {
+    height: 50,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: Color.danger
+  },
+  messageText: {
+    color: Color.danger
   },
 });
 
