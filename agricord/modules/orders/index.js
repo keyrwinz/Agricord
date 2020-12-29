@@ -33,7 +33,7 @@ class OrdersPage extends Component {
       activeIndex: 0,
       data: [],
       isLoading: false,
-      limit: 1,
+      limit: 5,
       offset: 0,
       numberOfPages: null
     };

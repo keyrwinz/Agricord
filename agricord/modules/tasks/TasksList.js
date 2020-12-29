@@ -51,7 +51,23 @@ class TasksList extends Component {
     const { data, loading } = this.props;
     return (
       <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          onScroll={(event) => {
+            let scrollingHeight = event.nativeEvent.layoutMeasurement.height + event.nativeEvent.contentOffset.y
+            let totalHeight = event.nativeEvent.contentSize.height
+            if(event.nativeEvent.contentOffset.y <= 0) {
+              if(loading == false){
+                // this.retrieve(false)
+              }
+            }
+            if(scrollingHeight >= (totalHeight)) {
+              if(loading == false){
+                this.props.retrieve(true)
+              }
+            }
+          }}
+          >
           <View style={[
             Style.MainContainer, 
             { 

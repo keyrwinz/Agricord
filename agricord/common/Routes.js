@@ -81,5 +81,11 @@ export default {
   inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
 
   // batches
-  batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks'
+  batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks',
+
+  //tasks
+  paddockPlanTasksRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params',
+
+  // spray mix products
+  sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params'
 };
