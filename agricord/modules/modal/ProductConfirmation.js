@@ -15,6 +15,7 @@ class ProductConfirmation extends Component {
   }
 
   render() {
+    const { data } = this.props;
     return (
       <Modal
         animationType='fade'
@@ -39,54 +40,28 @@ class ProductConfirmation extends Component {
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.TitleTextStyle}>Confirm</Text>
+              <Text style={styles.TitleTextStyle}>{data.title}</Text>
             </View>
             <View style={styles.DetailsContainer}>
               <View style={styles.DetailContainer}>
                 <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>Machine</Text>
+                  <Text style={styles.DetailTitleTextStyle}>Batch</Text>
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {data.batch_number}
                   </Text>
                 </View>
               </View>
               <View style={styles.DetailContainer}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>
-                    Mix
+                    Manufacture Date
                   </Text>
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Applied Rate
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Paddock A
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {data.manufacturing_date}
                   </Text>
                 </View>
               </View>
@@ -96,19 +71,20 @@ class ProductConfirmation extends Component {
               }]}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>
-                    Paddock B
+                    Volume Remaining
                   </Text>
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {data.volume_remaining}
                   </Text>
                 </View>
               </View>
+
             </View>
 
             <SlidingButtonRelative
-              icon={faCheck}
+              icon={faPlus}
               title={'ADD 76,8 L'}
               label={'Swip Right to Confirm'}
               onComplete={() => this.props.onSuccess()}

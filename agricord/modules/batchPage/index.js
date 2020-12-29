@@ -150,13 +150,17 @@ class paddockPage extends Component{
                       />
                   ))
                 }
-               <View style={[
-                BasicStyles.standardCardContainer,
-                {
-                  backgroundColor: Color.blue,
-                  paddingRight: 10
-                }
-                ]}>
+               <TouchableOpacity style={[
+                  BasicStyles.standardCardContainer,
+                  {
+                    backgroundColor: Color.blue,
+                    paddingRight: 10
+                  }
+                  ]}
+                  onPress={() => this.setState({
+                    taskConfirmation: true
+                  })}
+                  >
                   <View style={{
                       width: '70%',
                       flexDirection: 'row'
@@ -176,7 +180,7 @@ class paddockPage extends Component{
                       textAlign: 'right',
                       width: '30%'
                     }}>4403L</Text>
-               </View>
+               </TouchableOpacity>
 
               {
                 this.renderNotesCard()
@@ -200,6 +204,12 @@ class paddockPage extends Component{
               onClose={() => this.setState({
                 productConfirmation: false
               })}
+              data={{
+                title: 'Product A',
+                manufacturing_date: 'August 11, 2020',
+                volume_remaining: '10L',
+                batch_number: '12321'
+              }}
               onSuccess={() => this.manageProductConfirmation()}
             />
           )

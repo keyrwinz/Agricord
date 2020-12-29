@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, Modal, TouchableOpacity} from 'react-native';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
@@ -39,76 +39,28 @@ class TaskConfirmation extends Component {
               />
             </TouchableOpacity>
             <View>
-              <Text style={styles.TitleTextStyle}>Confirm</Text>
+              <Text style={[styles.TitleTextStyle, {
+                color: Color.primary,
+                paddingLeft: 30,
+                paddingRight: 30,
+                textAlign: 'center',
+                paddingBottom: 25,
+                paddingTop: 50
+              }]}>BATCH CONFIRMATION, IN PROGRESS</Text>
             </View>
-            <View style={styles.DetailsContainer}>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>Machine</Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Mix
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
 
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Applied Rate
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Paddock A
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
-
-              <View style={[styles.DetailContainer, {
-                marginBottom: 25
-              }]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Paddock B
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
+            <View>
+              <Text style={[styles.TitleTextStyle, {
+                paddingLeft: 30,
+                paddingRight: 30,
+                textAlign: 'center',
+                paddingBottom: 25
+              }]}>SWIPE TO COMPLETE WHEN TANK IS EMPTY</Text>
             </View>
 
             <SlidingButtonRelative
-              icon={faCheck}
+              icon={null}
+              buttonTitle={'Task Complete'}
               title={'ADD 76,8 L'}
               label={'Swip Right to Confirm'}
               onComplete={() => this.props.onSuccess()}

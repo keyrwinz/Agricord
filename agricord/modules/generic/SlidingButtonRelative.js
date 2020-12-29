@@ -65,7 +65,21 @@ class SlidingButtonRelative extends Component{
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <FontAwesomeIcon icon={this.props.icon} color={Color.white}/>
+              {
+                this.props.icon ? (
+                  <FontAwesomeIcon icon={this.props.icon} color={Color.white}/>
+                ) : (
+                  <Text
+                    style={{
+                      color: Color.white,
+                      fontSize: BasicStyles.standardTitleFontSize,
+                      fontWeight: 'bold'
+                    }}>
+                    {this.props.buttonTitle}
+                  </Text>
+
+                )
+              }
             </View>
             <View
               style={{
@@ -75,8 +89,7 @@ class SlidingButtonRelative extends Component{
               }}>
               <Text
                 style={{
-                  color: '#000000',
-                  fontSize: BasicStyles.titleText.fontSize,
+                  fontSize: BasicStyles.standardTitleFontSize,
                   fontWeight: 'bold',
                   color: '#5A84EE',
                 }}>
