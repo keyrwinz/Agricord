@@ -69,6 +69,7 @@ const MixPage = (props) => {
   const [availablePaddockIndex, setAvailablePaddockIndex] = useState(0)
   const [selectedPaddockIndex, setSelectedPaddockIndex] = useState(0)
   const [mixConfirmation, setMixConfirmation] = useState(false)
+  const [selectedPaddock, setSelectedPaddock] = useState([])
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
@@ -80,8 +81,19 @@ const MixPage = (props) => {
   if (loading) return null
 
   const redirect = (route) => {
-    setMixConfirmation(false)
+    const { task } = props.state;
+    props.setTask({
+      ...task,
+      data: selectedPaddock,
+      params: {
+        volume: 120,
+        units: 'L',
+        area: 64,
+        area_units: 'HA'
+      }
+    })
     setTimeout(() => {
+      setMixConfirmation(false)
       props.navigation.navigate(route)
     }, 100)
   }
@@ -239,33 +251,37 @@ const MixPage = (props) => {
               </View>
             </View>
           </View>
-          <TouchableOpacity
-            style={{
-              alignItems: 'center',
-              width: '100%',
-              backgroundColor: selectedFlag ? '#676767' : Color.blue,
-              borderBottomLeftRadius: BasicStyles.standardBorderRadius,
-              borderBottomRightRadius: BasicStyles.standardBorderRadius,
-            }}
-            onPress={() => setSelectedFlag(selectedFlag ? false : true) }
-            >
-              <Text style={{
-                fontSize: BasicStyles.standardTitleFontSize,
-                fontWeight: 'bold',
-                paddingTop: 10,
-                paddingBottom: 10,
-                color: Color.white
-              }}>
-                {
-                  selectedFlag ? 'Hide paddock details' : 'Show paddock details'
-                }
-              </Text>
-          </TouchableOpacity>
+          {
+            (selectedPaddock.length > 0) && (
+              <TouchableOpacity
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  backgroundColor: selectedFlag ? '#676767' : Color.blue,
+                  borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+                  borderBottomRightRadius: BasicStyles.standardBorderRadius,
+                }}
+                onPress={() => setSelectedFlag(selectedFlag ? false : true) }
+                >
+                  <Text style={{
+                    fontSize: BasicStyles.standardTitleFontSize,
+                    fontWeight: 'bold',
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    color: Color.white
+                  }}>
+                    {
+                      selectedFlag ? 'Hide paddock details' : 'Show paddock details'
+                    }
+                  </Text>
+              </TouchableOpacity>
+            )
+          }
         </View>
 
         {/* SELECTED PADDOCKS */}
         {
-          selectedFlag && (
+          (selectedFlag && selectedPaddock.length > 0 )&& (
             <View style={{
               marginBottom: 100
             }}>
@@ -274,7 +290,7 @@ const MixPage = (props) => {
                 <Carousel
                   layout={"default"}
                   ref={carouselRef}
-                  data={availablePaddocks}
+                  data={selectedPaddock}
                   sliderWidth={width}
                   itemWidth={width * 0.9}
                   renderItem={(data) => (
@@ -283,7 +299,7 @@ const MixPage = (props) => {
                   onSnapToItem = { index => setSelectedPaddockIndex(index) }
                 />
                 <Pagination
-                  dotsLength={availablePaddocks.length}
+                  dotsLength={selectedPaddock.length}
                   activeDotIndex={selectedPaddockIndex}
                   containerStyle={{ 
                     width: '50%',
@@ -348,6 +364,8 @@ const MixPage = (props) => {
             visible={mixConfirmation}
             onClose={() => setMixConfirmation(false)}
             onSuccess={() => redirect('batchStack')}
+            data={selectedPaddock}
+            volume={'BATCH 64HA 4, 160 L'}
           />
         )
       }
@@ -357,7 +375,9 @@ const MixPage = (props) => {
 const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setTask: (task) => dispatch(actions.setPaddock(task)),
+  };
 };
 
 export default connect(

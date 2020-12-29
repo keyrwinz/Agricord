@@ -30,13 +30,43 @@ class paddockPage extends Component{
       pressed:false,
       applyTank: true,
       productConfirmation: false,
-      taskConfirmation: false
+      taskConfirmation: false,
+      data: []
     }
   }
 
   componentDidMount(){
-    const { user } = this.props.state; 
-    console.log(data)
+    const { task } = this.props.state; 
+    if (task == null && (task && task.spray_mix == null)) {
+      return
+    }
+    const parameter = {
+      condition: [{
+        value: task.spray_mix.id,
+        column: 'spray_mix_id',
+        clause: '='
+      }],
+      sort: {
+        created_at: 'desc'
+      },
+      offset: 0,
+      limit: 10
+    };
+    this.setState({
+      isLoading: true
+    })
+    console.log('parameter', parameter)
+    Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
+        console.log('response', response)
+        this.setState({data: response.data, isLoading: false});
+      },
+      error => {
+        this.setState({
+          isLoading: false
+        })
+        console.log({error});
+      },
+    );
   }
 
   setApplyTank(){
@@ -119,7 +149,10 @@ class paddockPage extends Component{
   }
 
   render() {
-    const { applyTank, productConfirmation, taskConfirmation } = this.state;
+    const { applyTank, productConfirmation, taskConfirmation, data } = this.state;
+    const { isLoading } = this.state;
+    const { task } = this.props.state;
+    console.log('task', task)
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -141,7 +174,7 @@ class paddockPage extends Component{
                   data.map( item => (
                     <ProductCard
                         item={{
-                          ...item,
+                          ...item.product,
                           from: 'paddockPage'
                         }}
                         key={item.id}
@@ -149,6 +182,14 @@ class paddockPage extends Component{
                         theme={'v2'}
                       />
                   ))
+                }
+                {
+                  data.length == 0 && (
+                    <Text style={{
+                      marginTop: 10,
+                      textAlign: 'center'
+                    }}>{ isLoading ? '' : 'No products found'}</Text>
+                  )
                 }
                <TouchableOpacity style={[
                   BasicStyles.standardCardContainer,
@@ -179,7 +220,7 @@ class paddockPage extends Component{
                       fontWeight: 'bold',
                       textAlign: 'right',
                       width: '30%'
-                    }}>4403L</Text>
+                    }}>{task && task.params ? task.params.volume + task.params.units : ''}</Text>
                </TouchableOpacity>
 
               {
@@ -225,6 +266,8 @@ class paddockPage extends Component{
             />
           )
         }
+
+        {isLoading ? <Spinner mode="overlay" /> : null}
       </SafeAreaView>
     );
   }

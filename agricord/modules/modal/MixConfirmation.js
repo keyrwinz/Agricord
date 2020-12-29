@@ -15,6 +15,9 @@ class MixConfirmation extends Component {
   }
 
   render() {
+    const { task } = this.props.state;
+    const { data } = this.props;
+    console.log("task", task)
     return (
       <Modal
         animationType='fade'
@@ -48,7 +51,7 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {task.machine ? task.machine.name : null}
                   </Text>
                 </View>
               </View>
@@ -60,12 +63,14 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {task.spray_mix ? task.spray_mix.name : null}
                   </Text>
                 </View>
               </View>
 
-              <View style={styles.DetailContainer}>
+              <View style={[styles.DetailContainer, {
+                marginBottom: data.length > 0 ? 0 : 15
+              }]}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>
                     Applied Rate
@@ -73,45 +78,43 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
+                    {task.spray_mix ? task.spray_mix.application_rate + ' / ha' : null}
                   </Text>
                 </View>
               </View>
 
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Paddock A
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
+              {
+                data && data.map((item, index) => (
+                  <View style={styles.DetailContainer}>
+                    <View style={styles.DetailTitleContainer}>
+                      <Text style={styles.DetailTitleTextStyle}>
+                        {
+                          item.name
+                        }
+                      </Text>
+                    </View>
+                    <View style={[styles.DetailDetailContainer, {
+                      marginBottom: data.length > (index + 1) ? 15 : 0
+                    }]}>
+                      <Text style={styles.DetailDetailTextStyle}>
+                        {
+                          item.area + ' ha'
+                        }
+                      </Text>
+                    </View>
+                  </View>
+                ))
+              }
 
-              <View style={[styles.DetailContainer, {
-                marginBottom: 25
-              }]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Paddock B
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {'test'}
-                  </Text>
-                </View>
-              </View>
             </View>
 
             <SlidingButtonRelative
               icon={faCheck}
-              title={'ADD 76,8 L'}
+              title={this.props.volume}
               label={'Swip Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
+              widthLeft={'30%'}
+              widthRight={'70%'}
               />
           </View>
         </View>

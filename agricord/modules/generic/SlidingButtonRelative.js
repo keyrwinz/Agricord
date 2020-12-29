@@ -60,7 +60,7 @@ class SlidingButtonRelative extends Component{
               style={{
                 backgroundColor: Color.blue,
                 height: 45,
-                width: '50%',
+                width: this.props.widthLeft,
                 borderRadius: BasicStyles.standardBorderRadius,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -85,7 +85,7 @@ class SlidingButtonRelative extends Component{
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '50%'
+                width: this.props.widthRight
               }}>
               <Text
                 style={{

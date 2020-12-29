@@ -61,9 +61,11 @@ class TaskConfirmation extends Component {
             <SlidingButtonRelative
               icon={null}
               buttonTitle={'Task Complete'}
-              title={'ADD 76,8 L'}
+              title={''}
               label={'Swip Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
+              widthLeft={'50%'}
+              widthRight={'50%'}
               />
           </View>
         </View>

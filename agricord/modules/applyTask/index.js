@@ -18,82 +18,6 @@ import Api from 'services/api';
 import SlidingButton from 'modules/generic/SlidingButton';
 const height = Math.round(Dimensions.get('window').height);
 
-const dummyData = [
-  {
-    id: 1,
-    task: 'Machine A',
-  },
-  {
-    id: 2,
-    task: 'Machine B',
-  },
-  {
-    id: 3,
-    task: 'Machine C',
-  },
-];
-
-const dummyData4 = [
-  {
-    id: 1,
-    task: 'Mix A',
-  },
-  {
-    id: 2,
-    task: 'Mix B',
-  },
-  {
-    id: 3,
-    task: 'Mix C',
-  },
-];
-
-const dummyData2 = [
-  {
-    id: 1,
-    type: 'Mix A',
-    icon: faFlask,
-  },
-  {
-    id: 2,
-    type: 'Mix B',
-    icon: faFlask,
-  },
-  {
-    id: 3,
-    type: 'Mix C',
-    icon: faFlask,
-  },
-  {
-    id: 4,
-    type: 'Mix D',
-    icon: faFlask,
-  },
-];
-
-const dummyData3 = [
-  {
-    id: 1,
-    type: 'Machine A',
-    icon: faTractor,
-  },
-  {
-    id: 2,
-    type: 'Machine B',
-    icon: faTractor,
-  },
-  {
-    id: 3,
-    type: 'Machine C',
-    icon: faTractor,
-  },
-  {
-    id: 4,
-    type: 'Machine D',
-    icon: faTractor,
-  },
-];
-
 class ApplyTask extends Component {
   constructor(props) {
     super(props);
@@ -146,16 +70,19 @@ class ApplyTask extends Component {
   };
 
   selectPaddocks = () => {
-    const {setMachineAndMix} = this.props;
+    const { setTask } = this.props;
     const { selectedMachine, selectedMix } = this.state;
     if (selectedMachine && selectedMix) {
       let task = {
         machine: selectedMachine,
-        mix: selectedMix,
+        spray_mix: selectedMix
       };
-      setMachineAndMix(task);
+      setTask(task);
       this.props.navigation.navigate('mixPageStack', {
-        details: {appliedRate: 1, status: 'Auto'},
+        data: {
+          machine: selectedMachine,
+          spray_mix: selectedMix
+        }
       });
     } else {
       alert('Please select a machine or mix.');
@@ -268,9 +195,7 @@ const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
   return {
-    setMachineAndMix: task => {
-      dispatch(actions.setMachineAndMix(task));
-    },
+    setTask: task => dispatch(actions.setTask(task)),
   };
 };
 

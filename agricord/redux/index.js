@@ -25,7 +25,7 @@ const types = {
   UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD: 'UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD',
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
-  SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
+  SET_TASK: 'SET_TASK',
   SET_SETTING: 'SET_SETTING',
   SET_MIX_NAME: 'SET_MIX_NAME',
   SET_PADDOCK: 'SET_PADDOCK',
@@ -97,8 +97,8 @@ export const actions = {
   setSelectedOrder(selectedOrder) {
     return {type: types.SET_SELECTED_ORDER, selectedOrder};
   },
-  setMachineAndMix(task) {
-    return {type: types.SET_MACHINE_AND_MIX, task};
+  setTask(task) {
+    return {type: types.SET_TASK, task};
   },
   setSetting(setting){
     return { type: types.SET_SETTING, setting };
@@ -148,16 +148,16 @@ storeData = async (key, value) => {
 };
 
 const reducer = (state = initialState, action) => {
-  const {type, user, token} = action;
-  const {unread} = action;
-  const {notification} = action;
-  const {theme} = action;
-  const {productFilter} = action;
-  const {cartItems, location} = action;
-  const {messages, message} = action;
-  const {messengerGroup, messagesOnGroup} = action;
-  const {selectedOrder} = action;
-  const {task, setting, paddock} = action;
+  const { type, user, token } = action;
+  const { unread } = action;
+  const { notification } = action;
+  const { theme } = action;
+  const { productFilter } = action;
+  const { cartItems, location } = action;
+  const { messages, message } = action;
+  const { messengerGroup, messagesOnGroup } = action;
+  const { selectedOrder } = action;
+  const { task, setting, paddock } = action;
   const { product } = action;
   switch (type) {
     case types.LOGOUT:
@@ -421,7 +421,7 @@ const reducer = (state = initialState, action) => {
         selectedOrder,
       };
 
-    case types.SET_MACHINE_AND_MIX:
+    case types.SET_TASK:
       return {
         ...state,
         task,

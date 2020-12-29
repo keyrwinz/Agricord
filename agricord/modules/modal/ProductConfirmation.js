@@ -88,6 +88,8 @@ class ProductConfirmation extends Component {
               title={'ADD 76,8 L'}
               label={'Swip Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
+              widthLeft={'30%'}
+              widthRight={'70%'}
               />
           </View>
         </View>
