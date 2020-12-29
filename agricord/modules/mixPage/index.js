@@ -13,7 +13,7 @@ import Switch from 'react-native-customisable-switch';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faCheckCircle, faTimesCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
@@ -239,12 +239,36 @@ const MixPage = (props) => {
               </View>
             </View>
           </View>
+          <TouchableOpacity
+            style={{
+              alignItems: 'center',
+              width: '100%',
+              backgroundColor: selectedFlag ? '#676767' : Color.blue,
+              borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+              borderBottomRightRadius: BasicStyles.standardBorderRadius,
+            }}
+            onPress={() => setSelectedFlag(selectedFlag ? false : true) }
+            >
+              <Text style={{
+                fontSize: BasicStyles.standardTitleFontSize,
+                fontWeight: 'bold',
+                paddingTop: 10,
+                paddingBottom: 10,
+                color: Color.white
+              }}>
+                {
+                  selectedFlag ? 'Hide paddock details' : 'Show paddock details'
+                }
+              </Text>
+          </TouchableOpacity>
         </View>
 
         {/* SELECTED PADDOCKS */}
         {
           selectedFlag && (
-            <View>
+            <View style={{
+              marginBottom: 100
+            }}>
               <Text style={Style.textHeader}>Selected Paddocks</Text>
               <View style={{ alignItems: 'center', position: 'relative' }}>
                 <Carousel
@@ -284,30 +308,34 @@ const MixPage = (props) => {
           )
         }
 
+        {
+          /*
+            <TouchableOpacity
+              style={{
+                marginBottom: 100,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 25
+              }}
+              onPress={() => setSelectedFlag(selectedFlag ? false : true)}
+              >
+              <FontAwesomeIcon
+                icon={selectedFlag ? faChevronUp : faChevronDown}
+                size={50}
+                color={Color.white}
+                />
+            </TouchableOpacity>
+          */
+        }
 
-        <TouchableOpacity
-          style={{
-            marginBottom: 100,
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 25
-          }}
-          onPress={() => setSelectedFlag(selectedFlag ? false : true)}
-          >
-          <FontAwesomeIcon
-            icon={selectedFlag ? faChevronUp : faChevronDown}
-            size={50}
-            color={Color.white}
-            />
-        </TouchableOpacity>
 
 
       </ScrollView>
       {
         scanProductFlag && (
           <SlidingButton
-            title={'Scan Products'}
+            title={'Create Batch'}
             label={'Swipe Right'}
             onSuccess={() => setMixConfirmation(true)}
           />
