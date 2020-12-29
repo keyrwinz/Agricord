@@ -17,6 +17,7 @@ import { Color } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
+import MixConfirmationModal from 'modules/modal/MixConfirmation'; 
 
 const width = Math.round(Dimensions.get('window').width);
 
@@ -67,6 +68,7 @@ const MixPage = (props) => {
   const [appRateSwitch, setAppRateSwitch] = useState(false)
   const [availablePaddockIndex, setAvailablePaddockIndex] = useState(0)
   const [selectedPaddockIndex, setSelectedPaddockIndex] = useState(0)
+  const [mixConfirmation, setMixConfirmation] = useState(false)
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
@@ -75,11 +77,14 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
-  const redirect = () => {
-
-  }
-
   if (loading) return null
+
+  const redirect = (route) => {
+    setMixConfirmation(false)
+    setTimeout(() => {
+      props.navigation.navigate(route)
+    }, 100)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
@@ -304,7 +309,17 @@ const MixPage = (props) => {
           <SlidingButton
             title={'Scan Products'}
             label={'Swipe Right'}
-            onSuccess={() => this.redirect()}
+            onSuccess={() => setMixConfirmation(true)}
+          />
+        )
+      }
+
+      {
+        (mixConfirmation) && (
+          <MixConfirmationModal
+            visible={mixConfirmation}
+            onClose={() => setMixConfirmation(false)}
+            onSuccess={() => redirect('batchStack')}
           />
         )
       }

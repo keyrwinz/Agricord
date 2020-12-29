@@ -177,6 +177,7 @@ class ApplyTask extends Component {
 
   render() {
     const { isLoading, data, selectedMix, selectedMachine } = this.state;
+    const { mixConfirmation } = this.state;
     return (
       <View style={styles.MainContainer}>
         <ScrollView style={{backgroundColor: Color.containerBackground, minHeight: height}}>

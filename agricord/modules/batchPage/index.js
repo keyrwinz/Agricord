@@ -1,28 +1,25 @@
 import React, { Component, useState } from 'react';
 import Style from './Style.js';
-import { View, Image, TouchableHighlight, Text, ScrollView, FlatList,TouchableOpacity,Button,StyleSheet, ColorPropType,TextInput,PermissionsAndroid} from 'react-native';
-import { Spinner, Empty, SystemNotification,GooglePlacesAutoComplete,ImageUpload} from 'components';
+import { View, Image, Text, ScrollView, SafeAreaView,  TouchableOpacity, Dimensions } from 'react-native';
+import { Spinner, Empty} from 'components';
 import { connect } from 'react-redux';
-import { Dimensions } from 'react-native';
 import { Color, Routes ,BasicStyles} from 'common'
 import Api from 'services/api/index.js'
-import { NavigationActions } from 'react-navigation'
-import MapView, { PROVIDER_GOOGLE, Marker,Callout } from 'react-native-maps';
-const width = Math.round(Dimensions.get('window').width);
-const height = Math.round(Dimensions.get('window').height);
 import { Divider } from 'react-native-elements';
 import _, { isError } from 'lodash'
-import {faEdit,faExclamationTriangle,faTint} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import Geolocation from '@react-native-community/geolocation';
-import { Icon, Row } from 'native-base';
-import { CheckoutCard } from 'components/Checkout';
-import TearLines from "react-native-tear-lines";
-import TaskIcon from 'components/Products/TaskIcon.js'
+import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
+import { faExclamationTriangle as faExclamationTriangleSolid} from '@fortawesome/free-solid-svg-icons';
 import {data} from './data-test.js';
-import PaddockCard from 'components/Products/paddockCard.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
+import KeySvg from 'assets/settings/key.svg';
+import SlidingButton from 'modules/generic/SlidingButton';
+import ProductConfirmationModal from 'modules/modal/ProductConfirmation'; 
+import TaskConfirmationModal from 'modules/modal/TaskConfirmation'; 
 
 
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 
 class paddockPage extends Component{
@@ -30,7 +27,10 @@ class paddockPage extends Component{
   constructor(props){
     super(props);
     this.state = { 
-      pressed:false
+      pressed:false,
+      applyTank: true,
+      productConfirmation: false,
+      taskConfirmation: false
     }
   }
 
@@ -39,47 +39,183 @@ class paddockPage extends Component{
     console.log(data)
   }
 
+  setApplyTank(){
+    this.setState({
+      productConfirmation: true
+    })
+  }
+
+  manageProductConfirmation(){
+
+  }
+
+  manageTaskConfirmation(){
+
+  }
+
   renderTopCard=()=>{
     return(
     <View style={Style.container}>
-      <View style={{width:'30%',minHeight:100,borderTopLeftRadius:12,borderBottomLeftRadius:12,backgroundColor:'#ED1C24',justifyContent:'center'}}>
-        {/* <FontAwesomeIcon icon={faExclamationTriangle} style={{alignSelf:'center'}} size={55} ></FontAwesomeIcon> */}
-        <Image
-    style={{width:'20%',resizeMode:'contain',marginRight:5,alignSelf:'center',padding:30}}
-    source={require('../../assets/warningSign.png')}
-  />
+      <View 
+        style={{
+          width: '30%',
+          borderTopLeftRadius: BasicStyles.standardBorderRadius,
+          borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+          backgroundColor: '#ED1C24',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        >
+        <FontAwesomeIcon icon={faExclamationTriangleSolid} size={60} color={Color.white}/>
       </View>
-      <View style={{width:'70%',marginTop:10}}>
-        <Text style={{fontWeight:'bold',color:'#ED1C24',fontSize:24,marginLeft:15,marginBottom:15}}>Create Batch</Text>
-        <Text style={{marginBottom:15,marginLeft:15}}>1. Confirm mixing order on label</Text>
-        <Text style={{marginBottom:15,marginLeft:15}}>2. Scan the Agricord tag on each drum to record quantity added and details</Text>
-        <Divider height={0.5} style={{marginBottom:10,width:'85%',marginLeft:15,backgroundColor:'#F3F3F3'}}></Divider>
+      <View style={{
+          width: '70%',
+          paddingTop: 20,
+          paddingLeft: 10,
+          paddingRight: 10,
+          paddingBottom: 20
+        }}>
+        <Text style={{
+            fontWeight: 'bold',
+            color: '#ED1C24',
+            fontSize: BasicStyles.standardHeaderFontSize,
+          }}>Create Batch</Text>
+        <Text style={Style.text}>1. Confirm mixing order on label</Text>
+        <Text style={Style.text}>2. Scan the Agricord tag on each drum to record quantity added and details</Text>
+        <Divider style={BasicStyles.standardDivider}></Divider>
       </View>
     </View>
     )
   }
 
+  renderNotesCard(){
+    return(
+      <View style={{
+          width: '100%',
+          marginTop: 15,
+          backgroundColor: Color.white,
+          borderRadius: 22,
+          borderColor: '#FFFFFF',
+          ...BasicStyles.standardShadow,
+          paddingTop: 15,
+          paddingBottom: 15,
+          paddingLeft: 15,
+          paddingRight: 15,
+          height: 80
+      }}>
+          
+          <Text style={{
+              fontSize: BasicStyles.standardTitleFontSize,
+              fontWeight: 'bold'
+            }}>Notes: </Text>
+
+          <Text style={{
+              fontSize: BasicStyles.standardFontSize,
+              color: Color.gray
+            }}>Notes: </Text>
+       </View>
+
+    )
+  }
 
   render() {
+    const { applyTank, productConfirmation, taskConfirmation } = this.state;
     return (
-      <View style={{alignItems:'center',margin:10,height:'100%',flex:1}}>
-       {this.renderTopCard()}
-       {data.map(item=>(
-         <PaddockCard details={item}></PaddockCard>
-       ))}
-       <View style={[Style.paddockContainer,{backgroundColor:'#5A84EE'}]}>
-       <Image
-    style={{width:'5%',resizeMode:'contain',marginRight:5,alignSelf:'center',marginLeft:20}}
-    source={require('../../assets/waterDrop.png')}
-  />
-       <View style={{flexDirection:'row',width:'80%',justifyContent:'space-between'}}>
-        <Text style={{color:'#FFFFFF',marginLeft:10,fontSize:18}}>Water</Text>
-        <Text style={{color:'#FFFFFF',fontSize:18,fontWeight:'bold',marginRight:10}}>4403L</Text>
-       </View>
-       </View>
-      
-     </View>
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{
+            alignItems: 'center',
+            height: height + 20,
+            flex: 1,
+            backgroundColor: Color.containerBackground
+          }}>
+            <View style={{
+                width: '90%',
+                marginLeft: '5%',
+                marginRight: '5%'
+              }}>
+                {
+                  this.renderTopCard()
+                }
+                {
+                  data.map( item => (
+                    <ProductCard
+                        item={{
+                          ...item,
+                          from: 'paddockPage'
+                        }}
+                        key={item.id}
+                        navigation={this.props.navigation}
+                        theme={'v2'}
+                      />
+                  ))
+                }
+               <View style={[
+                BasicStyles.standardCardContainer,
+                {
+                  backgroundColor: Color.blue,
+                  paddingRight: 10
+                }
+                ]}>
+                  <View style={{
+                      width: '70%',
+                      flexDirection: 'row'
+                    }}>
+                    <KeySvg />
+                    <Text style={{
+                      color: Color.white,
+                      marginLeft:10,
+                      fontSize: BasicStyles.standardTitleFontSize
+                    }}>Water</Text>
+                  </View>
+                  
+                  <Text style={{
+                      color: Color.white,
+                      fontSize: BasicStyles.standardTitleFontSize,
+                      fontWeight: 'bold',
+                      textAlign: 'right',
+                      width: '30%'
+                    }}>4403L</Text>
+               </View>
 
+              {
+                this.renderNotesCard()
+              }
+            </View>
+         </View>
+        </ScrollView>
+        {
+          (applyTank) && (
+            <SlidingButton
+              title={'Apply Tank'}
+              label={'Swipe Right to Complete'}
+              onSuccess={() => this.setApplyTank()}
+              />
+          )
+        }
+        {
+          (productConfirmation) && (
+            <ProductConfirmationModal
+              visible={productConfirmation}
+              onClose={() => this.setState({
+                productConfirmation: false
+              })}
+              onSuccess={() => this.manageProductConfirmation()}
+            />
+          )
+        }
+        {
+          (taskConfirmation) && (
+            <TaskConfirmationModal
+              visible={taskConfirmation}
+              onClose={() => this.setState({
+                taskConfirmation: false
+              })}
+              onSuccess={() => this.manageTaskConfirmation}
+            />
+          )
+        }
+      </SafeAreaView>
     );
   }
 }

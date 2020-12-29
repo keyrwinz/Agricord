@@ -11,18 +11,17 @@ class HeaderOptions extends Component {
   constructor(props){
     super(props);
   }
+  
   back = () => {
     this.props.navigationProps.pop();
   };
-  goTo = () => {
-    this.props.navigationProps.navigate('addressMap')
-  }
+
   render() {
     return (
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
-          <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={BasicStyles.iconStyle}/>
+          <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color:'black'}]}/>
         </TouchableOpacity>
       </View>
     );
@@ -40,18 +39,13 @@ const BatchStack = createStackNavigator({
   BatchScreen: {
     screen: BatchPage, 
     navigationOptions: ({ navigation }) => ({
-      title: 'Batch',
+      title: 'BATCH',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      drawerLabel: 'Batch',
-      headerStyle: {
-        backgroundColor: Color.primary,
-      },
-      headerTintColor: '#fff',
+      ...BasicStyles.headerDrawerStyle
     })
   }
 })
 
 export default connect(
-  
   mapDispatchToProps
 )(BatchStack);
