@@ -41,6 +41,7 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [activeTags, setActiveTags] = useState('')
   const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
@@ -59,10 +60,11 @@ const Inventory = (props) => {
   }, [])
 
   const retrieveData = () => {
+    console.log("retrieve");
     const parameter = {
       condition: {
         column: 'title',
-        value: '%%'
+        value: '%' + searchString.toLocaleLowerCase() + '%' 
       },
       sort: {
         title: 'asc'
@@ -73,7 +75,8 @@ const Inventory = (props) => {
       type: 'DISTRIBUTOR',
       productType: 'all',
       limit: 5,
-      offset: 0
+      offset: 0,
+      tags: '%' + activeTags.toLocaleLowerCase() + '%' 
     }
     setLoading(true)
     setData([])
@@ -103,15 +106,19 @@ const Inventory = (props) => {
       switch (props.initialPage) {
         case 'InventoryHerbicides':
           setActiveIndex(0)
+          setActiveTags('Herbicide')
           break;
         case 'InventoryFungicides':
           setActiveIndex(1)
+          setActiveTags('Fungicide')
           break;
         case 'InventoryInsecticides':
           setActiveIndex(2)
+          setActiveTags('Insecticide')
           break;
         case 'InventoryOther':
           setActiveIndex(3)
+          setActiveTags('Other')
           break;
         default:
           break 
@@ -173,7 +180,7 @@ const Inventory = (props) => {
           />
           <TouchableOpacity
             style={Style.searchIcon}
-            onPress={() => searchProductHandler()}
+            onPress={() => retrieveData()}
           >
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>
