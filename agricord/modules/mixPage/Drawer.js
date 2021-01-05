@@ -38,7 +38,8 @@ const MixPageStack = createStackNavigator({
   MixPageScreen: {
     screen: MixPage, 
     navigationOptions: ({ navigation }) => ({
-      title: "Mix C",
+      title: navigation.state.params.data
+      && navigation.state.params.data.spray_mix ? navigation.state.params.data.spray_mix.name : '',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       ...BasicStyles.headerDrawerStyle
     })

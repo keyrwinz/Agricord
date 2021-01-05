@@ -13,10 +13,11 @@ import Switch from 'react-native-customisable-switch';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faCheckCircle, faTimesCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
+import { Color, BasicStyles } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
+import MixConfirmationModal from 'modules/modal/MixConfirmation'; 
 
 const width = Math.round(Dimensions.get('window').width);
 
@@ -67,6 +68,8 @@ const MixPage = (props) => {
   const [appRateSwitch, setAppRateSwitch] = useState(false)
   const [availablePaddockIndex, setAvailablePaddockIndex] = useState(0)
   const [selectedPaddockIndex, setSelectedPaddockIndex] = useState(0)
+  const [mixConfirmation, setMixConfirmation] = useState(false)
+  const [selectedPaddock, setSelectedPaddock] = useState([])
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
@@ -75,11 +78,25 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
-  const redirect = () => {
-
-  }
-
   if (loading) return null
+
+  const redirect = (route) => {
+    const { task } = props.state;
+    props.setTask({
+      ...task,
+      data: selectedPaddock,
+      params: {
+        volume: 120,
+        units: 'L',
+        area: 64,
+        area_units: 'HA'
+      }
+    })
+    setTimeout(() => {
+      setMixConfirmation(false)
+      props.navigation.navigate(route)
+    }, 100)
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
@@ -234,18 +251,46 @@ const MixPage = (props) => {
               </View>
             </View>
           </View>
+          {
+            (selectedPaddock.length > 0) && (
+              <TouchableOpacity
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  backgroundColor: selectedFlag ? '#676767' : Color.blue,
+                  borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+                  borderBottomRightRadius: BasicStyles.standardBorderRadius,
+                }}
+                onPress={() => setSelectedFlag(selectedFlag ? false : true) }
+                >
+                  <Text style={{
+                    fontSize: BasicStyles.standardTitleFontSize,
+                    fontWeight: 'bold',
+                    paddingTop: 10,
+                    paddingBottom: 10,
+                    color: Color.white
+                  }}>
+                    {
+                      selectedFlag ? 'Hide paddock details' : 'Show paddock details'
+                    }
+                  </Text>
+              </TouchableOpacity>
+            )
+          }
         </View>
 
         {/* SELECTED PADDOCKS */}
         {
-          selectedFlag && (
-            <View>
+          (selectedFlag && selectedPaddock.length > 0 )&& (
+            <View style={{
+              marginBottom: 100
+            }}>
               <Text style={Style.textHeader}>Selected Paddocks</Text>
               <View style={{ alignItems: 'center', position: 'relative' }}>
                 <Carousel
                   layout={"default"}
                   ref={carouselRef}
-                  data={availablePaddocks}
+                  data={selectedPaddock}
                   sliderWidth={width}
                   itemWidth={width * 0.9}
                   renderItem={(data) => (
@@ -254,7 +299,7 @@ const MixPage = (props) => {
                   onSnapToItem = { index => setSelectedPaddockIndex(index) }
                 />
                 <Pagination
-                  dotsLength={availablePaddocks.length}
+                  dotsLength={selectedPaddock.length}
                   activeDotIndex={selectedPaddockIndex}
                   containerStyle={{ 
                     width: '50%',
@@ -279,32 +324,48 @@ const MixPage = (props) => {
           )
         }
 
+        {
+          /*
+            <TouchableOpacity
+              style={{
+                marginBottom: 100,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 25
+              }}
+              onPress={() => setSelectedFlag(selectedFlag ? false : true)}
+              >
+              <FontAwesomeIcon
+                icon={selectedFlag ? faChevronUp : faChevronDown}
+                size={50}
+                color={Color.white}
+                />
+            </TouchableOpacity>
+          */
+        }
 
-        <TouchableOpacity
-          style={{
-            marginBottom: 100,
-            width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: 25
-          }}
-          onPress={() => setSelectedFlag(selectedFlag ? false : true)}
-          >
-          <FontAwesomeIcon
-            icon={selectedFlag ? faChevronUp : faChevronDown}
-            size={50}
-            color={Color.white}
-            />
-        </TouchableOpacity>
 
 
       </ScrollView>
       {
         scanProductFlag && (
           <SlidingButton
-            title={'Scan Products'}
+            title={'Create Batch'}
             label={'Swipe Right'}
-            onSuccess={() => this.redirect()}
+            onSuccess={() => setMixConfirmation(true)}
+          />
+        )
+      }
+
+      {
+        (mixConfirmation) && (
+          <MixConfirmationModal
+            visible={mixConfirmation}
+            onClose={() => setMixConfirmation(false)}
+            onSuccess={() => redirect('batchStack')}
+            data={selectedPaddock}
+            volume={'BATCH 64HA 4, 160 L'}
           />
         )
       }
@@ -314,7 +375,9 @@ const MixPage = (props) => {
 const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setTask: (task) => dispatch(actions.setPaddock(task)),
+  };
 };
 
 export default connect(

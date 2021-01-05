@@ -17,6 +17,7 @@ import TasksList from './TasksList.js'
 import {products} from './data-test.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
+import _ from 'lodash';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -27,9 +28,12 @@ class TasksPage extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
-      data: null,
+      data: [],
       isLoading: false,
-      label: 'inprogress'
+      label: 'inprogress',
+      limit: 5,
+      offset: 0,
+      numberOfPages: null
     };   
   }
   
@@ -43,7 +47,6 @@ class TasksPage extends Component {
       if (this.props.initialPage == 'TasksInProgress') {
         this.setState({activeIndex: 0});
       }
-      this.retrieveData();
     }else{
       this.setState({activeIndex: 0, label: 'inprogress'})
     }
@@ -66,29 +69,64 @@ class TasksPage extends Component {
     // }else{
     //   this.setState({activeIndex: 0, label: 'inprogress'})
     // }
-    this.retrieveData()
+    this.retrieve(true)
   }
 
-  retrieveData = () => {
+  retrieve = (flag) => {
+    const { user } = this.props.state;
+    const { activeIndex } = this.state;
     this.setState({
       isLoading: true,
     });
 
     const parameter = {
-      status: 'Auto',
-      offset: 0,
-      limit: 10,
-      merchant_id: 38,
+      condition: [{
+        value: user.sub_account.merchant.id,
+        column: 'merchant_id',
+        clause: '='
+      }, {
+        value: this.getStatusValue(activeIndex),
+        clause: '=',
+        column: 'status'
+      }],
+      limit: this.state.limit,
+      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
+      sort: {
+        due_date: 'desc'
+      }
     };
 
-    Api.request(Routes.tasksRetrieve, parameter, response => {
-        this.setState({data: response.data.paddocks, isLoading: false});
+    Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
+        this.setState({
+          isLoading: false
+        });
+        if(response.data.length > 0){
+          this.setState({
+            data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
+            numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
+            offset: flag == false ? 1 : (this.state.offset + 1)
+          })
+        }else{
+          this.setState({
+            data: flag == false ? [] : this.state.data,
+            numberOfPages: null,
+            offset: flag == false ? 0 : this.state.offset
+          })
+        }
       }, error => {
         this.setState({isLoading: false});
         console.log('ERROR HAPPENS', error);
       },
     );
   };
+
+  getStatusValue(index){
+    switch(index){
+      case 0: return 'inprogress';
+      case 1: return 'approved';
+      case 2: return 'completed';
+    }
+  }
 
   getLabel(index){
     switch(index){
@@ -101,10 +139,13 @@ class TasksPage extends Component {
   onPageChange(index){
     this.setState({
       activeIndex: index,
-      data: null,
-      label: this.getLabel(index)
+      data: [],
+      label: this.getLabel(index),
+      offset:0
     })
-    this.retrieveData()
+    setTimeout(() => {
+      this.retrieve(true)
+    }, 100)
   }
  
   render() {
@@ -134,13 +175,13 @@ class TasksPage extends Component {
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>
             <View style={Style.sliderContainer}>
-              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading}/>
+              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
             <View style={Style.sliderContainer}>
-              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading}/>
+              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
             <View style={Style.sliderContainer}>
-              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading}/>
+              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
           </Pager>
         </PagerProvider>

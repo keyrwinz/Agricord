@@ -48,7 +48,9 @@ const PaddockStack = createStackNavigator({
   PaddockScren: {
     screen: PaddockPage, 
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params ? navigation.state.params.data.name : '',
+      title: navigation.state.params
+      && navigation.state.params.data.from != 'history'
+      && navigation.state.params.data.paddock ? navigation.state.params.data.paddock.name : 'TASK',
       // headerTitle: () => (
       //   <View
       //     style={{

@@ -35,7 +35,6 @@ export default {
     marginBottom: 15,
   },
   text:{
-   fontFamily:'Roboto',
    textAlign:'center',
    fontWeight:"bold",
    fontSize:18,

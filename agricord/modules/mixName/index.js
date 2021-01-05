@@ -57,26 +57,40 @@ class MixName extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
-      products: [],
+      data: [],
+      isLoading: false
     };
   }
 
   componentDidMount() {
-    const {user} = this.props.state;
-    if (user != null) {
+    const { paddock } = this.props.state;
+    if (paddock == null && (paddock && paddock.spray_mix_id == null)) {
+      return
     }
     const parameter = {
+      condition: [{
+        value: paddock.spray_mix_id,
+        column: 'spray_mix_id',
+        clause: '='
+      }],
+      sort: {
+        created_at: 'desc'
+      },
       offset: 0,
-      limit: 10,
-      merchant_id: 38,
+      limit: 10
     };
-    Api.request(
-      Routes.sprayMixesRetrieve,
-      parameter,
-      response => {
-        this.setState({products: response.data});
+    this.setState({
+      isLoading: true
+    })
+    console.log('parameter', parameter)
+    Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
+        console.log('response', response)
+        this.setState({data: response.data, isLoading: false});
       },
       error => {
+        this.setState({
+          isLoading: false
+        })
         console.log({error});
       },
     );
@@ -90,6 +104,7 @@ class MixName extends Component {
 
   render() {
     const { paddock } = this.props.state;
+    const { isLoading, data } = this.state;
     return (
       <ImageBackground
         source={require('assets/backgroundlvl2.png')}
@@ -127,30 +142,44 @@ class MixName extends Component {
                 </Text>
               </View>
             </View>
+            {
+              data.length > 0 && (
+                  <View style={{
+                    width: '100%',
+                  }}>
+                    <Text style={{
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      marginTop: 10,
+                      fontSize: BasicStyles.standardTitleFontSize
+                    }}>PRODUCT RATE (PER HA)</Text>
+                  </View>
 
-            <View style={{
-              width: '100%',
-            }}>
-              <Text style={{
-                textAlign: 'left',
-                fontWeight: 'bold',
-                marginTop: 10,
-                fontSize: BasicStyles.standardTitleFontSize
-              }}>PRODUCT RATE (PER HA)</Text>
-            </View>
-
-            {this.state.products.map((item, index) => (
-              <ProductCard
-                item={{
-                  ...item,
-                  from: 'paddockPage',
-                  title: item.product_title
-                }}
-                key={item.id}
-                navigation={this.props.navigation}
-                theme={'v2'}
-              />
-            ))}
+              )
+            }
+            {
+              data && data.map((item, index) => (
+                      <ProductCard
+                        item={{
+                          ...item.product,
+                          from: 'paddockPage'
+                        }}
+                        key={item.id}
+                        navigation={this.props.navigation}
+                        theme={'v2'}
+                      />
+                    ) 
+                  )
+            }
+            {
+              data.length == 0 && (
+                <View style={{
+                    width: '100%'
+                  }}>
+                  <Text style={{ marginTop: 10 }}>{ isLoading ? '' : 'No product found'}</Text>
+                </View>
+              )
+            }
           </View>
         </ScrollView>
 
@@ -169,6 +198,9 @@ class MixName extends Component {
             <TaskButton navigation={this.props.navigation}/>
           )
         }
+
+
+        {isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );
   }

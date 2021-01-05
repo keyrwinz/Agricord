@@ -39,7 +39,8 @@ const MixNameStack = createStackNavigator({
   MixNameScreen: {
     screen: MixName, 
     navigationOptions: ({ navigation }) => ({
-      title: navigation.state.params ? 'Mix Name' : '',
+      title: navigation.state.params.data
+      && navigation.state.params.data.spray_mix ? navigation.state.params.data.spray_mix.name : 'Spray Mix',
       // headerTitle: () => (
       //   <View
       //     style={{

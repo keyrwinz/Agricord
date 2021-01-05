@@ -198,5 +198,33 @@ export default {
     height: 0.5,
     marginLeft: '5%',
     marginRight: '5%',
+  },
+  standardDivider: {
+    width: '90%',
+    height: 0.5,
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  standardCardContainer: {
+    minHeight: 60,
+    width: '100%',
+    marginTop: 15,
+    // box-shadow
+    backgroundColor: Color.white,
+    borderRadius: 12,
+    borderColor: '#FFFFFF',
+    borderWidth:1,
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 2,
+    alignItems:'center',
+    flexDirection:'row',
+    paddingTop: 15,
+    paddingBottom: 15
   }
 }
