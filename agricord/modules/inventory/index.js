@@ -69,10 +69,10 @@ const Inventory = (props) => {
       sort: {
         title: 'asc'
       },
-      merchant_id: 2,
-      account_id: 7,
+      merchant_id: props.state.user.sub_account.merchant.id,
+      account_id: props.state.user.id,
       inventory_type: 'product_trace',
-      type: 'DISTRIBUTOR',
+      type: props.state.user.account_type,
       productType: 'all',
       limit: 5,
       offset: 0,
@@ -81,6 +81,7 @@ const Inventory = (props) => {
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
+      console.log();
       if (response.data.length) {
         setLoading(false)
         setData(response.data)
@@ -95,6 +96,7 @@ const Inventory = (props) => {
         // setFilteredOtherData(response.data)
       }
       console.log({ inventoryResponse: response })
+      setLoading(false)
     }, error => {
       console.log({ inventoryError: error })
       setLoading(false)
