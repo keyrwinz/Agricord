@@ -25,35 +25,35 @@ const width = Math.round(Dimensions.get('window').width);
 const availablePaddocks = [
   {
     id: 1,
-    paddock: 'A',
+    name: 'A',
     crop: 'WHEAT',
     area: '52ha',
     remaining_area: '52ha'
   },
   {
     id: 2,
-    paddock: 'B',
+    name: 'B',
     crop: 'WHEAT',
     area: '62ha',
     remaining_area: '62ha'
   },
   {
     id: 3,
-    paddock: 'C',
+    name: 'C',
     crop: 'WHEAT',
     area: '72ha',
     remaining_area: '72ha'
   },
   {
     id: 4,
-    paddock: 'D',
+    name: 'D',
     crop: 'WHEAT',
     area: '82ha',
     remaining_area: '82ha'
   },
   {
     id: 5,
-    paddock: 'E',
+    name: 'E',
     crop: 'WHEAT',
     area: '92ha',
     remaining_area: '92ha'
@@ -99,6 +99,15 @@ const MixPage = (props) => {
     }, 100)
   }
 
+  const removeSelected = (index) => {
+    const newSelectedPaddock = selectedPaddock.filter((item, idx) => {
+      if(idx != index){
+        return item
+      }
+    })
+    setSelectedPaddock(newSelectedPaddock)
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
@@ -110,8 +119,23 @@ const MixPage = (props) => {
           <Text style={Style.textHeader}>Available Paddocks</Text>
           <View style={{ alignItems: 'center', position: 'relative' }}>
 
+
+
+            <Draggable
+              onDragRelease={() => {}}
+              onLongPress={()=>console.log('long press')}
+              onShortPressRelease={()=>console.log('press drag')}
+              onPressIn={()=>console.log('in press')}
+              onPressOut={()=>console.log('out press')}
+              style={{
+                zIndex: 1000
+              }}
+              >
+              <MixCard data={availablePaddocks[0]} hasCheck={false} />
+
+            </Draggable>
                 
-                    <Carousel
+            {/*       <Carousel
                       layout={"default"}
                       ref={carouselRef}
                       data={availablePaddocks}
@@ -119,19 +143,12 @@ const MixPage = (props) => {
                       itemWidth={width * 0.9}
                       activeDo
                       renderItem={(data) => (
-                          <Draggable
-                            onDragRelease={() => {}}
-                            onLongPress={()=>console.log('long press')}
-                            onShortPressRelease={()=>console.log('press drag')}
-                            onPressIn={()=>console.log('in press')}
-                            onPressOut={()=>console.log('out press')}
-                            >
-                            <MixCard data={data} hasCheck={false} />
-
-                          </Draggable>
+                          <MixCard data={data} hasCheck={false} />
                       )}
                       onSnapToItem = { index => setAvailablePaddockIndex(index) }
                     />
+
+              */}
 
             <Text style={{
               position: 'absolute',
@@ -171,11 +188,12 @@ const MixPage = (props) => {
         <View style={[
           Style.mixCardContainer,
           {
-            marginTop: 40,
+            marginTop: 300,
             minHeight: 50,
             width: '90%',
             marginLeft: '5%',
-            marginRight: '5%'
+            marginRight: '5%',
+            zIndex: 1
           }]
         }>
           <View style={
@@ -250,21 +268,42 @@ const MixPage = (props) => {
                 </View>
               </View>
              
-              <View style={{ marginLeft: 10 }}>
-                <View style={Style.appliedPaddock}>
-                  <Text style={Style.appliedPaddockText}>
-                    Paddock A
-                  </Text>
-                  <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
-                </View>
-                <View style={Style.appliedPaddock}>
-                  <Text style={Style.appliedPaddockText}>
-                    Paddock C
-                  </Text>
-                  <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
-                </View>
-              </View>
+              {
+                (selectedPaddock.length > 0) && (
 
+                  <View style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    marginTop: 10
+                  }}>
+                    {
+                      selectedPaddock.map((item, index) => (
+                       <View 
+                        style={[Style.appliedPaddock, {
+                          width: '48%',
+                          justifyContent: 'space-between',
+                        }]}
+                        >
+                        <Text style={Style.appliedPaddockText}>
+                          {item.name}
+                        </Text>
+                        <TouchableOpacity
+                          style={{
+                            width: 30,
+                            alignItems: 'flex-end'
+                          }}
+                          onPress={() => removeSelected(index)}
+                          >
+                          <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
+                        </TouchableOpacity>
+                       </View>
+                      ))
+                    }
+                  </View>
+                )
+              }
             </View>
           </View>
           {
