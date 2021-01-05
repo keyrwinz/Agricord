@@ -17,7 +17,8 @@ import { Color, BasicStyles } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
-import MixConfirmationModal from 'modules/modal/MixConfirmation'; 
+import MixConfirmationModal from 'modules/modal/MixConfirmation';
+import Draggable from 'react-native-draggable';
 
 const width = Math.round(Dimensions.get('window').width);
 
@@ -108,18 +109,30 @@ const MixPage = (props) => {
           }}>
           <Text style={Style.textHeader}>Available Paddocks</Text>
           <View style={{ alignItems: 'center', position: 'relative' }}>
-            <Carousel
-              layout={"default"}
-              ref={carouselRef}
-              data={availablePaddocks}
-              sliderWidth={width}
-              itemWidth={width * 0.9}
-              activeDo
-              renderItem={(data) => (
-                <MixCard data={data} hasCheck={false} />
-              )}
-              onSnapToItem = { index => setAvailablePaddockIndex(index) }
-            />
+
+                
+                    <Carousel
+                      layout={"default"}
+                      ref={carouselRef}
+                      data={availablePaddocks}
+                      sliderWidth={width}
+                      itemWidth={width * 0.9}
+                      activeDo
+                      renderItem={(data) => (
+                          <Draggable
+                            onDragRelease={() => {}}
+                            onLongPress={()=>console.log('long press')}
+                            onShortPressRelease={()=>console.log('press drag')}
+                            onPressIn={()=>console.log('in press')}
+                            onPressOut={()=>console.log('out press')}
+                            >
+                            <MixCard data={data} hasCheck={false} />
+
+                          </Draggable>
+                      )}
+                      onSnapToItem = { index => setAvailablePaddockIndex(index) }
+                    />
+
             <Text style={{
               position: 'absolute',
               bottom: -20,
@@ -203,6 +216,7 @@ const MixPage = (props) => {
               />
             </View>
           </View>
+
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -229,26 +243,28 @@ const MixPage = (props) => {
                     TOTAL AREA
                   </Text>
                 </View>
-                <View style={{ marginLeft: 10 }}>
-                  <View style={Style.appliedPaddock}>
-                    <Text style={Style.appliedPaddockText}>
-                      Paddock A
-                    </Text>
-                    <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
-                  </View>
-                  <View style={Style.appliedPaddock}>
-                    <Text style={Style.appliedPaddockText}>
-                      Paddock C
-                    </Text>
-                    <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
-                  </View>
+                <View style={{ marginTop: 5, paddingLeft: 10 }}>
+                  <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
+                    MAX AREA: 90HA
+                  </Text>
                 </View>
               </View>
-              <View style={{ marginTop: 5 }}>
-                <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
-                  MAX AREA: 90HA
-                </Text>
+             
+              <View style={{ marginLeft: 10 }}>
+                <View style={Style.appliedPaddock}>
+                  <Text style={Style.appliedPaddockText}>
+                    Paddock A
+                  </Text>
+                  <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
+                </View>
+                <View style={Style.appliedPaddock}>
+                  <Text style={Style.appliedPaddockText}>
+                    Paddock C
+                  </Text>
+                  <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
+                </View>
               </View>
+
             </View>
           </View>
           {

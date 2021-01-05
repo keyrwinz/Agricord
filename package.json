@@ -57,6 +57,7 @@
     "react-native-credit-card-input": "^0.4.1",
     "react-native-customisable-switch": "github:baderahmed/react-native-customisable-switch#master",
     "react-native-device-info": "^5.5.3",
+    "react-native-draggable": "^3.3.0",
     "react-native-draggable-view": "0.0.6",
     "react-native-elements": "^2.0.4",
     "react-native-geocoding": "^0.4.0",
