@@ -5,7 +5,8 @@ import {
   ScrollView,
   Dimensions,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -19,8 +20,9 @@ import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
 import MixConfirmationModal from 'modules/modal/MixConfirmation';
 import Draggable from 'react-native-draggable';
-
+import _ from 'lodash';
 const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 const availablePaddocks = [
   {
@@ -108,92 +110,94 @@ const MixPage = (props) => {
     setSelectedPaddock(newSelectedPaddock)
   }
 
-  return (
-    <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
-      <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
-
-        {/* AVAILABLE PADDOCKS */}
-        <View style={{
-            marginTop: 15
-          }}>
-          <Text style={Style.textHeader}>Available Paddocks</Text>
-          <View style={{ alignItems: 'center', position: 'relative' }}>
 
 
+  const addToSelected = (item) => {
+    setSelectedFlag(true)
+    let status = false
+    for (var i = 0; i < selectedPaddock.length; i++) {
+      let paddock = selectedPaddock[i]
+      if(paddock.id == item.id){
+        status = true
+        break
+      }
+    }
+    if(status == false){
+      setSelectedPaddock([...selectedPaddock, ...[item]])  
+    }else{
+      console.log('already existed')
 
-            <Draggable
-              onDragRelease={() => {}}
-              onLongPress={()=>console.log('long press')}
-              onShortPressRelease={()=>console.log('press drag')}
-              onPressIn={()=>console.log('in press')}
-              onPressOut={()=>console.log('out press')}
-              style={{
-                zIndex: 1000
-              }}
-              >
-              <MixCard data={availablePaddocks[0]} hasCheck={false} />
+      Alert.alert(
+        'Error Message',
+        item.name + ' already exist!',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') }
+        ],
+        { cancelable: false }
+      );
 
-            </Draggable>
-                
-            {/*       <Carousel
-                      layout={"default"}
-                      ref={carouselRef}
-                      data={availablePaddocks}
-                      sliderWidth={width}
-                      itemWidth={width * 0.9}
-                      activeDo
-                      renderItem={(data) => (
-                          <MixCard data={data} hasCheck={false} />
-                      )}
-                      onSnapToItem = { index => setAvailablePaddockIndex(index) }
-                    />
+    }
 
-              */}
+  }
 
-            <Text style={{
+
+  const selectedPaddockView = () => {
+    return(
+      <View style={{
+        marginBottom: 100
+      }}>
+        <Text style={Style.textHeader}>Selected Paddocks</Text>
+        <View style={{ alignItems: 'center', position: 'relative' }}>
+          <Carousel
+            layout={"default"}
+            ref={carouselRef}
+            data={selectedPaddock}
+            sliderWidth={width}
+            itemWidth={width * 0.9}
+            renderItem={(data) => (
+              <MixCard data={data} hasCheck={true} />
+            )}
+            onSnapToItem = { index => setSelectedPaddockIndex(index) }
+          />
+          <Pagination
+            dotsLength={selectedPaddock.length}
+            activeDotIndex={selectedPaddockIndex}
+            containerStyle={{ 
+              width: '50%',
               position: 'absolute',
-              bottom: -20,
-              left: '12%',
-              fontSize: 10,
-              color: '#C0C0C0',
-              width: 100
-            }}>
-              Drag Paddock tile to Appliction Box
-            </Text>
-            <Pagination
-              dotsLength={availablePaddocks.length}
-              activeDotIndex={availablePaddockIndex}
-              containerStyle={{ 
-                width: '50%',
-                position: 'absolute',
-                bottom: -40,
-              }}
-              dotStyle={{
-                width: 10,
-                height: 10,
-                borderRadius: 5,
-                marginHorizontal: -5,
-                backgroundColor: '#5A84EE'
-              }}
-              inactiveDotStyle={{
-                backgroundColor: '#C4C4C4'
-              }}
-              inactiveDotOpacity={0.4}
-              inactiveDotScale={0.6}
-            />
-          </View>
+              bottom: -40,
+            }}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: -5,
+              backgroundColor: '#5A84EE'
+            }}
+            inactiveDotStyle={{
+              backgroundColor: '#C4C4C4'
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
         </View>
+      </View>
+    )
+  }
 
-        {/* APPLICATION RATE */}
+  const applicationRate = () => {
+
+    return (
         <View style={[
           Style.mixCardContainer,
           {
-            marginTop: 300,
+            marginTop: 25,
             minHeight: 50,
             width: '90%',
             marginLeft: '5%',
             marginRight: '5%',
-            zIndex: 1
+            zIndex: 1,
+            marginBottom: (selectedPaddock.length == 0 || (selectedPaddock.length > 0 &&  selectedFlag == false)) ? (height / 2) : 0
           }]
         }>
           <View style={
@@ -333,73 +337,75 @@ const MixPage = (props) => {
             )
           }
         </View>
+      );
+  }
 
-        {/* SELECTED PADDOCKS */}
-        {
-          (selectedFlag && selectedPaddock.length > 0 )&& (
-            <View style={{
-              marginBottom: 100
-            }}>
-              <Text style={Style.textHeader}>Selected Paddocks</Text>
-              <View style={{ alignItems: 'center', position: 'relative' }}>
-                <Carousel
-                  layout={"default"}
-                  ref={carouselRef}
-                  data={selectedPaddock}
-                  sliderWidth={width}
-                  itemWidth={width * 0.9}
-                  renderItem={(data) => (
-                    <MixCard data={data} hasCheck={true} />
-                  )}
-                  onSnapToItem = { index => setSelectedPaddockIndex(index) }
-                />
-                <Pagination
-                  dotsLength={selectedPaddock.length}
-                  activeDotIndex={selectedPaddockIndex}
-                  containerStyle={{ 
-                    width: '50%',
-                    position: 'absolute',
-                    bottom: -40,
-                  }}
-                  dotStyle={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: 5,
-                    marginHorizontal: -5,
-                    backgroundColor: '#5A84EE'
-                  }}
-                  inactiveDotStyle={{
-                    backgroundColor: '#C4C4C4'
-                  }}
-                  inactiveDotOpacity={0.4}
-                  inactiveDotScale={0.6}
-                />
-              </View>
-            </View>
-          )
-        }
+  const availablePaddocksView = () => {
+    return(
+      <View style={{
+          marginTop: 15
+        }}>
+        <Text style={Style.textHeader}>Available Paddocks</Text>
+        <View style={{ alignItems: 'center', position: 'relative' }}>
 
-        {
-          /*
-            <TouchableOpacity
-              style={{
-                marginBottom: 100,
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: 25
-              }}
-              onPress={() => setSelectedFlag(selectedFlag ? false : true)}
-              >
-              <FontAwesomeIcon
-                icon={selectedFlag ? faChevronUp : faChevronDown}
-                size={50}
-                color={Color.white}
-                />
-            </TouchableOpacity>
-          */
-        }
+           <Carousel
+              layout={"default"}
+              ref={carouselRef}
+              data={availablePaddocks}
+              sliderWidth={width}
+              itemWidth={width * 0.9}
+              activeDo
+              renderItem={(data) => (
+                  <MixCard data={data} hasCheck={false} addToSelected={(item) => addToSelected(item)}/>
+              )}
+              onSnapToItem = { index => setAvailablePaddockIndex(index) }
+            />
 
+          <Text style={{
+            position: 'absolute',
+            bottom: -20,
+            left: '12%',
+            fontSize: 10,
+            color: '#C0C0C0',
+            width: 100
+          }}>
+            Drag Paddock tile to Appliction Box
+          </Text>
+          <Pagination
+            dotsLength={availablePaddocks.length}
+            activeDotIndex={availablePaddockIndex}
+            containerStyle={{ 
+              width: '50%',
+              position: 'absolute',
+              bottom: -40,
+            }}
+            dotStyle={{
+              width: 10,
+              height: 10,
+              borderRadius: 5,
+              marginHorizontal: -5,
+              backgroundColor: '#5A84EE'
+            }}
+            inactiveDotStyle={{
+              backgroundColor: '#C4C4C4'
+            }}
+            inactiveDotOpacity={0.4}
+            inactiveDotScale={0.6}
+          />
+        </View>
+      </View>
+    )
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
+
+        {availablePaddocksView()}
+       
+        {applicationRate()}
+
+        { (selectedFlag && selectedPaddock.length > 0) && ( selectedPaddockView()) }
 
 
       </ScrollView>
