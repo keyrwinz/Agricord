@@ -81,7 +81,7 @@ class MixCard extends Component {
                       Area
                     </Text>
                     <Text style={{ fontSize: 15 }}>
-                    {data?.item?.area}
+                    {data?.item?.area + ' ' + data?.item?.unit} 
                     </Text>
                   </View>
                 </View>
@@ -91,7 +91,7 @@ class MixCard extends Component {
                       REMAINING AREA
                     </Text>
                     <Text style={{ fontWeight: 'bold', fontSize: 18}}>
-                      {data?.item?.remaining_area}
+                      {data?.item?.remaining_area + ' ' + data?.item?.unit}
                     </Text>
                   </View>
                 </View>

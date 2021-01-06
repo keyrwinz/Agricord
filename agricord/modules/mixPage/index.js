@@ -27,38 +27,43 @@ const height = Math.round(Dimensions.get('window').height);
 const availablePaddocks = [
   {
     id: 1,
-    name: 'A',
+    name: 'A5',
     crop: 'WHEAT',
-    area: '52ha',
-    remaining_area: '52ha'
+    area: 5,
+    unit: 'ha',
+    remaining_area: 5
   },
   {
     id: 2,
-    name: 'B',
+    name: 'B6',
     crop: 'WHEAT',
-    area: '62ha',
-    remaining_area: '62ha'
+    area: 6,
+    unit: 'ha',
+    remaining_area: 6
   },
   {
     id: 3,
-    name: 'C',
+    name: 'C7',
     crop: 'WHEAT',
-    area: '72ha',
-    remaining_area: '72ha'
+    area: 7,
+    unit: 'ha',
+    remaining_area: 7
   },
   {
     id: 4,
-    name: 'D',
+    name: 'D8',
     crop: 'WHEAT',
-    area: '82ha',
-    remaining_area: '82ha'
+    area: 8,
+    unit: 'ha',
+    remaining_area: 8
   },
   {
     id: 5,
-    name: 'E',
+    name: 'E9',
     crop: 'WHEAT',
-    area: '92ha',
-    remaining_area: '92ha'
+    area: 9,
+    unit: 'ha',
+    remaining_area: 9
   },
 ]
 
@@ -75,11 +80,14 @@ const MixPage = (props) => {
   const [selectedPaddock, setSelectedPaddock] = useState([])
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState(availablePaddocks)
+  const [maxArea, setMaxArea] = useState(0)
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
     setTimeout(() => {
+      const { task } = props.state;
       setLoading(false)
+      setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
     }, 100)
   }, [])
 
@@ -112,6 +120,7 @@ const MixPage = (props) => {
       })
       setSelectedPaddock(newSelectedPaddock)
       setPaddocks([...paddocks, ...[item]])
+      getTotalArea()
     }else{
       const newPaddocks = paddocks.filter((paddock, idx) => {
         if(paddock.id != item.id){
@@ -122,7 +131,15 @@ const MixPage = (props) => {
     }
   }
 
-
+  const getTotalArea = () => {
+    let total = 0
+    for (var i = 0; i < selectedPaddock.length; i++) {
+      let item = selectedPaddock[i]
+      total = total + item.area
+      setTotalArea(total)
+      console.log('totalArea', totalArea)
+    }
+  }
 
   const addToSelected = (item) => {
     setSelectedFlag(true)
@@ -135,8 +152,11 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      setSelectedPaddock([...selectedPaddock, ...[item]])  
-      removePaddock('available', item)
+      setTotalArea(totalArea + item.area)
+      setTimeout(() => {
+        setSelectedPaddock([...selectedPaddock, ...[item]])  
+        removePaddock('available', item)
+      }, 100)
     }else{
       console.log('already existed')
 
@@ -296,7 +316,7 @@ const MixPage = (props) => {
                   (task && task.machine) && (
                     <View style={{ marginTop: 5, paddingLeft: 10 }}>
                       <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
-                        MAX AREA: {parseFloat(task.machine.capacity / task.spray_mix.maximum_rate).toFixed(2)}HA
+                        MAX AREA: {maxArea}HA
                       </Text>
                     </View>    
                   )
