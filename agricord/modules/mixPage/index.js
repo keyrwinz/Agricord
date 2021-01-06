@@ -73,6 +73,8 @@ const MixPage = (props) => {
   const [selectedPaddockIndex, setSelectedPaddockIndex] = useState(0)
   const [mixConfirmation, setMixConfirmation] = useState(false)
   const [selectedPaddock, setSelectedPaddock] = useState([])
+  const [totalArea, setTotalArea] = useState(0)
+  const [paddocks, setPaddocks] = useState(availablePaddocks)
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
@@ -101,13 +103,23 @@ const MixPage = (props) => {
     }, 100)
   }
 
-  const removeSelected = (index) => {
-    const newSelectedPaddock = selectedPaddock.filter((item, idx) => {
-      if(idx != index){
-        return item
-      }
-    })
-    setSelectedPaddock(newSelectedPaddock)
+  const removePaddock = (from, item) => {
+    if(from == 'selected'){
+      const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
+      if(paddock.id != item.id){
+          return item
+        }
+      })
+      setSelectedPaddock(newSelectedPaddock)
+      setPaddocks([...paddocks, ...[item]])
+    }else{
+      const newPaddocks = paddocks.filter((paddock, idx) => {
+        if(paddock.id != item.id){
+          return item
+        }
+      })
+      setPaddocks((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
+    }
   }
 
 
@@ -124,6 +136,7 @@ const MixPage = (props) => {
     }
     if(status == false){
       setSelectedPaddock([...selectedPaddock, ...[item]])  
+      removePaddock('available', item)
     }else{
       console.log('already existed')
 
@@ -155,7 +168,11 @@ const MixPage = (props) => {
             sliderWidth={width}
             itemWidth={width * 0.9}
             renderItem={(data) => (
-              <MixCard data={data} hasCheck={true} />
+              <MixCard data={data}
+                hasCheck={true}
+                addToSelected={() => {}}
+                removePaddock={(from, item) => removePaddock(from, item)}
+                from={'selected'}/>
             )}
             onSnapToItem = { index => setSelectedPaddockIndex(index) }
           />
@@ -186,6 +203,7 @@ const MixPage = (props) => {
   }
 
   const applicationRate = () => {
+    const { task } = props.state;
 
     return (
         <View style={[
@@ -254,22 +272,36 @@ const MixPage = (props) => {
                 <Text>Applied Rate</Text>
               </View>
               <View>
-                <Text style={Style.textBold}>65/Ha</Text>
+                { task && task.spray_mix && (
+                    <Text style={Style.textBold}>{task.spray_mix.application_rate}/Ha</Text>
+                  )
+                  
+                }
               </View>
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
+              {
+
+              }
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+                
                 <View style={Style.totalAreaBox}>
-                  <Text>64Ha</Text>
+                  <Text>{totalArea} Ha</Text>
                   <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
                     TOTAL AREA
                   </Text>
-                </View>
-                <View style={{ marginTop: 5, paddingLeft: 10 }}>
-                  <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
-                    MAX AREA: 90HA
-                  </Text>
-                </View>
+                </View>  
+
+                {
+                  (task && task.machine) && (
+                    <View style={{ marginTop: 5, paddingLeft: 10 }}>
+                      <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
+                        MAX AREA: {parseFloat(task.machine.capacity / task.spray_mix.maximum_rate).toFixed(2)}HA
+                      </Text>
+                    </View>    
+                  )
+                }
+                
               </View>
              
               {
@@ -298,7 +330,7 @@ const MixPage = (props) => {
                             width: 30,
                             alignItems: 'flex-end'
                           }}
-                          onPress={() => removeSelected(index)}
+                          onPress={() => removePaddock('selected', item)}
                           >
                           <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
                         </TouchableOpacity>
@@ -351,12 +383,17 @@ const MixPage = (props) => {
            <Carousel
               layout={"default"}
               ref={carouselRef}
-              data={availablePaddocks}
+              data={paddocks}
               sliderWidth={width}
               itemWidth={width * 0.9}
               activeDo
               renderItem={(data) => (
-                  <MixCard data={data} hasCheck={false} addToSelected={(item) => addToSelected(item)}/>
+                  <MixCard data={data}
+                    hasCheck={false}
+                    addToSelected={(item) => addToSelected(item)}
+                    from={'available'}
+                    removePaddock={(from, item) => removePaddock(from, item)}
+                    />
               )}
               onSnapToItem = { index => setAvailablePaddockIndex(index) }
             />
@@ -372,7 +409,7 @@ const MixPage = (props) => {
             Drag Paddock tile to Appliction Box
           </Text>
           <Pagination
-            dotsLength={availablePaddocks.length}
+            dotsLength={paddocks.length}
             activeDotIndex={availablePaddockIndex}
             containerStyle={{ 
               width: '50%',
@@ -401,7 +438,7 @@ const MixPage = (props) => {
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
 
-        {availablePaddocksView()}
+        {(paddocks != null && paddocks.length > 0) && availablePaddocksView()}
        
         {applicationRate()}
 

@@ -40,7 +40,7 @@ class MixCard extends Component {
               }>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Text style={[Style.textBold, { marginRight: 5 }]}>
-                    Paddock {data?.item?.paddock}
+                    {data?.item?.name}
                   </Text>
                   {
                     hasCheck && (
@@ -52,11 +52,19 @@ class MixCard extends Component {
                     )
                   }
                 </View>
-                <FontAwesomeIcon
-                  size={16}
-                  icon={faTimesCircle}
-                  color={'#C4C4C4'}
-                />
+                {
+                  this.props.from == 'selected' && (
+                    <TouchableOpacity
+                      onPress={() => this.props.removePaddock(this.props.from, data.item)}>
+                      <FontAwesomeIcon
+                        size={16}
+                        icon={faTimesCircle}
+                        color={'#C4C4C4'}
+                      />
+                    </TouchableOpacity>
+                  )
+                }
+                
               </View>
               <View style={Style.mixDetails}>
                 <View style={Style.mixLeftDetail}>
