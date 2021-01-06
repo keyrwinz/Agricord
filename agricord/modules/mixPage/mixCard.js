@@ -7,13 +7,16 @@ import {
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
+import { faCheckCircle, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
+import { Color, BasicStyles } from 'common';
 import Style from './Style.js';
 import Draggable from 'react-native-draggable';
 const COLORS = ['#FFC700', '#5A84EE', '#9AD267'];
 
 class MixCard extends Component {
+  constructor(props){
+    super(props);
+  }
 
   render(){
     const { data, hasCheck } = this.props;
@@ -52,18 +55,49 @@ class MixCard extends Component {
                     )
                   }
                 </View>
-                {
-                  this.props.from == 'selected' && (
-                    <TouchableOpacity
-                      onPress={() => this.props.removePaddock(this.props.from, data.item)}>
-                      <FontAwesomeIcon
-                        size={16}
-                        icon={faTimesCircle}
-                        color={'#C4C4C4'}
-                      />
-                    </TouchableOpacity>
-                  )
-                }
+                <View style={{
+                  flexDirection: 'row'
+                }}>
+                  {
+                    (data && data.item.partialFlag && this.props.from == 'selected') && (
+                      <TouchableOpacity
+                        onPress={() => this.props.onPartialChange(data.item)}>
+                        <View style={{
+                          flexDirection: 'row',
+                          marginLeft: 10,
+                          marginRight: 10
+                        }}>
+                          <FontAwesomeIcon
+                            size={16}
+                            icon={data.item.partial ? faCheckSquare : faSquare}
+                            color={data.item.partial ? Color.blue : Color.white}
+                            style={{
+                              borderWidth: data.item.partial ? 0 : 1,
+                              borderColor: data.item.partial ? Color.blue : Color.gray
+                            }}
+                          />
+                          <Text style={{
+                            fontSize: BasicStyles.standardFontSize,
+                            marginLeft: 5
+                          }}>Partial</Text>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  }
+                  
+                  {
+                    this.props.from == 'selected' && (
+                      <TouchableOpacity
+                        onPress={() => this.props.removePaddock(this.props.from, data.item)}>
+                        <FontAwesomeIcon
+                          size={16}
+                          icon={faTimesCircle}
+                          color={'#C4C4C4'}
+                        />
+                      </TouchableOpacity>
+                    )
+                  }
+                </View>
                 
               </View>
               <View style={Style.mixDetails}>
@@ -85,16 +119,37 @@ class MixCard extends Component {
                     </Text>
                   </View>
                 </View>
-                <View style={Style.mixRightDetail}>
-                  <View style={Style.remainingBox}>
-                    <Text style={{ color: '#5A84EE', fontSize: 10, fontWeight: 'bold', marginBottom: 5 }}>
-                      REMAINING AREA
-                    </Text>
-                    <Text style={{ fontWeight: 'bold', fontSize: 18}}>
-                      {data?.item?.remaining_area + ' ' + data?.item?.unit}
-                    </Text>
-                  </View>
-                </View>
+                {
+                  data.item.partial == true && (
+                      <View style={Style.mixRightDetail}>
+                        <View style={[Style.remainingBox, {
+                          borderColor: Color.danger
+                        }]}>
+                          <Text style={{ color: Color.danger, fontSize: 10, fontWeight: 'bold', marginBottom: 5 }}>
+                            REMAINING AREA
+                          </Text>
+                          <Text style={{ fontWeight: 'bold', fontSize: 18}}>
+                            {data?.item?.remaining_area + ' ' + data?.item?.unit}
+                          </Text>
+                        </View>
+                      </View>
+                    )
+                }
+                {
+                  data.item.partial == false && (
+                    <View style={Style.mixRightDetail}>
+                      <View style={Style.remainingBox}>
+                        <Text style={{ color: '#5A84EE', fontSize: 10, fontWeight: 'bold', marginBottom: 5 }}>
+                          REMAINING AREA
+                        </Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: 18}}>
+                          {data?.item?.remaining_area + ' ' + data?.item?.unit}
+                        </Text>
+                      </View>
+                    </View>
+                  )
+                }
+
               </View>
           </TouchableOpacity>
     );

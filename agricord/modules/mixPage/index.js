@@ -31,7 +31,9 @@ const availablePaddocks = [
     crop: 'WHEAT',
     area: 5,
     unit: 'ha',
-    remaining_area: 5
+    remaining_area: 5,
+    partial: false,
+    partialFlag: true
   },
   {
     id: 2,
@@ -39,7 +41,9 @@ const availablePaddocks = [
     crop: 'WHEAT',
     area: 6,
     unit: 'ha',
-    remaining_area: 6
+    remaining_area: 6,
+    partial: false,
+    partialFlag: false
   },
   {
     id: 3,
@@ -47,7 +51,9 @@ const availablePaddocks = [
     crop: 'WHEAT',
     area: 7,
     unit: 'ha',
-    remaining_area: 7
+    remaining_area: 7,
+    partial: false,
+    partialFlag: false
   },
   {
     id: 4,
@@ -55,7 +61,9 @@ const availablePaddocks = [
     crop: 'WHEAT',
     area: 8,
     unit: 'ha',
-    remaining_area: 8
+    remaining_area: 8,
+    partial: false,
+    partialFlag: false
   },
   {
     id: 5,
@@ -63,7 +71,9 @@ const availablePaddocks = [
     crop: 'WHEAT',
     area: 9,
     unit: 'ha',
-    remaining_area: 9
+    remaining_area: 9,
+    partial: false,
+    partialFlag: false
   },
 ]
 
@@ -173,6 +183,20 @@ const MixPage = (props) => {
 
   }
 
+  const partialChange = (item) => {
+    const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
+      if(paddock.id == item.id){
+        return {
+          ...paddock,
+          partial: !paddock.partial
+        }
+      }else{
+        return paddock
+      }
+    })
+    setSelectedPaddock(newSelectedPaddock)
+  }
+
 
   const selectedPaddockView = () => {
     return(
@@ -192,7 +216,14 @@ const MixPage = (props) => {
                 hasCheck={true}
                 addToSelected={() => {}}
                 removePaddock={(from, item) => removePaddock(from, item)}
-                from={'selected'}/>
+                from={'selected'}
+                params={{
+                  totalArea,
+                  maxArea
+                }}
+                onPartialChange={(item) => partialChange(item)}
+
+                />
             )}
             onSnapToItem = { index => setSelectedPaddockIndex(index) }
           />
