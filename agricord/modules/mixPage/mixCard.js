@@ -2,7 +2,8 @@ import React,  {Component} from 'react';
 import {
   View,
   Text,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -42,7 +43,10 @@ class MixCard extends Component {
                 { borderBottomWidth: 3, borderBottomColor: borderColor }]
               }>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={[Style.textBold, { marginRight: 5 }]}>
+                  <Text style={[Style.textBold, {
+                    marginRight: 5,
+                    fontSize: BasicStyles.standardTitleFontSize
+                   }]}>
                     {data?.item?.name}
                   </Text>
                   {
@@ -103,18 +107,18 @@ class MixCard extends Component {
               <View style={Style.mixDetails}>
                 <View style={Style.mixLeftDetail}>
                   <View style={Style.detailRow}>
-                    <Text style={[Style.textBold, { color: '#969696' }]}>
+                    <Text style={[Style.textBold, { color: '#969696', fontSize: BasicStyles.standardFontSize }]}>
                       Crop
                     </Text>
-                    <Text style={{ fontSize: 15 }}>
+                    <Text style={{ fontSize: BasicStyles.standardFontSize }}>
                       {data?.item?.crop}
                     </Text>
                   </View>
                   <View style={Style.detailRow}>
-                    <Text style={[Style.textBold, { color: '#969696' }]}>
+                    <Text style={[Style.textBold, { color: '#969696', fontSize: BasicStyles.standardFontSize }]}>
                       Area
                     </Text>
-                    <Text style={{ fontSize: 15 }}>
+                    <Text style={{ fontSize: BasicStyles.standardFontSize }}>
                     {data?.item?.area + ' ' + data?.item?.unit} 
                     </Text>
                   </View>
@@ -125,12 +129,31 @@ class MixCard extends Component {
                         <View style={[Style.remainingBox, {
                           borderColor: Color.danger
                         }]}>
-                          <Text style={{ color: Color.danger, fontSize: 10, fontWeight: 'bold', marginBottom: 5 }}>
+                          <Text style={{ color: Color.danger, fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
                             REMAINING AREA
                           </Text>
-                          <Text style={{ fontWeight: 'bold', fontSize: 18}}>
-                            {data?.item?.remaining_area + ' ' + data?.item?.unit}
-                          </Text>
+                          <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <TextInput
+                              value={data.item.remaining_area}
+                              placeholder={'000'}
+                              keyboardType={'numeric'}
+                              maxLength={3}
+                              style={{
+                                fontWeight: 'bold',
+                                width: 40,
+                                fontSize: BasicStyles.standardTitleFontSize
+                              }}
+                              onChangeText={(input) => {
+                              }}
+                            />
+                            <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                              {data?.item?.unit}
+                            </Text>
+                          </View>
                         </View>
                       </View>
                     )
@@ -139,10 +162,10 @@ class MixCard extends Component {
                   data.item.partial == false && (
                     <View style={Style.mixRightDetail}>
                       <View style={Style.remainingBox}>
-                        <Text style={{ color: '#5A84EE', fontSize: 10, fontWeight: 'bold', marginBottom: 5 }}>
+                        <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
                           REMAINING AREA
                         </Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: 18}}>
+                        <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                           {data?.item?.remaining_area + ' ' + data?.item?.unit}
                         </Text>
                       </View>

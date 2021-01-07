@@ -37,8 +37,7 @@ export default {
     elevation: 2,
   },
   textBold: {
-    fontWeight: 'bold',
-    fontSize: 17
+    fontWeight: 'bold'
   },
   mixTitle: {
     flexDirection: 'row',

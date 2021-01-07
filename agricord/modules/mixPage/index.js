@@ -128,9 +128,9 @@ const MixPage = (props) => {
           return item
         }
       })
+      setTotalArea(totalArea - item.area)
       setSelectedPaddock(newSelectedPaddock)
       setPaddocks([...paddocks, ...[item]])
-      getTotalArea()
     }else{
       const newPaddocks = paddocks.filter((paddock, idx) => {
         if(paddock.id != item.id){
@@ -162,11 +162,26 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      setTotalArea(totalArea + item.area)
-      setTimeout(() => {
-        setSelectedPaddock([...selectedPaddock, ...[item]])  
-        removePaddock('available', item)
-      }, 100)
+      if(maxArea >= (item.area + totalArea)){
+        setTotalArea(totalArea + item.area)
+        setTimeout(() => {
+          setSelectedPaddock([...selectedPaddock, ...[item]])  
+          removePaddock('available', item)
+        }, 100)  
+      }else{
+        let remainingArea = maxArea - totalArea
+        let newItem = {
+          ...item,
+          remaining_area: remainingArea,
+          partialFlag: true
+        }
+        setTotalArea(totalArea + remainingArea)
+        setTimeout(() => {
+          setSelectedPaddock([...selectedPaddock, ...[newItem]])  
+          removePaddock('available', item)
+        }, 100)
+      }
+      
     }else{
       console.log('already existed')
 
@@ -274,7 +289,7 @@ const MixPage = (props) => {
             { borderBottomWidth: 3, borderBottomColor: '#9AD267' }]
           }>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Text style={[Style.textBold, { marginRight: 5, fontSize: 15 }]}>
+              <Text style={[Style.textBold, { marginRight: 5, fontSize: BasicStyles.standardTitleFontSize }]}>
                 Application rate
               </Text>
               <FontAwesomeIcon
@@ -284,13 +299,13 @@ const MixPage = (props) => {
               />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
-              <Text style={{ fontSize: 12, marginRight: 3 }}>Last Load?</Text>
+              <Text style={{ fontSize: BasicStyles.standardFontSize, marginRight: 3 }}>Last Load?</Text>
               <Switch
                 value={appRateSwitch}
                 onChangeValue={() => setAppRateSwitch(!appRateSwitch)}
                 activeText={'ON'}
                 inactiveText={'OFF'}
-                fontSize={16}
+                fontSize={BasicStyles.standardFontSize}
                 activeTextColor={'rgba(255, 255, 255, 1)'}
                 inactiveTextColor={'rgba(255, 255, 255, 1)'}
                 activeBackgroundColor={'#9AD267'}
@@ -320,11 +335,15 @@ const MixPage = (props) => {
                     marginRight: 5
                   }}
                 />
-                <Text>Applied Rate</Text>
+                <Text style={{
+                  fontSize: BasicStyles.standardFontSize
+                }}>Applied Rate</Text>
               </View>
               <View>
                 { task && task.spray_mix && (
-                    <Text style={Style.textBold}>{task.spray_mix.application_rate}/Ha</Text>
+                    <Text style={[Style.textBold, {
+                      fontSize: BasicStyles.standardFontSize
+                    }]}>{task.spray_mix.application_rate}/Ha</Text>
                   )
                   
                 }
@@ -337,8 +356,10 @@ const MixPage = (props) => {
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                 
                 <View style={Style.totalAreaBox}>
-                  <Text>{totalArea} Ha</Text>
-                  <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
+                  <Text style={{
+                    fontSize: BasicStyles.standardFontSize
+                  }}>{totalArea} Ha</Text>
+                  <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                     TOTAL AREA
                   </Text>
                 </View>  
@@ -346,7 +367,7 @@ const MixPage = (props) => {
                 {
                   (task && task.machine) && (
                     <View style={{ marginTop: 5, paddingLeft: 10 }}>
-                      <Text style={{ color: '#5A84EE', fontWeight: 'bold' }}>
+                      <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                         MAX AREA: {maxArea}HA
                       </Text>
                     </View>    
@@ -373,7 +394,9 @@ const MixPage = (props) => {
                           justifyContent: 'space-between',
                         }]}
                         >
-                        <Text style={Style.appliedPaddockText}>
+                        <Text style={[Style.appliedPaddockText, {
+                          fontSize: BasicStyles.standardTitleFontSize
+                        }]}>
                           {item.name}
                         </Text>
                         <TouchableOpacity
