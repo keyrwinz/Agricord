@@ -63,7 +63,7 @@ class MixCard extends Component {
                   flexDirection: 'row'
                 }}>
                   {
-                    (data && data.item.partialFlag && this.props.from == 'selected') && (
+                    (data && data.item.partial_flag && this.props.from == 'selected') && (
                       <TouchableOpacity
                         onPress={() => this.props.onPartialChange(data.item)}>
                         <View style={{

@@ -96,6 +96,7 @@ class TasksPage extends Component {
       }
     };
 
+    console.log('parameter', parameter)
     Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
         this.setState({
           isLoading: false

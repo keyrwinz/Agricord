@@ -85,7 +85,9 @@ export default {
 
   //tasks
   paddockPlanTasksRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params',
+  paddockPlanTasksRetrieveAvailablePaddocks: apiUrl + 'paddock_plan_tasks/retrieve_available_paddocks',
 
   // spray mix products
-  sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params'
+  sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params',
+
 };

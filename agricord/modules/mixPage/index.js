@@ -14,12 +14,14 @@ import Switch from 'react-native-customisable-switch';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCheck, faCheckCircle, faTimesCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { Color, BasicStyles } from 'common';
+import { Color, BasicStyles, Routes  } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
 import MixConfirmationModal from 'modules/modal/MixConfirmation';
 import Draggable from 'react-native-draggable';
+import { Spinner } from 'components';
+import Api from 'services/api/index.js';
 import _ from 'lodash';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -33,7 +35,7 @@ const availablePaddocks = [
     unit: 'ha',
     remaining_area: 5,
     partial: false,
-    partialFlag: true
+    partial_flag: true
   },
   {
     id: 2,
@@ -43,7 +45,7 @@ const availablePaddocks = [
     unit: 'ha',
     remaining_area: 6,
     partial: false,
-    partialFlag: false
+    partial_flag: false
   },
   {
     id: 3,
@@ -53,7 +55,7 @@ const availablePaddocks = [
     unit: 'ha',
     remaining_area: 7,
     partial: false,
-    partialFlag: false
+    partial_flag: false
   },
   {
     id: 4,
@@ -63,7 +65,7 @@ const availablePaddocks = [
     unit: 'ha',
     remaining_area: 8,
     partial: false,
-    partialFlag: false
+    partial_flag: false
   },
   {
     id: 5,
@@ -73,7 +75,7 @@ const availablePaddocks = [
     unit: 'ha',
     remaining_area: 9,
     partial: false,
-    partialFlag: false
+    partial_flag: false
   },
 ]
 
@@ -98,10 +100,30 @@ const MixPage = (props) => {
       const { task } = props.state;
       setLoading(false)
       setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+      retrieve()
     }, 100)
   }, [])
 
-  if (loading) return null
+  const retrieve = () => {
+    const { task, user } = props.state;
+    if (user == null || task == null || (task && task.spray_mix == null)) {
+      return
+    }
+    const parameter = {
+      merchant_id: user.sub_account.merchant.id,
+      spray_mix_id: task.spray_mix.id
+    };
+    setLoading(true)
+    console.log('parameter', parameter)
+    Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
+        setLoading(false)
+      },
+      error => {
+        setLoading(false)
+        console.log({error});
+      },
+    );
+  }
 
   const redirect = (route) => {
     const { task } = props.state;
@@ -162,7 +184,16 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea >= (item.area + totalArea)){
+      if(maxArea <= totalArea){
+          Alert.alert(
+            'Error Message',
+            'Now Allowed! Total area is greater than the max area.',
+            [
+              { text: 'OK', onPress: () => console.log('OK Pressed') }
+            ],
+            { cancelable: false }
+          );
+      }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
           setSelectedPaddock([...selectedPaddock, ...[item]])  
@@ -173,7 +204,7 @@ const MixPage = (props) => {
         let newItem = {
           ...item,
           remaining_area: remainingArea,
-          partialFlag: true
+          partial_flag: true
         }
         setTotalArea(totalArea + remainingArea)
         setTimeout(() => {
@@ -541,6 +572,7 @@ const MixPage = (props) => {
           />
         )
       }
+      {loading ? <Spinner mode="overlay" /> : null}
     </SafeAreaView>
   );
 }
