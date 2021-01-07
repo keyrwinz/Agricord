@@ -97,9 +97,13 @@ class MixName extends Component {
   }
 
   redirect = () => {
-    this.props.navigation.navigate('mixPageStack', {
-      details: {appliedRate: 1, status: 'Auto'},
-    });
+    const { setTask } = this.props;
+    let task = {
+      machine: null,
+      spray_mix: null
+    };
+    setTask(task);
+    this.props.navigation.navigate('applyTaskStack');
   };
 
   render() {
@@ -209,7 +213,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setTask: task => dispatch(actions.setTask(task)),
+  };
 };
 
 export default connect(
