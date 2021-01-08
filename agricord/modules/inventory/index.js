@@ -72,8 +72,8 @@ const Inventory = (props) => {
       sort: {
         title: 'asc'
       },
-      merchant_id: 2,
-      account_id: 7,
+      merchant_id: props.state.user.sub_account.merchant.id,
+      account_id: props.state.user.account_information.account_id,
       inventory_type: 'product_trace',
       type: props.state.user.account_type,
       productType: 'all',
