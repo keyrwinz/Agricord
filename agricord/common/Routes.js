@@ -47,7 +47,8 @@ export default {
   // coupons
   // couponsRetrieve: apiUrl + 'coupons/retrieve',
   // products
-  // productsRetrieve: apiUrl + 'products/retrieve_basic',
+  productsRetrieve: apiUrl + 'products/retrieve_basic',
+  productsRetrieveWithOrderId: apiUrl + 'products/retrieve_with_order_number',
   // dashboard
   // dashboardRetrieveCategoryList: apiUrl + 'dashboard/categories',
   // dashboardRetrieveFeaturedProducts: apiUrl + 'dashboard/featured',

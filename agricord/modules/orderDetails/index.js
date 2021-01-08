@@ -36,13 +36,21 @@ class OrderDetails extends Component {
   getOrderDetails = () => {
     const {selectedOrder} = this.props.state;
     let parameters = {
-      merchant_id: selectedOrder.merchant.id,
-      status: selectedOrder.status,
-      order_id: selectedOrder.order_number,
+      condition: [{
+        value: 2,
+        column: 'id',
+        clause: '='
+      }]
     };
     this.setState({isLoading: true});
+    console.log('selectedOrder', selectedOrder)
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
+    }, error => {
+      this.setState({
+        products: [],
+        isLoading: false
+      })
     });
   };
 

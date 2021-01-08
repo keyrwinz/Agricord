@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity } from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faStar, faStopwatch, faCircle, faPlay, faImage } from '@fortawesome/free-solid-svg-icons';
 import { Divider } from 'react-native-elements';
+import {NavigationActions, StackActions} from 'react-navigation';
 import { Color, BasicStyles } from 'common'
 import Config from 'src/config.js'
 import Style from './OrderCardStyle';
@@ -23,11 +24,28 @@ class OrderCard extends Component {
       ...item
     })
 
-    this.props.navigation.navigate('orderDetailsStack', {
-      data: {
-        ...item
-      }
-    })
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'orderDetailsStack',
+      action: StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+            NavigationActions.navigate({routeName: 'orderDetailsStack'}),
+        ],
+        params: {
+          data: {
+            ...item
+          }
+        }
+      })
+    });
+    this.props.navigation.dispatch(navigateAction);
+
+    // this.props.navigation.navigate('orderDetailsStack', {
+    //   data: {
+    //     ...item
+    //   }
+    // })
   }
 
   render() {

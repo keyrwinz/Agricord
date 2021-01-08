@@ -8,70 +8,6 @@ export default {
     flex: 1,
     backgroundColor: Color.white
   },
-  sliderContainer: {
-    flex: 1,
-    height: '100%',
-    width: '100%',
-    paddingTop: 10,
-    paddingHorizontal: 20,
-    backgroundColor: '#F1F1F1'
-  },
-  ScrollView: {
-    flex: 1
-  },
-  circleButton: {
-    padding: 5,
-    height: 75,
-    width: 75,  
-    borderRadius:400, 
-    backgroundColor:'#FF5B04',
-    justifyContent:'center',
-  },
-  image: {   
-    width: '100%',
-    height: 80,
-    padding: 50,
-    borderRadius:5,
-    resizeMode:'contain'
-  },
-  searchbarContainer: {
-    backgroundColor: Color.white,
-    width: '100%',
-    height: 60,
-    paddingTop: 0,
-    marginTop: 5,
-    justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: Color.gray,
-    shadowColor: Color.black,
-    shadowOffset: {
-      width: 0,
-      height: 15,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 15
-  },
-  searchbar: {
-    width: '70%',
-    marginLeft: 30,
-    paddingLeft: 15,
-    height: 35,
-    borderRadius: BasicStyles.standardBorderRadius,
-    borderColor: Color.gray,
-    borderWidth: 1,
-  },
-  searchIcon: {
-    position: 'absolute',
-    right: '21.5%',
-    top: 4.5
-  },
-  nfcIcon: {
-    position: 'absolute',
-    right: 25
-  },
-  
-  // INVENTORY ITEM SCREEN
   modalCloseBtn: {
     position: 'absolute',
     top: 10,
@@ -85,14 +21,7 @@ export default {
     padding: 35,
     paddingTop: 40,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5
+    ...BasicStyles.standardShadow,
   },
   modalTitle: {
     fontSize: 16,
@@ -109,23 +38,16 @@ export default {
     alignItems: 'center'
   },
 
-  itemDescContainer: {
-    padding: 10,
+  itemContainer: {
     marginBottom: 20,
     borderRadius: BasicStyles.standardBorderRadius,
     backgroundColor: Color.white,
     borderColor: '#FFFFFF',
-    borderWidth:1,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.9,
-    shadowRadius: 2.62,
-    elevation: 3,
-    paddingHorizontal: 20,
+    borderWidth: 1,
+    ...BasicStyles.standardShadow,
     alignItems: 'center',
+    paddingBottom: 10,
+    paddingTop: 10
   },
   itemDescription: {
     alignItems: 'center',
@@ -133,35 +55,21 @@ export default {
   itemDetailsContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    marginBottom: 10,
-    width: '90%'
-  },
-  itemDetailRow: {
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 5,
+    width: '100%',
+    paddingTop: 15,
+    paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: Color.lightGray,
   },
-  itemDetailLeft: {
-    flex: 1.1,
-    justifyContent: 'center'
-  },
-  topDetail: {
-    flex: 1.1,
-    marginTop: 10
-  },
-  itemDetailRight: {
-    flex: 0.9,
-  },
   itemDetailLabel: {
     fontSize: BasicStyles.standardFontSize,
-    color: '#969696',
-    marginBottom: 8,
-    marginTop: 0
+    color: Color.gray,
+    width: '50%',
+    fontWeight: 'bold'
   },
   itemDetailValue: {
-    fontSize: BasicStyles.standardFontSize
+    fontSize: BasicStyles.standardFontSize,
+    width: '50%',
   },
   fileUploaded: {
     paddingVertical: 5,
@@ -175,10 +83,10 @@ export default {
   Details: {
     marginTop: 10,
     width: '100%',
-    height: 490,
+    minHeight: 50,
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
-    elevation: 3,
-    paddingHorizontal: 20,
+    paddingLeft: 10,
+    paddingRight: 10
   }
 }
