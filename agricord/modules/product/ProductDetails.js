@@ -33,12 +33,13 @@ class ProductDetails extends Component {
   }
 
   componentDidMount(){
+    console.log(this.props.state.product, "prooops");
   }
 
   render() {
-    const data = this.props.route?.params?.data || null
+    const data = this.props.state.product
     const { modal } = this.state;
-
+    console.log(data, "data");
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
         <Modal
@@ -114,19 +115,19 @@ class ProductDetails extends Component {
               </View>
             </View>
 
-            <View style={Style.itemDescContainer}>
+            <View style={Style.Details}>
               <View style={Style.itemDetailsContainer}>
                 <View style={Style.itemDetailRow}>
-                  <View style={Style.itemDetailLeft}>
+                  <View style={Style.topDetail}>
                     <Text style={Style.itemDetailLabel}>
                       Manufacturer
                     </Text>
                   </View>
-                  <View style={Style.itemDetailRight}>
+                  <View style={Style.topDetail}>
                     {
                       data && (
                         <Text style={Style.itemDetailValue}>
-                          {data.manufacturer || 'No data'}
+                          {data.merchant.name || 'No data'}
                         </Text>
                       )
                     }
@@ -319,7 +320,7 @@ class ProductDetails extends Component {
 
             </View>
 
-            <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10 }}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10, marginTop: 10 }}>
               Recent Files
             </Text>
             <View

@@ -123,13 +123,15 @@ export default {
     },
     shadowOpacity: 0.9,
     shadowRadius: 2.62,
-    elevation: 10,
+    elevation: 3,
+    paddingHorizontal: 20,
     alignItems: 'center',
   },
   itemDescription: {
     alignItems: 'center',
   },
   itemDetailsContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
     marginBottom: 10,
     width: '90%'
@@ -139,21 +141,27 @@ export default {
     flexDirection: 'row',
     paddingVertical: 5,
     borderBottomWidth: 1,
-    borderBottomColor: Color.lightGray
+    borderBottomColor: Color.lightGray,
   },
   itemDetailLeft: {
     flex: 1.1,
+    justifyContent: 'center'
+  },
+  topDetail: {
+    flex: 1.1,
+    marginTop: 10
   },
   itemDetailRight: {
     flex: 0.9,
   },
   itemDetailLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#969696'
+    fontSize: BasicStyles.standardFontSize,
+    color: '#969696',
+    marginBottom: 8,
+    marginTop: 0
   },
   itemDetailValue: {
-    //
+    fontSize: BasicStyles.standardFontSize
   },
   fileUploaded: {
     paddingVertical: 5,
@@ -163,5 +171,14 @@ export default {
   fileUploadedText: {
     fontSize: 16,
     fontWeight: 'bold'
+  },
+  Details: {
+    marginTop: 10,
+    width: '100%',
+    height: 490,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    elevation: 3,
+    paddingHorizontal: 20,
   }
 }
