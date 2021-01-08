@@ -33,10 +33,11 @@ class ApplyTask extends Component {
   }
 
   componentDidMount(){
-    const {user} = this.props.state;
+    const {user } = this.props.state;
     if (user == null) {
       return
     }
+    this.setActive()
     const parameter = {
       merchant_id: user.sub_account.merchant.id
     };
@@ -49,6 +50,20 @@ class ApplyTask extends Component {
         console.log({error});
       },
     );
+  }
+
+  setActive(){
+    const { task } = this.props.state;
+    if(task != null && task.spray_mix != null){
+      this.setState({
+        selectedMix: task.spray_mix
+      })
+    }
+    if(task != null && task.machine !== null){
+      this.setState({
+        selectedMachine: task.machine
+      })
+    }
   }
 
   recentMachineHandler = item => {
