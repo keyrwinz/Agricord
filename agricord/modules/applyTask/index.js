@@ -1,3 +1,4 @@
+  
 import React, {Component} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
 import {
@@ -16,6 +17,7 @@ import ThCircleSvg from 'assets/settings/thcircle.svg';
 import {Spinner} from 'components';
 import Api from 'services/api';
 import SlidingButton from 'modules/generic/SlidingButton';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 const height = Math.round(Dimensions.get('window').height);
 
 class ApplyTask extends Component {
@@ -70,9 +72,10 @@ class ApplyTask extends Component {
   };
 
   selectPaddocks = () => {
+    // console.log(this.state, "staaaaaaaaaaaaaaaaaate");
     const { setTask } = this.props;
     const { selectedMachine, selectedMix } = this.state;
-    if (selectedMachine && selectedMix) {
+    if (this.state.selectedMachine != null && this.state.selectedMix != null) {
       let task = {
         machine: selectedMachine,
         spray_mix: selectedMix
@@ -92,10 +95,10 @@ class ApplyTask extends Component {
   handleRemoveItem = item => {
     switch (item) {
       case 'Machine':
-        this.setState({selectedMachine: ''});
+        this.setState({selectedMachine: null});
         break;
       case 'Mix':
-        this.setState({selectedMix: ''});
+        this.setState({selectedMix: null});
         break;
       default:
         break;
@@ -139,11 +142,21 @@ class ApplyTask extends Component {
               }}>
               {
                 data && (
-                  <Task title="Select" icon={faTh} height={200} key={2}>
-                    <View style={{
-                      zIndex: 20,
-                      width: '100%'
-                    }}>
+                  <View style={styles.SelectContainer}>
+                    <View style={styles.SelectTitleContainer}>
+                      <View style={styles.TitleIconContainer}>
+                        <FontAwesomeIcon
+                          color="#FFCA0C"
+                          icon={faTh}
+                          size={25}
+                          style={styles.iconStyle}
+                        />
+                      </View>
+                      <View style={styles.TitleTextContainer}>
+                        <Text style={styles.TitleTextStyle}>Select</Text>
+                      </View>
+                    </View>
+                  <View style={styles.ChildrenContainer}>
                       <CustomPicker
                         type="Machine"
                         data={data.machines}
@@ -155,8 +168,6 @@ class ApplyTask extends Component {
                         handleSelectedPicker={this.handleSelectedPicker}
                         handleRemoveItem={() => this.pickerMachineHandler(null)}
                       />
-                    </View>
-                    <View style={{ zIndex: 10, width: '100%' }}>
                       <CustomPicker
                         type="Mix"
                         data={data.spray_mixes}
@@ -169,7 +180,7 @@ class ApplyTask extends Component {
                         handleRemoveItem={() => this.pickerMixHandler(null)}
                       />
                     </View>
-                  </Task>
+                  </View>
                 )
               }
             </View>
@@ -177,7 +188,7 @@ class ApplyTask extends Component {
         </ScrollView>
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
         {
-          (selectedMachine && selectedMix) && (
+          (this.state.selectedMachine != null && this.state.selectedMix != null) && (
             <SlidingButton
               title={'Select Paddocks'}
               label={'Swipe Right to Complete'}
