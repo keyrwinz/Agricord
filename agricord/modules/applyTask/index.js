@@ -1,4 +1,3 @@
-  
 import React, {Component} from 'react';
 import {View, Text, ScrollView, Dimensions} from 'react-native';
 import {
@@ -75,11 +74,12 @@ class ApplyTask extends Component {
   };
 
   pickerMachineHandler = item => {
-    this.setState({selectedMachine: item});
+    console.log(this.state.data[item], "selected");
+    this.setState({selectedMachine: this.state.data.machines[item]});
   };
 
   pickerMixHandler = item => {
-    this.setState({selectedMix: item});
+    this.setState({selectedMix: this.state.data.spray_mixes[item]});
   };
 
   handleSelectedPicker = index => {
@@ -87,7 +87,6 @@ class ApplyTask extends Component {
   };
 
   selectPaddocks = () => {
-    // console.log(this.state, "staaaaaaaaaaaaaaaaaate");
     const { setTask } = this.props;
     const { selectedMachine, selectedMix } = this.state;
     if (this.state.selectedMachine != null && this.state.selectedMix != null) {
@@ -146,7 +145,7 @@ class ApplyTask extends Component {
                     key={2}
                     selected={selectedMix}
                     handleSelect={this.recentMixHandler}
-                    handleRemoveItem={() => this.recentMachineHandler(null)}
+                    handleRemoveItem={() => this.recentMixHandler(null)}
                   />
                 </Task>
               )
