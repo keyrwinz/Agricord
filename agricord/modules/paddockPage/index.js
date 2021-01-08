@@ -224,7 +224,7 @@ class paddockPage extends Component{
       <TouchableOpacity
       onPress={()=>{
         this.props.navigation.navigate('mixNameStack', {
-          data: item.spray_mix
+          data: item
         })
       }}
       style={[Style.paddockContainer]}

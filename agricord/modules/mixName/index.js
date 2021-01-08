@@ -103,7 +103,7 @@ class MixName extends Component {
     const { setTask } = this.props;
     let task = {
       machine: null,
-      spray_mix: this.props.navigation.state.params.data
+      spray_mix: this.props.navigation.state.params.data ? this.props.navigation.state.params.data.spray_mix : null
     };
     setTask(task);
     setTimeout(() => {
