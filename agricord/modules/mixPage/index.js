@@ -91,7 +91,7 @@ const MixPage = (props) => {
   const [mixConfirmation, setMixConfirmation] = useState(false)
   const [selectedPaddock, setSelectedPaddock] = useState([])
   const [totalArea, setTotalArea] = useState(0)
-  const [paddocks, setPaddocks] = useState(availablePaddocks)
+  const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -117,9 +117,15 @@ const MixPage = (props) => {
     console.log('parameter', parameter)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
         setLoading(false)
+        if(response.data !== null && response.data.length > 0){
+          setPaddocks(response.data)
+        }else{
+          setPaddocks([])
+        }
       },
       error => {
         setLoading(false)
+        setPaddocks([])
         console.log({error});
       },
     );
