@@ -103,7 +103,9 @@ class MixName extends Component {
       spray_mix: null
     };
     setTask(task);
-    this.props.navigation.navigate('applyTaskStack');
+    setTimeout(() => {
+      this.props.navigation.navigate('applyTaskStack');
+    }, 100)
   };
 
   render() {
