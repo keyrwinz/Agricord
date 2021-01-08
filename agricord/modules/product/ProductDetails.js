@@ -33,13 +33,11 @@ class ProductDetails extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props.state.product, "prooops");
   }
 
   render() {
     const data = this.props.state.product
     const { modal } = this.state;
-    console.log(data, "data");
     return (
       <SafeAreaView style={{ flex: 1, position: 'relative' }}>
         <Modal
