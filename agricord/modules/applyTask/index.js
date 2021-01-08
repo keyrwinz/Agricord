@@ -120,6 +120,7 @@ class ApplyTask extends Component {
                     type="Machine"
                     title="Machines"
                     key={1}
+                    selected={selectedMachine}
                     handleSelect={this.recentMachineHandler}
                     handleRemoveItem={() => this.recentMachineHandler(null)}
                   />
@@ -128,6 +129,7 @@ class ApplyTask extends Component {
                     data={data.recent_spray_mixes}
                     title="Spray Mixes"
                     key={2}
+                    selected={selectedMix}
                     handleSelect={this.recentMixHandler}
                     handleRemoveItem={() => this.recentMachineHandler(null)}
                   />
