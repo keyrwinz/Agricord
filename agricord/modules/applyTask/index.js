@@ -145,7 +145,7 @@ class ApplyTask extends Component {
                     key={2}
                     selected={selectedMix}
                     handleSelect={this.recentMixHandler}
-                    handleRemoveItem={() => this.recentMachineHandler(null)}
+                    handleRemoveItem={() => this.recentMixHandler(null)}
                   />
                 </Task>
               )
