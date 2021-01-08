@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     height: 280,
+    marginBottom: 35
   },
   TitleContainer: {
     flexDirection: 'row',
