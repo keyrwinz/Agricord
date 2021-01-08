@@ -218,13 +218,13 @@ class paddockPage extends Component{
     )
   }
 
-  renderMixCards = () => {
+  renderMixCards = (item) => {
     const { paddock } = this.props.state;
     return(
       <TouchableOpacity
       onPress={()=>{
         this.props.navigation.navigate('mixNameStack', {
-          data: paddock
+          data: item.spray_mix
         })
       }}
       style={[Style.paddockContainer]}
@@ -247,7 +247,7 @@ class paddockPage extends Component{
               <Text style={{
                 fontWeight:'bold',
                 fontSize: BasicStyles.standardTitleFontSize
-              }}>Spray Mix</Text>
+              }}>{item.spray_mix.name}</Text>
             </View>
           </View>
           <View style={[Style.paddockDate, {
@@ -278,7 +278,7 @@ class paddockPage extends Component{
           marginTop: 15
         }}>
           {data && this.renderTopCard()}
-          {data && this.renderMixCards()}        
+          {data && this.renderMixCards(data)}        
         </View>
         <TaskButton navigation={this.props.navigation}/>
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}

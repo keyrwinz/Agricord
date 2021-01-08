@@ -53,6 +53,7 @@ class ApplyTask extends Component {
 
   setActive(){
     const { task } = this.props.state;
+    console.log('task', task)
     if(task != null && task.spray_mix != null){
       this.setState({
         selectedMix: task.spray_mix
