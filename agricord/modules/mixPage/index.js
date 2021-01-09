@@ -93,6 +93,7 @@ const MixPage = (props) => {
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
+  const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
   useEffect(() => {
@@ -574,7 +575,7 @@ const MixPage = (props) => {
             onClose={() => setMixConfirmation(false)}
             onSuccess={() => redirect('batchStack')}
             data={selectedPaddock}
-            volume={'BATCH 64HA 4, 160 L'}
+            volume={'BATCH ' + totalArea + 'HA ' + parseFloat(task.machine.capacity * totalArea).toFixed(2) + ' L'}
           />
         )
       }
