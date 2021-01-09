@@ -87,6 +87,7 @@ export default {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
+    ...BasicStyles.standardShadow,
   }
 }
