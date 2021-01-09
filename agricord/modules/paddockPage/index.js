@@ -247,7 +247,7 @@ class paddockPage extends Component{
               <Text style={{
                 fontWeight:'bold',
                 fontSize: BasicStyles.standardTitleFontSize
-              }}>{item.spray_mix.name}</Text>
+              }}>Spray Mix</Text>
             </View>
           </View>
           <View style={[Style.paddockDate, {
@@ -255,7 +255,7 @@ class paddockPage extends Component{
           }]}>   
             <Text style={{
               fontSize: BasicStyles.standardFontSize
-            }}>Contents</Text>
+            }}>{item.spray_mix.name}</Text>
           </View>  
         </React.Fragment>
       </TouchableOpacity>
