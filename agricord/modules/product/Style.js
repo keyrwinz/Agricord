@@ -88,6 +88,6 @@ export default {
     borderRadius: 12,
     paddingLeft: 10,
     paddingRight: 10,
-    ...BasicStyles.standardShadow,
+    ...BasicStyles.standardShadow
   }
 }
