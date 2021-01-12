@@ -28,7 +28,9 @@ class RecentTasks extends Component {
             }
             this.setState({isClicked: !this.state.isClicked});
           }}>
-          <Text style={[styles.TaskTextStyle, {
+          <Text
+            numberOfLines={1}
+            style={[styles.TaskTextStyle, {
             color: selected && selected.id == item.id ? Color.white : Color.blue
           }]}>{item.name}</Text>
         </TouchableOpacity>
