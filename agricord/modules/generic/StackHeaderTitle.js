@@ -21,7 +21,7 @@ class StackHeaderTitle extends Component {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          marginRight: Platform.os == 'ios' ? 0 : '25%'
+          marginRight: Platform.OS == 'ios' ? 0 : '25%'
         }}>
         <TitleLogo />
         <Text
