@@ -27,6 +27,7 @@ import TitleLogo from 'assets/inventory/title_logo.svg';
 import SearchIcon from 'assets/inventory/search_icon.svg';
 import NfcIcon from 'assets/inventory/nfc_icon.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
 
 const InventoryStack = createStackNavigator()
 
@@ -240,24 +241,7 @@ const InventoryScreen = (props) => {
         children={(childProps) => <InventoryPage {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
-            <View style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '25%',
-                }}>
-              <TitleLogo />
-              <Text
-                style={{
-                  color: '#000',
-                  marginLeft: 7,
-                  fontWeight: 'bold',
-                  fontSize: 20
-                }}
-                >
-                INVENTORY
-              </Text>
-            </View>
+            <StackHeaderTitle title={'INVENTORY'}/>
           ),
           headerLeft: () => (
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>

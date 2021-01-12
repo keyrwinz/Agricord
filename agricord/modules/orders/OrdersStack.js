@@ -6,6 +6,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {BasicStyles} from 'common';
 import Order from './index';
 import {connect} from 'react-redux';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -28,25 +29,7 @@ const OrderScreen = props => {
         options={({route}) => {
           return {
             headerTitle: () => (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '25%',
-                }}>
-                <TitleLogo />
-                <Text
-                  style={{
-                    color: '#000',
-                    marginLeft: 7,
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                    letterSpacing: 3,
-                  }}>
-                  ORDERS
-                </Text>
-              </View>
+              <StackHeaderTitle title={'ORDERS'}/>
             ),
             headerLeft: () => (
               <View
