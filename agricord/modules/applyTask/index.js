@@ -36,7 +36,7 @@ class ApplyTask extends Component {
     if (user == null) {
       return
     }
-    this.setActive()
+    // this.setActive()
     const parameter = {
       merchant_id: user.sub_account.merchant.id
     };
@@ -44,6 +44,9 @@ class ApplyTask extends Component {
     Api.request(Routes.batchesRetrieveApplyTasks, parameter, response => {
         this.setState({isLoading: false});
         this.setState({data: response.data});
+        if(this.props.state.task) {
+          this.setState({selectedMix: this.props.state.task.spray_mix.name})
+        }
       }, error => {
         this.setState({isLoading: false});
         console.log({error});
@@ -90,6 +93,7 @@ class ApplyTask extends Component {
   selectPaddocks = () => {
     const { setTask } = this.props;
     const { selectedMachine, selectedMix } = this.state;
+    const { task } = this.props.state;
     if (this.state.selectedMachine != null && this.state.selectedMix != null) {
       let task = {
         machine: selectedMachine,
@@ -123,6 +127,7 @@ class ApplyTask extends Component {
   render() {
     const { isLoading, data, selectedMix, selectedMachine } = this.state;
     const { mixConfirmation } = this.state;
+    const { task } = this.props.state;
     return (
       <View style={styles.MainContainer}>
         <ScrollView style={{backgroundColor: Color.containerBackground, minHeight: height}}>
@@ -144,7 +149,7 @@ class ApplyTask extends Component {
                     data={data.recent_spray_mixes}
                     title="Spray Mixes"
                     key={2}
-                    selected={selectedMix}
+                    selected={this.state.selectedMix}
                     handleSelect={this.recentMixHandler}
                     handleRemoveItem={() => this.recentMixHandler(null)}
                   />
@@ -190,6 +195,7 @@ class ApplyTask extends Component {
                         data={data.spray_mixes}
                         key={2}
                         styles={{zIndex: 500}}
+                        selected={task != null ? task.spray_mix : null}
                         handleSelect={this.pickerMixHandler}
                         index={2}
                         allowOpen={this.state.selectedPicker === 2 ? true : false}

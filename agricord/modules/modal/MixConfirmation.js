@@ -111,7 +111,7 @@ class MixConfirmation extends Component {
             <SlidingButtonRelative
               icon={faCheck}
               title={this.props.volume}
-              label={'Swip Right to Confirm'}
+              label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
               widthLeft={'30%'}
               widthRight={'70%'}

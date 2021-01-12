@@ -17,7 +17,7 @@ class RecentTasks extends Component {
       return (
         <TouchableOpacity
           style={[styles.Task, {
-            backgroundColor: selected && selected.id == item.id ? Color.blue : Color.white
+            backgroundColor: (selected && selected.id == item.id) || (selected == item.id) || (selected == data[index]) ? Color.blue : Color.white
           }]}
           key={index}
           onPress={() => {

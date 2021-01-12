@@ -14,9 +14,18 @@ import styles from 'modules/applyTask/Styles.js';
 class CustomPicker extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
+    let indexItem =  null;
+    if(this.props.selected) {
+      this.props.data.map((element, index) => {
+        if(element.name == this.props.selected.name || element == this.props.selected.name) {
+          indexItem = index;
+        }
+      })
+    }
     this.state = {
       isPressed: false,
-      selectedItem: null,
+      selectedItem: indexItem,
     };
   }
 

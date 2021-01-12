@@ -77,7 +77,7 @@ class BatchBuild extends Component {
             <SlidingButtonRelative
               icon={faCheck}
               title={'ADD 76,8 L'}
-              label={'Swip Right to Confirm'}
+              label={'Swipe Right to Confirm'}
               />
           }
           {/*
@@ -127,9 +127,8 @@ class BatchBuild extends Component {
           </RNSlidingButton>
           <View style={styles.SwipeTextContainer}>
             <Text style={styles.SwipeTextStyle}>Swipe Right to Confirm</Text>
-          </View>
+          </View>*/}
         </View>
-      */}
       </Modal>
     );
   }
