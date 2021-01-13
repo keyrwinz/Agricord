@@ -41,21 +41,70 @@ class Slider extends Component {
     this.setState({ collapsed: route });
   };
 
+  getRouteName(route){
+    switch(route){
+      case 'AccountSettings':
+        return {
+          route: 'Settings',
+          index: 0
+        };
+      case 'AppSettings':
+        return {
+          route: 'Settings',
+          index: 1
+        };
+      case 'UpcomingOrders': 
+        return {
+          route: 'Orders',
+          index: 0
+        };
+      case 'HistoricalOrders': 
+        return {
+          route: 'Orders',
+          index: 1
+        };
+      case 'InventoryHerbicides':
+        return {
+          route: 'INVENTORY',
+          index: 0
+        };
+      case 'InventoryFungicides':
+        return {
+          route: 'INVENTORY',
+          index: 1
+        };
+      case 'InventoryInsecticides': 
+        return {
+          route: 'INVENTORY',
+          index: 2
+        };
+      case 'InventoryOther': 
+        return {
+          route: 'INVENTORY',
+          index: 3
+        };
+      case 'TasksInProgress':
+        return {
+          route: 'TASKS',
+          index: 0
+        };
+      case 'TasksDue': 
+        return {
+          route: 'TASKS',
+          index: 1
+        };
+      case 'TasksHistory': 
+        return {
+          route: 'TASKS',
+          index: 2
+        };
+    }
+  }
+
   navigateToScreen = (route, index) => {
     this.props.navigation.toggleDrawer();
 
-    // const navigateAction = NavigationActions.navigate({
-    //   routeName: route
-    // });
-    // this.props.navigation.dispatch(navigateAction);
-    // const { setActiveRoute } = this.props;
-    // setActiveRoute(null)
-    if(route == 'AppSettings' || route == 'AccountSettings'){
-      const { setSetting } = this.props;
-      setSetting(index)
-    }
-
-    console.log('selectedroute/index', route + '/' + index)
+    let selected = this.getRouteName(route)
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'drawerStack',
@@ -63,7 +112,10 @@ class Slider extends Component {
         index: 0,
         key: null,
         actions: [
-            NavigationActions.navigate({routeName: route}),
+            NavigationActions.navigate({routeName: route, params: {
+              initialRouteName: selected ? selected.route : 'Home',
+              index: selected ? selected.index : 0
+            }}),
         ]
       })
     });
@@ -577,7 +629,6 @@ const mapDispatchToProps = dispatch => {
   return {
     logout: () => dispatch(actions.logout()),
     setActiveRoute: (route) => dispatch(actions.setActiveRoute(route)),
-    setSetting: (setting) => dispatch(actions.setSetting(setting)),
   };
 };
 

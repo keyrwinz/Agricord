@@ -41,13 +41,11 @@ class OrdersPage extends Component {
 
   componentDidMount() {
     const {user} = this.props.state;
+    this.setState({
+      activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
+    })
     if(user == null){
       return
-    }
-    if (this.props.initialPage != null) {
-      if (this.props.initialPage == 'HistoricalOrders') {
-        this.setState({activeIndex: 1});
-      }
     }
     this.retrieve(true);
   }

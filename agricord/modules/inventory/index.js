@@ -107,21 +107,21 @@ const Inventory = (props) => {
   }
 
   useEffect(() => {
-    if (props.initialPage !=null) {
-      switch (props.initialPage) {
-        case 'InventoryHerbicides':
+    if (props.parentNav.state.params !=null) {
+      switch (props.parentNav.state.params.index) {
+        case 0:
           setActiveIndex(0)
           setActiveTags('Herbicide')
           break;
-        case 'InventoryFungicides':
+        case 1:
           setActiveIndex(1)
           setActiveTags('Fungicide')
           break;
-        case 'InventoryInsecticides':
+        case 2:
           setActiveIndex(2)
           setActiveTags('Insecticide')
           break;
-        case 'InventoryOther':
+        case 3:
           setActiveIndex(3)
           setActiveTags('Other')
           break;

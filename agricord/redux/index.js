@@ -26,7 +26,6 @@ const types = {
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
   SET_TASK: 'SET_TASK',
-  SET_SETTING: 'SET_SETTING',
   SET_MIX_NAME: 'SET_MIX_NAME',
   SET_PADDOCK: 'SET_PADDOCK',
   SET_PRODUCT: 'SET_PRODUCT',
@@ -100,9 +99,6 @@ export const actions = {
   setTask(task) {
     return {type: types.SET_TASK, task};
   },
-  setSetting(setting){
-    return { type: types.SET_SETTING, setting };
-  },
   setMixName(mix){
     return { type: types.SET_MIX_NAME, mix };
   },
@@ -133,10 +129,9 @@ const initialState = {
   productFilter: [],
   selectedOrder: null,
   task: null,
-  appSetting: 0,
   mix: null,
   paddock: null,
-  product: null
+  product: null,
 };
 
 storeData = async (key, value) => {
@@ -425,11 +420,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         task,
-      };
-    case types.SET_SETTING:
-      return {
-        ...state,
-        appSetting: setting,
       };
     case types.SET_MIX_NAME:
       return {
