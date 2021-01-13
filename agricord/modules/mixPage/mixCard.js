@@ -119,7 +119,7 @@ class MixCard extends Component {
                       Area
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data?.item?.area + ' ' + data?.item?.unit} 
+                    {data?.item?.area + ' ' + data?.item?.units} 
                     </Text>
                   </View>
                 </View>
@@ -151,7 +151,7 @@ class MixCard extends Component {
                               }}
                             />
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                              {data?.item?.unit}
+                              {data?.item?.units}
                             </Text>
                           </View>
                         </View>
@@ -166,7 +166,7 @@ class MixCard extends Component {
                           REMAINING AREA
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {data?.item?.remaining_area + ' ' + data?.item?.unit}
+                          {data?.item?.remaining_area + ' ' + data?.item?.units}
                         </Text>
                       </View>
                     </View>
