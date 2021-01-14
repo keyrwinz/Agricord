@@ -107,7 +107,7 @@ class MixName extends Component {
     };
     setTask(task);
     setTimeout(() => {
-      this.props.navigation.navigate('applyTaskStack');
+      this.props.navigation.navigate('applyTaskStack', {fromMix: true});
     }, 100)
   };
 
