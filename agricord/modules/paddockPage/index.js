@@ -88,19 +88,24 @@ class paddockPage extends Component{
         {
           (paddock && paddock.from == "due" && data) && (
             <React.Fragment>
-              <View style={Style.imageContainer}>  
+              <View style={Style.imageContainer}>
                 <Image
                   style={Style.image}
-                  source={require('assets/FieldPea.png')}
-                  />
+                  source={data.crop_name.toLowerCase() == 'field pea' ? require('assets/FieldPea.png') :
+                          data.crop_name.toLowerCase() == 'canola' ? require('assets/Canola.png') :
+                          data.crop_name.toLowerCase() == 'wheat' ? require('assets/Wheat.png') :
+                          data.crop_name.toLowerCase() == 'fallow' ? require('assets/Fallow.png') :
+                          require('assets/Canola.png')}
+                />
               </View>
               <View style={Style.textContainer}>
-                <Text style={Style.text}>Field Pea</Text>
+                {/* <Text style={Style.text}>Field Pea</Text> */}
+                <Text style={Style.text}>{data.crop_name}</Text>
                 <Text style={{
                     textAlign:'center',
                     fontSize: BasicStyles.standardFontSize,
                     color: Color.gray
-                  }}>{data.crop_name}</Text> 
+                  }}>CROP</Text> 
               </View>
               <Divider style={{
                   width:'90%'
