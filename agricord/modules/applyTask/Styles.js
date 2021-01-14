@@ -100,13 +100,14 @@ const styles = StyleSheet.create({
     fontSize: BasicStyles.titleText.fontSize,
   },
   Task: {
-    height: 35,
-    width: 90,
+    height: 33,
+    width: 85,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#5A84EE',
     borderRadius: 12,
+    margin: 1
   },
   TaskTextStyle: {
     fontSize: BasicStyles.normalText.fontSize,
