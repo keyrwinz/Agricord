@@ -50,13 +50,23 @@ class CustomPicker extends Component {
     const { type, select } = this.props;
     const { selectedItem } = this.state;
     return this.checkIfAllowDropdown() && this.props.data.length > 0 ? (
-       <View style={styles.OptionsContainer} onStartShouldSetResponder={() => true}>
-        <ScrollView>
+       <View style={[styles.OptionsContainer, {
+        zIndex: this.props.zIndex + 30
+       }]} onStartShouldSetResponder={() => true}>
+        <ScrollView styles={{
+          position: 'relative',
+          zIndex: this.props.zIndex + 100,
+          height: 170,
+          width: '100%'
+        }}>
           {this.props.data.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={styles.OptionContainer}
+                style={[styles.OptionContainer, {
+                  zIndex: this.props.zIndex + 50,
+                  position: 'relative'
+                }]}
                 onPress={() => {
                   this.handleSelect(item);
                   this.props.handleSelect(item);
@@ -151,7 +161,7 @@ class CustomPicker extends Component {
     console.log('select', select)
 
     return (
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{width: '100%', alignItems: 'center', position: 'relative', zIndex: this.props.zIndex}}>
         <TouchableOpacity
           style={[
             styles.PickerContainer,
@@ -170,6 +180,8 @@ class CustomPicker extends Component {
               justifyContent: 'flex-start',
               alignItems: 'center',
               paddingLeft: 20,
+              position: 'relative',
+              zIndex: this.props.zIndex + 10
             }}>
             <View
               style={{
@@ -182,6 +194,8 @@ class CustomPicker extends Component {
                 borderRadius: select !== null ? 7 : 0,
                 backgroundColor,
                 flexDirection: 'row',
+                zIndex: this.props.zIndex + 20,
+                position: 'relative'
               }}>
               <Text
                 style={{

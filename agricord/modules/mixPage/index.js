@@ -378,31 +378,6 @@ const MixPage = (props) => {
                 }}>Applied Rate</Text>
               </View>
               <View>
-                <Text style={[Style.textBold, {
-                  fontSize: BasicStyles.standardFontSize
-                }]}>{task.spray_mix.application_rate + '/ Ha'}</Text>
-              </View>
-            </View>
-          </View>
-
-          {/*
-          <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
-            <View style={Style.appliedRate}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <LinearGradient
-                  colors={['#ABD770', '#D3E584']}
-                  style={{
-                    height: 15,
-                    width: 15,
-                    borderRadius: 7.5,
-                    marginRight: 5
-                  }}
-                />
-                <Text style={{
-                  fontSize: BasicStyles.standardFontSize
-                }}>Applied Rate</Text>
-              </View>
-              <View>
                 { (task && task.spray_mix) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
@@ -479,7 +454,7 @@ const MixPage = (props) => {
                 )
               }
             </View>
-          </View>*/}
+          </View>
           {
             (selectedPaddock.length > 0) && (
               <TouchableOpacity

@@ -145,8 +145,8 @@ class ApplyTask extends Component {
     return (
       <View style={styles.MainContainer}>
         <View style={styles.Contain}></View>
-        <ScrollView style={{backgroundColor: Color.containerBackground, minHeight: height}}>
-          <View style={[styles.ApplyTaskContainer, {zIndex: 0}]}>
+        <ScrollView style={{backgroundColor: Color.containerBackground, minHeight: height, position: 'relative', zIndex: 0}}>
+          <View style={[styles.ApplyTaskContainer, {zIndex: 0, position: 'relative'}]}>
             {
               data && (
                 <Task title="Recent" icon={faHistory} height={240} key={1}>
@@ -173,13 +173,17 @@ class ApplyTask extends Component {
             }
             
             <View style={{
-                zIndex: 200,
                 width: '100%',
-                alignItems: 'center'
+                alignItems: 'center',
+                position: 'relative',
+                zIndex: 0
               }}>
               {
                 data && (
-                  <View style={styles.SelectContainer}>
+                  <View style={[styles.SelectContainer, {
+                    position: 'relative',
+                    zIndex: 2
+                  }]}>
                     <View style={styles.SelectTitleContainer}>
                       <View style={styles.TitleIconContainer}>
                         <FontAwesomeIcon
@@ -193,7 +197,9 @@ class ApplyTask extends Component {
                         <Text style={styles.TitleTextStyle}>Select</Text>
                       </View>
                     </View>
-                  <View style={styles.ChildrenContainer}>
+                  <View style={[styles.ChildrenContainer, {
+                    zIndex: 10
+                  }]}>
                       <CustomPicker
                         type="Machine"
                         data={data.machines}
@@ -205,6 +211,7 @@ class ApplyTask extends Component {
                         allowOpen={this.state.selectedPicker === 1 ? true : false}
                         handleSelectedPicker={this.handleSelectedPicker}
                         handleRemoveItem={() => this.pickerMachineHandler(null)}
+                        zIndex={30}
                       />
                       <CustomPicker
                         type="Mix"
@@ -218,6 +225,7 @@ class ApplyTask extends Component {
                         allowOpen={this.state.selectedPicker === 2 ? true : false}
                         handleSelectedPicker={this.handleSelectedPicker}
                         handleRemoveItem={() => this.pickerMixHandler(null)}
+                        zIndex={25}
                       />
                     </View>
                   </View>

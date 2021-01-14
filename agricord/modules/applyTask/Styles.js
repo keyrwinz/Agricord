@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     elevation: 2,
     borderRadius: 5,
-    flex: 1,
-    position: 'absolute',
+    position: 'absolute'
   },
   OptionContainer: {
     width: '100%',
@@ -128,8 +127,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    height: 280,
-    marginBottom: 35
+    marginBottom: 35,
+    paddingBottom: 25
   },
   TitleContainer: {
     flexDirection: 'row',
@@ -165,7 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
-    zIndex: 0,
+    zIndex: 5,
+    position: 'relative'
   },
 });
 
