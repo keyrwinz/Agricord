@@ -50,7 +50,7 @@ class CustomPicker extends Component {
     const { type } = this.props;
     return this.checkIfAllowDropdown() && this.props.data.length > 0 ? (
        <View style={styles.OptionsContainer} onStartShouldSetResponder={() => true}>
-        <ScrollView style={{height: 170}} contentContainerStyle={{paddingBottom: 50}}>
+        <ScrollView>
           {this.props.data.map((item, index) => {
             return (
               <TouchableOpacity
@@ -113,22 +113,33 @@ class CustomPicker extends Component {
 
   render() {
     const {selectedItem, isPressed} = this.state;
+    const { select } = this.props;
+    var spray = null;
+    if(select) {
+      this.props.data.map((element, index) => {
+        if(element.name == select) {
+          spray = index;
+        }
+      })
+    }
+    // this.props.handleSelect(spray);
+
     let textColor = '';
     let backgroundColor = '';
 
     // textColor
     if (isPressed) {
       textColor = '#FFFFFF';
-    } else if (selectedItem !== null) {
+    } else if (select !== null) {
       textColor = '#094EFF';
     } else {
       textColor = '#A1A1A1';
     }
 
     // backgroundColor
-    if (selectedItem !== null && isPressed) {
+    if (select !== null && isPressed) {
       backgroundColor = '#5A84EE';
-    } else if (selectedItem !== null) {
+    } else if (select !== null) {
       backgroundColor = '#E1EAFF';
     } else if (isPressed) {
       backgroundColor = '#5A84EE';
@@ -163,9 +174,9 @@ class CustomPicker extends Component {
                 justifyContent: 'center',
                 paddingVertical: 3,
                 paddingHorizontal: 4,
-                borderColor: selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
-                borderWidth: selectedItem !== null ? 1 : 0,
-                borderRadius: selectedItem !== null ? 7 : 0,
+                borderColor: select !== null ? '#7AA0FF' : '#FFFFFF',
+                borderWidth: select !== null ? 1 : 0,
+                borderRadius: select !== null ? 7 : 0,
                 backgroundColor,
                 flexDirection: 'row',
               }}>
@@ -174,11 +185,11 @@ class CustomPicker extends Component {
                   textAlign: 'left',
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
-                {this.state.selectedItem !== null
-                  ? this.props.data[this.state.selectedItem].name
+                {select !== null
+                  ? (spray ? this.props.data[spray].name : this.props.data[select].name)
                   : `Selected ${this.props.type}`}
               </Text>
-              {this.state.selectedItem !== null && (
+              {select !== null && (
                 <TouchableOpacity
                   onPress={() => {
                     this.handleRemove();

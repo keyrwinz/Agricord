@@ -17,21 +17,21 @@ class RecentTasks extends Component {
       return (
         <TouchableOpacity
           style={[styles.Task, {
-            backgroundColor: (selected && selected.id == item.id) || (selected == item.id) || (selected == data[index]) ? Color.blue : Color.white
+            backgroundColor: (selected == index) ? Color.blue : Color.white
           }]}
           key={index}
           onPress={() => {
             if (this.state.isClicked) {
               this.props.handleRemoveItem();
             } else {
-              this.props.handleSelect(item);
+              this.props.handleSelect(index);
             }
             this.setState({isClicked: !this.state.isClicked});
           }}>
           <Text
             numberOfLines={1}
             style={[styles.TaskTextStyle, {
-            color: selected && selected.id == item.id ? Color.white : Color.blue
+            color: selected == index ? Color.white : Color.blue
           }]}>{item.name}</Text>
         </TouchableOpacity>
       );
