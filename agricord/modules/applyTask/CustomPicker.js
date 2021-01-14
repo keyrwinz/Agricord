@@ -8,7 +8,7 @@ import {
   faTractor,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 import styles from 'modules/applyTask/Styles.js';
 
 class CustomPicker extends Component {
@@ -47,7 +47,8 @@ class CustomPicker extends Component {
   };
 
   renderOptions = () => {
-    const { type } = this.props;
+    const { type, select } = this.props;
+    const { selectedItem } = this.state;
     return this.checkIfAllowDropdown() && this.props.data.length > 0 ? (
        <View style={styles.OptionsContainer} onStartShouldSetResponder={() => true}>
         <ScrollView>
@@ -57,14 +58,14 @@ class CustomPicker extends Component {
                 key={index}
                 style={styles.OptionContainer}
                 onPress={() => {
-                  this.handleSelect(index);
-                  this.props.handleSelect(index);
-                  this.setState({isPressed: false, selectedItem: index});
+                  this.handleSelect(item);
+                  this.props.handleSelect(item);
+                  this.setState({isPressed: false, selectedItem: item});
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
                     color={
-                      this.state.selectedItem === index ? '#5A84EE' : '#9F9F9F'
+                      select && select.id === item.id ? Color.blue : Color.gray
                     }
                     icon={type == 'Machine' ? faTractor : faFlask}
                     size={25}
@@ -77,7 +78,7 @@ class CustomPicker extends Component {
                       styles.OptionTextStyle,
                       {
                         color:
-                          this.state.selectedItem === index
+                         select && select.id === item.id
                             ? '#5A84EE'
                             : '#000000',
                       },
@@ -93,9 +94,9 @@ class CustomPicker extends Component {
     ) : null;
   };
 
-  handleSelect = index => {
+  handleSelect = item => {
     this.setState({
-      selectedItem: index,
+      selectedItem: item,
     });
   };
 
@@ -147,6 +148,8 @@ class CustomPicker extends Component {
       backgroundColor = '#FFFFFF';
     }
 
+    console.log('select', select)
+
     return (
       <View style={{width: '100%', alignItems: 'center'}}>
         <TouchableOpacity
@@ -186,7 +189,7 @@ class CustomPicker extends Component {
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
                 {select !== null
-                  ? (spray ? this.props.data[spray].name : this.props.data[select].name)
+                  ? select.name
                   : `Selected ${this.props.type}`}
               </Text>
               {select !== null && (

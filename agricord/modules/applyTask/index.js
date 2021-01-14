@@ -40,6 +40,7 @@ class ApplyTask extends Component {
     if (user == null) {
       return
     }
+    this.setActive()
     const parameter = {
       merchant_id: user.sub_account.merchant.id
     };
@@ -72,11 +73,23 @@ class ApplyTask extends Component {
   }
 
   recentMachineHandler = item => {
-    this.setState({selectedMachine: item});
+    const { selectedMachine } = this.state;
+    if(selectedMachine && selectedMachine.id == item.id){
+      this.setState({selectedMachine: null})
+    }else{
+      this.setState({selectedMachine: item});
+    }
   };
 
   recentMixHandler = item => {
-    this.setState({selectedMix: item});
+    const { selectedMix } = this.state;
+    if(selectedMix && selectedMix.id == item.id){
+      this.setState({
+        selectedMix: null
+      })
+    }else{
+      this.setState({selectedMix: item});
+    }
   };
 
   pickerMachineHandler = item => {
@@ -88,6 +101,7 @@ class ApplyTask extends Component {
   };
 
   handleSelectedPicker = index => {
+    console.log('handleSelectedPicker', index)
     this.setState({selectedPicker: index});
   };
 
@@ -126,7 +140,7 @@ class ApplyTask extends Component {
   };
 
   render() {
-    const { data } = this.state;
+    const { data, selectedMix, selectedMachine } = this.state;
     const { task } = this.props.state;
     return (
       <View style={styles.MainContainer}>
@@ -141,7 +155,7 @@ class ApplyTask extends Component {
                     type="Machine"
                     title="Machines"
                     key={1}
-                    selected={this.state.selectedMachine}
+                    selected={selectedMachine}
                     handleSelect={this.recentMachineHandler}
                     handleRemoveItem={() => this.recentMachineHandler(null)}
                   />
@@ -150,7 +164,7 @@ class ApplyTask extends Component {
                     data={data.recent_spray_mixes}
                     title="Spray Mixes"
                     key={2}
-                    selected={this.state.selectedMix}
+                    selected={selectedMix}
                     handleSelect={this.recentMixHandler}
                     handleRemoveItem={() => this.recentMixHandler(null)}
                   />
@@ -184,7 +198,7 @@ class ApplyTask extends Component {
                         type="Machine"
                         data={data.machines}
                         key={1}
-                        select={this.state.selectedMachine}
+                        select={selectedMachine}
                         styles={{zIndex: 500}}
                         handleSelect={this.pickerMachineHandler}
                         index={1}
@@ -197,7 +211,7 @@ class ApplyTask extends Component {
                         data={data.spray_mixes}
                         key={2}
                         styles={{zIndex: 500}}
-                        select={this.state.selectedMix}
+                        select={selectedMix}
                         selected={task != null ? task.spray_mix : null}
                         handleSelect={this.pickerMixHandler}
                         index={2}

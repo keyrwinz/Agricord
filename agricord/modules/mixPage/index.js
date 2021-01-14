@@ -308,6 +308,7 @@ const MixPage = (props) => {
 
   const applicationRate = () => {
     const { task } = props.state;
+    console.log('task', task)
 
     return (
         <View style={[
@@ -360,7 +361,6 @@ const MixPage = (props) => {
               />
             </View>
           </View>
-
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -378,19 +378,40 @@ const MixPage = (props) => {
                 }}>Applied Rate</Text>
               </View>
               <View>
-                { task && task.spray_mix && (
+                <Text style={[Style.textBold, {
+                  fontSize: BasicStyles.standardFontSize
+                }]}>{task.spray_mix.application_rate + '/ Ha'}</Text>
+              </View>
+            </View>
+          </View>
+
+          {/*
+          <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
+            <View style={Style.appliedRate}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <LinearGradient
+                  colors={['#ABD770', '#D3E584']}
+                  style={{
+                    height: 15,
+                    width: 15,
+                    borderRadius: 7.5,
+                    marginRight: 5
+                  }}
+                />
+                <Text style={{
+                  fontSize: BasicStyles.standardFontSize
+                }}>Applied Rate</Text>
+              </View>
+              <View>
+                { (task && task.spray_mix) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
                     }]}>{task.spray_mix.application_rate}/Ha</Text>
                   )
-                  
                 }
               </View>
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
-              {
-
-              }
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                 
                 <View style={Style.totalAreaBox}>
@@ -432,11 +453,16 @@ const MixPage = (props) => {
                           justifyContent: 'space-between',
                         }]}
                         >
-                        <Text style={[Style.appliedPaddockText, {
-                          fontSize: BasicStyles.standardTitleFontSize
-                        }]}>
-                          {item.name}
-                        </Text>
+                        {
+                          item.name && (
+                             <Text style={[Style.appliedPaddockText, {
+                                fontSize: BasicStyles.standardTitleFontSize
+                              }]}>
+                                {item.name}
+                              </Text>
+                          )
+                        }
+                       
                         <TouchableOpacity
                           style={{
                             width: 30,
@@ -453,7 +479,7 @@ const MixPage = (props) => {
                 )
               }
             </View>
-          </View>
+          </View>*/}
           {
             (selectedPaddock.length > 0) && (
               <TouchableOpacity
