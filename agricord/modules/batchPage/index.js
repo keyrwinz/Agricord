@@ -235,6 +235,7 @@ class paddockPage extends Component{
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
               onSuccess={() => this.setApplyTank()}
+              position={productConfirmation}
               />
           )
         }
