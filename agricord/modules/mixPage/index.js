@@ -93,7 +93,6 @@ const MixPage = (props) => {
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
-  const [ btnPosition, setBtnPosition] = useState(false)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -565,10 +564,9 @@ const MixPage = (props) => {
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
-            position={btnPosition}
+            position={mixConfirmation}
             onSuccess={() => {
               setMixConfirmation(true)
-              setBtnPosition(true)
             }}
           />
         )
@@ -580,7 +578,6 @@ const MixPage = (props) => {
             visible={mixConfirmation}
             onClose={() => {
               setMixConfirmation(false)
-              setBtnPosition(false)
             }}
             onSuccess={() => redirect('batchStack')}
             data={selectedPaddock}
