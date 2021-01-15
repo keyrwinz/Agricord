@@ -114,7 +114,7 @@ class CustomPicker extends Component {
     this.setState({
       isPressed: !this.state.isPressed,
     });
-    this.props.handleSelectedPicker(this.props.index);
+    this.props.handleSelectedPicker(this.props.index, !this.state.isPressed);
   };
 
   handleRemove = () => {
@@ -157,8 +157,6 @@ class CustomPicker extends Component {
     } else {
       backgroundColor = '#FFFFFF';
     }
-
-    console.log('select', select)
 
     return (
       <View style={{width: '100%', alignItems: 'center', position: 'relative', zIndex: this.props.zIndex}}>

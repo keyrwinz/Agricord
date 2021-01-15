@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   OptionsContainer: {
-    marginTop: 60,
+    marginTop: 4,
     justifyContent: 'flex-end',
     height: 170,
     overflow: 'scroll',
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     elevation: 2,
     borderRadius: 5,
-    position: 'absolute'
+    // position: 'absolute'
   },
   OptionContainer: {
     width: '100%',

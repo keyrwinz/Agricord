@@ -27,7 +27,8 @@ class ApplyTask extends Component {
       selectedMix: null,
       selectedPicker: 0,
       isLoading: false,
-      data: null
+      data: null,
+      isPressed: false
     };
     if(this.props.navigation.state.params) {
     } else {
@@ -36,6 +37,7 @@ class ApplyTask extends Component {
   }
 
   componentDidMount(){
+    console.log("selected", this.state.selectedPicker, this.state.isPressed);
     const {user } = this.props.state;
     if (user == null) {
       return
@@ -94,15 +96,16 @@ class ApplyTask extends Component {
 
   pickerMachineHandler = item => {
     this.setState({selectedMachine: item});
+    this.setState({isPressed: false});
   };
 
   pickerMixHandler = item => {
     this.setState({selectedMix: item});
   };
 
-  handleSelectedPicker = index => {
-    console.log('handleSelectedPicker', index)
+  handleSelectedPicker = (index, isPressed) => {
     this.setState({selectedPicker: index});
+    this.setState({isPressed: isPressed});
   };
 
   selectPaddocks = () => {
@@ -213,20 +216,24 @@ class ApplyTask extends Component {
                         handleRemoveItem={() => this.pickerMachineHandler(null)}
                         zIndex={30}
                       />
-                      <CustomPicker
-                        type="Mix"
-                        data={data.spray_mixes}
-                        key={2}
-                        styles={{zIndex: 500}}
-                        select={selectedMix}
-                        selected={task != null ? task.spray_mix : null}
-                        handleSelect={this.pickerMixHandler}
-                        index={2}
-                        allowOpen={this.state.selectedPicker === 2 ? true : false}
-                        handleSelectedPicker={this.handleSelectedPicker}
-                        handleRemoveItem={() => this.pickerMixHandler(null)}
-                        zIndex={25}
-                      />
+                      { (this.state.selectedPicker === 0 ||  this.state.selectedPicker === 2 || this.state.isPressed === false)
+                           && (
+                          <CustomPicker
+                            type="Mix"
+                            data={data.spray_mixes}
+                            key={2}
+                            styles={{zIndex: 500}}
+                            select={selectedMix}
+                            selected={task != null ? task.spray_mix : null}
+                            handleSelect={this.pickerMixHandler}
+                            index={2}
+                            allowOpen={this.state.selectedPicker === 2 ? true : false}
+                            handleSelectedPicker={this.handleSelectedPicker}
+                            handleRemoveItem={() => this.pickerMixHandler(null)}
+                            zIndex={25}
+                          />
+                        )
+                      }
                     </View>
                   </View>
                 )
