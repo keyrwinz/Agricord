@@ -203,7 +203,7 @@ class CustomPicker extends Component {
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
                 {select !== null
-                  ? select.name
+                  ? select.name ? select.name : select
                   : `Selected ${this.props.type}`}
               </Text>
               {select !== null && (
