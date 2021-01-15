@@ -19,7 +19,15 @@ const height = Math.round(Dimensions.get('window').height);
 class SlidingButton extends Component{
   constructor(props){
     super(props);
+    this.state = {
+      confirm: false
+    }
   }
+
+  confirmHandler = (value) => {
+    this.setState({confirm: value});
+  }
+
   render(){
     return (
       <View style={{
@@ -43,15 +51,19 @@ class SlidingButton extends Component{
           }}
           height={45}
           onSlidingSuccess={() => {
-            this.props.onSuccess();
+            this.confirmHandler(this.state.confirm ? false : true);
+            if(!this.state.confirm) {
+              this.props.onSuccess();
+            }
           }}
-          slideDirection={SlideDirection.RIGHT}>
+          slideDirection={this.state.confirm === true ? SlideDirection.LEFT : SlideDirection.RIGHT}>
           <View
             style={{
               width: '100%',
               borderRadius: BasicStyles.standardBorderRadius,
               backgroundColor: Color.containerBackground,
               zIndex: 0,
+              alignItems: this.state.confirm === true ? 'flex-end' : 'flex-start'
             }}
             height={45}
             onSlidingSuccess={() => {
