@@ -161,12 +161,11 @@ const Inventory = (props) => {
   return (
     <View style={Style.MainContainer}>
       <View style={{
-        backgroundColor: Color.white,
         width: '100%',
         height: 140
       }}>
         <View style={[BasicStyles.paginationHolder,{
-          shadowColor: Color.gray,
+          shadowColor: Color.black,
         }]}>
           <Pagination
             activeIndex={activeIndex}
