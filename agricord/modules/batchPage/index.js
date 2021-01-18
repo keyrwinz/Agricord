@@ -155,17 +155,23 @@ class paddockPage extends Component{
     console.log('task', task)
     return (
       <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}
+
+          style={{
+            backgroundColor: Color.containerBackground
+          }}>
           <View style={{
             alignItems: 'center',
             height: height + 20,
             flex: 1,
+            marginBottom: 100,
             backgroundColor: Color.containerBackground
           }}>
             <View style={{
                 width: '90%',
                 marginLeft: '5%',
-                marginRight: '5%'
+                marginRight: '5%',
+                backgroundColor: Color.containerBackground
               }}>
                 {
                   this.renderTopCard()
