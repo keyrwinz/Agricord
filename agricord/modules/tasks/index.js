@@ -168,14 +168,15 @@ class TasksPage extends Component {
     ]
 
     return (
-      <View style={Style.MainContainer}>
+      <View style={[Style.MainContainer, {
+        backgroundColor: Color.containerBackground
+      }]}>
         <View style={BasicStyles.paginationHolder}>
-        <Pagination
-          activeIndex={activeIndex}
-          onChange={(index) => this.onPageChange(index)}
-          pages={paginationProps}
-        >
-        </Pagination>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={(index) => this.onPageChange(index)}
+            pages={paginationProps}
+          />
         </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>

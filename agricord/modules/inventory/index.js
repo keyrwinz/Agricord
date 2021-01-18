@@ -176,7 +176,7 @@ const Inventory = (props) => {
           </Pagination>
         </View>
         {/* SEARCHBAR */}
-        <View style={Style.searchbarContainer}>
+        <View style={[Style.searchbarContainer, BasicStyles.paginationHolder]}>
           <TextInput
             style={Style.searchbar}
             placeholder="Search..."
