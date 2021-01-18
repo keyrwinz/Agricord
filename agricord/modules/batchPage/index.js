@@ -162,9 +162,9 @@ class paddockPage extends Component{
           }}>
           <View style={{
             alignItems: 'center',
-            height: height + 20,
+            height: height,
             flex: 1,
-            marginBottom: height / 2,
+            marginBottom: height,
             backgroundColor: Color.containerBackground
           }}>
             <View style={{
