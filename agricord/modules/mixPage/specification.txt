@@ -14,3 +14,9 @@ if last load is either on or off
  - selected area > maximum area then the user can't
   proceed but enable the partial box to allow custom input but automatically deduct the remaining area. 
  - the user can't apply the application below the minimum_rate or greater than the maximum
+
+
+ Hide pagination once the available paddocks is greater than 10.
+
+ Maximum of 50 paddocks
+ 

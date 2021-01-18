@@ -521,27 +521,41 @@ const MixPage = (props) => {
           }}>
             Drag Paddock tile to Appliction Box
           </Text>
-          <Pagination
-            dotsLength={paddocks.length}
-            activeDotIndex={availablePaddockIndex}
-            containerStyle={{ 
-              width: '50%',
-              position: 'absolute',
-              bottom: -40,
-            }}
-            dotStyle={{
-              width: 10,
-              height: 10,
-              borderRadius: 5,
-              marginHorizontal: -5,
-              backgroundColor: '#5A84EE'
-            }}
-            inactiveDotStyle={{
-              backgroundColor: '#C4C4C4'
-            }}
-            inactiveDotOpacity={0.4}
-            inactiveDotScale={0.6}
-          />
+          {
+            paddocks.length < 10 && (
+              <Pagination
+                dotsLength={paddocks.length}
+                activeDotIndex={availablePaddockIndex}
+                containerStyle={{ 
+                  width: '50%',
+                  position: 'absolute',
+                  bottom: -40,
+                }}
+                dotStyle={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: 5,
+                  marginHorizontal: -5,
+                  backgroundColor: '#5A84EE'
+                }}
+                inactiveDotStyle={{
+                  backgroundColor: '#C4C4C4'
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+              />
+            )
+          }
+          {
+            paddocks.length >= 10 && (
+              <Text style={{
+
+              }}>
+                { (availablePaddockIndex + 1) + ' / ' + paddocks.length}
+              </Text>
+            )
+          }
+          
         </View>
       </View>
     )
