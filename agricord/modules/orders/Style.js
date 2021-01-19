@@ -1,69 +1,38 @@
 import { Color } from 'common';
 import { Dimensions } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 export default {
-  ScrollView: {
-    flex: 1,
+  modal: {
+    backgroundColor: Color.gray
   },
   MainContainer: {
     flex: 1,
+    backgroundColor: Color.containerBackground
   },
-  header: {
-    width: '100%',
-    padding: 20,
-    alignItems: 'center'
+  sliderContainer: {
+    flex: 1,
+    minHeight: height,
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
   },
-  notLoggedIn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 40
-  },
-  textWhite: {
-    color: '#fff'
-  },
-  orderHistory: {
+  ScrollView: {
     flex: 1
   },
-  orderCard: {
-    width: '100%',
-    backgroundColor: Color.white,
-    flexDirection: 'row',
-    minHeight: 100,
-    padding: 20,
-  },
-  myOrderDetailsContainer: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  orderDetails: {
-    flex: 1,
-    padding: 20,
-    minHeight: 150,
-    width: '90%',
-    marginVertical: 10,
- 
-    // box-shadow
-    backgroundColor: Color.white,
-    borderRadius: 5,
-    borderColor: '#ddd',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 2,
-  },
-  detailRow: {
-    marginVertical: 5
-  },
-  detailsButton: {
-    padding: 10,
-    marginVertical: 10,
-    minWidth: 100,
-    backgroundColor: Color.primary,
-    borderRadius: 10
-  }
+  circleButton:{
+    padding: 5,
+    height: 75,
+    width: 75,  
+    borderRadius:400, 
+    backgroundColor:'#FF5B04',
+    justifyContent:'center',
+},
+image:{   
+  width: '100%',
+  height: 80,
+  padding: 50,
+  borderRadius: 5,
+  resizeMode:'contain'
+ },
 }

@@ -1,212 +1,153 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
-  ScrollView,
   View,
-  Text,
-  Dimensions,
+  Image,
   TouchableHighlight,
-  Alert
+  Text,
+  ScrollView,
+  FlatList,
+  Dimensions,
+  TouchableOpacity,
+  TextInput,
 } from 'react-native';
-import { NavigationActions } from 'react-navigation'
-import { connect } from 'react-redux';
-import SwipeableFlatList from 'react-native-swipeable-list';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faBan, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { Spinner } from 'components';
-import OrderCard from './OrderCard';
+import {connect} from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import Style from './Style.js';
+import {Routes, Color, Helper, BasicStyles} from 'common';
+import Pagination from 'components/Pagination/GradientBorder';
+import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
+import Orders from './Orders';
+import {products} from './data-test.js';
 import Api from 'services/api';
-import { Routes, Color } from 'common';
-import Style from './Style';
+import {Spinner} from 'components';
+import TaskButton from 'modules/generic/TaskButton.js';
+import _ from 'lodash';
+
 const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
-const ItemOptions = ({ goToMessenger, status }) => {
-  return (
-    <View style={{
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    }}>
-      <TouchableHighlight
-        style={{
-          width: (width / 5),
-          backgroundColor: status === 'completed' ? Color.gray : Color.danger,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-        onPress={() => {
-          if (status === 'completed') return
-          goToMessenger()
-        }}
-        underlayColor={Color.gray}
-      >
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}>
-          <FontAwesomeIcon
-            icon={ faEnvelope }
-            style={ {color: Color.white }}
-            size={24}
-          />
-          <Text style={{ color: Color.white }}>
-            Message
-          </Text>
-        </View>
-      </TouchableHighlight>
-    </View>
-  )
-}
-
-class MyOrders extends Component {
-  constructor(props){
+class OrdersPage extends Component {
+  constructor(props) {
     super(props);
     this.state = {
+      activeIndex: 0,
+      data: [],
       isLoading: false,
-      data: []
-    }
+      limit: 5,
+      offset: 0,
+      numberOfPages: null
+    };
   }
 
   componentDidMount() {
-    this.retrieve()
+    const {user} = this.props.state;
+    this.setState({
+      activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
+    })
+    if(user == null){
+      return
+    }
+    this.retrieve(true);
   }
 
-  retrieve = () => {
-    const { user } = this.props.state;
-    if(user === null) {
-      const proceedToLogin = NavigationActions.navigate({
-        routeName: 'loginStack'
-      });
-      this.props.navigation.dispatch(proceedToLogin)
+  retrieve = (flag) => {
+    const {user} = this.props.state;
+    const { activeIndex } = this.state;
+    if(user == null){
       return
     }
 
-    const parameter = {
+    this.setState({
+      isLoading: true
+    });
+
+    let parameters = {
       condition: [{
-        column: 'account_id',
-        clause: '=',
-        value: user.id
-      }, {
-        column: 'order_number',
-        clause: '!=',
-        value: null
-      }],
+          column: 'merchant_id',
+          value: 1, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          clause: '=',
+        }, {
+          column: 'status',
+          value: 'completed',
+          clause: activeIndex == 0 ? '!' : '='
+        }
+      ],
       sort: {
         created_at: 'desc'
-      }
-    }
+      },
+      limit: this.state.limit,
+      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
+    };
 
-    this.setState({ isLoading: true })
-    Api.request(Routes.ordersRetrieve, parameter, response => {
-      if (response.data.length) {
-        this.setState({ isLoading: false, data: response.data })
-      } else {
-        this.setState({ isLoading: false })
+    Api.request(Routes.ordersRetrieveByParams, parameters, response => {
+      this.setState({
+        isLoading: false
+      });
+      console.log('response', response.data)
+      if(response.data.length > 0){
+        this.setState({
+          data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
+          numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
+          offset: flag == false ? 1 : (this.state.offset + 1)
+        })
+      }else{
+        this.setState({
+          data: flag == false ? [] : this.state.data,
+          numberOfPages: null,
+          offset: flag == false ? 0 : this.state.offset
+        })
       }
     }, error => {
-      console.error({ RetrievingOrdersError: error })
-      this.setState({ isLoading: false })
-    })
-  }
-
-  goToMessenger(details) {
-    this.props.navigation.navigate('MessengerMessages', { 
-      checkoutData: {
-        id: details.id,
-        code: details.code,
-        merchantId: details.merchant_id
-      },
-      messengerHeaderTitle: `***${details.code.slice(-8)}`
+      this.setState({
+        isLoading: false
+      });
     });
-  }
-
-  FlatListItemSeparator = () => {
-    return (
-      <View style={{
-        height: 0.5,
-        width: width,
-        backgroundColor: Color.gray
-      }}/>
-    );
   };
 
+  onPageChange = (index) => {
+    this.setState({activeIndex: index, offset: 0, data: []});
+    setTimeout(() => {
+      this.retrieve(true);
+    }, 100)
+  }
+
+
   render() {
-    const { user, theme } = this.props.state
-    const { isLoading, data } = this.state
-    const { navigate } = this.props.navigation
+    const { activeIndex , data, isLoading } = this.state;
+    const paginationProps = [
+      {
+        name: 'Pending',
+      },
+      {
+        name: 'Delivered',
+      },
+    ];
 
     return (
-      <ScrollView style={Style.ScrollView} showsVerticalScrollIndicator={false}>
-        <View style={Style.MainContainer}>
-          <View style={[Style.header, { backgroundColor: theme ? theme.primary : Color.primary }]}>
-            <Text style={Style.textWhite}>Order History</Text>
-          </View>
-          { isLoading
-            ? (<View style={{ marginTop: 50 }}>
-                <Spinner mode="overlay"/> 
-              </View>)
-            : null 
-          }
-          {
-            user === null ? 
-            <View style={Style.notLoggedIn}>
-              <FontAwesomeIcon
-                icon={faBan}
-                size={30}
-                style={{
-                  color: Color.danger,
-                  marginRight: 10
-                }}
-              />
-              <Text>You must log in first</Text>
-            </View>
-            :
-            <View style={Style.orderHistory}>
-              {
-                data.length > 0 ? (
-                  <SwipeableFlatList
-                    data={data}
-                    renderItem={(delivery) => (
-                        <OrderCard
-                          key={delivery.index}
-                          data={delivery.item}
-                          {...this.props}
-                        />
-                    )}
-                    maxSwipeDistance={width / 5}
-                    renderQuickActions={(delivery) => (
-                      <ItemOptions
-                        status={delivery.item.status}
-                        goToMessenger={() => this.goToMessenger(delivery.item)}
-                      />
-                    )}
-                    contentContainerStyle={{
-                      flexGrow: 1
-                    }}
-                    shouldBounceOnMount={true}
-                    ItemSeparatorComponent={this.FlatListItemSeparator}
-                  />
-                ) : isLoading === false && (
-                  <View style={{ marginTop: '20%', alignItems: 'center' }}>
-                    <Text>Looks like you don't have any orders yet</Text>
-                    <Text>What are you waiting for? {''}
-                      <Text
-                        onPress={() => navigate('Homepage')}
-                        style={{ color: Color.primary, fontWeight: 'bold' }}
-                      >
-                        Order now!
-                      </Text>
-                    </Text>
-                  </View>
-                )
-              }
-            </View>
-          }
+      <View style={Style.MainContainer}>
+        <View style={BasicStyles.paginationHolder}>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={index => this.onPageChange(index)}
+            pages={paginationProps}
+          />
         </View>
-      </ScrollView>
-    )
+        <PagerProvider activeIndex={activeIndex}>
+          <Pager panProps={{enabled: false}}>
+            <View style={Style.sliderContainer}>
+              <Orders {...this.props} data={data} from={'pending'} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
+            </View>
+            <View style={Style.sliderContainer}>
+              <Orders {...this.props} data={data} from={'delivered'} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
+            </View>
+          </Pager>
+        </PagerProvider>
+        <TaskButton navigation={this.props.parentNav}/>
+        {isLoading ? <Spinner mode="overlay" /> : null}
+      </View>
+    );
   }
 }
-
 const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
@@ -217,4 +158,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MyOrders);
+)(OrdersPage);

@@ -1,75 +1,115 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableHighlight } from 'react-native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheckCircle, faTimesCircle, faMinusCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
-import { Color } from 'common';
-import Style from './Style';
-
-const CompletedIcon = () => <FontAwesomeIcon icon={faCheckCircle} size={30} style={{ color: Color.success}} />
-const PendingIcon = () => <FontAwesomeIcon icon={faMinusCircle} size={30} style={{ color: Color.warning}} />
-const CancelledIcon = () => <FontAwesomeIcon icon={faTimesCircle} size={30} style={{ color: Color.danger}} />
-const DefaultIcon = () => <FontAwesomeIcon icon={faExclamationCircle} size={30} style={{ color: Color.darkGray}} />
+import React, {Component} from 'react';
+import {Text, View, TouchableOpacity} from 'react-native';
+import {Divider} from 'react-native-elements';
+import Style from './OrderCardStyle';
+import {connect} from 'react-redux';
 
 class OrderCard extends Component {
-  goToOrderDetails(data) {
-    const { navigate } = this.props.navigation
-    navigate('MyOrderDetails', { data })
+  constructor(props) {
+    super(props);
+    this.state = {
+      formattedDate: '',
+    };
   }
 
-  render() {
-    const { data } = this.props
-    let icon = null
-    switch (data.status) {
-      case 'completed':
-        icon = <CompletedIcon />
-        break
-      case 'pending':
-        icon = <PendingIcon />
-        break
-      case 'cancelled':
-        icon = <CancelledIcon />
-        break
-      default:
-        icon = <DefaultIcon />
-        break
-    }
+  setOrder = () => {
+    const {setSelectedOrder} = this.props;
+    const selectedOrder = this.props.details;
+    setSelectedOrder(selectedOrder);
+  };
 
+  formatDate = unformattedDate => {
+    let date = unformattedDate;
+    date = date.substring(0, date.length - 3);
+    return date;
+  };
+
+  render() {
+    const {details, theme} = this.props;
     return (
-      <TouchableHighlight onPress={() => this.goToOrderDetails(data)}>
-        <View style={Style.orderCard}>
-          <View style={{ flex: 0.8}}>
-            <View>
-              <Text numberOfLines={2}>
-                <Text style={{ fontWeight: '600' }}>
-                  Order Number: {' '}
+      <TouchableOpacity
+        style={{alignItems: 'center', width: '100%'}}
+        onPress={() => {
+          this.setOrder();
+          this.props.parentNav.navigate('orderDetailsStack', {
+            details: this.props.details,
+          });
+        }}>
+        <View style={Style.paddockContainer}>
+          <View style={Style.paddockInfo}>
+            <View style={{flexDirection: 'row', marginLeft: 20, marginTop: 10}}>
+              <View
+                style={{
+                  marginTop: 6,
+                  marginRight: 10,
+                  width: 10,
+                  height: 10,
+                  borderRadius: 100 / 2,
+                  backgroundColor: '#D3E584',
+                }}
+              />
+              <Text style={{fontWeight: 'bold', fontSize: 17}}>
+                {this.props.details.merchant.name}
+              </Text>
+            </View>
+
+            <View style={Style.cardInfo}>
+              {this.props.details.status == 'pending' ? (
+                <Text
+                  style={{fontWeight: 'bold', color: '#969696', width: '50%'}}>
+                  Delivery Due
                 </Text>
+              ) : (
+                <Text
+                  style={{fontWeight: 'bold', color: '#969696', width: '50%'}}>
+                  Delivered
+                </Text>
+              )}
+              {this.props.details.status == 'pending' ||
+              this.props.details.status == 'in_progress' ? (
+                <Text>{this.props.details.date_of_delivery}</Text>
+              ) : (
                 <Text>
-                  {data.order_number}
+                  {this.formatDate(this.props.details.delivered_date)}
                 </Text>
-              </Text>
+              )}
             </View>
-            <View style={{ paddingTop: 10 }}>
-              <Text numberOfLines={2}>
-                <Text style={{ fontWeight: '600' }}>
-                  Delivery To: {' '}
-                </Text>
-                <Text>
-                  {data.location}
-                </Text>
+            <Divider style={{height: 0.4, marginLeft: 15, marginRight: 15}} />
+            <View style={Style.cardInfo}>
+              <Text
+                style={{fontWeight: 'bold', color: '#969696', width: '50%'}}>
+                {this.props.details.status === 'pending'
+                  ? 'Order Ref'
+                  : 'Order ID'}
               </Text>
+              <Text>{this.props.details.order_number}</Text>
             </View>
-          </View>
-          <View style={{ flex: 0.2, alignItems: 'center' }}>
-            <View style={{ paddingTop: 20 }}>
-              <Text>
-                { icon }
-              </Text>
-            </View>
+            <Divider
+              style={{
+                height: 0.4,
+                marginLeft: 15,
+                marginRight: 15,
+                marginBottom: 20,
+              }}
+            />
           </View>
         </View>
-      </TouchableHighlight>
-    )
+      </TouchableOpacity>
+    );
   }
 }
 
-export default OrderCard
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {
+    setSelectedOrder: selectedOrder => {
+      dispatch(actions.setSelectedOrder(selectedOrder));
+    },
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(OrderCard);
