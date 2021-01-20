@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import Style from './Style.js';
-import { View, Image, Text, ScrollView, SafeAreaView,  TouchableOpacity, Dimensions } from 'react-native';
+import { View, Image, Text, ScrollView, SafeAreaView,  TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { Spinner, Empty} from 'components';
 import { connect } from 'react-redux';
 import { Color, Routes ,BasicStyles} from 'common'
@@ -15,7 +15,9 @@ import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import KeySvg from 'assets/settings/key.svg';
 import SlidingButton from 'modules/generic/SlidingButton';
 import ProductConfirmationModal from 'modules/modal/ProductConfirmation'; 
-import TaskConfirmationModal from 'modules/modal/TaskConfirmation'; 
+import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
+import config from 'src/config';
+import Nfc from 'src/services/Nfc';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -31,7 +33,12 @@ class paddockPage extends Component{
       applyTank: true,
       productConfirmation: false,
       taskConfirmation: false,
-      data: []
+      data: [],
+      isLoading: false,
+      matchedProduct: null,
+      message: null,
+      isAdded: false,
+      currentBatch: null
     }
   }
 
@@ -55,10 +62,11 @@ class paddockPage extends Component{
     this.setState({
       isLoading: true
     })
-    console.log('parameter', parameter)
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-        console.log('response', response)
+        let alpha = {id: 3, product: {code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA", id: 16, merchant_id: "1", qty: 0, title: "Alpha 110L", type: "regular", variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]}}
+        response.data.push(alpha)
         this.setState({data: response.data, isLoading: false});
+        
       },
       error => {
         this.setState({
@@ -70,17 +78,132 @@ class paddockPage extends Component{
   }
 
   setApplyTank(){
+    const { task } = this.props.state;
+    const user = this.props.state.user
     this.setState({
-      productConfirmation: true
+      taskConfirmation: true
     })
+    let parameter = {
+      spray_mix_id: task.spray_mix.id,
+      machine_id: task.machine.id,
+      merchant_id: user.sub_account.merchant.id,
+      account_id: user.account_information.account_id,
+      notes: '',
+      water: task && task.params ? task.params.volume + task.params.units : 0,
+      status: 'ongoing'
+    }
+    this.setState({isLoading: true});
+    Api.request(Routes.batchCreate, parameter, response => {
+      this.setState({isLoading: false});
+    },
+    error => {
+      this.setState({
+        isLoading: false
+      })
+      console.log({error});
+    },
+  );
   }
 
   manageProductConfirmation(){
-
+    this.setState({productConfirmation: false});
+    this.setState({isAdded: true});
   }
 
   manageTaskConfirmation(){
+    let parameter = {
+      id: 1,
+      status: 'completed'
+    }
+    this.setState({isLoading: true});
+    Api.request(Routes.batchUpdateStatus, parameter, response => {
+      this.setState({isLoading: false});
+      },
+      error => {
+        this.setState({
+          isLoading: false
+        })
+        console.log({error});
+      },
+    );
+  }
 
+  scan = (parameter) => {
+    let params = null
+    if (parameter) {
+    } else {
+      params = {
+        //Alpha 1000 product
+        code: '25739366062713749471680984040588',
+        // code: '43629563207499567584704911882320',
+        nfc: 'C89B5424080104E0'
+      }
+    }
+    if(config.NFC_TEST) {
+      this.retrieveProduct(params);
+    }
+  }
+
+  startScanning = () => {
+    Nfc.scan(this.scan());
+  }
+
+  retrieveProduct = (params) => {
+    const user = this.props.state.user
+    let parameter = null;
+    parameter = {
+      condition: [{
+        value: params.code,
+        column: 'code',
+        clause: '='
+      }],
+      nfc:params.nfc,
+      //  user.sub_account.merchant.id
+      merchant_id: 3,
+      // user.account_type
+      account_type: 'MANUFACTURER'
+    }
+    this.manageRequest(parameter);
+  }
+
+  manageRequest = (parameter) => {
+    this.setState({isLoading: true});
+    Api.request(Routes.productTraceRetrieve, parameter, response => {
+      this.setState({isLoading: false});
+      if(response.data != null && response.data.length > 0) {
+        this.checkProduct(response.data, response.data[0].product.id)
+      } else {
+        this.setState({message: response.error})
+        this.else();
+
+      }
+    }
+    );
+  }
+
+  checkProduct(array, id) {
+    array.map(item => {
+      if (item.product.id === id) {
+        this.setState({matchedProduct: item});
+        this.setState({
+          productConfirmation: true
+        })
+      } else {
+        this.else();
+      }
+    })
+  }
+
+  else() {
+    Alert.alert(
+      "Opps",
+      "No matched found!",
+      [
+        { text: "OK"}
+      ],
+      { cancelable: false }
+    );
+    this.setState({productConfirmation: false});
   }
 
   renderTopCard=()=>{
@@ -149,10 +272,10 @@ class paddockPage extends Component{
   }
 
   render() {
-    const { applyTank, productConfirmation, taskConfirmation, data } = this.state;
-    const { isLoading } = this.state;
+    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded } = this.state;
     const { task } = this.props.state;
-    console.log('task', task)
+    let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
+    let volume = n ? n[n.length - 1] : null;
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -169,14 +292,28 @@ class paddockPage extends Component{
           }}>
             <View style={{
                 width: '90%',
-                marginLeft: '5%',
-                marginRight: '5%',
                 backgroundColor: Color.containerBackground
               }}>
                 {
                   this.renderTopCard()
                 }
-                {
+                <TouchableOpacity
+                style={[
+                  BasicStyles.standardCardContainer
+                  ]}
+                onPress={() => this.startScanning()}
+              >
+                <View  style={{
+                    width: '100%',
+                  }}>
+                    <Text style={{
+                      fontSize: BasicStyles.standardTitleFontSize,
+                      textAlign: 'center',
+                      fontWeight: 'bold'
+                    }}>SCAN NFC</Text>
+                </View>
+              </TouchableOpacity>
+                 {
                   data.map( item => (
                     <ProductCard
                         item={{
@@ -186,6 +323,8 @@ class paddockPage extends Component{
                         key={item.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
+                        addedProduct={matchedProduct}
+                        isAdded={isAdded}
                       />
                   ))
                 }
@@ -228,7 +367,6 @@ class paddockPage extends Component{
                       width: '30%'
                     }}>{task && task.params ? task.params.volume + task.params.units : ''}</Text>
                </TouchableOpacity>
-
               {
                 this.renderNotesCard()
               }
@@ -236,27 +374,27 @@ class paddockPage extends Component{
          </View>
         </ScrollView>
         {
-          (applyTank) && (
+          (isAdded) && (
             <SlidingButton
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
               onSuccess={() => this.setApplyTank()}
-              position={productConfirmation}
+              position={taskConfirmation}
               />
           )
         }
         {
-          (productConfirmation) && (
+          (matchedProduct) && (
             <ProductConfirmationModal
               visible={productConfirmation}
               onClose={() => this.setState({
                 productConfirmation: false
               })}
               data={{
-                title: 'Product A',
-                manufacturing_date: 'August 11, 2020',
-                volume_remaining: '10L',
-                batch_number: '12321'
+                title: matchedProduct.product.title,
+                manufacturing_date: matchedProduct.manufacturing_date,
+                volume_remaining: volume,
+                batch_number: matchedProduct.batch_number
               }}
               onSuccess={() => this.manageProductConfirmation()}
             />
