@@ -7,6 +7,7 @@ import {BasicStyles} from 'common';
 import Tasks from './index';
 import MixName from 'modules/mixName';
 import {connect} from 'react-redux';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -28,23 +29,7 @@ const TasksScreen = props => {
         options={({route}) => {
           return {
             headerTitle: () => (
-              <View style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '25%',
-                }}>
-                <TitleLogo />
-                <Text
-                  style={{
-                    color: '#000',
-                    marginLeft: 7,
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                  }}>
-                  TASKS
-                </Text>
-              </View>
+              <StackHeaderTitle title={'TASKS'}/>
             ),
             headerLeft: () => (
               <View

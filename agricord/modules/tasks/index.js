@@ -43,13 +43,16 @@ class TasksPage extends Component {
     if (user == null) {
       return
     }
-    if (this.props.initialPage != null) {
-      if (this.props.initialPage == 'TasksInProgress') {
-        this.setState({activeIndex: 0});
-      }
-    }else{
-      this.setState({activeIndex: 0, label: 'inprogress'})
-    }
+    this.setState({
+      activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
+    })
+    // if (this.props.initialPage != null) {
+    //   if (this.props.initialPage == 'TasksInProgress') {
+    //     this.setState({activeIndex: 0});
+    //   }
+    // }else{
+    //   this.setState({activeIndex: 0, label: 'inprogress'})
+    // }
     // if (this.props.parentNav.state.params && this.props.parentNav.state.params.route != null) {
     //   switch(this.props.parentNav.state.params.route) {
     //     case 'TasksInProgress':
@@ -96,10 +99,12 @@ class TasksPage extends Component {
       }
     };
 
+    console.log('parameter', parameter)
     Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
         this.setState({
           isLoading: false
         });
+        console.log('response', response)
         if(response.data.length > 0){
           this.setState({
             data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
@@ -163,14 +168,15 @@ class TasksPage extends Component {
     ]
 
     return (
-      <View style={Style.MainContainer}>
+      <View style={[Style.MainContainer, {
+        backgroundColor: Color.containerBackground
+      }]}>
         <View style={BasicStyles.paginationHolder}>
-        <Pagination
-          activeIndex={activeIndex}
-          onChange={(index) => this.onPageChange(index)}
-          pages={paginationProps}
-        >
-        </Pagination>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={(index) => this.onPageChange(index)}
+            pages={paginationProps}
+          />
         </View>
         <PagerProvider activeIndex={activeIndex}>
           <Pager panProps={{enabled: false}}>

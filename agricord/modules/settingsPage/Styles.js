@@ -17,8 +17,7 @@ const styles = StyleSheet.create({
     minHeight: height,
     width: '90%',
     marginLeft: '5%',
-    marginRight: '5%',
-    backgroundColor: Color.containerBackground,
+    marginRight: '5%'
   },
   ScrollView: {
     flex: 1,

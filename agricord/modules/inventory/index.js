@@ -20,12 +20,14 @@ import { products } from './data-test.js';
 import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
 import { Spinner } from 'components';
+import _ from 'lodash';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SearchIcon from 'assets/inventory/search_icon.svg';
 import NfcIcon from 'assets/inventory/nfc_icon.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
 
 const InventoryStack = createStackNavigator()
 
@@ -54,37 +56,50 @@ const Inventory = (props) => {
   const [filteredFungicideData, setFilteredFungicideData] = useState([])
   const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
   const [filteredOtherData, setFilteredOtherData] = useState([])
+  
+  var offset = 0;
+  var limit = 5;
 
   useEffect(() => {
-    retrieveData()
+    retrieve(false)
   }, [])
 
-  const retrieveData = () => {
-    console.log("retrieve");
+  const retrieve = (flag) => {
     const parameter = {
       condition: {
         column: 'title',
-        value: '%' + searchString.toLocaleLowerCase() + '%' 
+        value: '%' + searchString.toLocaleLowerCase() + '%'
       },
       sort: {
         title: 'asc'
       },
       merchant_id: props.state.user.sub_account.merchant.id,
+<<<<<<< HEAD
       account_id: props.state.user.id,
+=======
+      account_id: props.state.user.account_information.account_id,
+>>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
       inventory_type: 'product_trace',
       type: props.state.user.account_type,
       productType: 'all',
-      limit: 5,
-      offset: 0,
-      tags: '%' + activeTags.toLocaleLowerCase() + '%' 
+      limit: limit,
+      offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      tags: '%' + activeTags.toLocaleLowerCase() + '%'
     }
+    console.log(props.state.user.sub_account.merchant.id, props.state.user.account_information.account_id)
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
+<<<<<<< HEAD
       console.log();
       if (response.data.length) {
         setLoading(false)
         setData(response.data)
+=======
+      setLoading(false)
+      if (response.data.length > 0) {
+        setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
+>>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -94,31 +109,35 @@ const Inventory = (props) => {
         // setFilteredFungicideData(response.data)
         // setFilteredInsecticideData(response.data)
         // setFilteredOtherData(response.data)
+      } else {
+        setData(flag == false ? [] : data)
       }
+<<<<<<< HEAD
       console.log({ inventoryResponse: response })
       setLoading(false)
+=======
+>>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
     }, error => {
-      console.log({ inventoryError: error })
       setLoading(false)
     })
   }
 
   useEffect(() => {
-    if (props.initialPage !=null) {
-      switch (props.initialPage) {
-        case 'InventoryHerbicides':
+    if (props.parentNav.state.params !=null) {
+      switch (props.parentNav.state.params.index) {
+        case 0:
           setActiveIndex(0)
           setActiveTags('Herbicide')
           break;
-        case 'InventoryFungicides':
+        case 1:
           setActiveIndex(1)
           setActiveTags('Fungicide')
           break;
-        case 'InventoryInsecticides':
+        case 2:
           setActiveIndex(2)
           setActiveTags('Insecticide')
           break;
-        case 'InventoryOther':
+        case 3:
           setActiveIndex(3)
           setActiveTags('Other')
           break;
@@ -130,7 +149,7 @@ const Inventory = (props) => {
 
   const onPageChange = (activeIndex) => {
     setActiveIndex(activeIndex)
-    retrieveData()
+    retrieve(false)
   }
 
   const searchProductHandler = () => {
@@ -158,12 +177,11 @@ const Inventory = (props) => {
   return (
     <View style={Style.MainContainer}>
       <View style={{
-        backgroundColor: Color.white,
         width: '100%',
         height: 140
       }}>
         <View style={[BasicStyles.paginationHolder,{
-          shadowColor: Color.gray,
+          shadowColor: Color.black,
         }]}>
           <Pagination
             activeIndex={activeIndex}
@@ -173,7 +191,7 @@ const Inventory = (props) => {
           </Pagination>
         </View>
         {/* SEARCHBAR */}
-        <View style={Style.searchbarContainer}>
+        <View style={[Style.searchbarContainer, BasicStyles.paginationHolder]}>
           <TextInput
             style={Style.searchbar}
             placeholder="Search..."
@@ -182,7 +200,7 @@ const Inventory = (props) => {
           />
           <TouchableOpacity
             style={Style.searchIcon}
-            onPress={() => retrieveData()}
+            onPress={() => retrieve()}
           >
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>
@@ -199,19 +217,19 @@ const Inventory = (props) => {
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
             {/* ===== HERBICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== FUNGICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== INSECTICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== OTHER ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
           </View>
         </Pager>
       </PagerProvider>
@@ -238,24 +256,7 @@ const InventoryScreen = (props) => {
         children={(childProps) => <InventoryPage {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
-            <View style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '25%',
-                }}>
-              <TitleLogo />
-              <Text
-                style={{
-                  color: '#000',
-                  marginLeft: 7,
-                  fontWeight: 'bold',
-                  fontSize: 20
-                }}
-                >
-                INVENTORY
-              </Text>
-            </View>
+            <StackHeaderTitle title={'INVENTORY'}/>
           ),
           headerLeft: () => (
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>

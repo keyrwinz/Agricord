@@ -155,17 +155,23 @@ class paddockPage extends Component{
     console.log('task', task)
     return (
       <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false}
+
+          style={{
+            backgroundColor: Color.containerBackground
+          }}>
           <View style={{
             alignItems: 'center',
-            height: height + 20,
+            height: height,
             flex: 1,
+            marginBottom: height,
             backgroundColor: Color.containerBackground
           }}>
             <View style={{
                 width: '90%',
                 marginLeft: '5%',
-                marginRight: '5%'
+                marginRight: '5%',
+                backgroundColor: Color.containerBackground
               }}>
                 {
                   this.renderTopCard()
@@ -235,6 +241,7 @@ class paddockPage extends Component{
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
               onSuccess={() => this.setApplyTank()}
+              position={productConfirmation}
               />
           )
         }

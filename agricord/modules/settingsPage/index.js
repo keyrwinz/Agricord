@@ -19,21 +19,18 @@ class SettingsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeIndex: 0,
+      activeIndex: 0
     };
   }
 
   componentDidMount(){
-    const { appSetting } = this.props.state;
     this.setState({
-      activeIndex: appSetting
+      activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
     })
   }
 
   onPageChange = activeIndex => {
     this.setState({activeIndex});
-    const { setSetting } = this.props;
-    setSetting(activeIndex)
   };
 
   render() {
@@ -68,7 +65,6 @@ const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
   return {
-    setSetting: (setting) => dispatch(actions.setSetting(setting)),
   };
 };
 

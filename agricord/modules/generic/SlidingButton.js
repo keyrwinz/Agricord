@@ -20,6 +20,7 @@ class SlidingButton extends Component{
   constructor(props){
     super(props);
   }
+
   render(){
     return (
       <View style={{
@@ -43,15 +44,18 @@ class SlidingButton extends Component{
           }}
           height={45}
           onSlidingSuccess={() => {
-            this.props.onSuccess();
+            if(!this.props.position) {
+              this.props.onSuccess();
+            }
           }}
-          slideDirection={SlideDirection.RIGHT}>
+          slideDirection={this.props.position === true ? SlideDirection.LEFT : SlideDirection.RIGHT}>
           <View
             style={{
               width: '100%',
               borderRadius: BasicStyles.standardBorderRadius,
               backgroundColor: Color.containerBackground,
               zIndex: 0,
+              alignItems: this.props.position === true ? 'flex-end' : 'flex-start'
             }}
             height={45}
             onSlidingSuccess={() => {

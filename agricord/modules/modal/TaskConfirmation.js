@@ -46,7 +46,7 @@ class TaskConfirmation extends Component {
                 textAlign: 'center',
                 paddingBottom: 25,
                 paddingTop: 50
-              }]}>BATCH CONFIRMATION, IN PROGRESS</Text>
+              }]}>BATCH CONFIRMATION IN PROGRESS</Text>
             </View>
 
             <View>
@@ -62,7 +62,7 @@ class TaskConfirmation extends Component {
               icon={null}
               buttonTitle={'Task Complete'}
               title={''}
-              label={'Swip Right to Confirm'}
+              label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
               widthLeft={'50%'}
               widthRight={'50%'}

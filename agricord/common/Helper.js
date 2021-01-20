@@ -43,10 +43,10 @@ export default {
         route: 'TasksInProgress'
       }, {
         title: 'Tasks Due',
-        route: 'TasksInProgress'
+        route: 'TasksDue'
       }, {
         title: 'Tasks History',
-        route: 'TasksInProgress'
+        route: 'TasksHistory'
       }]
     }, {
       title: 'Inventory',
@@ -103,10 +103,10 @@ export default {
       route: 'TasksInProgress'
     }, {
       title: 'Tasks Due',
-      route: 'TasksInProgress'
+      route: 'TasksDue'
     }, {
       title: 'Tasks History',
-      route: 'TasksInProgress'
+      route: 'TasksHistory'
     }]
   }, {
     title: 'Inventory',

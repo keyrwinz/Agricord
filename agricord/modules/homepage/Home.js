@@ -38,6 +38,26 @@ const getIcon = (type) => {
   }
 }
 
+const redirectToOrder = (obj, props) => {
+  Alert.alert(
+    `Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`,
+    '',
+    [
+      {text: 'OK', onPress: () => props.parentNav.navigate('orderDetailsStack')},
+    ],
+    {cancelable: false},
+  );
+  // if(Alert.alert(`Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`)){
+  //   console.log("true");
+  //   props.parentNav.navigate('orderDetailsStack', {
+  //       details: props,
+  //   })
+  // }else{
+  //   console.log(false);
+  // }
+}
+
+
 const Home = (props) => {
   const [isExpanded, setExpand] = useState(false)
   // const [InFocusArray, setInFOcus] = useState(InFocusData)
@@ -51,6 +71,10 @@ const Home = (props) => {
   
 
   useEffect(() => {
+    // console.log(props.navigation);
+    // console.log(props.parentNav.navigate('orderDetailsStack', {
+    //   details: props.details,
+    // }));
     const userInfo = props.state.user 
     if(userInfo === null){
       return
@@ -68,21 +92,19 @@ const Home = (props) => {
     setTotalRecentData(recent)
   
     const tasks = _.countBy(response.data.infocus, (infocus) => {
-      return infocus.type = 'Task'
+      return infocus.type == 'Task'
     })
     setTotalTasksData(tasks)
   
     const orders = _.countBy(response.data.infocus, (infocus) => {
-      return infocus.type = 'Order'
+      return infocus.type == 'Order'
     })
     setTotalOrderData(orders)
-  
-    const activities = recent.recent + tasks.Task + orders.Order
+    const activities = recent.recent + tasks.true + orders.true
     setTotalActivities(activities)
     
   }, [])
-  
-  
+
   return response.data ?  (
   <ScrollView style={Style.ScrollView}>
       <Spinner mode="overlay" />
@@ -149,11 +171,11 @@ const Home = (props) => {
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <YellowCircle style={{ marginRight: 10 }} />
-                  <Text>{totalTasksData ? totalTasksData.Task : 0} Task in Focus</Text>
+                  <Text>{totalTasksData ? totalTasksData.true : 0} Task in Focus</Text>
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <BlueCircle style={{ marginRight: 10 }} />
-                  <Text>{totalOrderData ? totalOrderData.Order : 0} Order in Focus</Text>
+                  <Text>{totalOrderData ? totalOrderData.true : 0} Order in Focus</Text>
                 </View>
               </View>
             </View>
@@ -169,7 +191,7 @@ const Home = (props) => {
                 return (
                   <TouchableOpacity
                     key={idx}
-                    onPress={() => Alert.alert(`Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`)}
+                    onPress={() => redirectToOrder(obj, props)}
                   >
                     <View style={Style.focusTask}>
                       {icon}

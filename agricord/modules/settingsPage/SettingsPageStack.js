@@ -7,6 +7,7 @@ import {BasicStyles} from 'common';
 import SettingsPage from 'modules/settingsPage';
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
 
 const SettingsPageStack = createStackNavigator();
 
@@ -25,24 +26,7 @@ const SettingsScreen = props => {
         options={({route}) => {
           return {
             headerTitle: () => (
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginRight: '29%',
-                }}>
-                <TitleLogo />
-                <Text
-                  style={{
-                    color: '#000',
-                    marginLeft: 7,
-                    fontWeight: 'bold',
-                    fontSize: 20,
-                  }}>
-                  SETTINGS
-                </Text>
-              </View>
+              <StackHeaderTitle title={'SETTINGS'}/>
             ),
             headerLeft: () => (
               <View

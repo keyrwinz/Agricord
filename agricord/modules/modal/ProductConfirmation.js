@@ -86,7 +86,7 @@ class ProductConfirmation extends Component {
             <SlidingButtonRelative
               icon={faPlus}
               title={'ADD 76,8 L'}
-              label={'Swip Right to Confirm'}
+              label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
               widthLeft={'30%'}
               widthRight={'70%'}

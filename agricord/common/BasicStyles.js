@@ -1,5 +1,5 @@
 import Color from './Color';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
 export default {
   formControl: {
@@ -133,11 +133,11 @@ export default {
     shadowColor: Color.black,
     shadowOffset: {
       width: 0,
-      height: 15,
+      height: Platform.OS == 'android' ? 15 : 5,
     },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 15,
+    shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+    shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
+    elevation: 5, // 15
     backgroundColor:Color.white,
     height: 60
   },
@@ -150,6 +150,13 @@ export default {
   headerDrawerStyle: {
     headerStyle: {
       elevation: 10,
+      shadowColor: Color.black,
+      shadowOffset: {
+        width: 0,
+        height: Platform.OS == 'android' ? 15 : 5,
+      },
+      shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+      shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
       backgroundColor: Color.white,
       height: 60,
       justifyContent: 'center',
@@ -160,7 +167,7 @@ export default {
       backgroundColor: Color.white,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingRight: 64
+      paddingRight: Platform.OS == 'ios' ? 0 : 64
     },
     headerTitleStyle: {
       fontWeight: 'bold',
@@ -169,6 +176,13 @@ export default {
   headerDrawerStyleNoPadding: {
     headerStyle: {
       elevation: 10,
+      shadowColor: Color.black,
+      shadowOffset: {
+        width: 0,
+        height: Platform.OS == 'android' ? 15 : 5,
+      },
+      shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+      shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
       backgroundColor: Color.white,
       height: 60,
       justifyContent: 'center',
@@ -189,9 +203,9 @@ export default {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 2,
+    shadowOpacity: 0.23, // 0.23
+    shadowRadius: 2.62, // 2.62
+    elevation: 2, // 2
   },
   starndardDivider: {
     width: '90%',
@@ -219,9 +233,9 @@ export default {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 2,
+    shadowOpacity: 0.23, //0.23
+    shadowRadius: 2.62, // 2.62
+    elevation: 2, // 2
     alignItems:'center',
     flexDirection:'row',
     paddingTop: 15,

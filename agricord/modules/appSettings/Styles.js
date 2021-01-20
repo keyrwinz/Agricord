@@ -2,7 +2,6 @@ import {StyleSheet} from 'react-native';
 import {BasicStyles} from 'common';
 const styles = StyleSheet.create({
   AppSettings: {
-    backgroundColor: '#F1F1F1',
     height: '100%',
     alignItems: 'center',
   },

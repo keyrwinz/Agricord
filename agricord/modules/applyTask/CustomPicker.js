@@ -8,15 +8,24 @@ import {
   faTractor,
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 import styles from 'modules/applyTask/Styles.js';
 
 class CustomPicker extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
+    let indexItem =  null;
+    if(this.props.selected) {
+      this.props.data.map((element, index) => {
+        if(element.name == this.props.selected.name || element == this.props.selected.name) {
+          indexItem = index;
+        }
+      })
+    }
     this.state = {
       isPressed: false,
-      selectedItem: null,
+      selectedItem: indexItem,
     };
   }
 
@@ -38,24 +47,35 @@ class CustomPicker extends Component {
   };
 
   renderOptions = () => {
-    const { type } = this.props;
-    return this.checkIfAllowDropdown() ? (
-      <View style={[styles.OptionsContainer, {...this.props.styles}]}>
-        <ScrollView overScrollMode="always">
+    const { type, select } = this.props;
+    const { selectedItem } = this.state;
+    return this.checkIfAllowDropdown() && this.props.data.length > 0 ? (
+       <View style={[styles.OptionsContainer, {
+        zIndex: this.props.zIndex + 30
+       }]} onStartShouldSetResponder={() => true}>
+        <ScrollView styles={{
+          position: 'relative',
+          zIndex: this.props.zIndex + 100,
+          height: 170,
+          width: '100%'
+        }}>
           {this.props.data.map((item, index) => {
             return (
               <TouchableOpacity
                 key={index}
-                style={styles.OptionContainer}
+                style={[styles.OptionContainer, {
+                  zIndex: this.props.zIndex + 50,
+                  position: 'relative'
+                }]}
                 onPress={() => {
-                  this.handleSelect(index);
-                  this.props.handleSelect(index);
-                  this.setState({isPressed: false, selectedItem: index});
+                  this.handleSelect(item);
+                  this.props.handleSelect(item);
+                  this.setState({isPressed: false, selectedItem: item});
                 }}>
                 <View style={styles.OptionIconContainer}>
                   <FontAwesomeIcon
                     color={
-                      this.state.selectedItem === index ? '#5A84EE' : '#9F9F9F'
+                      select && select.id === item.id ? Color.blue : Color.gray
                     }
                     icon={type == 'Machine' ? faTractor : faFlask}
                     size={25}
@@ -68,7 +88,7 @@ class CustomPicker extends Component {
                       styles.OptionTextStyle,
                       {
                         color:
-                          this.state.selectedItem === index
+                         select && select.id === item.id
                             ? '#5A84EE'
                             : '#000000',
                       },
@@ -80,13 +100,13 @@ class CustomPicker extends Component {
             );
           })}
         </ScrollView>
-      </View>
+       </View>
     ) : null;
   };
 
-  handleSelect = index => {
+  handleSelect = item => {
     this.setState({
-      selectedItem: index,
+      selectedItem: item,
     });
   };
 
@@ -94,7 +114,7 @@ class CustomPicker extends Component {
     this.setState({
       isPressed: !this.state.isPressed,
     });
-    this.props.handleSelectedPicker(this.props.index);
+    this.props.handleSelectedPicker(this.props.index, !this.state.isPressed);
   };
 
   handleRemove = () => {
@@ -104,22 +124,33 @@ class CustomPicker extends Component {
 
   render() {
     const {selectedItem, isPressed} = this.state;
+    const { select } = this.props;
+    var spray = null;
+    if(select) {
+      this.props.data.map((element, index) => {
+        if(element.name == select) {
+          spray = index;
+        }
+      })
+    }
+    // this.props.handleSelect(spray);
+
     let textColor = '';
     let backgroundColor = '';
 
     // textColor
     if (isPressed) {
       textColor = '#FFFFFF';
-    } else if (selectedItem !== null) {
+    } else if (select !== null) {
       textColor = '#094EFF';
     } else {
       textColor = '#A1A1A1';
     }
 
     // backgroundColor
-    if (selectedItem !== null && isPressed) {
+    if (select !== null && isPressed) {
       backgroundColor = '#5A84EE';
-    } else if (selectedItem !== null) {
+    } else if (select !== null) {
       backgroundColor = '#E1EAFF';
     } else if (isPressed) {
       backgroundColor = '#5A84EE';
@@ -128,7 +159,7 @@ class CustomPicker extends Component {
     }
 
     return (
-      <View style={{width: '100%', alignItems: 'center'}}>
+      <View style={{width: '100%', alignItems: 'center', position: 'relative', zIndex: this.props.zIndex}}>
         <TouchableOpacity
           style={[
             styles.PickerContainer,
@@ -147,6 +178,8 @@ class CustomPicker extends Component {
               justifyContent: 'flex-start',
               alignItems: 'center',
               paddingLeft: 20,
+              position: 'relative',
+              zIndex: this.props.zIndex + 10
             }}>
             <View
               style={{
@@ -154,22 +187,24 @@ class CustomPicker extends Component {
                 justifyContent: 'center',
                 paddingVertical: 3,
                 paddingHorizontal: 4,
-                borderColor: selectedItem !== null ? '#7AA0FF' : '#FFFFFF',
-                borderWidth: selectedItem !== null ? 1 : 0,
-                borderRadius: selectedItem !== null ? 7 : 0,
+                borderColor: select !== null ? '#7AA0FF' : '#FFFFFF',
+                borderWidth: select !== null ? 1 : 0,
+                borderRadius: select !== null ? 7 : 0,
                 backgroundColor,
                 flexDirection: 'row',
+                zIndex: this.props.zIndex + 20,
+                position: 'relative'
               }}>
               <Text
                 style={{
                   textAlign: 'left',
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
                 }}>
-                {this.state.selectedItem !== null
-                  ? this.props.data[this.state.selectedItem].name
+                {select !== null
+                  ? select.name ? select.name : select
                   : `Selected ${this.props.type}`}
               </Text>
-              {this.state.selectedItem !== null && (
+              {select !== null && (
                 <TouchableOpacity
                   onPress={() => {
                     this.handleRemove();

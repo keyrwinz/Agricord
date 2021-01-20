@@ -7,8 +7,7 @@ export default {
     backgroundColor: Color.gray
   },
   MainContainer: {
-    flex: 1,
-    backgroundColor: Color.containerBackground
+    flex: 1
   },
   BackgroundContainer: {
     flex: 1,
@@ -19,10 +18,11 @@ export default {
     backgroundColor: Color.containerBackground
   },
   sliderContainer: {
+    flex: 1,
     minHeight: height,
-    width: '100%',
-    paddingHorizontal: 20,
-    backgroundColor: Color.containerBackground
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
   },
   ScrollView: {
     flex: 1

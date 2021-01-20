@@ -18,9 +18,25 @@ import Style from './Style.js';
 const height = Math.round(Dimensions.get('window').height);
 
 const InventoryList = (props) => {
+  const { loading } = props;
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative' }}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView 
+        onScroll={(event) => {
+          let scrollingHeight = event.nativeEvent.layoutMeasurement.height + event.nativeEvent.contentOffset.y
+          let totalHeight = event.nativeEvent.contentSize.height
+          if(event.nativeEvent.contentOffset.y <= 0) {
+            if(loading == false){
+              // this.retrieve(false)
+            }
+          }
+          if(scrollingHeight >= (totalHeight)) {
+            if(loading == false){
+              props.retrieve(true)
+            }
+          }
+        }}
+        showsVerticalScrollIndicator={false}>
         <View style={Style.MainContainer, { minHeight: height }}>
           {
             !props.loading && (

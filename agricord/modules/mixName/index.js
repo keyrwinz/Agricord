@@ -58,7 +58,8 @@ class MixName extends Component {
     this.state = {
       activeIndex: 0,
       data: [],
-      isLoading: false
+      isLoading: false,
+      spray_mix: null
     };
   }
 
@@ -85,11 +86,13 @@ class MixName extends Component {
     console.log('parameter', parameter)
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
         console.log('response', response)
-        this.setState({data: response.data, isLoading: false});
+        this.setState({data: response.data, isLoading: false, spray_mix: response.spray_mix});
       },
       error => {
         this.setState({
-          isLoading: false
+          isLoading: false,
+          spray_mix: null,
+          data: []
         })
         console.log({error});
       },
@@ -97,9 +100,15 @@ class MixName extends Component {
   }
 
   redirect = () => {
-    this.props.navigation.navigate('mixPageStack', {
-      details: {appliedRate: 1, status: 'Auto'},
-    });
+    const { setTask } = this.props;
+    let task = {
+      machine: null,
+      spray_mix: this.props.navigation.state.params.data ? this.props.navigation.state.params.data.spray_mix : null
+    };
+    setTask(task);
+    setTimeout(() => {
+      this.props.navigation.navigate('applyTaskStack', {fromMix: true});
+    }, 100)
   };
 
   render() {
@@ -209,7 +218,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setTask: task => dispatch(actions.setTask(task)),
+  };
 };
 
 export default connect(
