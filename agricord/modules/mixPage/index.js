@@ -19,10 +19,12 @@ import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
 import MixConfirmationModal from 'modules/modal/MixConfirmation';
+import Message from 'modules/modal/Message.js';
 import Draggable from 'react-native-draggable';
 import { Spinner } from 'components';
 import Api from 'services/api/index.js';
 import _ from 'lodash';
+import { log } from 'pusher-js';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
@@ -93,6 +95,9 @@ const MixPage = (props) => {
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
+  const [appliedRate, setAppliedRate] = useState(0)
+  const [message, setMessage] = useState(false)
+  const [totalHigher, setTotalHigher] = useState(false)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -105,6 +110,32 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
+  const onload = () => {
+    setTimeout(() => {
+      setAppRateSwitch(!appRateSwitch)
+      if(!appRateSwitch){
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
+        setAppliedRate((Math.round(task.machine.capacity / totalArea)))
+        if(totalArea > maxArea){
+          setTotalHigher(true)
+          setMessage(true)
+        }
+      }else{
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+        setAppliedRate(Math.round(task.spray_mix.application_rate))
+        setTimeout(() => {
+          if(totalArea > maxArea){
+            setTotalHigher(true)
+          }
+        }, 25)
+      }
+    }, 25)
+  }
+
+  const closeModal = () =>{
+    setMessage(false) && setAppRateSwitch(!appRateSwitch)
+  }
+
   const retrieve = () => {
     const { task, user } = props.state;
     if (user == null || task == null || (task && task.spray_mix == null)) {
@@ -115,7 +146,6 @@ const MixPage = (props) => {
       spray_mix_id: task.spray_mix.id
     };
     setLoading(true)
-    console.log('parameter', parameter)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
@@ -176,7 +206,6 @@ const MixPage = (props) => {
       let item = selectedPaddock[i]
       total = total + item.area
       setTotalArea(total)
-      console.log('totalArea', totalArea)
     }
   }
 
@@ -192,14 +221,15 @@ const MixPage = (props) => {
     }
     if(status == false){
       if(maxArea <= totalArea){
-          Alert.alert(
-            'Error Message',
-            'Now Allowed! Total area is greater than the max area.',
-            [
-              { text: 'OK', onPress: () => console.log('OK Pressed') }
-            ],
-            { cancelable: false }
-          );
+          setTotalHigher(true)
+          // Alert.alert(
+          //   'Error Message',
+          //   'Now Allowed! Total area is greater than the max area.',
+          //   [
+          //     { text: 'OK', onPress: () => console.log('OK Pressed') }
+          //   ],
+          //   { cancelable: false }
+          // );
       }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
@@ -222,7 +252,6 @@ const MixPage = (props) => {
       
     }else{
       console.log('already existed')
-
       Alert.alert(
         'Error Message',
         item.name + ' already exist!',
@@ -231,7 +260,6 @@ const MixPage = (props) => {
         ],
         { cancelable: false }
       );
-
     }
 
   }
@@ -249,7 +277,6 @@ const MixPage = (props) => {
     })
     setSelectedPaddock(newSelectedPaddock)
   }
-
 
   const selectedPaddockView = () => {
     return(
@@ -306,6 +333,7 @@ const MixPage = (props) => {
     )
   }
 
+
   const applicationRate = () => {
     const { task } = props.state;
     console.log('task', task)
@@ -341,7 +369,7 @@ const MixPage = (props) => {
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginRight: 3 }}>Last Load?</Text>
               <Switch
                 value={appRateSwitch}
-                onChangeValue={() => setAppRateSwitch(!appRateSwitch)}
+                onChangeValue={() => onload()}
                 activeText={'ON'}
                 inactiveText={'OFF'}
                 fontSize={BasicStyles.standardFontSize}
@@ -359,6 +387,14 @@ const MixPage = (props) => {
                 animationTime={150}
                 padding={true}
               />
+              {message === true ?
+                <Message
+                  visible={true}
+                  title={'Application volume too low'}
+                  message={'This task would require an application volume lower than 45L/ha, which is too low for this spray mix. Remove paddock or complete a partial application'}
+                  // \n\n\t
+                  onClose={() => closeModal()}
+                /> : null }
             </View>
           </View>
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
@@ -381,22 +417,31 @@ const MixPage = (props) => {
                 { (task && task.spray_mix) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
-                    }]}>{task.spray_mix.application_rate}/Ha</Text>
+                    }]}>{!appRateSwitch ? task.spray_mix.application_rate : appliedRate}L/ha</Text>
                   )
                 }
               </View>
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                
-                <View style={Style.totalAreaBox}>
-                  <Text style={{
-                    fontSize: BasicStyles.standardFontSize
-                  }}>{totalArea} Ha</Text>
-                  <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                    TOTAL AREA
-                  </Text>
-                </View>  
+                {totalHigher === false ?
+                  <View style={Style.totalAreaBox}>
+                    <Text style={{
+                      fontSize: BasicStyles.standardFontSize
+                    }}>{totalArea} Ha</Text>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View> :
+                  <View style={[Style.totalAreaBox, {borderColor: '#FF0000'}]}>
+                    <Text style={{
+                      fontSize: BasicStyles.standardFontSize, color: '#FF0000'
+                    }}>{totalArea} Ha</Text>
+                    <Text style={{ color: '#FF0000', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View>
+                }
 
                 {
                   (task && task.machine) && (
@@ -513,11 +558,11 @@ const MixPage = (props) => {
 
           <Text style={{
             position: 'absolute',
-            bottom: -20,
-            left: '12%',
+            bottom: -12,
+            left: '5%',
             fontSize: 10,
             color: '#C0C0C0',
-            width: 100
+            // width: 100
           }}>
             Drag Paddock tile to Appliction Box
           </Text>

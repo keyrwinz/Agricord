@@ -167,7 +167,7 @@ export default {
       backgroundColor: Color.white,
       justifyContent: 'center',
       alignItems: 'center',
-      paddingRight: Platform.OS == 'ios' ? 0 : 64
+      paddingRight: Platform.OS == 'ios' ? 0 : 50
     },
     headerTitleStyle: {
       fontWeight: 'bold',

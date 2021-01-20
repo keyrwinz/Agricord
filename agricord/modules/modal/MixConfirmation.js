@@ -78,7 +78,7 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {task.spray_mix ? task.spray_mix.application_rate + ' / ha' : null}
+                    {task.spray_mix ? task.spray_mix.application_rate + 'L / ha' : null}
                   </Text>
                 </View>
               </View>
