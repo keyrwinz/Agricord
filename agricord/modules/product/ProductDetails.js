@@ -24,6 +24,7 @@ import ItemImage from 'assets/inventory/temp_item.svg';
 import FileIcon from 'assets/inventory/file_icon.svg';
 import CheckIcon from 'assets/inventory/check_icon.svg';
 import { Spinner } from 'components';
+import { data } from '../batchPage/data-test.js';
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -47,10 +48,9 @@ class ProductDetails extends Component {
       return
     }
 
-
     let parameter = {
       condition: [{
-        value: this.props.navigation.state.params.data.product_id,
+        value: this.props.navigation.state.params.data.product_id ? this.props.navigation.state.params.data.product_id : this.props.navigation.state.params.data.id,
         clause: '=',
         column: 'id'
       }],
@@ -61,12 +61,10 @@ class ProductDetails extends Component {
     this.setState({
       loading: true
     })
-    console.log('parameter', parameter)
     Api.request(Routes.productsRetrieveWithOrderId, parameter, response => {
         this.setState({
           loading: false
         })
-        console.log('response', response)
         if(response.data !== null && response.data.length > 0){
           this.setState({data: response.data[0]})
         }else{
@@ -113,24 +111,15 @@ class ProductDetails extends Component {
             </Text>
 
             <View style={Style.modalContent}>
+              {
+              data && data.details && data.details.safety_equipment.map(item => (
               <View style={Style.modalContentRow}>
                 <CheckIcon />
                 <Text style={{ paddingHorizontal: 20 }}>
-                  Wear cotton overalls buttoned to neck and wrist
+                  {item}
                 </Text>
               </View>
-              <View style={Style.modalContentRow}>
-                <CheckIcon />
-                <Text style={{ paddingHorizontal: 20 }}>
-                  Wear a washable hat
-                </Text>
-              </View>
-              <View style={Style.modalContentRow}>
-                <CheckIcon />
-                <Text style={{ paddingHorizontal: 20 }}>
-                  Wear elbow-length PVC gloves
-                </Text>
-              </View>
+              ))}
             </View>
           </View>
         </View>
@@ -210,7 +199,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.group || 'No data'}
               </Text>
             )
           }
@@ -225,7 +214,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.details.active.join(', ') || 'No data'}
               </Text>
             )
           }
@@ -240,7 +229,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.details.solvent || 'No data'}
               </Text>
             )
           }
@@ -254,7 +243,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {this.props.navigation.state.params.data.volume ? this.props.navigation.state.params.data.volume : '100L'}
               </Text>
             )
           }
@@ -268,7 +257,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.details.formulation || 'No data'}
               </Text>
             )
           }
@@ -282,7 +271,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.details.mixing_order.join(", ") || 'No data'}
               </Text>
             )
           }
@@ -358,18 +347,15 @@ class ProductDetails extends Component {
             justifyContent: 'space-between'
           }]}
         >
-          <View style={Style.fileUploaded}>
-            <FileIcon />
-            <Text style={Style.fileUploadedText}>
-              Label
-            </Text>
-          </View>
-          <View style={Style.fileUploaded}>
-            <FileIcon />
-            <Text style={Style.fileUploadedText}>
-              Safety Data (SDS)
-            </Text>
-          </View>
+          {
+              data && data.details && data.details.files === Array && data.details.files.map(item => (
+                <View style={Style.fileUploaded}>
+                <FileIcon />
+                <Text style={Style.fileUploadedText}>
+                  {item.title}
+                </Text>
+              </View>
+              ))}
         </View>
       </View>
     )

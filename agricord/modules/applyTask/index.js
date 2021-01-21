@@ -153,7 +153,7 @@ class ApplyTask extends Component {
             {
               data && (
                 <Task title="Recent" icon={faHistory} height={240} key={1}>
-                  <RecentTasks
+                  {data.recent_machines && data.recent_machines.length > 0 && (<RecentTasks
                     data={data.recent_machines}
                     type="Machine"
                     title="Machines"
@@ -161,8 +161,8 @@ class ApplyTask extends Component {
                     selected={selectedMachine}
                     handleSelect={this.recentMachineHandler}
                     handleRemoveItem={() => this.recentMachineHandler(null)}
-                  />
-                  <RecentTasks
+                  />)}
+                  {data.recent_spray_mixes && data.recent_spray_mixes.length > 0 && (<RecentTasks
                     type="Mix"
                     data={data.recent_spray_mixes}
                     title="Spray Mixes"
@@ -170,7 +170,7 @@ class ApplyTask extends Component {
                     selected={selectedMix}
                     handleSelect={this.recentMixHandler}
                     handleRemoveItem={() => this.recentMixHandler(null)}
-                  />
+                  />)}
                 </Task>
               )
             }
@@ -203,7 +203,7 @@ class ApplyTask extends Component {
                   <View style={[styles.ChildrenContainer, {
                     zIndex: 10
                   }]}>
-                      <CustomPicker
+                      {data.recent_machines && data.recent_machines.length > 0 && (<CustomPicker
                         type="Machine"
                         data={data.machines}
                         key={1}
@@ -215,8 +215,8 @@ class ApplyTask extends Component {
                         handleSelectedPicker={this.handleSelectedPicker}
                         handleRemoveItem={() => this.pickerMachineHandler(null)}
                         zIndex={30}
-                      />
-                      { (this.state.selectedPicker === 0 ||  this.state.selectedPicker === 2 || this.state.isPressed === false)
+                      />)}
+                      { data.recent_spray_mixes && data.recent_spray_mixes.length > 0 && (this.state.selectedPicker === 0 ||  this.state.selectedPicker === 2 || this.state.isPressed === false)
                            && (
                           <CustomPicker
                             type="Mix"
