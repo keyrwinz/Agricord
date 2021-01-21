@@ -25,6 +25,7 @@ import FileIcon from 'assets/inventory/file_icon.svg';
 import CheckIcon from 'assets/inventory/check_icon.svg';
 import { Spinner } from 'components';
 import { data } from '../batchPage/data-test.js';
+import Config from 'src/config';
 
 const height = Math.round(Dimensions.get('window').height);
 

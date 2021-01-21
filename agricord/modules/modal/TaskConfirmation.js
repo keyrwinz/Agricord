@@ -49,16 +49,20 @@ class TaskConfirmation extends Component {
               }]}>BATCH CONFIRMATION IN PROGRESS</Text>
             </View>
 
-            <View>
+            <View style={{marginBottom: 100}}>
               <Text style={[styles.TitleTextStyle, {
                 paddingLeft: 30,
                 paddingRight: 30,
                 textAlign: 'center',
-                paddingBottom: 25
+                paddingBottom: 25,
+                borderBottomColor: Color.gray,
+                borderBottomWidth: 2,
+                width: 310
               }]}>SWIPE TO COMPLETE WHEN TANK IS EMPTY</Text>
             </View>
 
             <SlidingButtonRelative
+              position={this.props.position}
               icon={null}
               buttonTitle={'Task Complete'}
               title={''}
