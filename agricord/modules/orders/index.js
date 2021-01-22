@@ -69,7 +69,7 @@ class OrdersPage extends Component {
         }, {
           column: 'status',
           value: 'completed',
-          clause: activeIndex == 0 ? '!' : '='
+          clause: activeIndex == 0 ? '!=' : '='
         }
       ],
       sort: {

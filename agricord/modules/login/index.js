@@ -287,7 +287,7 @@ class Login extends Component {
               <View>
                 <Image
                   source={require('assets/nfc.png')}
-                  style={{height: 50, width: 50}}
+                  style={{height: 50, width: 50, marginLeft: 25}}
                 />
               </View>
             </TouchableOpacity>

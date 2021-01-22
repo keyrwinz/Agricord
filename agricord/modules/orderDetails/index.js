@@ -130,7 +130,7 @@ class OrderDetails extends Component {
               marginTop: 15
           }}>
               <OrderContainer
-                title="Coastal Ag Supplies"
+                title={selectedOrder.merchant.name}
                 height={selectedOrder.status === 'pending' ? 140 : 180}>
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>

@@ -74,11 +74,7 @@ const Inventory = (props) => {
         title: 'asc'
       },
       merchant_id: props.state.user.sub_account.merchant.id,
-<<<<<<< HEAD
-      account_id: props.state.user.id,
-=======
       account_id: props.state.user.account_information.account_id,
->>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
       inventory_type: 'product_trace',
       type: props.state.user.account_type,
       productType: 'all',
@@ -90,16 +86,9 @@ const Inventory = (props) => {
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
-<<<<<<< HEAD
-      console.log();
-      if (response.data.length) {
-        setLoading(false)
-        setData(response.data)
-=======
       setLoading(false)
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
->>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -112,11 +101,6 @@ const Inventory = (props) => {
       } else {
         setData(flag == false ? [] : data)
       }
-<<<<<<< HEAD
-      console.log({ inventoryResponse: response })
-      setLoading(false)
-=======
->>>>>>> 2c2b413c849b6e7d7d72f39b61f4ccbe209edc2d
     }, error => {
       setLoading(false)
     })

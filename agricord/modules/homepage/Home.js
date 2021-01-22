@@ -39,73 +39,132 @@ const getIcon = (type) => {
 }
 
 const redirectToOrder = (obj, props) => {
+  console.log(",,,,,,,,,,,,,,,, ,,,,,,,,,,", obj);
   Alert.alert(
-    `Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`,
+    `Redirect to ${Array.isArray(obj) ? 'Tasks' : 'Order'}: ${obj.order_number}`,
     '',
     [
-      {text: 'OK', onPress: () => props.parentNav.navigate('orderDetailsStack')},
+      {text: 'OK', onPress: () => props.parentNav.navigate('orderDetailsStack', {
+        details: obj
+      })},
     ],
-    {cancelable: false},
+    {cancelable: true},
   );
-  // if(Alert.alert(`Redirect to ${obj.type}: ${obj.payload} ${obj.payload_value}`)){
-  //   console.log("true");
-  //   props.parentNav.navigate('orderDetailsStack', {
-  //       details: props,
-  //   })
-  // }else{
-  //   console.log(false);
-  // }
+  const {setSelectedOrder} = props;
+  let selectedOrder = obj
+  setSelectedOrder(selectedOrder);
 }
 
 
 const Home = (props) => {
   const [isExpanded, setExpand] = useState(false)
-  // const [InFocusArray, setInFOcus] = useState(InFocusData)
-  // const [RecentEventsArray, setRecentEvents] = useState(RecentEvents)
   const [data, setData] = useState()
+  const [orders, setOrders] = useState([])
   const [totalRecentData, setTotalRecentData] = useState()
   const [totalTasksData, setTotalTasksData] = useState()
   const [totalOrderData, setTotalOrderData] = useState()
   const [totalActivities, setTotalActivities] = useState(0)
+  const [loading, setLoading] = useState(false)
+  const [allData, setAllData] = useState();
+  const [arrayData, setArrayData] = useState([]);
+  const [recentCount, setRecentCount] = useState(0);
+  const [taskCount, setTaskCount] = useState();
+
+  var offset = 0;
+  var limit = 5;
   // const totalRecentData = null
+
+  const retrieve = (flag) => {
+    let parameters = {
+      condition: [{
+          column: 'merchant_id',
+          value: props.state.user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          clause: '=',
+        }, {
+          column: 'status',
+          value: 'completed',
+          clause: '!='
+        }
+      ],
+      sort: {
+        created_at: 'desc'
+      },
+      limit: limit,
+      offset: flag == true && offset > 0 ? (offset * limit) : offset,
+    };
+    setLoading(true)
+    retrieveData();
+    Api.request(Routes.ordersRetrieveByParams, parameters, response => {
+      setLoading(false)
+      setOrders([])
+      if(response.data.length > 0){
+        setOrders({
+          data: flag == false ? response.data : _.uniqBy([...orders, ...response.data], 'id'),
+          numberOfPages: parseInt(response.size / limit) + (response.size % limit ? 1 : 0),
+          offset: flag == false ? 1 : (offset + 1)
+        })
+      }else{
+        setOrders({
+          data: flag == false ? [] : orders,
+          numberOfPages: null,
+          offset: flag == false ? 0 : offset
+        })
+      }
+    }, error => {
+      setLoading(false);
+    });
+  };
+
+  const retrieveData = async () => {
+    const parameter = {
+      merchant_id: props.state.user.sub_account.merchant.id,
+  }
+    setLoading(true)
+    Api.request(Routes.dashboardRetrieve, parameter, res => {
+      console.log(res.data);
+      setLoading(false)
+      setData(res.data)
+      setTotalRecentData(_.countBy(res.data.recent, (res) => {
+        return ('recent');
+      }))
+  
+      setTotalTasksData(_.countBy(res.data.infocus, (infocus) => {
+        return ('Task')
+      }))
+  
+      setTotalOrderData( _.countBy(orders, (infocus) => {
+        return ('Order')
+      }))
+
+      setTotalActivities(totalTasksData.Task + totalRecentData.recent + totalOrderData.Order)
+
+      let temp = {...data, ...orders.data}
+      setAllData({data: temp})
+  
+    }, error => {
+      setLoading(false)
+      setData([])
+    })
+
+    var array = []
+    Object.entries(allData.data).map(([key, values]) => {
+      console.log(key,values);
+      array.push(values);
+    })
+    array.pop()
+    setArrayData(array);
+    
+  }
+
   
 
   useEffect(() => {
-    // console.log(props.navigation);
-    // console.log(props.parentNav.navigate('orderDetailsStack', {
-    //   details: props.details,
-    // }));
-    const userInfo = props.state.user 
-    if(userInfo === null){
-      return
-    }
-    const parameter = {
-        merchant_id: props.state.user.sub_account.merchant.id,
-    }
-    Api.request(Routes.dashboardRetrieve, parameter, res => {
-      setData(res.data)
-    })
+    // setTimeout(() => {
+      retrieve(false)
+    // }, 1000)
+  }, [allData])
 
-    const recent = _.countBy(response.data.recent, (res) => {
-      return ('recent');
-    })
-    setTotalRecentData(recent)
-  
-    const tasks = _.countBy(response.data.infocus, (infocus) => {
-      return infocus.type == 'Task'
-    })
-    setTotalTasksData(tasks)
-  
-    const orders = _.countBy(response.data.infocus, (infocus) => {
-      return infocus.type == 'Order'
-    })
-    setTotalOrderData(orders)
-    const activities = recent.recent + tasks.true + orders.true
-    setTotalActivities(activities)
-    
-  }, [])
-
-  return response.data ?  (
+  return arrayData.length ?  (
   <ScrollView style={Style.ScrollView}>
       <Spinner mode="overlay" />
       <SafeAreaView>
@@ -171,11 +230,11 @@ const Home = (props) => {
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <YellowCircle style={{ marginRight: 10 }} />
-                  <Text>{totalTasksData ? totalTasksData.true : 0} Task in Focus</Text>
+                  <Text>{totalTasksData ? totalTasksData.Task : 0} Task in Focus</Text>
                 </View>
                 <View style={[Style.flexRow, Style.graphLabel]}>
                   <BlueCircle style={{ marginRight: 10 }} />
-                  <Text>{totalOrderData ? totalOrderData.true : 0} Order in Focus</Text>
+                  <Text>{totalOrderData ? totalOrderData.Order : 0} Order in Focus</Text>
                 </View>
               </View>
             </View>
@@ -185,48 +244,96 @@ const Home = (props) => {
           <View style={Style.InFocusContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
             {
-              response.data.infocus.length && response.data.infocus.map((obj, idx) => {
-                if (idx > 1 && !isExpanded) return
-                const icon = getIcon(obj.type)
-                return (
-                  <TouchableOpacity
-                    key={idx}
-                    onPress={() => redirectToOrder(obj, props)}
-                  >
-                    <View style={Style.focusTask}>
-                      {icon}
-                      <View style={Style.focusTaskDetails}>
-                        <View style={Style.flexRow}>
-                          <InProgressIcon />
-                          <Text style={Style.eventText}>
-                            {obj.type}
-                          </Text>
-                          <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                            {obj.created_at}
-                          </Text>
-                          <Text style={Style.eventText}>
-                            {obj.name}
-                          </Text>
+              arrayData.length && arrayData.map( (obj, idx) => {
+                if(!Array.isArray(obj)){
+                  if (idx > 1 && !isExpanded) return
+                  const icon = getIcon('Order')
+                  return (
+                    <TouchableOpacity
+                      key={idx}
+                      onPress={() => redirectToOrder(obj, props)}
+                    >
+                      <View style={Style.focusTask}>
+                        {icon}
+                        <View style={Style.focusTaskDetails}>
+                          <View style={Style.flexRow}>
+                            <InProgressIcon />
+                            <Text style={Style.eventText}>
+                              {obj.status}
+                            </Text>
+                            <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                              {obj.date_of_delivery}
+                            </Text>
+                            <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
+                              {obj.merchant.name}
+                            </Text>
+                          </View>
+                          <View style={Style.flexRow}>
+                            <Text style={Style.taskPayloadText}>
+                              {obj.order_number}
+                            </Text>
+                            <Text style={Style.taskPayloadText}>
+                              {obj.payload_value}
+                            </Text>
+                          </View>
                         </View>
-                        <View style={Style.flexRow}>
-                          <Text style={Style.taskPayloadText}>
-                            {obj.payload}
-                          </Text>
-                          <Text style={Style.taskPayloadText}>
-                            {obj.payload_value}
-                          </Text>
+                        <View>
+                          <FontAwesomeIcon
+                            icon={faChevronRight}
+                            color={Color.gray}
+                            size={45}
+                          />
                         </View>
                       </View>
-                      <View>
-                        <FontAwesomeIcon
-                          icon={faChevronRight}
-                          color={Color.gray}
-                          size={45}
-                        />
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                )
+                    </TouchableOpacity>
+                  )
+                }else if(Array.isArray(obj)){
+                  return(
+                  obj.length && obj.map((el, idx) => {
+                    // if (idx > 1 && !isExpanded) return
+                    const icon = getIcon('Task')
+                    return (
+                      <TouchableOpacity
+                        key={idx}
+                        onPress={() => redirectToOrder(obj, props)}
+                      >
+                        <View style={Style.focusTask}>
+                          {icon}
+                          <View style={Style.focusTaskDetails}>
+                            <View style={Style.flexRow}>
+                              <InProgressIcon />
+                              <Text style={Style.eventText}>
+                                Task
+                              </Text>
+                              <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                {el.created_at_human}
+                              </Text>
+                              <Text style={Style.eventText}>
+                                {obj.order_number}
+                              </Text>
+                            </View>
+                            <View style={Style.flexRow}>
+                              <Text style={Style.taskPayloadText}>
+                                {obj.order_number}
+                              </Text>
+                              <Text style={Style.taskPayloadText}>
+                                {obj.payload_value}
+                              </Text>
+                            </View>
+                          </View>
+                          <View>
+                            <FontAwesomeIcon
+                              icon={faChevronRight}
+                              color={Color.gray}
+                              size={45}
+                            />
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    )
+                  })
+                  )
+                }
               })
             }
             <TouchableOpacity
@@ -385,7 +492,12 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setSelectedOrder: selectedOrder => {
+      console.log('************************', selectedOrder);
+      dispatch(actions.setSelectedOrder(selectedOrder));
+    },
+  };
 };
 
 export default connect(
