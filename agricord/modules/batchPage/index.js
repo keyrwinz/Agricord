@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import Style from './Style.js';
-import { View, Image, Text, ScrollView, SafeAreaView,  TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { View, Image, Text, ScrollView, SafeAreaView,  TouchableOpacity, Dimensions, Alert, TextInput } from 'react-native';
 import { Spinner, Empty} from 'components';
 import { connect } from 'react-redux';
 import { Color, Routes ,BasicStyles} from 'common'
@@ -8,8 +8,8 @@ import Api from 'services/api/index.js'
 import { Divider } from 'react-native-elements';
 import _, { isError } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
-import { faExclamationTriangle as faExclamationTriangleSolid} from '@fortawesome/free-solid-svg-icons';
+// import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
+import { faExclamationTriangle as faExclamationTriangle, faTint} from '@fortawesome/free-solid-svg-icons';
 import {data} from './data-test.js';
 import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import KeySvg from 'assets/settings/key.svg';
@@ -38,8 +38,17 @@ class paddockPage extends Component{
       matchedProduct: null,
       message: null,
       isAdded: false,
-      currentBatch: null
+      currentBatch: null,
+      total: 0,
+      newScanned: null,
+      createdBatch: null,
+      confirmTask: false,
+      notes: null
     }
+  }
+
+  notesHandler = (value) => {
+    this.setState({notes: value});
   }
 
   componentDidMount(){
@@ -63,8 +72,27 @@ class paddockPage extends Component{
       isLoading: true
     })
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-        let alpha = {id: 3, product: {code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA", id: 16, merchant_id: "1", qty: 0, title: "Alpha 110L", type: "regular", variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]}}
+      //temporary data incase you need to create batch
+        let alpha = {
+          id: 3,
+          product: {
+            code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA",
+            id: 16,
+            merchant_id: "1",
+            qty: 5,
+            title: "Alpha 110L",
+            type: "regular",
+            variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]
+          },
+          product_id: 16,
+          rate: 2000.000,
+          spray_mix_id: 65,
+          status: "draft",
+          units: "",
+          updated_at: '2021-01-09 07:20:57'
+        }
         response.data.push(alpha)
+        //
         this.setState({data: response.data, isLoading: false});
         
       },
@@ -78,23 +106,22 @@ class paddockPage extends Component{
   }
 
   setApplyTank(){
+    this.setState({confirmTask: true, taskConfirmation: true})
     const { task } = this.props.state;
     const user = this.props.state.user
-    this.setState({
-      taskConfirmation: true
-    })
     let parameter = {
       spray_mix_id: task.spray_mix.id,
       machine_id: task.machine.id,
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
-      notes: '',
-      water: task && task.params ? task.params.volume + task.params.units : 0,
+      notes: this.state.notes,
+      water: (this.props.navigation.state.params.max_area * this.props.navigation.state.params.application_rate) - this.total(),
       status: 'ongoing'
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchCreate, parameter, response => {
       this.setState({isLoading: false});
+      this.setState({createdBatch: response.data});
     },
     error => {
       this.setState({
@@ -106,18 +133,28 @@ class paddockPage extends Component{
   }
 
   manageProductConfirmation(){
+    const { newScanned, matchedProduct, data } = this.state;
+    if(newScanned?.product_id === matchedProduct?.product_id) {
+      for (let i = 0; i <= data.length - 1; i++) {
+        if(data[i].product_id == matchedProduct.product_id) {
+          data[i].product.qty += newScanned.product.qty;
+        }
+      }
+      
+    }
     this.setState({productConfirmation: false});
     this.setState({isAdded: true});
   }
 
   manageTaskConfirmation(){
+    this.setState({confirmTask: true});
     let parameter = {
-      id: 1,
+      id: this.state.createdBatch?.id,
       status: 'completed'
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchUpdateStatus, parameter, response => {
-      this.setState({isLoading: false});
+      this.setState({confirmTask: false, taskConfirmation: false, isLoading: false})
       },
       error => {
         this.setState({
@@ -171,27 +208,38 @@ class paddockPage extends Component{
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       this.setState({isLoading: false});
       if(response.data != null && response.data.length > 0) {
-        this.checkProduct(response.data, response.data[0].product.id)
+        if(this.state.matchedProduct) {
+          this.setState({newScanned: response.data[0]})
+        }
+        this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
         this.else();
-
       }
     }
     );
   }
 
-  checkProduct(array, id) {
+  checkProduct(array, id, value) {
     array.map(item => {
       if (item.product.id === id) {
-        this.setState({matchedProduct: item});
+        if(!this.state.matchedProduct) {
+          this.setState({matchedProduct: value});
+        }
         this.setState({
           productConfirmation: true
         })
-      } else {
-        this.else();
       }
     })
+  }
+
+  total = () => {
+    let total = this.state.total;
+    this.state.data.map(item => {
+      total += item.product.qty
+    })
+    this.setState({total: total})
+    return total;
   }
 
   else() {
@@ -219,7 +267,7 @@ class paddockPage extends Component{
           alignItems: 'center'
         }}
         >
-        <FontAwesomeIcon icon={faExclamationTriangleSolid} size={60} color={Color.white}/>
+        <FontAwesomeIcon icon={faExclamationTriangle} size={60} color={Color.white}/>
       </View>
       <View style={{
           width: '70%',
@@ -254,25 +302,26 @@ class paddockPage extends Component{
           paddingBottom: 15,
           paddingLeft: 15,
           paddingRight: 15,
-          height: 80
+          height: 110
       }}>
           
           <Text style={{
               fontSize: BasicStyles.standardTitleFontSize,
               fontWeight: 'bold'
             }}>Notes: </Text>
-
-          <Text style={{
-              fontSize: BasicStyles.standardFontSize,
-              color: Color.gray
-            }}>Notes: </Text>
+            <TextInput
+              style={{ height: 40, borderColor: Color.gray}}
+              onChangeText={text => this.notesHandler(text)}
+              value={this.state.notes}
+              placeholder='e.g. Application rate, nozzle type, weather conditions'
+            />
        </View>
 
     )
   }
 
   render() {
-    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded } = this.state;
+    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask } = this.state;
     const { task } = this.props.state;
     let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
     let volume = n ? n[n.length - 1] : null;
@@ -351,10 +400,12 @@ class paddockPage extends Component{
                       width: '70%',
                       flexDirection: 'row'
                     }}>
-                    <KeySvg />
+                      <FontAwesomeIcon style={{left: 15, top: 5}} icon={faTint} size={15} color={Color.white}/>
+                      <FontAwesomeIcon style={{left: 10, bottom: 2}} icon={faTint} size={12} color={Color.white}/>
+                      <FontAwesomeIcon style={{left: 6, bottom: -9}} icon={faTint} size={9} color={Color.white}/>
                     <Text style={{
                       color: Color.white,
-                      marginLeft:10,
+                      marginLeft:15,
                       fontSize: BasicStyles.standardTitleFontSize
                     }}>Water</Text>
                   </View>
@@ -403,11 +454,12 @@ class paddockPage extends Component{
         {
           (taskConfirmation) && (
             <TaskConfirmationModal
-              visible={taskConfirmation}
+              onSuccess={() => this.manageTaskConfirmation()}
+              taskConfirmation={confirmTask}
+              visible={confirmTask}
               onClose={() => this.setState({
                 taskConfirmation: false
               })}
-              onSuccess={() => this.manageTaskConfirmation}
             />
           )
         }
