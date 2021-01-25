@@ -13,16 +13,20 @@ import Carousel, { Pagination } from 'react-native-snap-carousel';
 import Switch from 'react-native-customisable-switch';
 import LinearGradient from 'react-native-linear-gradient';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faCheck, faCheckCircle, faTimesCircle, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faCheckCircle, faTimesCircle, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { Color, BasicStyles, Routes  } from 'common';
 import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
 import MixConfirmationModal from 'modules/modal/MixConfirmation';
+// import Message from 'modules/modal/Message.js';
 import Draggable from 'react-native-draggable';
 import { Spinner } from 'components';
+import Styles from 'modules/generic/OrderCardStyle';
 import Api from 'services/api/index.js';
 import _ from 'lodash';
+import Message from 'modules/modal/MessageModal.js';
+import { log } from 'pusher-js';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
@@ -93,6 +97,9 @@ const MixPage = (props) => {
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
+  const [appliedRate, setAppliedRate] = useState(0)
+  const [message, setMessage] = useState(false)
+  const [totalHigher, setTotalHigher] = useState(false)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -105,6 +112,32 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
+  const onload = () => {
+    setTimeout(() => {
+      setAppRateSwitch(!appRateSwitch)
+      if(!appRateSwitch){
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
+        setAppliedRate((Math.round(task.machine.capacity / totalArea)))
+        if(totalArea > maxArea){
+          setTotalHigher(true)
+          setMessage(true)
+        }
+      }else{
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+        setAppliedRate(Math.round(task.spray_mix.application_rate))
+        setTimeout(() => {
+          if(totalArea > maxArea){
+            setTotalHigher(true)
+          }
+        }, 25)
+      }
+    }, 25)
+  }
+
+  const closeModal = () =>{
+    setMessage(false) && setAppRateSwitch(!appRateSwitch)
+  }
+
   const retrieve = () => {
     const { task, user } = props.state;
     if (user == null || task == null || (task && task.spray_mix == null)) {
@@ -115,7 +148,6 @@ const MixPage = (props) => {
       spray_mix_id: task.spray_mix.id
     };
     setLoading(true)
-    console.log('parameter', parameter)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
@@ -146,18 +178,20 @@ const MixPage = (props) => {
     })
     setTimeout(() => {
       setMixConfirmation(false)
-      props.navigation.navigate(route)
+      props.navigation.navigate(route, {max_area: maxArea, application_rate: appliedRate})
     }, 100)
   }
 
   const removePaddock = (from, item) => {
+    item.partial = false;
     if(from == 'selected'){
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
       if(paddock.id != item.id){
           return item
         }
       })
-      setTotalArea(totalArea - item.area)
+      // setTotalArea(totalArea - item.area)
+      setTotalArea(parseFloat(totalArea - item.area).toFixed(2))
       setSelectedPaddock(newSelectedPaddock)
       setPaddocks([...paddocks, ...[item]])
     }else{
@@ -176,7 +210,6 @@ const MixPage = (props) => {
       let item = selectedPaddock[i]
       total = total + item.area
       setTotalArea(total)
-      console.log('totalArea', totalArea)
     }
   }
 
@@ -192,14 +225,15 @@ const MixPage = (props) => {
     }
     if(status == false){
       if(maxArea <= totalArea){
-          Alert.alert(
-            'Error Message',
-            'Now Allowed! Total area is greater than the max area.',
-            [
-              { text: 'OK', onPress: () => console.log('OK Pressed') }
-            ],
-            { cancelable: false }
-          );
+          setTotalHigher(true)
+          // Alert.alert(
+          //   'Error Message',
+          //   'Now Allowed! Total area is greater than the max area.',
+          //   [
+          //     { text: 'OK', onPress: () => console.log('OK Pressed') }
+          //   ],
+          //   { cancelable: false }
+          // );
       }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
@@ -222,7 +256,6 @@ const MixPage = (props) => {
       
     }else{
       console.log('already existed')
-
       Alert.alert(
         'Error Message',
         item.name + ' already exist!',
@@ -231,7 +264,6 @@ const MixPage = (props) => {
         ],
         { cancelable: false }
       );
-
     }
 
   }
@@ -250,7 +282,6 @@ const MixPage = (props) => {
     setSelectedPaddock(newSelectedPaddock)
   }
 
-
   const selectedPaddockView = () => {
     return(
       <View style={{
@@ -266,9 +297,12 @@ const MixPage = (props) => {
             itemWidth={width * 0.9}
             renderItem={(data) => (
               <MixCard data={data}
+                totalRate={totalArea}
+                maxRate={maxArea}
                 hasCheck={true}
                 addToSelected={() => {}}
                 removePaddock={(from, item) => removePaddock(from, item)}
+
                 from={'selected'}
                 params={{
                   totalArea,
@@ -306,6 +340,7 @@ const MixPage = (props) => {
     )
   }
 
+
   const applicationRate = () => {
     const { task } = props.state;
     console.log('task', task)
@@ -320,6 +355,7 @@ const MixPage = (props) => {
             marginLeft: '5%',
             marginRight: '5%',
             zIndex: 1,
+            // marginBottom: 70
             marginBottom: (selectedPaddock.length == 0 || (selectedPaddock.length > 0 &&  selectedFlag == false)) ? (height / 2) : 0
           }]
         }>
@@ -341,7 +377,7 @@ const MixPage = (props) => {
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginRight: 3 }}>Last Load?</Text>
               <Switch
                 value={appRateSwitch}
-                onChangeValue={() => setAppRateSwitch(!appRateSwitch)}
+                onChangeValue={() => onload()}
                 activeText={'ON'}
                 inactiveText={'OFF'}
                 fontSize={BasicStyles.standardFontSize}
@@ -359,6 +395,16 @@ const MixPage = (props) => {
                 animationTime={150}
                 padding={true}
               />
+              <View style={{ marginLeft: 34 }}
+              >
+                {message === true ?
+                  <Message
+                    visible={true}
+                    title={'Application volume too low'}
+                    message={`This task would require an application volume lower than ${appliedRate}L/ha, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
+                    onClose={() => closeModal()}
+                  /> : null }
+              </View>
             </View>
           </View>
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
@@ -381,76 +427,83 @@ const MixPage = (props) => {
                 { (task && task.spray_mix) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
-                    }]}>{task.spray_mix.application_rate}/Ha</Text>
+                    }]}>{!appRateSwitch ? task.spray_mix.application_rate : appliedRate}L/ha</Text>
                   )
                 }
               </View>
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                
-                <View style={Style.totalAreaBox}>
-                  <Text style={{
-                    fontSize: BasicStyles.standardFontSize
-                  }}>{totalArea} Ha</Text>
-                  <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                    TOTAL AREA
-                  </Text>
-                </View>  
-
+                {totalHigher === false ?
+                  <View style={Style.totalAreaBox}>
+                    <Text style={{
+                      fontSize: BasicStyles.standardFontSize
+                    }}>{totalArea} Ha</Text>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View> :
+                  <View style={[Style.totalAreaBox, {borderColor: '#FF0000'}]}>
+                    <Text style={{
+                      fontSize: BasicStyles.standardFontSize, color: '#FF0000'
+                    }}>{totalArea} Ha</Text>
+                    <Text style={{ color: '#FF0000', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View>
+                }
                 {
-                  (task && task.machine) && (
-                    <View style={{ marginTop: 5, paddingLeft: 10 }}>
-                      <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                        MAX AREA: {maxArea}HA
-                      </Text>
-                    </View>    
+                  (selectedPaddock.length > 0) && (
+
+                    <View style={{
+                      flexDirection: 'column',
+                      width: '100%',
+                      flexWrap: 'wrap',
+                      justifyContent: 'space-between',
+                      marginTop: -25,
+                      paddingLeft: 15
+                    }}>
+                      {
+                        selectedPaddock.map((item, index) => (
+                          <View 
+                          style={[Style.appliedPaddock, {
+                            width: '40%',
+                            justifyContent: 'space-between',
+                          }]}
+                          >
+                          {
+                            item.name && (
+                              <Text style={[Style.appliedPaddockText, {
+                                fontSize: BasicStyles.standardTitleFontSize
+                                }]}>
+                                  {item.name}
+                                </Text>
+                            )
+                          }
+                        
+                          <TouchableOpacity
+                            style={{
+                              width: 5,
+                              alignItems: 'flex-end'
+                            }}
+                            onPress={() => removePaddock('selected', item)}
+                            >
+                            <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
+                          </TouchableOpacity>
+                        </View>
+                        ))
+                      } 
+                    </View>
                   )
                 }
-                
               </View>
-             
               {
-                (selectedPaddock.length > 0) && (
-
-                  <View style={{
-                    flexDirection: 'row',
-                    width: '100%',
-                    flexWrap: 'wrap',
-                    justifyContent: 'space-between',
-                    marginTop: 10
-                  }}>
-                    {
-                      selectedPaddock.map((item, index) => (
-                       <View 
-                        style={[Style.appliedPaddock, {
-                          width: '48%',
-                          justifyContent: 'space-between',
-                        }]}
-                        >
-                        {
-                          item.name && (
-                             <Text style={[Style.appliedPaddockText, {
-                                fontSize: BasicStyles.standardTitleFontSize
-                              }]}>
-                                {item.name}
-                              </Text>
-                          )
-                        }
-                       
-                        <TouchableOpacity
-                          style={{
-                            width: 30,
-                            alignItems: 'flex-end'
-                          }}
-                          onPress={() => removePaddock('selected', item)}
-                          >
-                          <FontAwesomeIcon size={12} icon={faTimesCircle} color={'#094EFF'} />
-                        </TouchableOpacity>
-                       </View>
-                      ))
-                    }
-                  </View>
+                (task && task.machine) && (
+                  <View style={{ marginTop: 5, paddingLeft: 0 }}>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      MAX AREA: {maxArea}HA
+                    </Text>
+                  </View>    
                 )
               }
             </View>
@@ -513,11 +566,11 @@ const MixPage = (props) => {
 
           <Text style={{
             position: 'absolute',
-            bottom: -20,
-            left: '12%',
+            bottom: -12,
+            left: '5%',
             fontSize: 10,
             color: '#C0C0C0',
-            width: 100
+            // width: 100
           }}>
             Drag Paddock tile to Appliction Box
           </Text>
@@ -560,6 +613,7 @@ const MixPage = (props) => {
       </View>
     )
   }
+
 
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>

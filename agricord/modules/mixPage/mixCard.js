@@ -11,16 +11,39 @@ import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle, faCheckSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
 import { Color, BasicStyles } from 'common';
 import Style from './Style.js';
+import Message from 'modules/modal/MessageModal.js';
 import Draggable from 'react-native-draggable';
+import { remove } from 'lodash';
 const COLORS = ['#FFC700', '#5A84EE', '#9AD267'];
 
 class MixCard extends Component {
   constructor(props){
     super(props);
+    this.state = {
+      message : false
+    }
+  }
+
+  removePad(){
+    this.props.removePaddock(this.props.from, this.props.data.item)
+  }
+
+  messageModal(){
+    this.state.message = true
+  }
+
+  closeModal(){
+    this.setState({message: false})
+    this.props.data.item.partial = false
+  }
+
+  componentDidMount = () => {
+
   }
 
   render(){
-    const { data, hasCheck } = this.props;
+    const { data, hasCheck, totalRate, maxRate } = this.props;
+    const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -28,13 +51,11 @@ class MixCard extends Component {
     }
 
     return (
-      
           <TouchableOpacity
             style={[Style.mixCardContainer, {
               zIndex: 999
             }]}
             onLongPress={() => {
-              console.log('paddocks', data.item)
               this.props.addToSelected(data.item)
             }} 
           >
@@ -88,11 +109,11 @@ class MixCard extends Component {
                       </TouchableOpacity>
                     )
                   }
-                  
+
                   {
                     this.props.from == 'selected' && (
                       <TouchableOpacity
-                        onPress={() => this.props.removePaddock(this.props.from, data.item)}>
+                        onPress={() => this.removePad() }>
                         <FontAwesomeIcon
                           size={16}
                           icon={faTimesCircle}
@@ -111,7 +132,7 @@ class MixCard extends Component {
                       Crop
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                      {data?.item?.crop}
+                      {data?.item?.crop_name}
                     </Text>
                   </View>
                   <View style={Style.detailRow}>
@@ -127,24 +148,42 @@ class MixCard extends Component {
                   data.item.partial == true && (
                       <View style={Style.mixRightDetail}>
                         <View style={[Style.remainingBox, {
-                          borderColor: Color.danger
+                          borderColor: Color.primary
                         }]}>
-                          <Text style={{ color: Color.danger, fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                            REMAINING AREA
+                          <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
+                            PARTIAL
                           </Text>
-                          <View style={{
+                          <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                            { partials >= 0 ? partials : this.messageModal() }
+                          </Text>
+                          <View 
+                            style={{
+                              paddingLeft: 100
+                            }}
+                          >
+                            { 
+                              this.state.message === true ?
+                                <Message
+                                  visible={true}
+                                  title={'Area too large'}
+                                  message={`You've still selected too many hectares. \n\n\t Remove a whole paddock or complete a partial application on another paddock to continue.`}
+                                  onClose={() => this.closeModal()}
+                                /> : null 
+                            }
+                          </View>
+                          {/* <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'center'
                           }}>
                             <TextInput
                               value={data.item.remaining_area}
-                              placeholder={'000'}
+                              placeholder={'00000'}
                               keyboardType={'numeric'}
-                              maxLength={3}
+                              maxLength={5}
                               style={{
                                 fontWeight: 'bold',
-                                width: 40,
+                                width: 50,
                                 fontSize: BasicStyles.standardTitleFontSize
                               }}
                               onChangeText={(input) => {
@@ -153,7 +192,7 @@ class MixCard extends Component {
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
                             </Text>
-                          </View>
+                          </View> */}
                         </View>
                       </View>
                     )
@@ -166,7 +205,7 @@ class MixCard extends Component {
                           REMAINING AREA
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {data?.item?.remaining_area + ' ' + data?.item?.units}
+                          {data?.item?.remaining_area + ' ' + data?.item?.spray_mix_units}
                         </Text>
                       </View>
                     </View>
