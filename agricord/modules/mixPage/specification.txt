@@ -4,7 +4,6 @@ if last load is ON
   selected area(total area)
 - max area will be calculated by machine capacity divided  by the minimum rate of the spray mix
 
-
 if last load is off
  - the applied rate will the application_rate on spray mix
  - the max area will be machine capacity divided by the 
