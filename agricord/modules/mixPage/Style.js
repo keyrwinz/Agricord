@@ -135,5 +135,12 @@ export default {
   appliedPaddockText: {
     color: '#094EFF',
     marginRight: 2
+  },
+  searchInput: {
+    flex: 1,
+    lineHeight: 22,
+    fontSize: 17,
+    color: Color.white,
+    padding: 5
   }
 }

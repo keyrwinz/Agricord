@@ -20,7 +20,8 @@ class MixCard extends Component {
   constructor(props){
     super(props);
     this.state = {
-      message : false
+      message : false,
+      text: ''
     }
   }
 
@@ -37,7 +38,12 @@ class MixCard extends Component {
     this.props.data.item.partial = false
   }
 
-  componentDidMount = () => {
+  fun = (data) => {
+    this.setState({ text: data})
+    console.log('asdfasdfasdfasdf', this.state.text)
+  }
+
+  componentDidMount(){
 
   }
 
@@ -153,25 +159,10 @@ class MixCard extends Component {
                           <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
                             PARTIAL
                           </Text>
-                          <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                          {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                             { partials >= 0 ? partials : this.messageModal() }
-                          </Text>
-                          <View 
-                            style={{
-                              paddingLeft: 100
-                            }}
-                          >
-                            { 
-                              this.state.message === true ?
-                                <Message
-                                  visible={true}
-                                  title={'Area too large'}
-                                  message={`You've still selected too many hectares. \n\n\t Remove a whole paddock or complete a partial application on another paddock to continue.`}
-                                  onClose={() => this.closeModal()}
-                                /> : null 
-                            }
-                          </View>
-                          {/* <View style={{
+                          </Text> */}
+                          <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'center'
@@ -187,12 +178,35 @@ class MixCard extends Component {
                                 fontSize: BasicStyles.standardTitleFontSize
                               }}
                               onChangeText={(input) => {
+                                this.fun(input)
                               }}
                             />
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
                             </Text>
-                          </View> */}
+                            {/* <TouchableOpacity
+                              underlayColor={Color.gray} 
+                              style={[{backgroundColor: Color.primary, width: '30%', marginRight: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: 30, borderRadius: 5}]}
+                              onPress={() => this.props.onClose()}
+                              >
+                              <Text style={{ color: Color.white}}>OK</Text>
+                            </TouchableOpacity> */}
+                          </View>
+                          <View 
+                            style={{
+                              paddingLeft: 100
+                            }}
+                          >
+                            { 
+                              this.state.message === true ?
+                                <Message
+                                  visible={true}
+                                  title={'Area too large'}
+                                  message={`You've still selected too many hectares. \n\n\t Remove a whole paddock or complete a partial application on another paddock to continue.`}
+                                  onClose={() => this.closeModal()}
+                                /> : null 
+                            }
+                          </View>
                         </View>
                       </View>
                     )

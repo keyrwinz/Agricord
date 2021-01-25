@@ -6,6 +6,8 @@ import {
   Dimensions,
   SafeAreaView,
   TouchableOpacity,
+  TextInput,
+  Button,
   Alert
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -26,7 +28,6 @@ import Styles from 'modules/generic/OrderCardStyle';
 import Api from 'services/api/index.js';
 import _ from 'lodash';
 import Message from 'modules/modal/MessageModal.js';
-import { log } from 'pusher-js';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
@@ -184,6 +185,7 @@ const MixPage = (props) => {
 
   const removePaddock = (from, item) => {
     item.partial = false;
+    // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
       if(paddock.id != item.id){
@@ -191,7 +193,7 @@ const MixPage = (props) => {
         }
       })
       // setTotalArea(totalArea - item.area)
-      setTotalArea(parseFloat(totalArea - item.area).toFixed(2))
+      setTotalArea(totalArea - item.area)
       setSelectedPaddock(newSelectedPaddock)
       setPaddocks([...paddocks, ...[item]])
     }else{
@@ -269,6 +271,7 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    console.log('asdfadddddddddddddddddd', item)
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
         return {
@@ -374,7 +377,7 @@ const MixPage = (props) => {
               />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
-              <Text style={{ fontSize: BasicStyles.standardFontSize, marginRight: 3 }}>Last Load?</Text>
+              <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
               <Switch
                 value={appRateSwitch}
                 onChangeValue={() => onload()}
@@ -401,7 +404,7 @@ const MixPage = (props) => {
                   <Message
                     visible={true}
                     title={'Application volume too low'}
-                    message={`This task would require an application volume lower than ${appliedRate}L/ha, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
+                    message={`This task would require an application volume lower than ${appliedRate} L, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
                     onClose={() => closeModal()}
                   /> : null }
               </View>
@@ -410,7 +413,9 @@ const MixPage = (props) => {
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <LinearGradient
+                {appRateSwitch === false ?
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <LinearGradient
                   colors={['#ABD770', '#D3E584']}
                   style={{
                     height: 15,
@@ -418,16 +423,36 @@ const MixPage = (props) => {
                     borderRadius: 7.5,
                     marginRight: 5
                   }}
-                />
-                <Text style={{
-                  fontSize: BasicStyles.standardFontSize
-                }}>Applied Rate</Text>
+                  />
+                  <Text style={{
+                    fontSize: BasicStyles.standardFontSize
+                  }}>Applied Rate</Text>
+                </View>
+                  :
+                  // <Button
+                  //   title="Outline button"
+                  //   type="outline"
+                  // />
+                  <View style={{flexDirection:'row'}}>
+                    <TextInput 
+                        style={[Style.searchInput, { opacity: 1, borderColor: 'gray', borderWidth: 1 }]}
+                        onChangeText={text => onChangeText(text)}
+                        value={appliedRate}
+                        placeholderTextColor='black'
+                        placeholder='Enter Application Volume'
+                        underlineColorAndroid='transparent'>
+                    </TextInput>
+                    <TouchableOpacity>
+                        <Text>Confirm</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
               </View>
               <View>
-                { (task && task.spray_mix) && (
+                { (task && task.spray_mix && !appRateSwitch) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
-                    }]}>{!appRateSwitch ? task.spray_mix.application_rate : appliedRate}L/ha</Text>
+                    }]}>{task.spray_mix.application_rate} L</Text>
                   )
                 }
               </View>
