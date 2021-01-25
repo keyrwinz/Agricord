@@ -392,9 +392,6 @@ class paddockPage extends Component{
                     paddingRight: 10
                   }
                   ]}
-                  onPress={() => this.setState({
-                    taskConfirmation: true
-                  })}
                   >
                   <View style={{
                       width: '70%',
