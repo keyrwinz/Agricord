@@ -6,6 +6,8 @@ import {
   faTimes,
   faFlask,
   faTractor,
+  faCheck,
+  faCaretUp
 } from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {BasicStyles, Color} from 'common';
@@ -53,6 +55,15 @@ class CustomPicker extends Component {
        <View style={[styles.OptionsContainer, {
         zIndex: this.props.zIndex + 30
        }]} onStartShouldSetResponder={() => true}>
+         <View style={{left: 285, position: 'absolute', top: -20}}>
+            <FontAwesomeIcon
+              color={
+              Color.white
+              }
+              icon={faCaretUp}
+              size={30}
+            />
+          </View>
         <ScrollView styles={{
           position: 'relative',
           zIndex: this.props.zIndex + 100,
@@ -96,6 +107,15 @@ class CustomPicker extends Component {
                     {item.name}
                   </Text>
                 </View>
+                {select && select.id === item.id && (<View style={styles.OptionIconContainer, {left: 260, position: 'absolute', top: 10}}>
+                  <FontAwesomeIcon
+                    color={
+                     Color.blue
+                    }
+                    icon={faCheck}
+                    size={23}
+                  />
+                </View>)}
               </TouchableOpacity>
             );
           })}

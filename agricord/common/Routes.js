@@ -90,5 +90,7 @@ export default {
 
   // spray mix products
   sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params',
-
+  productTraceRetrieve: apiUrl + 'product_traces/retrieve_by_params',
+  batchCreate: apiUrl + 'batches/create',
+  batchUpdateStatus: apiUrl + 'batches/update',
 };
