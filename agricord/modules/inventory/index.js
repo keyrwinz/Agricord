@@ -65,6 +65,10 @@ const Inventory = (props) => {
   }, [])
 
   const retrieve = (flag) => {
+    const { user } = props.state;
+    if(user == null){
+      return
+    }
     const parameter = {
       condition: {
         column: 'title',
@@ -73,16 +77,15 @@ const Inventory = (props) => {
       sort: {
         title: 'asc'
       },
-      merchant_id: props.state.user.sub_account.merchant.id,
-      account_id: props.state.user.account_information.account_id,
+      merchant_id: user.sub_account.merchant.id,
+      account_id: user.id,
       inventory_type: 'product_trace',
-      type: props.state.user.account_type,
+      type: user.account_type,
       productType: 'all',
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
       tags: '%' + activeTags.toLocaleLowerCase() + '%'
     }
-    console.log(props.state.user.sub_account.merchant.id, props.state.user.account_information.account_id)
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
@@ -264,4 +267,4 @@ const InventoryScreen = (props) => {
   )
 }
 
-export default InventoryScreen
+export default InventoryScreen;

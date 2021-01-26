@@ -17,5 +17,6 @@ export default {
     encrypted: true,
   },
   versionChecker: 'store',
-  retrieveDataFlag: 1
+  retrieveDataFlag: 1,
+  NFC_TEST: true
 };

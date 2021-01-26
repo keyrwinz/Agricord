@@ -19,8 +19,13 @@ class MixCard extends Component {
     super(props);
   }
 
+  componentDidMount = () => {
+
+  }
+
   render(){
     const { data, hasCheck } = this.props;
+    console.log('data here', data)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -28,13 +33,11 @@ class MixCard extends Component {
     }
 
     return (
-      
           <TouchableOpacity
             style={[Style.mixCardContainer, {
               zIndex: 999
             }]}
             onLongPress={() => {
-              console.log('paddocks', data.item)
               this.props.addToSelected(data.item)
             }} 
           >
@@ -111,7 +114,7 @@ class MixCard extends Component {
                       Crop
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                      {data?.item?.crop}
+                      {data?.item?.crop_name}
                     </Text>
                   </View>
                   <View style={Style.detailRow}>
@@ -130,7 +133,7 @@ class MixCard extends Component {
                           borderColor: Color.danger
                         }]}>
                           <Text style={{ color: Color.danger, fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                            REMAINING AREA
+                            PARTIAL
                           </Text>
                           <View style={{
                             flexDirection: 'row',
@@ -166,7 +169,7 @@ class MixCard extends Component {
                           REMAINING AREA
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {data?.item?.remaining_area + ' ' + data?.item?.units}
+                          {data?.item?.remaining_area + ' ' + data?.item?.spray_mix_units}
                         </Text>
                       </View>
                     </View>

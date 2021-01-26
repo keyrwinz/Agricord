@@ -1,6 +1,7 @@
 import { Color, BasicStyles } from 'common';
 import { Dimensions } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 export default {
   IconContainer: {
     position: 'absolute',
@@ -72,4 +73,34 @@ export default {
     fontSize: BasicStyles.standardFontSize,
     color: '#D5D5D5',
   },
+  action: {
+    width: '100%',
+    borderTopColor: Color.gray,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  container: {
+    height: height - 100,
+    width: width - 40,
+    borderRadius: 10,
+    backgroundColor: Color.white
+  },
+  mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  header: {
+    width: '100%',
+    borderBottomColor: Color.gray,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  text: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingLeft: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 }

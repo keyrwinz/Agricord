@@ -133,7 +133,6 @@ class MixName extends Component {
               <View style={Style.paddockInfo}>
                 <View style={{flexDirection: 'row'}}>
                   <Text style={{
-                    fontWeight: 'bold',
                     fontSize: BasicStyles.standardTitleFontSize
                   }}>
                     { (paddock && paddock.from == 'due') ? 'Application Volume' : 'Applied Volume' }
@@ -147,7 +146,7 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  65L
+                  65L/Ha
                 </Text>
               </View>
             </View>

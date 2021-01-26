@@ -252,7 +252,7 @@ class paddockPage extends Component{
               <Text style={{
                 fontWeight:'bold',
                 fontSize: BasicStyles.standardTitleFontSize
-              }}>Spray Mix</Text>
+              }}>Applied Mix</Text>
             </View>
           </View>
           <View style={[Style.paddockDate, {

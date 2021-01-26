@@ -4,6 +4,7 @@ import { Row } from 'native-base';
 const width = Math.round(Dimensions.get('window').width);
 export default {
   container: {
+    marginTop: 25,
     minHeight: 50,
     width: '100%',
     marginVertical: 10,
