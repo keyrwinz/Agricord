@@ -38,7 +38,7 @@ export default {
   imageRetrieve: apiUrl + 'images/retrieve',
 
   // dashboard result
-  dashboardRetrieve: apiUrl + 'paddocks/dashboard_batches',
+  dashboardRetrieve: apiUrl + 'order_requests/retrieve_orders_dashboard',
   // carts
   // cartsCreate: apiUrl + 'carts/create',
   // cartsRetrieve: apiUrl + 'carts/retrieve',

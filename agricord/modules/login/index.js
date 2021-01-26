@@ -73,6 +73,12 @@ class Login extends Component {
       // error reading value
     }
   }
+  
+  redirectToForgotpass(){
+    const {navigation} = this.props;
+    navigation.navigate('forgotPasswordScreen')
+  }
+
 
   login = () => {
     this.test();
@@ -246,11 +252,11 @@ class Login extends Component {
                 handler={this.passwordHandler}
               />
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() => {}}
               style={styles.CreateAccountContainer}>
               <Text style={styles.CreateAccountTextStyle}>Create Account</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <View style={styles.SignInButtonContainer}>
               <SignInButton
                 onPress={() => {
@@ -266,10 +272,7 @@ class Login extends Component {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => {
-                  const {navigate} = this.props.navigation;
-                  navigate('ForgotPassword');
-                }}
+                onPress={() => this.redirectToForgotpass()}
                 style={styles.SendCodeContainer}>
                 <Text style={styles.SendCodeTextStyle}> Send Code</Text>
               </TouchableOpacity>
