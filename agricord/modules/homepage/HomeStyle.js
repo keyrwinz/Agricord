@@ -142,6 +142,10 @@ export default {
     marginLeft: 7,
     color: Color.gray,
   },
+  overFlowText: {
+    width: 20
+  },
+
   eventPayloadText: {
     marginTop: 5,
     marginLeft: 5,

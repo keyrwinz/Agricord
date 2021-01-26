@@ -48,6 +48,7 @@ const DrumScanLoginStack = createStackNavigator({
       headerStyle: {
         elevation: 0,
         paddingTop: 20,
+        marginLeft: -20,
         backgroundColor: '#FFFFFF',
       },
       headerTintColor: BasicStyles.headerTintColor,
