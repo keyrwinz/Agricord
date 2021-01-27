@@ -39,9 +39,8 @@ const getIcon = (type) => {
 }
 
 const redirectToOrder = (obj, props) => {
-  console.log(",,,,,,,,,,,,,,,, ,,,,,,,,,,", obj);
   Alert.alert(
-    `Redirect to ${Array.isArray(obj) ? 'Tasks' : 'Order'}: ${obj.order_number}`,
+    `Redirect to Orders: ${obj.order_number}`,
     '',
     [
       {text: 'OK', onPress: () => props.parentNav.navigate('orderDetailsStack', {
@@ -53,6 +52,20 @@ const redirectToOrder = (obj, props) => {
   const {setSelectedOrder} = props;
   let selectedOrder = obj
   setSelectedOrder(selectedOrder);
+}
+
+const redirectToTask = (obj, props) => {
+  Alert.alert(
+    `Redirect to Tasks ${obj.paddock.name}`,
+    '',
+    [
+      {text: 'OK', onPress: () => props.parentNav.navigate('paddockStack', {
+        data: obj
+      })},
+    ],
+    {cancelable: true},
+  );
+  setPaddock({...obj});
 }
 
 
@@ -257,7 +270,7 @@ const Home = (props) => {
                   return (
                     <TouchableOpacity
                       key={idx}
-                      onPress={() => redirectToOrder(obj, props)}
+                      onPress={() => redirectToTask(obj, props)}
                     >
                       <View style={Style.focusTask}>
                         {icon}
@@ -265,18 +278,18 @@ const Home = (props) => {
                           <View style={Style.flexRow}>
                             <InProgressIcon />
                             <Text style={Style.eventText}>
-                              {/* {obj.status} */}
+                              {obj.status}
                             </Text>
                             <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                              {obj.created_at_human}
+                              {obj.due_date}
                             </Text>
                             <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
-                              {obj.name}
+                              {obj.nickname}
                             </Text>
                           </View>
                           <View style={Style.flexRow}>
                             <Text style={Style.taskPayloadText}>
-                              {/* {obj.order_number} */}
+                              {obj.paddock.name}
                             </Text>
                             <Text style={Style.taskPayloadText}>
                               {/* {obj.payload_value} */}
@@ -312,7 +325,7 @@ const Home = (props) => {
         <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              response.data.recent.length && response.data.recent.map((obj, idx) => {
+              orders.data.recent.length && orders.data.recent.map((obj, idx) => {
                 return (
                   <View
                     key={idx}
@@ -334,21 +347,21 @@ const Home = (props) => {
                     <View style={Style.eventDetailsContainer}>
                       <View style={Style.flexRow}>
                         <Text style={Style.eventText}>
-                          {obj.type}
+                          Task
                         </Text>
                         <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                          {obj.date}
+                          {obj.due_date}
                         </Text>
                         <Text style={Style.eventText}>
-                          {obj.name}
+                          {obj.nickname}
                         </Text>
                       </View>
                       <View style={Style.flexRow}>
                         <Text style={Style.eventPayloadText}>
-                          {obj.payload}
+                          {obj.paddock.name}
                         </Text>
                         <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
-                          {obj.payload_value}
+                          {/* {obj.payload_value} */}
                         </Text>
                       </View>
                     </View>
@@ -453,9 +466,9 @@ const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
   return {
     setSelectedOrder: selectedOrder => {
-      console.log('************************', selectedOrder);
       dispatch(actions.setSelectedOrder(selectedOrder));
     },
+    setPaddock: (product) => dispatch(actions.setPaddock(product)),
   };
 };
 
