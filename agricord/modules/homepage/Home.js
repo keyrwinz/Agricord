@@ -325,7 +325,7 @@ const Home = (props) => {
         <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              orders.data.recent.length > 0 && ( <View>{orders.data.recent.map((obj, idx) => {
+              orders.data.recent.length > 0  && ( <View>{orders.data.recent.map((obj, idx) => {
                 return (
                   <View
                     key={idx}
