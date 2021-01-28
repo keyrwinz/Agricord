@@ -55,15 +55,17 @@ class CustomPicker extends Component {
        <View style={[styles.OptionsContainer, {
         zIndex: this.props.zIndex + 30
        }]} onStartShouldSetResponder={() => true}>
-         <View style={{left: 285, position: 'absolute', top: -20}}>
-            <FontAwesomeIcon
-              color={
-              Color.white
-              }
-              icon={faCaretUp}
-              size={30}
-            />
-          </View>
+          <FontAwesomeIcon
+            style={{
+              left: 285,
+              position: 'absolute',
+              top: -20 }}
+            color={
+            Color.white
+            }
+            icon={faCaretUp}
+            size={30}
+          />
         <ScrollView styles={{
           position: 'relative',
           zIndex: this.props.zIndex + 100,
@@ -106,8 +108,7 @@ class CustomPicker extends Component {
                     ]}>
                     {item.name}
                   </Text>
-                </View>
-                {select && select.id === item.id && (<View style={styles.OptionIconContainer, {left: 260, position: 'absolute', top: 10}}>
+                  {select && select.id === item.id && (<View style={styles.OptionIconContainer, {left: 240, position: 'absolute'}}>
                   <FontAwesomeIcon
                     color={
                      Color.blue
@@ -116,6 +117,7 @@ class CustomPicker extends Component {
                     size={23}
                   />
                 </View>)}
+                </View>
               </TouchableOpacity>
             );
           })}

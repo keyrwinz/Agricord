@@ -112,6 +112,7 @@ class OrderDetails extends Component {
   };
 
   render() {
+    console.log("=======================", this.props.state);
     const {selectedOrder} = this.props.state;
     const {parentNav} = this.props.navigation.state.params;
     return (
@@ -130,7 +131,7 @@ class OrderDetails extends Component {
               marginTop: 15
           }}>
               <OrderContainer
-                title="Coastal Ag Supplies"
+                title={selectedOrder.merchant.name}
                 height={selectedOrder.status === 'pending' ? 140 : 180}>
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>

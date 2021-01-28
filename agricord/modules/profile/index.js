@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Style from './Style.js';
-import { View, Image, TouchableHighlight, TouchableOpacity, Text, ScrollView, TextInput, Picker} from 'react-native';
+import { View, Image, TouchableHighlight, TouchableOpacity, Text, ScrollView, TextInput} from 'react-native';
 import { Routes, Color, Helper, BasicStyles } from 'common';
 import { Spinner, ImageUpload, DateTime } from 'components';
 import Api from 'services/api/index.js';
@@ -12,6 +12,7 @@ import { faUserCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { Dimensions } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RNPickerSelect from 'react-native-picker-select';
+import Picker from '@react-native-community/picker';
 const height = Math.round(Dimensions.get('window').height);
 const gender = [{
   title: 'Male',
