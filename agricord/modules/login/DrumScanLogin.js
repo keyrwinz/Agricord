@@ -105,6 +105,9 @@ class DrumScanLogin extends Component {
             link: false
           }
           console.log('parameter', parameter)
+          this.props.navigation.navigate('productDetailsOfflineStack', {
+            data: parameter
+          })
         }
       })
     }
