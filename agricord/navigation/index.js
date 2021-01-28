@@ -1,15 +1,15 @@
 import {createStackNavigator} from 'react-navigation-stack';
 import Login from 'modules/login';
-// import ForgotPassword from 'modules/basics/ForgotPassword';
-// import Register from 'modules/basics/Register';
+import ForgotPassword from 'modules/basics/ForgotPassword';
+import Register from 'modules/basics/Register';
 import Drawer from './Drawer';
-// import NotificationStack from 'modules/basics/Welcome.js';
-// import selectLocationStack from 'modules/basics/Welcome.js';
-// import selectFilterStack from 'modules/basics/Welcome.js';
-// import CartStack from 'modules/basics/Welcome.js';
-// import addressMapStack from 'modules/basics/Welcome.js';
-// import paymentOptionStack from 'modules/basics/Welcome.js';
-// import ChangeAddressStack from 'modules/basics/Welcome.js';
+import NotificationStack from 'modules/basics/Welcome.js';
+import selectLocationStack from 'modules/basics/Welcome.js';
+import selectFilterStack from 'modules/basics/Welcome.js';
+import CartStack from 'modules/basics/Welcome.js';
+import addressMapStack from 'modules/basics/Welcome.js';
+import paymentOptionStack from 'modules/basics/Welcome.js';
+import ChangeAddressStack from 'modules/basics/Welcome.js';
 import DrumScanLoginStack from 'modules/login/LoginWithDrumScanDrawer.js';
 import AppSettingsStack from 'modules/appSettings/AppSettingsDrawer.js';
 import PaddockStack from 'modules/paddockPage/Drawer.js';
@@ -32,33 +32,33 @@ const LoginStack = createStackNavigator(
 );
 
 // Forgot Password stack
-// const ForgotPasswordStack = createStackNavigator(
-//   {
-//     forgotPasswordScreen: {screen: ForgotPassword},
-//   },
-//   {
-//     headerMode: 'none',
-//     navigationOptions: {},
-//   },
-// );
+const ForgotPasswordStack = createStackNavigator(
+  {
+    forgotPasswordScreen: {screen: ForgotPassword},
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {},
+  },
+);
 
 // Forgot Password stack
-// const RegisterStack = createStackNavigator(
-//   {
-//     registerScreen: {screen: Register},
-//   },
-//   {
-//     headerMode: 'none',
-//     navigationOptions: {},
-//   },
-// );
+const RegisterStack = createStackNavigator(
+  {
+    registerScreen: {screen: Register},
+  },
+  {
+    headerMode: 'none',
+    navigationOptions: {},
+  },
+);
 
 // Manifest of possible screens
 const PrimaryNav = createStackNavigator(
   {
     loginStack: {screen: LoginStack},
-    // forgotPasswordStack: {screen: ForgotPasswordStack},
-    // registerStack: {screen: RegisterStack},
+    forgotPasswordStack: {screen: ForgotPasswordStack},
+    registerStack: {screen: RegisterStack},
     drawerStack: {screen: Drawer},
     // selectLocation:{screen:selectLocationStack},
     //paddockStack:{screen:PaddockStack},
