@@ -21,7 +21,6 @@ import MixCard from './mixCard';
 import Style from './Style.js';
 import SlidingButton from 'modules/generic/SlidingButton';
 import MixConfirmationModal from 'modules/modal/MixConfirmation';
-// import Message from 'modules/modal/Message.js';
 import Draggable from 'react-native-draggable';
 import { Spinner } from 'components';
 import Styles from 'modules/generic/OrderCardStyle';
