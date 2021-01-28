@@ -11,7 +11,7 @@ class LoginInputField extends Component {
           <FontAwesomeIcon icon={this.props.icon} style={styles.IconStyle} />
         </View>
         <TextInput
-          autoFocus={true}
+          autoFocus={![undefined, null, ''].includes(this.props.autoFocus) ? this.props.autoFocus : false}
           onChangeText={value => {
             this.props.handler(value);
           }}
@@ -21,7 +21,7 @@ class LoginInputField extends Component {
           secureTextEntry={this.props.secureTextEntry}
           placeholder={this.props.placeholder}
           placeholderTextColor={
-            !this.props.secureTextEntry ? '#000000' : '#B4B4B4'
+            this.props.secureTextEntry ? '#B4B4B4' : '#B4B4B4'
           }
         />
       </View>
