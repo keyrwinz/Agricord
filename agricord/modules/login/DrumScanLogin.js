@@ -59,7 +59,7 @@ class DrumScanLogin extends Component {
 
       parsed = ndefRecords.map(decodeNdefRecord);
     }
-    this.manageNfcText(parsed)
+    this.manageNfcText(parsed, tag.id)
   }
 
   _cancel = () => {
@@ -85,7 +85,7 @@ class DrumScanLogin extends Component {
     }
   }
 
-  manageNfcText(data){
+  manageNfcText(data, id){
     this.setState({
       isLoading: false
     })
@@ -101,7 +101,7 @@ class DrumScanLogin extends Component {
             manufacturing_date: array[3],
             code: array[4],
             website: array[5],
-            nfc: '12312321321',
+            nfc: id,
             link: false
           }
           console.log('parameter', parameter)
