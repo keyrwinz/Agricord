@@ -43,7 +43,7 @@ export default {
         }
         callback(parameter)
       }).then(result => {
-          //  alert(console.log('registerTagEvent OK', result))
+          alert(console.log('registerTagEvent OK', result))
       })
       .catch(error => {
         console.warn('registerTagEvent fail', error)

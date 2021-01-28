@@ -23,9 +23,12 @@ import SystemVersion from 'services/System.js';
 import { Player } from '@react-native-community/audio-toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Notifications, NotificationAction, NotificationCategory} from 'react-native-notifications';
-
+// import NfcManager, {Ndef} from 'react-native-nfc-manager';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
+
+
 
 class Login extends Component {
   constructor(props) {
@@ -38,6 +41,11 @@ class Login extends Component {
       errorMessage: '',
       token: null,
       isResponseError: false,
+      tags: [],
+      tag: {},
+      parsedText: null,
+      parsedUID: null,
+      product: null,
     };
   }
 
@@ -58,7 +66,99 @@ class Login extends Component {
     // if (initialNotification) {
     //   this.setState({notifications: [initialNotification, ...this.state.notifications]});
     // }
-    this.getData(); 
+    // NfcManager.isSupported()
+    //   .then(supported => {
+    //     this.setState({ supported });
+    //     if (supported) {
+    //       this._startNfc();
+    //     }
+    //   })
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+      this.setState({
+        isLoading: false
+      })
+      this.manageResponse(tag)
+
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    });
+      
+    this.getData();
+  }
+
+  manageResponse(tag){
+    console.log('tag', JSON.stringify(tag))
+    let parsed = null
+    if(tag.ndefMessage){
+      const ndefRecords = tag.ndefMessage;
+
+      function decodeNdefRecord(record) {
+          if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return {'text': Ndef.text.decodePayload(record.payload)};
+          } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
+              return {'uri': Ndef.uri.decodePayload(record.payload)};
+          }
+
+          return {'unknown': null}
+      }
+
+      parsed = ndefRecords.map(decodeNdefRecord);
+    }
+    this.manageNfcText(parsed)
+  }
+
+  manageNfcText(data){
+    if(data){
+      data.map((item, index) => {
+        console.log('item', item.text)
+        if(index === 0 && item.text){
+          let array = item.text.split(Helper.delimeter)
+          let parameter = {
+            title: array[0],
+            merchant: array[1],
+            batch_number: array[2],
+            manufacturing_date: array[3],
+            code: array[4],
+            website: array[5],
+            nfc: '12312321321',
+            link: false
+          }
+          console.log('parameter', parameter)
+        }
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  // startScanningNFC(){
+  //   console.log('starting')
+    
+  // }
+  _cancel = () => {
+    this.setState({
+      isLoading: false
+    })
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  startScanningNFC = async () => {
+    console.log('starting')
+    this.setState({
+      isLoading: true
+    })
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      this.setState({
+        isLoading: true
+      })
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
   }
 
 
@@ -239,8 +339,9 @@ class Login extends Component {
             </View> : null}
             <View style={styles.UsernameContainer}>
               <LoginInputField
+                autoFocus = {true}
                 icon={faUserAlt}
-                placeholder="Username or Username"
+                placeholder="Username or Email"
                 handler={this.usernameHandler}
               />
             </View>
@@ -281,6 +382,7 @@ class Login extends Component {
               style={styles.DrumScanContainer}
               onPress={() => {
                 this.props.navigation.navigate('drumScanLoginStack');
+                // this.startScanningNFC()
               }}>
               <View style={styles.DrumScanTextContainer}>
                 <Text style={styles.DrumScanTextStyle}>
