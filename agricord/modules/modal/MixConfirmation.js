@@ -53,7 +53,7 @@ class MixConfirmation extends Component {
                   <Text style={styles.DetailDetailTextStyle}>
                     {task.machine ? task.machine.name : null}
                   </Text>
-                </View>
+                </View> 
               </View>
               <View style={styles.DetailContainer}>
                 <View style={styles.DetailTitleContainer}>
@@ -78,7 +78,7 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {task.spray_mix ? task.spray_mix.application_rate + 'L / ha' : null}
+                    {task.spray_mix ? task.spray_mix.application_rate + ' L / ha' : null}
                   </Text>
                 </View>
               </View>
@@ -108,7 +108,10 @@ class MixConfirmation extends Component {
 
             </View>
 
-            <SlidingButtonRelative
+            <View
+            style={{marginTop: 33, width: '100%'}}
+            >
+              <SlidingButtonRelative
               icon={faCheck}
               title={this.props.volume}
               label={'Swipe Right to Confirm'}
@@ -116,6 +119,7 @@ class MixConfirmation extends Component {
               widthLeft={'30%'}
               widthRight={'70%'}
               />
+            </View>
           </View>
         </View>
       </Modal>

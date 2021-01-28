@@ -219,7 +219,7 @@ const Home = (props) => {
           <View style={Style.InFocusContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
             {
-              orders.data.orders.length && orders.data.orders.map( (obj, idx) => {
+              orders.data.orders.length > 0 && (<View>{orders.data.orders.map( (obj, idx) => {
                   if (idx > 1 && !isExpanded) return
                   const icon = getIcon('Order')
                   return (
@@ -261,10 +261,10 @@ const Home = (props) => {
                       </View>
                     </TouchableOpacity>
                   )
-              })
+              })}</View>)
             }
             {
-              orders.data.infocus.length && orders.data.infocus.map( (obj, idx) => {
+              orders.data.infocus.length > 0 && (<View>{orders.data.infocus.map( (obj, idx) => {
                   if (idx > 1 && !isExpanded) return
                   const icon = getIcon('Task')
                   return (
@@ -306,7 +306,7 @@ const Home = (props) => {
                       </View>
                     </TouchableOpacity>
                   )
-              })
+              })}</View>)
             }
             <TouchableOpacity
               style={Style.chevronDown}
@@ -325,7 +325,7 @@ const Home = (props) => {
         <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              orders.data.recent.length && orders.data.recent.map((obj, idx) => {
+              orders.data.recent.length > 0  && ( <View>{orders.data.recent.map((obj, idx) => {
                 return (
                   <View
                     key={idx}
@@ -367,7 +367,7 @@ const Home = (props) => {
                     </View>
                   </View>
                 )
-              })
+              })}</View>)
             }
           </View>
         </View>
