@@ -39,32 +39,14 @@ const getIcon = (type) => {
 }
 
 const redirectToOrder = (obj, props) => {
-  Alert.alert(
-    `Redirect to Orders: ${obj.order_number}`,
-    '',
-    [
-      {text: 'OK', onPress: () => props.parentNav.navigate('orderDetailsStack', {
-        data: obj
-      })},
-    ],
-    {cancelable: true},
-  );
+  props.parentNav.navigate('orderDetailsStack', {data: obj})
   const {setSelectedOrder} = props;
   let selectedOrder = obj
   setSelectedOrder(selectedOrder);
 }
 
 const redirectToTask = (obj, props) => {
-  Alert.alert(
-    `Redirect to Tasks ${obj.paddock.name}`,
-    '',
-    [
-      {text: 'OK', onPress: () => props.parentNav.navigate('paddockStack', {
-        data: obj
-      })},
-    ],
-    {cancelable: true},
-  );
+  props.parentNav.navigate('paddockStack', {data: obj})
   setPaddock({...obj});
 }
 
@@ -88,10 +70,12 @@ const Home = (props) => {
   // const totalRecentData = null
 
   const retrieve = (flag) => {
+    const { user } = props.state
+
     let parameters = {
       condition: [{
           column: 'merchant_id',
-          value: 1, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
         }, {
           column: 'status',
@@ -108,27 +92,21 @@ const Home = (props) => {
     setLoading(true)
     Api.request(Routes.dashboardRetrieve, parameters, response => {
       setLoading(false)
-      console.log('RESPOONSE', response);
       setOrders()
-      if(response.data != null){
-        setOrders({
-          data: flag == false ? response.data : _.uniqBy([...orders, ...response.data.orders], 'id'),
-          numberOfPages: parseInt(response.size / limit) + (response.size % limit ? 1 : 0),
-          offset: flag == false ? 1 : (offset + 1)
-        })
-        // setOrders({
-        //   data: response.data
-        // })
+      if(response.data != null || response.data != undefined){
+        setOrders(response.data
+          // numberOfPages: parseInt(response.size / limit) + (response.size % limit ? 1 : 0),
+          // offset: flag == false ? 1 : (offset + 1)
+        )
         setTotalOrderData({orders: response.data.totalOrders})
         setTotalRecentData({recent: response.data.totalRecent})
         setTotalTasksData({tasks: response.data.totalInfocus})
         setTotalActivities(response.data.totalInfocus + response.data.totalRecent + response.data.totalOrders)
+
       }else{
-        setOrders({
-          data: flag == false ? [] : orders,
-          numberOfPages: null,
-          offset: flag == false ? 0 : offset
-        })
+        setOrders(
+          !flag ? null : orders,
+        )
       }
     }, error => {
       setLoading(false);
@@ -136,13 +114,15 @@ const Home = (props) => {
   };
 
   useEffect(() => {
-    retrieve(false)
+    setTimeout(() => {
+      retrieve(false)
+    }, 1000)
   }, [])
-  console.log('response',orders);
-  return orders != null ?  (
-  <ScrollView style={Style.ScrollView}>
-      <Spinner mode="overlay" />
-      <SafeAreaView>
+  console.log("=====================", orders);
+  return orders != undefined ?  (
+    <ScrollView style={Style.ScrollView}>
+        <Spinner mode="overlay" />
+        <SafeAreaView>
       <View style={Style.background}>
           <Background style={Style.backgroundImage} />
         </View>
@@ -191,7 +171,7 @@ const Home = (props) => {
               <View style={Style.graphContainer}>
                 <CircleGraph />
                 <View style={Style.graphTextContainer}>
-                  <Text style={Style.graphTextBold}>{totalActivities}</Text>
+                  <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
                   <Text style={Style.graphText}>Activity</Text>
                 </View>
               </View>
@@ -219,7 +199,7 @@ const Home = (props) => {
           <View style={Style.InFocusContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
             {
-              orders.data.orders.length > 0 && (<View>{orders.data.orders.map( (obj, idx) => {
+              orders?.orders?.length > 0 && (<View>{orders?.orders.map( (obj, idx) => {
                   if (idx > 1 && !isExpanded) return
                   const icon = getIcon('Order')
                   return (
@@ -264,7 +244,7 @@ const Home = (props) => {
               })}</View>)
             }
             {
-              orders.data.infocus.length > 0 && (<View>{orders.data.infocus.map( (obj, idx) => {
+              orders?.infocus?.length > 0 && (<View>{orders?.infocus.map( (obj, idx) => {
                   if (idx > 1 && !isExpanded) return
                   const icon = getIcon('Task')
                   return (
@@ -325,7 +305,7 @@ const Home = (props) => {
         <View style={Style.RecentEventsContainer}>
             <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
             {
-              orders.data.recent.length > 0  && ( <View>{orders.data.recent.map((obj, idx) => {
+              orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
                 return (
                   <View
                     key={idx}
@@ -373,10 +353,14 @@ const Home = (props) => {
         </View>
         </ImageBackground>
       </SafeAreaView>
-    </ScrollView>
-    ) : (
-      <Spinner mode="overlay"/>
-    )
+      </ScrollView>
+      ) : (
+        <Spinner mode="overlay"/>
+      )
+
+  // return (
+  //   <Text></Text>
+  // )
 }
 
 const response = {
