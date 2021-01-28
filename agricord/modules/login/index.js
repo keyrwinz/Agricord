@@ -239,8 +239,9 @@ class Login extends Component {
             </View> : null}
             <View style={styles.UsernameContainer}>
               <LoginInputField
+                autoFocus = {true}
                 icon={faUserAlt}
-                placeholder="Username or Username"
+                placeholder="Username or Email"
                 handler={this.usernameHandler}
               />
             </View>
