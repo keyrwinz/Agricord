@@ -17,7 +17,7 @@ import SlidingButton from 'modules/generic/SlidingButton';
 import ProductConfirmationModal from 'modules/modal/ProductConfirmation'; 
 import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import config from 'src/config';
-import Nfc from 'src/services/Nfc';
+// import Nfc from 'src/services/Nfc';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -182,7 +182,7 @@ class paddockPage extends Component{
   }
 
   startScanning = () => {
-    Nfc.scan(this.scan());
+    // Nfc.scan(this.scan());
   }
 
   retrieveProduct = (params) => {
