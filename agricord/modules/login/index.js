@@ -23,7 +23,8 @@ import SystemVersion from 'services/System.js';
 import { Player } from '@react-native-community/audio-toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Notifications, NotificationAction, NotificationCategory} from 'react-native-notifications';
-import NfcManager, {Ndef} from 'react-native-nfc-manager';
+// import NfcManager, {Ndef} from 'react-native-nfc-manager';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
 
@@ -44,6 +45,7 @@ class Login extends Component {
       tag: {},
       parsedText: null,
       parsedUID: null,
+      product: null,
     };
   }
 
@@ -64,241 +66,101 @@ class Login extends Component {
     // if (initialNotification) {
     //   this.setState({notifications: [initialNotification, ...this.state.notifications]});
     // }
-    this.getData(); 
-  }
-
-  _onTagDiscovered = tag => {
-    // scan nfc
-    console.log('Tag Discovered', tag);
-    Vibration.vibrate(1000);
-    this.setState({ tag });
-    let url = this._parseUri(tag);
-    if (url) {
-        Linking.openURL(url)
-            .catch(err => {
-                console.warn(err);
-            })
-    }
-
-    let text = this._parseText(tag);
-    if(text == null || text == ''){
-      ToastAndroid.show('NFC failed to read!', ToastAndroid.LONG);
-      return
-    }
-    let splitpayload = text.split(Helper.delimeter);
-    this.setState({parsedText: splitpayload});
-
-    let nfcUID = this._parseUID(tag);
-    this.setState({parsedUID: nfcUID});
-    // this.setState({modal: true});
-    this._stopDetection();
-    let parameter = {
-      title: splitpayload[0],
-      merchant: splitpayload[1],
-      batch_number: splitpayload[2],
-      manufacturing_date: splitpayload[3],
-      code: splitpayload[4],
-      website: splitpayload[5],
-      nfc: nfcUID,
-    }
-    console.log('product trace', parameter)
-    // this._retrieveProduct(parameter);
-  }
-
-   _startDetection = () => {
-      NfcManager.registerTagEvent(this._onTagDiscovered).then(result => {
-          //  alert(console.log('registerTagEvent OK', result))
+    // NfcManager.isSupported()
+    //   .then(supported => {
+    //     this.setState({ supported });
+    //     if (supported) {
+    //       this._startNfc();
+    //     }
+    //   })
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+      this.setState({
+        isLoading: false
       })
-      .catch(error => {
-        console.warn('registerTagEvent fail', error)
-      })
-  }
+      this.manageResponse(tag)
 
-  _stopDetection = () => {
-    this.setState({isScanning: false});
-    NfcManager.unregisterTagEvent()
-        .then(result => {
-            console.log('unregisterTagEvent OK', result)
-        })
-        .catch(error => {
-            console.warn('unregisterTagEvent fail', error)
-        })
-  }
-
-  _clearMessages = () => {
-      this.setState({tag: null});
-  }
-
-  _parseUri = (tag) => {
-      try {
-          if (Ndef.isType(tag.ndefMessage[0], Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
-              return Ndef.uri.decodePayload(tag.ndefMessage[0].payload);
-          }
-      } catch (e) {
-          console.log(e);
-      }
-      return null;
-  }
-
-  _parseText = (tag) => {
-      try {
-          if (Ndef.isType(tag.ndefMessage[0], Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
-              return Ndef.text.decodePayload(tag.ndefMessage[0].payload);
-          }
-      } catch (e) {
-          console.log(e);
-      }
-      return null;
-  }
-
-  _parseUID = (tag) => {
-      try {
-          if (Ndef.isType(tag.ndefMessage[0], Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
-              return (tag.id);
-          }
-      } catch (e) {
-          console.log(e);
-      }
-      return null;
-  }
-  
-  _retrieveProductRf = (code) => {
-    const parameter = {
-      condition: [{
-        value: code,
-        column: 'rf',
-        clause: '='
-      }]
-    };
-
-    console.log('parameter', parameter)
-    this.setState({isScanning: true});
-    this.manageRequest(parameter, code);
-  }
-
-  checkIfExist = (product) => {
-    const { products } = this.props.state;
-    for(var i = 0; i < products.length; i++){
-      let item = products[i];
-      if(item.id == product.id){
-        return true;
-      }
-    }
-    return false;
-  }
-  _retrieveProduct = (params) => {
-    const { settings } = this.props.state;
-    const { addProduct } = this.props;
-    if(settings[0].flag == true){
-      this.setState({isScanning: true});
-      let parameter = null;
-      if(Helper.test == true){
-        parameter = {
-          condition: [{
-            value: params.code,
-            column: 'code',
-            clause: '='
-          }],
-          nfc: params.nfc
-        };
-      }else{
-        const { user } = this.props.state;
-        if(user == null){
-          return
-        }
-        if(user.account_type == 'MANUFACTURER'){
-          parameter = {
-            condition: [{
-              value: params.code,
-              column: 'code',
-              clause: '='
-            }, {
-              value: params.batch_number,
-              column: 'batch_number',
-              clause: '='
-            }, {
-              value: params.manufacturing_date,
-              column: 'manufacturing_date',
-              clause: '='
-            }],
-            nfc: params.nfc
-          };  
-        }else{
-          parameter = {
-            condition: [{
-              value: params.code,
-              column: 'code',
-              clause: '='
-            }, {
-              value: params.batch_number,
-              column: 'batch_number',
-              clause: '='
-            }, {
-              value: params.manufacturing_date,
-              column: 'manufacturing_date',
-              clause: '='
-            }, {
-              value: params.nfc,
-              column: 'nfc',
-              clause: '='
-            }]
-          };
-        }
-        
-      }
-      console.log('parameter', parameter)
-      this.manageRequest(parameter, params);
-    }else{
-      let product = {
-        nfc: params.nfc,
-        rf: null,
-        code: params.code,
-        selected: false,
-        link: false,
-        batch_number: params.batch_number,
-        manufacturing_date: params.manufacturing_date,
-        title: params.title,
-        product: null
-      }
-      addProduct(product)
-      this.setState({isScanning: false, modal: true});
-    }
-  }
-
-  manageRequest = (parameter, params) => {
-    const { addProduct } = this.props;
-    const { user } = this.state;
-    console.log('redux', this.props.state)
-    console.log('manage request', user)
-    parameter['merchant_id'] = user.sub_account.merchant.id;
-    parameter['account_type'] = user.account_type;
-    API.request(Routes.productTraceRetrieve, parameter, response => {
-      console.log(response)
-      this.setState({isScanning: false});
-      if(response.data != null && response.data.length > 0){
-        let nfc = response.data[0].nfc;
-        let rfid = response.data[0].rf;
-        let type = response.data[0].product.type;
-        response.data[0]['selected'] = false;
-        response.data[0]['link'] = (type == 'regular' && nfc != null && rfid != null) || (type == 'bundled' && rfid != null) ? true : false;
-        response.data[0].nfc = (nfc != null) ? nfc : params.nfc;
-        response.data[0]['title'] = response.data[0].code;
-        let qty = response.data[0].product.trace_qty * 100
-        if(this.checkIfExist(response.data[0])){
-          ToastAndroid.show('Product already exist!', ToastAndroid.LONG);
-        }else if(qty <= 0){
-          ToastAndroid.show('Product quantity is zero!', ToastAndroid.LONG);
-        }else{
-          this.setState({modal: true})
-          addProduct(response.data[0])
-        }
-      }else if(response.data == null && response.error != null){
-        ToastAndroid.show(response.error, ToastAndroid.LONG);
-      }else{
-        ToastAndroid.show('Product not found!', ToastAndroid.LONG);
-      }
+      NfcManager.unregisterTagEvent().catch(() => 0);
     });
+      
+    this.getData();
   }
+
+  manageResponse(tag){
+    console.log('tag', JSON.stringify(tag))
+    let parsed = null
+    if(tag.ndefMessage){
+      const ndefRecords = tag.ndefMessage;
+
+      function decodeNdefRecord(record) {
+          if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return {'text': Ndef.text.decodePayload(record.payload)};
+          } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
+              return {'uri': Ndef.uri.decodePayload(record.payload)};
+          }
+
+          return {'unknown': null}
+      }
+
+      parsed = ndefRecords.map(decodeNdefRecord);
+    }
+    this.manageNfcText(parsed)
+  }
+
+  manageNfcText(data){
+    if(data){
+      data.map((item, index) => {
+        console.log('item', item.text)
+        if(index === 0 && item.text){
+          let array = item.text.split(Helper.delimeter)
+          let parameter = {
+            title: array[0],
+            merchant: array[1],
+            batch_number: array[2],
+            manufacturing_date: array[3],
+            code: array[4],
+            website: array[5],
+            nfc: '12312321321',
+            link: false
+          }
+          console.log('parameter', parameter)
+        }
+      })
+    }
+  }
+
+  componentWillUnmount() {
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, null);
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  // startScanningNFC(){
+  //   console.log('starting')
+    
+  // }
+  _cancel = () => {
+    this.setState({
+      isLoading: false
+    })
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  startScanningNFC = async () => {
+    console.log('starting')
+    this.setState({
+      isLoading: true
+    })
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      this.setState({
+        isLoading: true
+      })
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
+  }
+
 
   getData = async () => {
     try {
@@ -519,8 +381,8 @@ class Login extends Component {
             <TouchableOpacity
               style={styles.DrumScanContainer}
               onPress={() => {
-                // this.props.navigation.navigate('drumScanLoginStack');
-                this._startDetection()
+                this.props.navigation.navigate('drumScanLoginStack');
+                // this.startScanningNFC()
               }}>
               <View style={styles.DrumScanTextContainer}>
                 <Text style={styles.DrumScanTextStyle}>
