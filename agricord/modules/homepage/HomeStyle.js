@@ -55,8 +55,8 @@ export default {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 20,
-    marginVertical: 10
+    marginLeft: -20,
+    marginVertical: 10,
   },
   graphTextContainer: {
     position: 'absolute',

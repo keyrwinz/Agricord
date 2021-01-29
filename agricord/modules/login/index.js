@@ -9,6 +9,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  SafeAreaView
 } from 'react-native';
 import {connect} from 'react-redux';
 import {faLock, faUserAlt} from '@fortawesome/free-solid-svg-icons';
@@ -23,6 +24,7 @@ import SystemVersion from 'services/System.js';
 import { Player } from '@react-native-community/audio-toolkit';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Notifications, NotificationAction, NotificationCategory} from 'react-native-notifications';
+import { Platform } from 'react-native';
 
 const win = Dimensions.get('window');
 const ratio = (win.width / 4336) * 0.7;
@@ -214,7 +216,7 @@ class Login extends Component {
         style={styles.BackgroundContainer}>
         <ScrollView style={{height: '100%'}}>
           {this.state.isLoading ? <Spinner mode="overlay" /> : null}
-          <View style={styles.LoginContainer}>
+          <SafeAreaView style={Platform.OS == 'android' ? styles.LoginContainer : styles.LoginContainerIOS}>
             <Image
               source={require('assets/logo.png')}
               style={styles.LogoContainer}
@@ -295,7 +297,7 @@ class Login extends Component {
                 />
               </View>
             </TouchableOpacity>
-          </View>
+          </SafeAreaView>
         </ScrollView>
       </ImageBackground>
     );

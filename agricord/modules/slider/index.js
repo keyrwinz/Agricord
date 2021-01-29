@@ -134,6 +134,8 @@ class Slider extends Component {
     //clear storage
     const { logout, setActiveRoute } = this.props;
 
+    this.props.navigation.navigate('loginStack');
+
     // unsubscribe pusher
     if (Pusher.pusher) {
       Pusher.pusher.unsubscribe(Helper.pusher.channel);
@@ -143,13 +145,13 @@ class Slider extends Component {
 
     logout();
     // setActiveRoute(null)
-    this.props.navigation.navigate('loginStack');
   }
 
   footerAction(route){
     switch(route){
       case 'Logout': 
         this.logoutAction();
+        console.log("logout");
         break;
       case 'CompleteSprayTask':
         Alert.alert(route)
