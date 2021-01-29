@@ -25,15 +25,15 @@ class MixCard extends Component {
     }
   }
 
-  removePad(){
+  removePad = () => {
     this.props.removePaddock(this.props.from, this.props.data.item)
   }
 
-  messageModal(){
+  messageModal = () => {
     this.state.message = true
   }
 
-  closeModal(){
+  closeModal = () => {
     this.setState({message: false})
     this.props.data.item.partial = false
   }
@@ -47,7 +47,7 @@ class MixCard extends Component {
 
   }
 
-  render(){
+  render = () => {
     const { data, hasCheck, totalRate, maxRate } = this.props;
     const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
     let borderColor = ''

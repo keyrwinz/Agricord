@@ -25,7 +25,6 @@ import Draggable from 'react-native-draggable';
 import { Spinner } from 'components';
 import Styles from 'modules/generic/OrderCardStyle';
 import Api from 'services/api/index.js';
-import _ from 'lodash';
 import Message from 'modules/modal/MessageModal.js';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -116,20 +115,25 @@ const MixPage = (props) => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
+        setAppliedRate(Math.round(task.machine.capacity / totalArea))
+        console.log('helllo', task.spray_mix.application_rate)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
-        setAppliedRate((Math.round(task.machine.capacity / totalArea)))
+        console.log('hasdf', appliedRate, task.machine.capacity, totalArea, Math.round(task.machine.capacity / totalArea))
         if(totalArea > maxArea){
           setTotalHigher(true)
           setMessage(true)
         }
       }else{
-        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
-        setAppliedRate(Math.round(task.spray_mix.application_rate))
-        setTimeout(() => {
-          if(totalArea > maxArea){
-            setTotalHigher(true)
-          }
-        }, 25)
+        console.log('asdf')
+        console.log('helllo', task.spray_mix.application_rate)
+        // setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+        // setAppliedRate(Math.round(task.spray_mix.application_rate))
+        // console.log('im ah here', appliedRate)
+        // setTimeout(() => {
+        //   if(totalArea > maxArea){
+        //     setTotalHigher(true)
+        //   }
+        // }, 25)
       }
     }, 25)
   }
@@ -205,6 +209,10 @@ const MixPage = (props) => {
     }
   }
 
+  sample = () => {
+    console.log()
+  }
+
   const getTotalArea = () => {
     let total = 0
     for (var i = 0; i < selectedPaddock.length; i++) {
@@ -250,7 +258,7 @@ const MixPage = (props) => {
         }
         setTotalArea(totalArea + remainingArea)
         setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[newItem]])  
+          setSelectedPaddock([...selectedPaddock, ...[newItem]])
           removePaddock('available', item)
         }, 100)
       }
@@ -412,7 +420,7 @@ const MixPage = (props) => {
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {appRateSwitch === false ?
+                { appRateSwitch === false ?
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <LinearGradient
                   colors={['#ABD770', '#D3E584']}
@@ -428,21 +436,31 @@ const MixPage = (props) => {
                   }}>Applied Rate</Text>
                 </View>
                   :
-                  // <Button
-                  //   title="Outline button"
-                  //   type="outline"
-                  // />
                   <View style={{flexDirection:'row'}}>
                     <TextInput 
-                        style={[Style.searchInput, { opacity: 1, borderColor: 'gray', borderWidth: 1 }]}
-                        onChangeText={text => onChangeText(text)}
+                        style={[Style.searchInput, { 
+                          opacity: 5, 
+                          borderColor: 'grey', 
+                          borderWidth: 1, 
+                          color: 'grey', 
+                          marginRight: -5, 
+                          height: 35,
+                          borderTopLeftRadius: 10, 
+                          borderTopRightRadius: 10,
+                          borderBottomRightRadius: 10,
+                          borderBottomLeftRadius: 10 }]}
+                        keyboardType={'numeric'}
+                        onChangeText={(appliedRate) => setAppliedRate(appliedRate)}
                         value={appliedRate}
-                        placeholderTextColor='black'
-                        placeholder='Enter Application Volume'
-                        underlineColorAndroid='transparent'>
+                        placeholderTextColor='grey'
+                        underlineColorAndroid='grey'
+                        placeholder='Enter Application Volume'>
                     </TextInput>
                     <TouchableOpacity>
-                        <Text>Confirm</Text>
+                    <Button
+                      title="Confirm"
+                      onPress={() => Alert.alert('Right button pressed')}>
+                    </Button>
                     </TouchableOpacity>
                   </View>
                 }
@@ -478,7 +496,6 @@ const MixPage = (props) => {
                 }
                 {
                   (selectedPaddock.length > 0) && (
-
                     <View style={{
                       flexDirection: 'column',
                       width: '100%',
