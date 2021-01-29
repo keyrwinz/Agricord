@@ -27,6 +27,7 @@ import CompletedEventIcon from 'assets/homescreen/event_complete_icon.svg'
 import CompleteIcon from 'assets/homescreen/complete_icon.svg'
 import {Spinner} from 'components';
 import Api from 'services/api/index.js'
+import Config from 'src/config.js';
 import _ from "lodash"
 
 const getIcon = (type) => {
@@ -170,7 +171,7 @@ const Home = (props) => {
               </TouchableOpacity>
             </View>
             <Image
-              source={require('assets/drawer/profile/profile_pic.png')}
+              source={{uri: Config.BACKEND_URL  + props.state.user.account_profile.url}}
               style={Style.image}
             />
           </View>
