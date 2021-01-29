@@ -48,6 +48,7 @@ const redirectToOrder = (obj, props) => {
 }
 
 const redirectToTask = (obj, props) => {
+  const { setPaddock } = props;
   props.parentNav.navigate('paddockStack', {data: obj})
   setPaddock({...obj});
 }
@@ -120,6 +121,7 @@ const Home = (props) => {
     }, 1000)
   }, [])
   console.log("=====================", data);
+  console.log("=====================", orders);
   return orders != undefined ?  (
     <ScrollView style={Style.ScrollView}>
         <Spinner mode="overlay" />
@@ -184,6 +186,7 @@ const Home = (props) => {
                 <View style={Style.graphTextContainer}>
                   <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
                   <Text style={Style.graphText}>Activities</Text>
+                  <Text style={Style.graphText}>Activity</Text>
                 </View>
               </View>
               <View style={Style.chartDetails}>
