@@ -11,6 +11,7 @@ class HeaderOptions extends Component {
   constructor(props) {
     super(props);
   }
+
   back = () => {
     this.props.navigationProps.pop();
   };

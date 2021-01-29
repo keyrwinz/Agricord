@@ -46,6 +46,7 @@ const redirectToOrder = (obj, props) => {
 }
 
 const redirectToTask = (obj, props) => {
+  const { setPaddock } = props;
   props.parentNav.navigate('paddockStack', {data: obj})
   setPaddock({...obj});
 }
