@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import {BasicStyles, Color} from 'common';
 const win = Dimensions.get('window');
+const height = Math.round(Dimensions.get('window').height)
 const ratio = (win.width / 4336) * 0.7;
 const styles = StyleSheet.create({
   MainContainer: {},
@@ -15,6 +16,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: '38%',
+  },
+  LoginContainerIOS: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: '38%',
+    marginBottom: height/2
   },
   LogoContainer: {
     height: 180,
