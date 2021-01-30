@@ -17,7 +17,8 @@ import SlidingButton from 'modules/generic/SlidingButton';
 import ProductConfirmationModal from 'modules/modal/ProductConfirmation'; 
 import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import config from 'src/config';
-// import Nfc from 'src/services/Nfc';
+import { Helper } from 'common';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -181,8 +182,86 @@ class paddockPage extends Component{
     }
   }
 
+  manageResponse(tag){
+    console.log('tag', JSON.stringify(tag))
+    let parsed = null
+    if(tag.ndefMessage){
+      const ndefRecords = tag.ndefMessage;
+
+      function decodeNdefRecord(record) {
+          if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return {'text': Ndef.text.decodePayload(record.payload)};
+          } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
+              return {'uri': Ndef.uri.decodePayload(record.payload)};
+          }
+
+          return {'unknown': null}
+      }
+
+      parsed = ndefRecords.map(decodeNdefRecord);
+    }
+    this.manageNfcText(parsed, tag.id)
+  }
+
+  _cancel = () => {
+    this.setState({
+      isLoading: false
+    })
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  startScanningNFC = async () => {
+    console.log('starting')
+    this.setState({
+      isLoading: true
+    })
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      this.setState({
+        isLoading: false
+      })
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
+  }
+
+  manageNfcText(data, id){
+    this.setState({
+      isLoading: false
+    })
+    if(data){
+      data.map((item, index) => {
+        console.log('item', item.text)
+        if(index === 0 && item.text){
+          let array = item.text.split(Helper.delimeter)
+          let parameter = {
+            title: array[0],
+            merchant: array[1],
+            batch_number: array[2],
+            manufacturing_date: array[3],
+            code: array[4],
+            website: array[5],
+            nfc: id,
+            link: false
+          }
+          console.log('parameter', parameter)
+          this.scan(parameter)
+        }
+      })
+    }
+  }
+
   startScanning = () => {
-    // Nfc.scan(this.scan());
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+      this.setState({
+        isLoading: false
+      })
+      this.manageResponse(tag)
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    });
+    this.startScanningNFC()
   }
 
   retrieveProduct = (params) => {
