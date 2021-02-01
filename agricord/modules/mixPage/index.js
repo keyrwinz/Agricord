@@ -99,6 +99,7 @@ const MixPage = (props) => {
   const [appliedRate, setAppliedRate] = useState(0)
   const [message, setMessage] = useState(false)
   const [totalHigher, setTotalHigher] = useState(false)
+  const [test, setTest] = useState(12132)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -124,16 +125,14 @@ const MixPage = (props) => {
           setMessage(true)
         }
       }else{
-        console.log('asdf')
-        console.log('helllo', task.spray_mix.application_rate)
-        // setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
-        // setAppliedRate(Math.round(task.spray_mix.application_rate))
-        // console.log('im ah here', appliedRate)
-        // setTimeout(() => {
-        //   if(totalArea > maxArea){
-        //     setTotalHigher(true)
-        //   }
-        // }, 25)
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+        setAppliedRate(Math.round(task.spray_mix.application_rate))
+        console.log('im ah here', appliedRate)
+        setTimeout(() => {
+          if(totalArea > maxArea){
+            setTotalHigher(true)
+          }
+        }, 25)
       }
     }, 25)
   }
@@ -141,7 +140,7 @@ const MixPage = (props) => {
   const closeModal = () =>{
     setMessage(false) && setAppRateSwitch(!appRateSwitch)
   }
-
+ 
   const retrieve = () => {
     const { task, user } = props.state;
     if (user == null || task == null || (task && task.spray_mix == null)) {
@@ -187,6 +186,7 @@ const MixPage = (props) => {
   }
 
   const removePaddock = (from, item) => {
+    console.log('itemmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', item)
     item.partial = false;
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
@@ -196,7 +196,7 @@ const MixPage = (props) => {
         }
       })
       // setTotalArea(totalArea - item.area)
-      setTotalArea(totalArea - item.area)
+      setTotalArea(totalArea - item.remaining_area)
       setSelectedPaddock(newSelectedPaddock)
       setPaddocks([...paddocks, ...[item]])
     }else{
@@ -209,10 +209,6 @@ const MixPage = (props) => {
     }
   }
 
-  sample = () => {
-    console.log()
-  }
-
   const getTotalArea = () => {
     let total = 0
     for (var i = 0; i < selectedPaddock.length; i++) {
@@ -223,6 +219,7 @@ const MixPage = (props) => {
   }
 
   const addToSelected = (item) => {
+    console.log('item herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', item)
     setSelectedFlag(true)
     let status = false
     for (var i = 0; i < selectedPaddock.length; i++) {
@@ -307,12 +304,12 @@ const MixPage = (props) => {
             itemWidth={width * 0.9}
             renderItem={(data) => (
               <MixCard data={data}
-                totalRate={totalArea}
-                maxRate={maxArea}
-                hasCheck={true}
-                addToSelected={() => {}}
-                removePaddock={(from, item) => removePaddock(from, item)}
-
+              totalRate={totalArea}
+              maxRate={maxArea}
+              hasCheck={true}
+              addToSelected={data}
+              removePaddock={(from, item) => removePaddock(from, item)}
+              
                 from={'selected'}
                 params={{
                   totalArea,
@@ -354,7 +351,6 @@ const MixPage = (props) => {
   const applicationRate = () => {
     const { task } = props.state;
     console.log('task', task)
-
     return (
         <View style={[
           Style.mixCardContainer,
@@ -450,8 +446,8 @@ const MixPage = (props) => {
                           borderBottomRightRadius: 10,
                           borderBottomLeftRadius: 10 }]}
                         keyboardType={'numeric'}
-                        onChangeText={(appliedRate) => setAppliedRate(appliedRate)}
-                        value={appliedRate}
+                        onChangeText={(appliedRate) => appliedRate}
+                        value={appliedRate.toString() !== null ? appliedRate.toString() : 0}
                         placeholderTextColor='grey'
                         underlineColorAndroid='grey'
                         placeholder='Enter Application Volume'>
