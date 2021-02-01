@@ -27,6 +27,8 @@ import CompletedEventIcon from 'assets/homescreen/event_complete_icon.svg'
 import CompleteIcon from 'assets/homescreen/complete_icon.svg'
 import {Spinner} from 'components';
 import Api from 'services/api/index.js'
+import { VictoryPie, VictoryTheme } from "victory-native";
+import Config from 'src/config.js';
 import _ from "lodash"
 
 const getIcon = (type) => {
@@ -51,10 +53,9 @@ const redirectToTask = (obj, props) => {
   setPaddock({...obj});
 }
 
-
 const Home = (props) => {
   const [isExpanded, setExpand] = useState(false)
-  const [data, setData] = useState()
+  const [data, setData] = useState([])
   const [orders, setOrders] = useState()
   const [totalRecentData, setTotalRecentData] = useState(0)
   const [totalTasksData, setTotalTasksData] = useState(0)
@@ -65,7 +66,6 @@ const Home = (props) => {
   const [arrayData, setArrayData] = useState([]);
   const [recentCount, setRecentCount] = useState(0);
   const [taskCount, setTaskCount] = useState();
-
   var offset = 0;
   var limit = 5;
   // const totalRecentData = null
@@ -102,6 +102,7 @@ const Home = (props) => {
         setTotalOrderData({orders: response.data.totalOrders})
         setTotalRecentData({recent: response.data.totalRecent})
         setTotalTasksData({tasks: response.data.totalInfocus})
+        setData([response.data.totalOrders, response.data.totalRecent, response.data.totalInfocus])
         setTotalActivities(response.data.totalInfocus + response.data.totalRecent + response.data.totalOrders)
 
       }else{
@@ -119,6 +120,7 @@ const Home = (props) => {
       retrieve(false)
     }, 1000)
   }, [])
+  console.log("=====================", data);
   console.log("=====================", orders);
   return orders != undefined ?  (
     <ScrollView style={Style.ScrollView}>
@@ -151,13 +153,13 @@ const Home = (props) => {
               </TouchableOpacity>
             </View>
             <Image
-              source={require('assets/drawer/profile/profile_pic.png')}
+              source={{uri: Config.BACKEND_URL  + props.state.user.account_profile.url}}
               style={Style.image}
             />
           </View>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
-              Hi {props.state.user.account_information !== undefined ? props.state.user.account_information.first_name : props.state.user.username}
+              Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
             </Text>
             <Text style={Style.textWhite}>
               Welcome to Your Dashboard
@@ -170,9 +172,20 @@ const Home = (props) => {
             <Circles />
             <View style={Style.flexRow}>
               <View style={Style.graphContainer}>
-                <CircleGraph />
+                {/* <CircleGraph /> */}
+                
+                <VictoryPie
+                    innerRadius={50}
+                    data={data}
+                    colorScale={["#5A84EE", "#4BB543", "#FFDF00"]}
+                    labels={() => null}
+                    width={180} height={150}
+                    radius={70}
+                    animate={{duration: 2000, onLoad: {duration: 1000}, onEnter: {duration: 500, before: () => ({y: 0})}}}
+                  />
                 <View style={Style.graphTextContainer}>
                   <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
+                  <Text style={Style.graphText}>Activities</Text>
                   <Text style={Style.graphText}>Activity</Text>
                 </View>
               </View>
@@ -461,4 +474,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(Home);
-

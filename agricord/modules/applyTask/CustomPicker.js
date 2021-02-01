@@ -57,7 +57,7 @@ class CustomPicker extends Component {
        }]} onStartShouldSetResponder={() => true}>
           <FontAwesomeIcon
             style={{
-              left: 285,
+              right: 7,
               position: 'absolute',
               top: -20 }}
             color={
@@ -108,8 +108,10 @@ class CustomPicker extends Component {
                     ]}>
                     {item.name}
                   </Text>
-                  {select && select.id === item.id && (<View style={styles.OptionIconContainer, {left: 240, position: 'absolute'}}>
+                </View>
+                {select && select.id === item.id && (<View style={{right: 10, position: 'absolute'}}>
                   <FontAwesomeIcon
+                    style={{marginTop: 10}}
                     color={
                      Color.blue
                     }
@@ -117,7 +119,6 @@ class CustomPicker extends Component {
                     size={23}
                   />
                 </View>)}
-                </View>
               </TouchableOpacity>
             );
           })}
