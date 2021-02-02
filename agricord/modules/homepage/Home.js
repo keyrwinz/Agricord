@@ -30,6 +30,10 @@ import Api from 'services/api/index.js'
 import { VictoryPie, VictoryTheme } from "victory-native";
 import Config from 'src/config.js';
 import _ from "lodash"
+import { Dimensions } from 'react-native';
+// const width = Math.round(Dimensions.get('window').width);
+// const height = Math.round(Dimensions.get('window').height);
+const height = Math.round(Dimensions.get('window').height)
 
 const getIcon = (type) => {
   switch(type) {
@@ -72,7 +76,6 @@ const Home = (props) => {
 
   const retrieve = (flag) => {
     const { user } = props.state
-
     let parameters = {
       condition: [{
           column: 'merchant_id',
@@ -102,7 +105,7 @@ const Home = (props) => {
         setTotalOrderData({orders: response.data.totalOrders})
         setTotalRecentData({recent: response.data.totalRecent})
         setTotalTasksData({tasks: response.data.totalInfocus})
-        setData([response.data.totalOrders, response.data.totalRecent, response.data.totalInfocus])
+        setData([response.data.totalOrders != undefined ? response.data.totalOrders : 0, response.data.totalRecent != undefined ? response.data.totalRecent : 0, response.data.totalInfocus != undefined ? response.data.totalInfocus : 0])
         setTotalActivities(response.data.totalInfocus + response.data.totalRecent + response.data.totalOrders)
 
       }else{
@@ -120,8 +123,6 @@ const Home = (props) => {
       retrieve(false)
     }, 1000)
   }, [])
-  console.log("=====================", data);
-  console.log("=====================", orders);
   return orders != undefined ?  (
     <ScrollView style={Style.ScrollView}>
         <Spinner mode="overlay" />
@@ -129,34 +130,26 @@ const Home = (props) => {
       <View style={Style.background}>
           <Background style={Style.backgroundImage} />
         </View>
-      <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10}}>
-        <View style={Style.MainContainer}>
-          <View style={Style.imageContainer}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: -5
-              }
-            }>
-              <TouchableOpacity onPress={() => props.parentNav.toggleDrawer()}>
-                <FontAwesomeIcon
-                  icon={faBars}
-                  size={30}
-                  style={[
-                    BasicStyles.iconStyle,
-                    {
-                      color: '#fff',
-                    },
-                  ]}
-                />
-              </TouchableOpacity>
-            </View>
-            <Image
-              source={{uri: Config.BACKEND_URL  + props.state.user.account_profile.url}}
-              style={Style.image}
-            />
-          </View>
+      <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: 
+        orders == undefined ||
+        (orders?.infocus == undefined ||
+        orders?.infocus.length <= 3 ) &&
+        (orders?.orders == undefined ||
+        orders?.orders.length <= 3) ? 
+        height : null}}>
+        <View style={
+          orders == undefined ||
+          (orders?.infocus == undefined ||
+          orders?.infocus.length <= 3 ) &&
+          (orders?.orders == undefined ||
+          orders?.orders.length <= 3) ? 
+          {flex: 1,
+            paddingHorizontal: 15,
+            justifyContent: 'center',
+            paddingBottom: 30,
+            width: '100%',
+            marginTop: '15%'} : 
+          Style.MainContainer}>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
               Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
@@ -173,7 +166,6 @@ const Home = (props) => {
             <View style={Style.flexRow}>
               <View style={Style.graphContainer}>
                 {/* <CircleGraph /> */}
-                
                 <VictoryPie
                     innerRadius={50}
                     data={data}
@@ -186,7 +178,6 @@ const Home = (props) => {
                 <View style={Style.graphTextContainer}>
                   <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
                   <Text style={Style.graphText}>Activities</Text>
-                  <Text style={Style.graphText}>Activity</Text>
                 </View>
               </View>
               <View style={Style.chartDetails}>
@@ -210,160 +201,171 @@ const Home = (props) => {
           </View>
 
           {/* IN FOCUS */}
-          <View style={Style.InFocusContainer}>
-            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
-            {
-              orders?.orders?.length > 0 && (<View>{orders?.orders.map( (obj, idx) => {
-                  if (idx > 1 && !isExpanded) return
-                  const icon = getIcon('Order')
-                  return (
-                    <TouchableOpacity
-                      key={idx}
-                      onPress={() => redirectToOrder(obj, props)}
-                    >
-                      <View style={Style.focusTask}>
-                        {icon}
-                        <View style={Style.focusTaskDetails}>
-                          <View style={Style.flexRow}>
-                            <InProgressIcon />
-                            <Text style={Style.eventText}>
-                              {obj.status}
-                            </Text>
-                            <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                              {obj.date_of_delivery}
-                            </Text>
-                            <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
-                              {obj.merchant.name}
-                            </Text>
-                          </View>
-                          <View style={Style.flexRow}>
-                            <Text style={Style.taskPayloadText}>
-                              {obj.order_number}
-                            </Text>
-                            <Text style={Style.taskPayloadText}>
-                              {obj.payload_value}
-                            </Text>
-                          </View>
-                        </View>
-                        <View>
-                          <FontAwesomeIcon
-                            icon={faChevronRight}
-                            color={Color.gray}
-                            size={45}
-                          />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  )
-              })}</View>)
-            }
-            {
-              orders?.infocus?.length > 0 && (<View>{orders?.infocus.map( (obj, idx) => {
-                  if (idx > 1 && !isExpanded) return
-                  const icon = getIcon('Task')
-                  return (
-                    <TouchableOpacity
-                      key={idx}
-                      onPress={() => redirectToTask(obj, props)}
-                    >
-                      <View style={Style.focusTask}>
-                        {icon}
-                        <View style={Style.focusTaskDetails}>
-                          <View style={Style.flexRow}>
-                            <InProgressIcon />
-                            <Text style={Style.eventText}>
-                              {obj.status}
-                            </Text>
-                            <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                              {obj.due_date}
-                            </Text>
-                            <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
-                              {obj.nickname}
-                            </Text>
-                          </View>
-                          <View style={Style.flexRow}>
-                            <Text style={Style.taskPayloadText}>
-                              {obj.paddock.name}
-                            </Text>
-                            <Text style={Style.taskPayloadText}>
-                              {/* {obj.payload_value} */}
-                            </Text>
-                          </View>
-                        </View>
-                        <View>
-                          <FontAwesomeIcon
-                            icon={faChevronRight}
-                            color={Color.gray}
-                            size={45}
-                          />
-                        </View>
-                      </View>
-                    </TouchableOpacity>
-                  )
-              })}</View>)
-            }
-            <TouchableOpacity
-              style={Style.chevronDown}
-              onPress={() => setExpand(!isExpanded)}
-            >
-              <FontAwesomeIcon
-                icon={isExpanded ? faChevronUp : faChevronDown}
-                color={Color.gray}
-                size={45}
-              />
-            </TouchableOpacity>
-          </View>
+          {
+            orders?.orders?.length > 0 ? (
+                <View style={Style.InFocusContainer}>
+                  <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
+                  {
+                    orders?.orders?.length > 0 && (<View>{orders?.orders.map( (obj, idx) => {
+                        if (idx > 1 && !isExpanded) return
+                        const icon = getIcon('Order')
+                        return (
+                          <TouchableOpacity
+                            key={idx}
+                            onPress={() => redirectToOrder(obj, props)}
+                          >
+                            <View style={Style.focusTask}>
+                              {icon}
+                              <View style={Style.focusTaskDetails}>
+                                <View style={Style.flexRow}>
+                                  <InProgressIcon />
+                                  <Text style={Style.eventText}>
+                                    {obj.status}
+                                  </Text>
+                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                    {obj.date_of_delivery}
+                                  </Text>
+                                  <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
+                                    {obj.merchant.name}
+                                  </Text>
+                                </View>
+                                <View style={Style.flexRow}>
+                                  <Text style={Style.taskPayloadText}>
+                                    {obj.order_number}
+                                  </Text>
+                                  <Text style={Style.taskPayloadText}>
+                                    {obj.payload_value}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View>
+                                <FontAwesomeIcon
+                                  icon={faChevronRight}
+                                  color={Color.gray}
+                                  size={45}
+                                />
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        )
+                    })}</View>)
+                  }
+                  {
+                    orders?.infocus?.length > 0 && (<View>{orders?.infocus.map( (obj, idx) => {
+                        if (idx > 1 && !isExpanded) return
+                        const icon = getIcon('Task')
+                        return (
+                          <TouchableOpacity
+                            key={idx}
+                            onPress={() => redirectToTask(obj, props)}
+                          >
+                            <View style={Style.focusTask}>
+                              {icon}
+                              <View style={Style.focusTaskDetails}>
+                                <View style={Style.flexRow}>
+                                  <InProgressIcon />
+                                  <Text style={Style.eventText}>
+                                    {obj.status}
+                                  </Text>
+                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                    {obj.due_date}
+                                  </Text>
+                                  <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
+                                    {obj.nickname}
+                                  </Text>
+                                </View>
+                                <View style={Style.flexRow}>
+                                  <Text style={Style.taskPayloadText}>
+                                    {obj.paddock.name}
+                                  </Text>
+                                  <Text style={Style.taskPayloadText}>
+                                    {/* {obj.payload_value} */}
+                                  </Text>
+                                </View>
+                              </View>
+                              <View>
+                                <FontAwesomeIcon
+                                  icon={faChevronRight}
+                                  color={Color.gray}
+                                  size={45}
+                                />
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                        )
+                    })}</View>)
+                  }
+                  <TouchableOpacity
+                    style={Style.chevronDown}
+                    onPress={() => setExpand(!isExpanded)}
+                  >
+                    <FontAwesomeIcon
+                      icon={isExpanded ? faChevronUp : faChevronDown}
+                      color={Color.gray}
+                      size={45}
+                    />
+                  </TouchableOpacity>
+                </View>
+            ) : (
+              <View></View>
+            )
+          }
 
           {/* RECENT EVENTS */}
-
-        <View style={Style.RecentEventsContainer}>
-            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
-            {
-              orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
-                return (
-                  <View
-                    key={idx}
-                    style={[
-                      Style.flexRow,
+          {
+            orders?.recent?.length > 0 ? (
+                  <View style={Style.RecentEventsContainer}>
+                      <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
                       {
-                        position: 'relative',
-                        marginLeft: 15
+                        orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
+                          return (
+                            <View
+                              key={idx}
+                              style={[
+                                Style.flexRow,
+                                {
+                                  position: 'relative',
+                                  marginLeft: 15
+                                }
+                              ]}
+                            >
+                              {
+                                idx + 1 === response.data.recent.length ? (
+                                  <CompleteIcon style={Style.eventIcon} />
+                                ) : (
+                                  <CompletedEventIcon style={Style.eventIcon} />
+                                )
+                              }
+                              <View style={Style.eventDetailsContainer}>
+                                <View style={Style.flexRow}>
+                                  <Text style={Style.eventText}>
+                                    Task
+                                  </Text>
+                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                    {obj.due_date}
+                                  </Text>
+                                  <Text style={Style.eventText}>
+                                    {obj.nickname}
+                                  </Text>
+                                </View>
+                                <View style={Style.flexRow}>
+                                  <Text style={Style.eventPayloadText}>
+                                    {obj.paddock.name}
+                                  </Text>
+                                  <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
+                                    {/* {obj.payload_value} */}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          )
+                        })}</View>)
                       }
-                    ]}
-                  >
-                    {
-                      idx + 1 === response.data.recent.length ? (
-                        <CompleteIcon style={Style.eventIcon} />
-                      ) : (
-                        <CompletedEventIcon style={Style.eventIcon} />
-                      )
-                    }
-                    <View style={Style.eventDetailsContainer}>
-                      <View style={Style.flexRow}>
-                        <Text style={Style.eventText}>
-                          Task
-                        </Text>
-                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                          {obj.due_date}
-                        </Text>
-                        <Text style={Style.eventText}>
-                          {obj.nickname}
-                        </Text>
-                      </View>
-                      <View style={Style.flexRow}>
-                        <Text style={Style.eventPayloadText}>
-                          {obj.paddock.name}
-                        </Text>
-                        <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
-                          {/* {obj.payload_value} */}
-                        </Text>
-                      </View>
                     </View>
-                  </View>
-                )
-              })}</View>)
+                  ): (
+              <View></View>
+              )
             }
-          </View>
         </View>
         </ImageBackground>
       </SafeAreaView>

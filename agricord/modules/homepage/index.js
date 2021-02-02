@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationActions, StackActions} from 'react-navigation';
 // import Setting from './Setting';
 import Order from 'modules/orders/OrdersStack.js';
-import Home from './Home';
+import Home from './HomeStack';
 import InventoryScreen from 'modules/inventory';
 import Tasks from 'modules/tasks/TasksStack';
 import SettingsScreen from 'modules/settingsPage/SettingsPageStack.js';

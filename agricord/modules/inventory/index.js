@@ -43,7 +43,7 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [activeTags, setActiveTags] = useState('')
+  const [activeTags, setActiveTags] = useState('herbicide')
   const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
@@ -84,8 +84,9 @@ const Inventory = (props) => {
       productType: 'all',
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
-      tags: '%' + activeTags.toLocaleLowerCase() + '%'
+      tags: activeIndex
     }
+    console.log("^^^^^^^^^^^^^^^^^^^", parameter);
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
@@ -108,31 +109,6 @@ const Inventory = (props) => {
       setLoading(false)
     })
   }
-
-  useEffect(() => {
-    if (props.parentNav.state.params !=null) {
-      switch (props.parentNav.state.params.index) {
-        case 0:
-          setActiveIndex(0)
-          setActiveTags('Herbicide')
-          break;
-        case 1:
-          setActiveIndex(1)
-          setActiveTags('Fungicide')
-          break;
-        case 2:
-          setActiveIndex(2)
-          setActiveTags('Insecticide')
-          break;
-        case 3:
-          setActiveIndex(3)
-          setActiveTags('Other')
-          break;
-        default:
-          break 
-      }
-    }
-  }, [])
 
   const onPageChange = (activeIndex) => {
     setActiveIndex(activeIndex)
