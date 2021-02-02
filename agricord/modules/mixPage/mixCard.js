@@ -21,7 +21,7 @@ class MixCard extends Component {
     super(props);
     this.state = {
       message : false,
-      text: ''
+      text: null
     }
   }
 
@@ -38,8 +38,8 @@ class MixCard extends Component {
     this.props.data.item.partial = false
   }
 
-  fun = (data) => {
-    this.setState({ text: data})
+  fun = async (e) => {
+    await this.setState({ text: e})
     console.log('asdfasdfasdfasdf', this.state.text)
   }
 
@@ -177,8 +177,8 @@ class MixCard extends Component {
                                 width: 50,
                                 fontSize: BasicStyles.standardTitleFontSize
                               }}
-                              onChangeText={(input) => {
-                                this.fun(input)
+                              onChangeText={(e) => {
+                                this.fun(e)
                               }}
                             />
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>

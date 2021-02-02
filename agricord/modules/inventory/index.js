@@ -43,7 +43,7 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [activeTags, setActiveTags] = useState('herbicide')
+  const [activeTags, setActiveTags] = useState()
   const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
@@ -61,10 +61,10 @@ const Inventory = (props) => {
   var limit = 5;
 
   useEffect(() => {
-    retrieve(false)
+    retrieve(false, paginationProps[0].name)
   }, [])
 
-  const retrieve = (flag) => {
+  const retrieve = (flag, tag) => {
     const { user } = props.state;
     if(user == null){
       return
@@ -84,7 +84,7 @@ const Inventory = (props) => {
       productType: 'all',
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
-      tags: activeIndex
+      tags: '%' + tag.toLowerCase() + '%'
     }
     console.log("^^^^^^^^^^^^^^^^^^^", parameter);
     setLoading(true)
@@ -111,8 +111,12 @@ const Inventory = (props) => {
   }
 
   const onPageChange = (activeIndex) => {
+    console.log(activeIndex);
+    
     setActiveIndex(activeIndex)
-    retrieve(false)
+    setTimeout(() => {
+      retrieve(false, paginationProps[activeIndex].name)
+    }, 100);
   }
 
   const searchProductHandler = () => {
