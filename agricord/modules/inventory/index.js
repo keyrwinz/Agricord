@@ -62,6 +62,7 @@ const Inventory = (props) => {
 
   useEffect(() => {
     retrieve(false, paginationProps[0].name)
+    setActiveIndex(props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0);
   }, [])
 
   const retrieve = (flag, tag) => {
