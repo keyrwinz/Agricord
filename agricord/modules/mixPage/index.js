@@ -154,7 +154,6 @@ const MixPage = (props) => {
     if(totalArea <= maxArea){
       setTotalHigher(false)
     }else {
-      setTotalArea(totalArea)
       setTotalHigher(true)
     }
   }
@@ -246,7 +245,7 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea < totalArea){
+      if(maxArea <= totalArea){
           setTotalHigher(true)
           // Alert.alert(
           //   'Error Message',
