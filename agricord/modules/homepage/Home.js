@@ -120,8 +120,6 @@ const Home = (props) => {
       retrieve(false)
     }, 1000)
   }, [])
-  console.log("=====================", data);
-  console.log("=====================", orders);
   return orders != undefined ?  (
     <ScrollView style={Style.ScrollView}>
         <Spinner mode="overlay" />

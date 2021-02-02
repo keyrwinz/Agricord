@@ -38,8 +38,8 @@ class MixCard extends Component {
     this.props.data.item.partial = false
   }
 
-  fun = (data) => {
-    this.setState({ text: data})
+  fun = async(data) => {
+    await this.setState({ text: data})
     console.log('asdfasdfasdfasdf', this.state.text)
   }
 
@@ -159,16 +159,16 @@ class MixCard extends Component {
                           <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
                             PARTIAL
                           </Text>
-                          {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                            { partials >= 0 ? partials : this.messageModal() }
-                          </Text> */}
-                          <View style={{
+                          <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                            { partials >= 0 ? partials + 'ha' : this.messageModal() }
+                          </Text>
+                          {/* <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
                             justifyContent: 'center'
                           }}>
                             <TextInput
-                              value={data.item.remaining_area}
+                              value={this.state.text}
                               placeholder={'00000'}
                               keyboardType={'numeric'}
                               maxLength={5}
@@ -183,7 +183,7 @@ class MixCard extends Component {
                             />
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
-                            </Text>
+                            </Text> */}
                             {/* <TouchableOpacity
                               underlayColor={Color.gray} 
                               style={[{backgroundColor: Color.primary, width: '30%', marginRight: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: 30, borderRadius: 5}]}
@@ -191,7 +191,7 @@ class MixCard extends Component {
                               >
                               <Text style={{ color: Color.white}}>OK</Text>
                             </TouchableOpacity> */}
-                          </View>
+                          {/* </View> */}
                           <View 
                             style={{
                               paddingLeft: 100

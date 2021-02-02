@@ -99,7 +99,7 @@ const MixPage = (props) => {
   const [appliedRate, setAppliedRate] = useState(0)
   const [message, setMessage] = useState(false)
   const [totalHigher, setTotalHigher] = useState(false)
-  const [test, setTest] = useState(12132)
+  const [test, setTest] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -112,14 +112,26 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
+  const newRates = async() => {
+    if(setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2)) < totalArea){
+      await setTotalHigher(true)
+      await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+    }else{
+      await setTotalHigher(false)
+      await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+    }
+  }
+
   const onload = () => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
         setAppliedRate(Math.round(task.machine.capacity / totalArea))
-        console.log('helllo', task.spray_mix.application_rate)
-        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
-        console.log('hasdf', appliedRate, task.machine.capacity, totalArea, Math.round(task.machine.capacity / totalArea))
+        if(test == 0 || test == ''){
+          setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
+        }else{
+          setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+        }
         if(totalArea > maxArea){
           setTotalHigher(true)
           setMessage(true)
@@ -127,7 +139,6 @@ const MixPage = (props) => {
       }else{
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
         setAppliedRate(Math.round(task.spray_mix.application_rate))
-        console.log('im ah here', appliedRate)
         setTimeout(() => {
           if(totalArea > maxArea){
             setTotalHigher(true)
@@ -138,7 +149,14 @@ const MixPage = (props) => {
   }
 
   const closeModal = () =>{
-    setMessage(false) && setAppRateSwitch(!appRateSwitch)
+    setMessage(false)
+    setAppRateSwitch(!appRateSwitch)
+    if(totalArea <= maxArea){
+      setTotalHigher(false)
+    }else {
+      setTotalArea(totalArea)
+      setTotalHigher(true)
+    }
   }
  
   const retrieve = () => {
@@ -186,7 +204,6 @@ const MixPage = (props) => {
   }
 
   const removePaddock = (from, item) => {
-    console.log('itemmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', item)
     item.partial = false;
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
@@ -219,7 +236,6 @@ const MixPage = (props) => {
   }
 
   const addToSelected = (item) => {
-    console.log('item herrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr', item)
     setSelectedFlag(true)
     let status = false
     for (var i = 0; i < selectedPaddock.length; i++) {
@@ -230,7 +246,7 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea <= totalArea){
+      if(maxArea < totalArea){
           setTotalHigher(true)
           // Alert.alert(
           //   'Error Message',
@@ -275,7 +291,6 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
-    console.log('asdfadddddddddddddddddd', item)
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
         return {
@@ -350,7 +365,6 @@ const MixPage = (props) => {
 
   const applicationRate = () => {
     const { task } = props.state;
-    console.log('task', task)
     return (
         <View style={[
           Style.mixCardContainer,
@@ -446,16 +460,16 @@ const MixPage = (props) => {
                           borderBottomRightRadius: 10,
                           borderBottomLeftRadius: 10 }]}
                         keyboardType={'numeric'}
-                        onChangeText={(appliedRate) => appliedRate}
-                        value={appliedRate.toString() !== null ? appliedRate.toString() : 0}
+                        onChangeText={(newRate) => setTest(newRate)}
+                        value={test}
                         placeholderTextColor='grey'
                         underlineColorAndroid='grey'
-                        placeholder='Enter Application Volume'>
+                        placeholder={appliedRate.toString()}>
                     </TextInput>
                     <TouchableOpacity>
                     <Button
                       title="Confirm"
-                      onPress={() => Alert.alert('Right button pressed')}>
+                      onPress={() => newRates()}>
                     </Button>
                     </TouchableOpacity>
                   </View>
