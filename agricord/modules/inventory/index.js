@@ -43,7 +43,7 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
-  const [activeTags, setActiveTags] = useState('')
+  const [activeTags, setActiveTags] = useState()
   const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
@@ -61,10 +61,11 @@ const Inventory = (props) => {
   var limit = 5;
 
   useEffect(() => {
-    retrieve(false)
+    retrieve(false, paginationProps[0].name)
+    setActiveIndex(props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0);
   }, [])
 
-  const retrieve = (flag) => {
+  const retrieve = (flag, tag) => {
     const { user } = props.state;
     if(user == null){
       return
@@ -84,7 +85,7 @@ const Inventory = (props) => {
       productType: 'all',
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
-      tags: '%' + activeTags.toLocaleLowerCase() + '%'
+      tags: '%' + tag.toLowerCase() + '%'
     }
     setLoading(true)
     setData([])
@@ -92,6 +93,7 @@ const Inventory = (props) => {
       setLoading(false)
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
+        console.log("^^^^^^^^^^^^^^^^^^^", response.data);
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -109,34 +111,13 @@ const Inventory = (props) => {
     })
   }
 
-  useEffect(() => {
-    if (props.parentNav.state.params !=null) {
-      switch (props.parentNav.state.params.index) {
-        case 0:
-          setActiveIndex(0)
-          setActiveTags('Herbicide')
-          break;
-        case 1:
-          setActiveIndex(1)
-          setActiveTags('Fungicide')
-          break;
-        case 2:
-          setActiveIndex(2)
-          setActiveTags('Insecticide')
-          break;
-        case 3:
-          setActiveIndex(3)
-          setActiveTags('Other')
-          break;
-        default:
-          break 
-      }
-    }
-  }, [])
-
   const onPageChange = (activeIndex) => {
+    console.log(activeIndex);
+    
     setActiveIndex(activeIndex)
-    retrieve(false)
+    setTimeout(() => {
+      retrieve(false, paginationProps[activeIndex].name)
+    }, 100);
   }
 
   const searchProductHandler = () => {
@@ -187,7 +168,7 @@ const Inventory = (props) => {
           />
           <TouchableOpacity
             style={Style.searchIcon}
-            onPress={() => retrieve()}
+            onPress={() => retrieve(false, paginationProps[activeIndex].name)}
           >
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>

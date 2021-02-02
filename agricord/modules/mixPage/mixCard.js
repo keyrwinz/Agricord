@@ -40,7 +40,6 @@ class MixCard extends Component {
 
   fun = async(data) => {
     await this.setState({ text: data})
-    console.log('asdfasdfasdfasdf', this.state.text)
   }
 
   componentDidMount(){
