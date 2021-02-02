@@ -87,13 +87,13 @@ const Inventory = (props) => {
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
       tags: '%' + tag.toLowerCase() + '%'
     }
-    console.log("^^^^^^^^^^^^^^^^^^^", parameter);
     setLoading(true)
     setData([])
     Api.request(Routes.inventoryRetrieve, parameter, response => {
       setLoading(false)
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
+        console.log("^^^^^^^^^^^^^^^^^^^", response.data);
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -168,7 +168,7 @@ const Inventory = (props) => {
           />
           <TouchableOpacity
             style={Style.searchIcon}
-            onPress={() => retrieve()}
+            onPress={() => retrieve(false, paginationProps[activeIndex].name)}
           >
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>
