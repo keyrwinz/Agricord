@@ -21,35 +21,36 @@ class MixCard extends Component {
     super(props);
     this.state = {
       message : false,
-      text: null
+      text: 0
     }
   }
 
-  removePad(){
+  removePad = () => {
     this.props.removePaddock(this.props.from, this.props.data.item)
   }
 
-  messageModal(){
+  messageModal = () => {
     this.state.message = true
   }
 
-  closeModal(){
+  closeModal = () => {
     this.setState({message: false})
     this.props.data.item.partial = false
   }
 
-  fun = async (e) => {
-    await this.setState({ text: e})
-    console.log('asdfasdfasdfasdf', this.state.text)
+  fun = async(data) => {
+    await this.setState({text: data})
+    console.log(this.state.text)
   }
 
   componentDidMount(){
 
   }
 
-  render(){
+  render = () => {
     const { data, hasCheck, totalRate, maxRate } = this.props;
-    const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
+    const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
+    console.log('partials here', partials)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -160,7 +161,7 @@ class MixCard extends Component {
                             PARTIAL
                           </Text>
                           {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                            { partials >= 0 ? partials : this.messageModal() }
+                            { partials >= 0 ? partials + 'ha' : this.messageModal() }
                           </Text> */}
                           <View style={{
                             flexDirection: 'row',
@@ -168,7 +169,7 @@ class MixCard extends Component {
                             justifyContent: 'center'
                           }}>
                             <TextInput
-                              value={data.item.remaining_area}
+                              value={partials >= 0 || partials == '' || partials == NaN ? partials : this.messageModal()}
                               placeholder={'00000'}
                               keyboardType={'numeric'}
                               maxLength={5}
@@ -177,8 +178,8 @@ class MixCard extends Component {
                                 width: 50,
                                 fontSize: BasicStyles.standardTitleFontSize
                               }}
-                              onChangeText={(e) => {
-                                this.fun(e)
+                              onChangeText={(input) => {
+                                this.fun(input)
                               }}
                             />
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
