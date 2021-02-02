@@ -166,7 +166,7 @@ export default {
     // },
     {
       title: 'Complete spray task',
-      route: 'CompleteSprayTask',
+      route: 'TasksHistory',
       defaultIcon: <CompleteTaskIcon />,
     }, {
       title: 'Log out',

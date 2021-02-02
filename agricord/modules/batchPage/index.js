@@ -73,34 +73,31 @@ class paddockPage extends Component{
       isLoading: true
     })
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-      //temporary data incase you need to create batch
-        let alpha = {
-          id: 3,
-          product: {
-            code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA",
-            id: 16,
-            merchant_id: "1",
-            qty: 5,
-            title: "Alpha 110L",
-            type: "regular",
-            variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]
-          },
-          product_id: 16,
-          rate: 2000.000,
-          spray_mix_id: 65,
-          status: "draft",
-          units: "",
-          updated_at: '2021-01-09 07:20:57'
-        }
-        response.data.push(alpha)
-        //
-        this.setState({data: response.data, isLoading: false});
-        
-      },
-      error => {
-        this.setState({
-          isLoading: false
-        })
+      // let alpha = {
+      //   id: 3,
+      //   product: {
+      //     code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA",
+      //     id: 16,
+      //     merchant_id: "1",
+      //     qty: 5,
+      //     title: "Alpha 110L",
+      //     type: "regular",
+      //     variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]
+      //   },
+      //   product_id: 16,
+      //   rate: 2000.000,
+      //   spray_mix_id: 65,
+      //   status: "draft",
+      //   units: "",
+      //   updated_at: '2021-01-09 07:20:57'
+      // }
+      // response.data.push(alpha)
+      this.setState({data: response.data, isLoading: false});
+    },
+    error => {
+      this.setState({
+        isLoading: false
+      })
         console.log({error});
       },
     );
@@ -167,18 +164,8 @@ class paddockPage extends Component{
   }
 
   scan = (parameter) => {
-    let params = null
-    if (parameter) {
-    } else {
-      params = {
-        //Alpha 1000 product
-        code: '25739366062713749471680984040588',
-        // code: '43629563207499567584704911882320',
-        nfc: 'C89B5424080104E0'
-      }
-    }
-    if(config.NFC_TEST) {
-      this.retrieveProduct(params);
+    if(config.NFC_TEST && parameter !== null) {
+      this.retrieveProduct(parameter);
     }
   }
 
@@ -245,7 +232,6 @@ class paddockPage extends Component{
             nfc: id,
             link: false
           }
-          console.log('parameter', parameter)
           this.scan(parameter)
         }
       })
@@ -266,18 +252,18 @@ class paddockPage extends Component{
 
   retrieveProduct = (params) => {
     const user = this.props.state.user
-    let parameter = null;
-    parameter = {
+    let parameter = {
       condition: [{
+        //code: '25739366062713749471680984040588', C89B5424080104E0
         value: params.code,
         column: 'code',
         clause: '='
       }],
-      nfc:params.nfc,
-      //  user.sub_account.merchant.id
-      merchant_id: 3,
-      // user.account_type
-      account_type: 'MANUFACTURER'
+      nfc: params.nfc,
+      // 3 
+      merchant_id: user.sub_account.merchant.id,
+      // MANUFACTURER user.account_type
+      account_type: user.account_type
     }
     this.manageRequest(parameter);
   }
@@ -324,7 +310,7 @@ class paddockPage extends Component{
   else() {
     Alert.alert(
       "Opps",
-      "No matched found!",
+      "Product not found!",
       [
         { text: "OK"}
       ],
