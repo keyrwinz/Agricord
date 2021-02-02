@@ -21,6 +21,9 @@ import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
 import { Spinner } from 'components';
 import _ from 'lodash';
+import config from 'src/config';
+import { Helper } from 'common';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
@@ -120,6 +123,126 @@ const Inventory = (props) => {
     }, 100);
   }
 
+  const scan = (parameter) => {
+    if(config.NFC_TEST && parameter !== null) {
+      retrieveProduct(parameter);
+    }
+  }
+
+  const manageResponse = (tag) => {
+    let parsed = null
+    if(tag.ndefMessage){
+      const ndefRecords = tag.ndefMessage;
+
+      function decodeNdefRecord(record) {
+          if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return {'text': Ndef.text.decodePayload(record.payload)};
+          } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
+              return {'uri': Ndef.uri.decodePayload(record.payload)};
+          }
+
+          return {'unknown': null}
+      }
+
+      parsed = ndefRecords.map(decodeNdefRecord);
+    }
+    manageNfcText(parsed, tag.id)
+  }
+
+  const _cancel = () => {
+    setLoading(false)
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  const startScanningNFC = async () => {
+    console.log('starting')
+    setLoading(true)
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      setLoading(false)
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
+  }
+
+  const manageNfcText = (data, id) => {
+    setLoading(false)
+    if(data){
+      data.map((item, index) => {
+        console.log('item', item.text)
+        if(index === 0 && item.text){
+          let array = item.text.split(Helper.delimeter)
+          let parameter = {
+            title: array[0],
+            merchant: array[1],
+            batch_number: array[2],
+            manufacturing_date: array[3],
+            code: array[4],
+            website: array[5],
+            nfc: id,
+            link: false
+          }
+          scan(parameter)
+        }
+      })
+    }
+  }
+
+  const startScanning = () => {
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+      setLoading(false)
+      manageResponse(tag)
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    });
+    startScanningNFC()
+  }
+
+  const retrieveProduct = (params) => {
+    const user = props.state.user
+    let parameter = {
+      condition: [{
+        value: params.code,
+        column: 'code',
+        clause: '='
+      }],
+      nfc: params.nfc,
+      merchant_id: user.sub_account.merchant.id,
+      account_type: user.account_type
+    }
+    manageRequest(parameter, params.title);
+  }
+
+  const manageRequest = (parameter, title) => {
+    setLoading(true)
+    console.log(parameter, "==============");
+    Api.request(Routes.productTraceRetrieve, parameter, response => {
+      setLoading(false)
+      if(response.data != null && response.data.length > 0) {
+        props.parentNav.navigate('productDetailsStack', {
+          data: {
+            ...response.data[0],
+            title: title
+          }
+        })
+      } else {
+        Else();
+      }
+    }
+    );
+  }
+  const Else = () => {
+    Alert.alert(
+      "Opps",
+      "Product not found!",
+      [
+        { text: "OK"}
+      ],
+      { cancelable: false }
+    );
+  }
+
   const searchProductHandler = () => {
     const query = searchString.toLocaleLowerCase()
     switch (activeIndex) {
@@ -174,7 +297,7 @@ const Inventory = (props) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.nfcIcon}
-            onPress={() => Alert.alert('nfc')}
+            onPress={() => startScanning()}
           >
             <NfcIcon width="35" />
           </TouchableOpacity>

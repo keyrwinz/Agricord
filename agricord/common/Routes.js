@@ -93,4 +93,5 @@ export default {
   productTraceRetrieve: apiUrl + 'product_traces/retrieve_by_params',
   batchCreate: apiUrl + 'batches/create',
   batchUpdateStatus: apiUrl + 'batches/update',
+  batchRetrieve: apiUrl + 'batches/retrieve',
 };
