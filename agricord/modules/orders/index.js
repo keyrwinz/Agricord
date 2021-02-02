@@ -64,7 +64,7 @@ class OrdersPage extends Component {
     let parameters = {
       condition: [{
           column: 'merchant_id',
-          value: 1, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
         }, {
           column: 'status',
