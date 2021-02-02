@@ -322,7 +322,7 @@ const MixPage = (props) => {
               totalRate={totalArea}
               maxRate={maxArea}
               hasCheck={true}
-              addToSelected={data}
+              addToSelected={() => {}}
               removePaddock={(from, item) => removePaddock(from, item)}
               
                 from={'selected'}
