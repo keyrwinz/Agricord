@@ -63,7 +63,7 @@ class OrdersPage extends Component {
 
     let parameters = {
       condition: [{
-          column: 'merchant_to',
+          column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
           value: user.sub_account.merchant.id,
           clause: '=',
         }, {
