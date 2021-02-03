@@ -622,7 +622,7 @@ const MixPage = (props) => {
             color: '#C0C0C0',
             // width: 100
           }}>
-            Drag Paddock tile to Appliction Box
+            Drag Paddock tile to Application Box
           </Text>
           {
             paddocks.length < 10 && (
