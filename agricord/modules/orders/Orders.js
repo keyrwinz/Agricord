@@ -31,7 +31,7 @@ class Orders extends Component {
     const { user } = this.props.state;
     const { from, data, loading } = this.props;
     return (
-      <SafeAreaView style={{flex: 1, marginBottom: 160}}>
+      <SafeAreaView style={{flex: 1}}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           onScroll={(event) => {

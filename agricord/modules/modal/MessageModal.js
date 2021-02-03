@@ -24,11 +24,12 @@ class MessageModal extends Component {
               height: '30%',
               marginTop: '10%'
             }]}>
-              <View style={styles.header}>
-                <View style={{
-                  width: '100%'
-                }}
-                >
+              <View style={{
+                width: '95%',
+                borderBottomColor: Color.gray,
+                alignItems: 'center',
+                justifyContent: 'center'}}>
+                <View>
                   <Text style={[styles.text, {
                     color: Color.black,
                     fontWeight: 'bold' 
@@ -37,6 +38,7 @@ class MessageModal extends Component {
               </View>
               <View style={[styles.content, {
                 marginVertical: '5%',
+                paddingHorizontal: 9,
                 height: '30%',
                 justifyContent: 'center'
               }]}>

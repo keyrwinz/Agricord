@@ -12,7 +12,7 @@ export default {
   },
   sliderContainer: {
     flex: 1,
-    minHeight: height,
+    minHeight: '100%',
     width: '90%',
     marginLeft: '5%',
     marginRight: '5%'

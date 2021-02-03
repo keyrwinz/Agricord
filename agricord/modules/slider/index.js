@@ -153,8 +153,8 @@ class Slider extends Component {
         this.logoutAction();
         console.log("logout");
         break;
-      case 'CompleteSprayTask':
-        Alert.alert(route)
+      case 'TasksHistory':
+        this.navigateToScreen(route);
         break;
     }
   }
