@@ -36,6 +36,7 @@ class MixCard extends Component {
   closeModal = () => {
     this.setState({message: false})
     this.props.data.item.partial = false
+    this.state.text = ''
   }
 
   fun = async(data) => {
@@ -43,14 +44,10 @@ class MixCard extends Component {
     console.log(this.state.text)
   }
 
-  componentDidMount(){
-
-  }
-
   render = () => {
     const { data, hasCheck, totalRate, maxRate } = this.props;
+    const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
     const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
-    console.log('partials here', partials)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -160,9 +157,6 @@ class MixCard extends Component {
                           <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
                             PARTIAL
                           </Text>
-                          {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                            { partials >= 0 ? partials + 'ha' : this.messageModal() }
-                          </Text> */}
                           <View style={{
                             flexDirection: 'row',
                             alignItems: 'center',
@@ -170,7 +164,7 @@ class MixCard extends Component {
                           }}>
                             <TextInput
                               value={partials >= 0 || partials == '' || partials == NaN ? partials : this.messageModal()}
-                              placeholder={'00000'}
+                              placeholder={origPartial}
                               keyboardType={'numeric'}
                               maxLength={5}
                               style={{
@@ -185,19 +179,8 @@ class MixCard extends Component {
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
                             </Text>
-                            {/* <TouchableOpacity
-                              underlayColor={Color.gray} 
-                              style={[{backgroundColor: Color.primary, width: '30%', marginRight: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: 30, borderRadius: 5}]}
-                              onPress={() => this.props.onClose()}
-                              >
-                              <Text style={{ color: Color.white}}>OK</Text>
-                            </TouchableOpacity> */}
                           </View>
-                          <View 
-                            style={{
-                              paddingLeft: 100
-                            }}
-                          >
+                          <View>
                             { 
                               this.state.message === true ?
                                 <Message
@@ -220,7 +203,7 @@ class MixCard extends Component {
                           REMAINING AREA
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {data?.item?.remaining_area + ' ' + data?.item?.spray_mix_units}
+                          {data?.item?.remaining_area + ' ' + 'Ha'}
                         </Text>
                       </View>
                     </View>

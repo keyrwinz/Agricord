@@ -246,15 +246,7 @@ const MixPage = (props) => {
     }
     if(status == false){
       if(maxArea <= totalArea){
-          setTotalHigher(true)
-          // Alert.alert(
-          //   'Error Message',
-          //   'Now Allowed! Total area is greater than the max area.',
-          //   [
-          //     { text: 'OK', onPress: () => console.log('OK Pressed') }
-          //   ],
-          //   { cancelable: false }
-          // );
+        setTotalHigher(true)
       }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
@@ -374,7 +366,6 @@ const MixPage = (props) => {
             marginLeft: '5%',
             marginRight: '5%',
             zIndex: 1,
-            // marginBottom: 70
             marginBottom: (selectedPaddock.length == 0 || (selectedPaddock.length > 0 &&  selectedFlag == false)) ? (height / 2) : 0
           }]
         }>
@@ -414,13 +405,13 @@ const MixPage = (props) => {
                 animationTime={150}
                 padding={true}
               />
-              <View style={{ marginLeft: 34 }}
+              <View style={{ marginLeft: 40 }}
               >
                 {message === true ?
                   <Message
                     visible={true}
                     title={'Application volume too low'}
-                    message={`This task would require an application volume lower than ${appliedRate} L, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
+                    message={`This task would require an application volume lower than ${appliedRate} L/ha, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
                     onClose={() => closeModal()}
                   /> : null }
               </View>
@@ -447,12 +438,12 @@ const MixPage = (props) => {
                   :
                   <View style={{flexDirection:'row'}}>
                     <TextInput 
-                        style={[Style.searchInput, { 
-                          opacity: 5, 
-                          borderColor: 'grey', 
-                          borderWidth: 1, 
-                          color: 'grey', 
-                          marginRight: -5, 
+                        style={[Style.searchInput, {
+                          opacity: 5,
+                          borderColor: 'grey',
+                          borderWidth: 1,
+                          color: 'grey',
+                          marginRight: -5,
                           height: 35,
                           borderTopLeftRadius: 10, 
                           borderTopRightRadius: 10,
@@ -460,7 +451,7 @@ const MixPage = (props) => {
                           borderBottomLeftRadius: 10 }]}
                         keyboardType={'numeric'}
                         onChangeText={(newRate) => setTest(newRate)}
-                        value={test}
+                        value={(selectedPaddock.length > 0) ? test : '0' }
                         placeholderTextColor='grey'
                         underlineColorAndroid='grey'
                         placeholder={appliedRate.toString()}>
@@ -485,7 +476,7 @@ const MixPage = (props) => {
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                {totalHigher === false ?
+                { totalHigher === false ?
                   <View style={Style.totalAreaBox}>
                     <Text style={{
                       fontSize: BasicStyles.standardFontSize
@@ -622,7 +613,7 @@ const MixPage = (props) => {
             color: '#C0C0C0',
             // width: 100
           }}>
-            Drag Paddock tile to Appliction Box
+            Drag Paddock tile to Application Box
           </Text>
           {
             paddocks.length < 10 && (
@@ -673,12 +664,12 @@ const MixPage = (props) => {
        
         {applicationRate()}
 
-        { (selectedFlag && selectedPaddock.length > 0) && ( selectedPaddockView()) }
+        { (selectedFlag && selectedPaddock.length > 0 && scanProductFlag) && ( selectedPaddockView()) }
 
 
       </ScrollView>
       {
-        scanProductFlag && (
+        (totalHigher == false && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
@@ -689,6 +680,20 @@ const MixPage = (props) => {
           />
         )
       }
+      {/* {
+        (selectedPaddock.length > 0) || (
+          (totalHigher) && (
+            <SlidingButton
+              title={'Create Batch'}
+              label={'Swipe Right'}
+              position={mixConfirmation}
+              onSuccess={() => {
+                setMixConfirmation(true)
+              }}
+            />
+          )
+        )
+      } */}
 
       {
         (mixConfirmation) && (
