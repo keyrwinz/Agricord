@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   OptionsContainer: {
     marginTop: 4,
     justifyContent: 'flex-end',
-    height: 170,
+    height: 132,
     overflow: 'scroll',
     width: '90%',
     borderColor: '#AEAEAE',
@@ -128,8 +128,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    marginBottom: 35,
-    paddingBottom: 25
+    paddingBottom: 13
   },
   TitleContainer: {
     flexDirection: 'row',

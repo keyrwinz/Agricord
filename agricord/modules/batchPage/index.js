@@ -105,16 +105,29 @@ class paddockPage extends Component{
 
   setApplyTank(){
     this.setState({confirmTask: true, taskConfirmation: true})
-    const { task } = this.props.state;
+    const { task, paddock } = this.props.state;
     const user = this.props.state.user
-    let parameter = {
+    let batch = {
       spray_mix_id: task.spray_mix.id,
       machine_id: task.machine.id,
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
       notes: this.state.notes,
       water: (this.props.navigation.state.params.max_area * this.props.navigation.state.params.application_rate) - this.total(),
-      status: 'ongoing'
+      status: 'inprogress'
+    }
+    let tasks = {
+      paddock_plan_id: paddock.data[0].paddock_plan_id,
+      paddock_id: paddock.data[0].paddock_id,
+      category: paddock.data[0].category,
+      due_date: paddock.data[0].due_date,
+      nickname: paddock.data[0].nickname,
+      spray_mix_id: task.spray_mix.id,
+      merchant_id: user.sub_account.merchant.id,
+      status: 'inprogress',
+    }
+    let parameter = {
+      batch, tasks
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchCreate, parameter, response => {
