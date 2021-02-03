@@ -64,7 +64,7 @@ const Inventory = (props) => {
   var limit = 5;
 
   useEffect(() => {
-    retrieve(false, paginationProps[0].name)
+    retrieve(false, paginationProps[props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0].name)
     setActiveIndex(props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0);
   }, [])
 
@@ -308,19 +308,19 @@ const Inventory = (props) => {
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
             {/* ===== HERBICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== FUNGICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== INSECTICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== OTHER ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag)}/>
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
         </Pager>
       </PagerProvider>
