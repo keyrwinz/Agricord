@@ -63,27 +63,26 @@ class OrdersPage extends Component {
 
     let parameters = {
       condition: [{
-          column: 'merchant_id',
-          value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
+          value: user.sub_account.merchant.id,
           clause: '=',
         }, {
           column: 'status',
-          value: 'completed',
-          clause: activeIndex == 0 ? '!=' : '='
+          value: activeIndex == 0 ? 'pending' : 'completed',
+          clause: '='
         }
       ],
       sort: {
         created_at: 'desc'
       },
       limit: this.state.limit,
-      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
+      offset: flag === true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
     };
 
     Api.request(Routes.ordersRetrieveByParams, parameters, response => {
       this.setState({
         isLoading: false
       });
-      console.log('response', response.data)
       if(response.data.length > 0){
         this.setState({
           data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),

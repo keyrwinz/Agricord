@@ -37,13 +37,12 @@ class OrderDetails extends Component {
     const {selectedOrder} = this.props.state;
     let parameters = {
       condition: [{
-        value: 2,
-        column: 'id',
+        value: selectedOrder.id,
+        column: 'order_request_id',
         clause: '='
       }]
     };
     this.setState({isLoading: true});
-    console.log('selectedOrder', selectedOrder)
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
     }, error => {
