@@ -111,7 +111,6 @@ class OrderDetails extends Component {
   };
 
   render() {
-    console.log("=======================", this.props.state);
     const {selectedOrder} = this.props.state;
     const {parentNav} = this.props.navigation.state.params;
     return (
