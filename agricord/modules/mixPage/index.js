@@ -115,9 +115,11 @@ const MixPage = (props) => {
   const newRates = async() => {
     if(setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2)) < totalArea){
       await setTotalHigher(true)
+      setAppRateSwitch(test)
       await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
     }else{
       await setTotalHigher(false)
+      setAppRateSwitch(test)
       await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
     }
   }
@@ -131,6 +133,7 @@ const MixPage = (props) => {
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         }else{
           setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+          setAppliedRate(test)
         }
         if(totalArea > maxArea){
           setTotalHigher(true)
@@ -169,6 +172,7 @@ const MixPage = (props) => {
     };
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
+      console.log(response)
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
@@ -453,7 +457,7 @@ const MixPage = (props) => {
                         onChangeText={(newRate) => setTest(newRate)}
                         value={(selectedPaddock.length > 0) ? test : '0' }
                         placeholderTextColor='grey'
-                        underlineColorAndroid='grey'
+                        paddingLeft={12}
                         placeholder={appliedRate.toString()}>
                     </TextInput>
                     <TouchableOpacity>
