@@ -37,15 +37,15 @@ class OrderDetails extends Component {
     const {selectedOrder} = this.props.state;
     let parameters = {
       condition: [{
-        value: 2,
-        column: 'id',
+        value: selectedOrder.id,
+        column: 'order_request_id',
         clause: '='
       }]
     };
     this.setState({isLoading: true});
-    console.log('selectedOrder', selectedOrder)
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
+      console.log(response, "================response");
     }, error => {
       this.setState({
         products: [],
@@ -96,6 +96,7 @@ class OrderDetails extends Component {
 
 
   renderProducts = () => {
+    console.log(this.state.products, "==================");
     return this.state.products.map((item, index) => {
       return (
         <ProductCard
