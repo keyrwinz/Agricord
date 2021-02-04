@@ -45,7 +45,6 @@ class OrderDetails extends Component {
     this.setState({isLoading: true});
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
-      console.log(response, "================response");
     }, error => {
       this.setState({
         products: [],
@@ -96,7 +95,6 @@ class OrderDetails extends Component {
 
 
   renderProducts = () => {
-    console.log(this.state.products, "==================");
     return this.state.products.map((item, index) => {
       return (
         <ProductCard
