@@ -79,7 +79,9 @@ export default {
   paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',
   paddocksRetrieveWithSprayMix: apiUrl + 'paddocks/retrieve_with_spray_mix',
   // Inventory
+  inventoryMerchant: apiUrl + 'products/retrieve_basic',
   inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
+  inventoryEndUser: apiUrl + 'transfers/retrieve_products_first_level_end_user',
 
   // batches
   batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks',
