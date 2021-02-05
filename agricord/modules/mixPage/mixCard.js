@@ -203,7 +203,7 @@ class MixCard extends Component {
                           REMAINING AREA
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {data?.item?.remaining_area + ' ' + 'Ha'}
+                          {parseFloat(data?.item?.remaining_area).toFixed(2) + ' ' + 'Ha'}
                         </Text>
                       </View>
                     </View>

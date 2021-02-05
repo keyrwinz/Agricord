@@ -45,7 +45,7 @@ class MixConfirmation extends Component {
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
             <View style={styles.DetailsContainer}>
-              <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: 1, borderTopColor: '#969696', borderTopWidth: 1, paddingBottom: 15, paddingTop: -1 }]}>
+              <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: .5, borderTopColor: '#969696', borderTopWidth: 1, paddingBottom: 15, paddingTop: -1 }]}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>Machine</Text>
                 </View>
@@ -55,7 +55,7 @@ class MixConfirmation extends Component {
                   </Text>
                 </View> 
               </View>
-              <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: 1, paddingBottom: 15 }]}>
+              <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15 }]}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>
                     Mix
@@ -70,7 +70,7 @@ class MixConfirmation extends Component {
 
               <View style={[styles.DetailContainer, {
                 marginBottom: data.length > 0 ? 0 : 15,
-                borderBottomColor: '#969696', borderBottomWidth: 1, paddingBottom: 15
+                borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15
               }]}>
                 <View style={styles.DetailTitleContainer}>
                   <Text style={styles.DetailTitleTextStyle}>
@@ -86,7 +86,7 @@ class MixConfirmation extends Component {
 
               {
                 data && data.map((item, index) => (
-                  <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: 1, paddingBottom: 15}]}>
+                  <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
                     <View style={styles.DetailTitleContainer}>
                       <Text style={styles.DetailTitleTextStyle}>
                         {
