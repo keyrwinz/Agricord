@@ -127,15 +127,46 @@ const Inventory = (props) => {
     let route = null
     if(user.account_type === 'DISTRIBUTOR') {
       route = Routes.inventoryRetrieve
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      }
+      console.log(parameter, "===================================");
     } else if(user.account_type === 'MANUFACTURER') {
       parameter = params
       route = Routes.inventoryMerchant
     } else {
       route = Routes.inventoryEndUser
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        tags: tag.toLowerCase(),
+        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      }
+      console.log(parameter, "=================parameter");
     }
-    console.log(route, parameter);
     Api.request(route, parameter, response => {
       setLoading(false)
+      console.log(response, "==================");
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
         // setHerbicideData(response.data)
@@ -257,7 +288,6 @@ const Inventory = (props) => {
 
   const manageRequest = (parameter, title) => {
     setLoading(true)
-    console.log(parameter, "==============");
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
