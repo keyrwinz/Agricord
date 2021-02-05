@@ -12,7 +12,6 @@ export default {
     backgroundColor: Color.white,
     borderRadius: 12,
     borderColor: '#FFFFFF',
-    borderWidth:1,
     ...BasicStyles.standardShadow,
     flexDirection:'row'
   },

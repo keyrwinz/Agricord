@@ -16,7 +16,7 @@ class HeaderOptions extends Component {
   };
   render() {
     return (
-      <View style={{flexDirection: 'row', paddingLeft: 10}}>
+      <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
           <FontAwesomeIcon

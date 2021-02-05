@@ -403,6 +403,7 @@ class paddockPage extends Component{
     const { task } = this.props.state;
     let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
     let volume = n ? n[n.length - 1] : null;
+    console.log(data, "=====================");
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -467,7 +468,8 @@ class paddockPage extends Component{
                   BasicStyles.standardCardContainer,
                   {
                     backgroundColor: Color.blue,
-                    paddingRight: 10
+                    paddingRight: 10,
+                    borderColor: Color.blue
                   }
                   ]}
                   >
