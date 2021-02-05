@@ -73,30 +73,102 @@ const Inventory = (props) => {
     if(user == null){
       return
     }
-    const parameter = {
-      condition: {
-        column: 'title',
-        value: '%' + searchString.toLocaleLowerCase() + '%'
-      },
+    let condition = [{
+      column: 'title',
+      value: '%' + searchString.toLowerCase() + '%',
+      clause: 'like'
+    }, {
+      column: 'merchant_id',
+      value: user.sub_account.merchant.id,
+      clause: '='
+    }, {
+      column: 'tags',
+      value: '%' + tag.toLowerCase() + '%',
+      clause: 'like'
+    }]
+
+    let conditionForOther = [{
+      column: 'title',
+      value: '%' + searchString.toLowerCase() + '%',
+      clause: 'like'
+    }, {
+      column: 'merchant_id',
+      value: user.sub_account.merchant.id,
+      clause: '='
+    }, {
+      column: 'tags',
+      value: '%herbicide%',
+      clause: 'not like'
+    }, {
+      column: 'tags',
+      value: '%fungicide%',
+      clause: 'not like'
+    }, {
+      column: 'tags',
+      value: '%insecticide%',
+      clause: 'not like'
+    }]
+
+    let params = {
+      condition: tag.toLowerCase() !== 'other' ? condition : conditionForOther,
       sort: {
         title: 'asc'
       },
       merchant_id: user.sub_account.merchant.id,
       account_id: user.id,
       inventory_type: 'product_trace',
-      type: user.account_type,
-      productType: 'all',
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
       tags: '%' + tag.toLowerCase() + '%'
     }
+    let parameter = null
     setLoading(true)
     setData([])
-    Api.request(Routes.inventoryRetrieve, parameter, response => {
+    let route = null
+    if(user.account_type === 'DISTRIBUTOR') {
+      route = Routes.inventoryRetrieve
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      }
+      console.log(parameter, "===================================");
+    } else if(user.account_type === 'MANUFACTURER') {
+      parameter = params
+      route = Routes.inventoryMerchant
+    } else {
+      route = Routes.inventoryEndUser
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        tags: tag.toLowerCase(),
+        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      }
+      console.log(parameter, "=================parameter");
+    }
+    Api.request(route, parameter, response => {
       setLoading(false)
+      console.log(response, "==================");
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
-        console.log("^^^^^^^^^^^^^^^^^^^", response.data);
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -216,7 +288,6 @@ const Inventory = (props) => {
 
   const manageRequest = (parameter, title) => {
     setLoading(true)
-    console.log(parameter, "==============");
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
