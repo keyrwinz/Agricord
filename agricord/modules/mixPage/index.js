@@ -249,7 +249,7 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea <= totalArea){
+      if(maxArea < totalArea){
         setTotalHigher(true)
       }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
@@ -447,7 +447,7 @@ const MixPage = (props) => {
                           borderColor: 'grey',
                           borderWidth: 1,
                           color: 'grey',
-                          marginRight: -5,
+                          marginRight: -20,
                           height: 35,
                           borderTopLeftRadius: 10, 
                           borderTopRightRadius: 10,
@@ -460,11 +460,28 @@ const MixPage = (props) => {
                         paddingLeft={12}
                         placeholder={appliedRate.toString()}>
                     </TextInput>
-                    <TouchableOpacity>
-                    <Button
-                      title="Confirm"
+                    <TouchableOpacity
+                      style={{
+                        borderTopRightRadius: 10,
+                        borderBottomRightRadius: 10,
+                        backgroundColor: '#5A84EE',
+                        paddingLeft: 20
+                      }}
                       onPress={() => newRates()}>
-                    </Button>
+                        <Text style={{
+                          marginTop: 7,
+                          marginRight: 20,
+                          fontSize: 13,
+                          color: "#fff",
+                          fontWeight: "bold",
+                          alignSelf: "center",
+                          textTransform: "uppercase"}}
+                        >
+                        Confirm
+                        </Text>
+                    {/* <Button>
+                      
+                    </Button> */}
                     </TouchableOpacity>
                   </View>
                 }
@@ -505,7 +522,7 @@ const MixPage = (props) => {
                       width: '100%',
                       flexWrap: 'wrap',
                       justifyContent: 'space-between',
-                      marginTop: -25,
+                      marginTop: -5,
                       paddingLeft: 15
                     }}>
                       {
