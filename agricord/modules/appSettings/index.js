@@ -10,6 +10,7 @@ class AppSettings extends Component {
     return (
       <View style={{height: '100%', width: '100%'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
+
           <View style={styles.AppSettings}>
             <View style={styles.SettingContainer}>
               <View style={styles.AppSettingsTitleContainer}>
@@ -34,37 +35,21 @@ class AppSettings extends Component {
               <View
                 style={[
                   styles.AppSettingsContainer,
-                  {height: 160, borderRadius: BasicStyles.standardBorderRadius},
+                  {height: 80, borderRadius: BasicStyles.standardBorderRadius},
                 ]}>
                 <AppSettingTile
                   title="Stay logged in"
                   description="Select 'Off' to require password on restart"
                   icon={'logout'}
                 />
+                {/*
                 <AppSettingTile
                   title="Enable work offline"
                   description="Read tag data only"
                   icon={'wifioffline'}
                 />
-              </View>
-              <View style={styles.AppSettingsTitleContainer}>
-                <Text style={styles.AppSettingsTitleTextStyle}>
-                  Notifications
-                </Text>
-              </View>
-              <View
-                style={[
-                  styles.AppSettingsContainer,
-                  {height: 160, borderRadius: BasicStyles.standardBorderRadius},
-                ]}>
-                <AppSettingTile
-                  title="Allow push notifications"
-                  icon={'bell'}
-                />
-                <AppSettingTile
-                  title="Allow to run in background"
-                  icon={'image'}
-                />
+              */}
+                
               </View>
               <View style={{height: 300}} />
             </View>
