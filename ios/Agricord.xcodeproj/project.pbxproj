@@ -613,6 +613,7 @@
 			baseConfigurationReference = 4106241FB02F24B9AB10D58A /* Pods-Agricord-AgricordTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				DEVELOPMENT_TEAM = QZW8TLN78F;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -637,6 +638,7 @@
 			baseConfigurationReference = 6848AA4DC215EA8278803597 /* Pods-Agricord-AgricordTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = QZW8TLN78F;
 				INFOPLIST_FILE = AgricordTests/Info.plist;
