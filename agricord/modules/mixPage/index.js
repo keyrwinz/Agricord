@@ -172,7 +172,7 @@ const MixPage = (props) => {
     };
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
-      console.log(response)
+      console.log('===================================', response.data)
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
