@@ -80,7 +80,7 @@ class OrderCard extends Component {
                     fontSize: BasicStyles.standardTitleFontSize
                   }}
                   numberOfLines={1}>
-                    {item.merchant.name}
+                    {item.merchant_from.name}
                   </Text>
               </View>
 
