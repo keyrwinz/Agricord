@@ -45,7 +45,7 @@ class MixConfirmation extends Component {
             <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
-            
+
             <ScrollView 
             showsVerticalScrollIndicator={false}>
             <View style={styles.DetailsContainer}>
@@ -110,95 +110,6 @@ class MixConfirmation extends Component {
                   </View>
                 ))
               }
-
-
-
-
-
-
-
-              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    {
-                      'test'
-                    }
-                  </Text>
-                </View>
-                <View style={[styles.DetailDetailContainer, {
-                  marginBottom: 0
-                }]}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {
-                     'test'
-                    }
-                  </Text>
-                </View>
-              </View>
-
-
-              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    {
-                      'test'
-                    }
-                  </Text>
-                </View>
-                <View style={[styles.DetailDetailContainer, {
-                  marginBottom: 0
-                }]}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {
-                     'test'
-                    }
-                  </Text>
-                </View>
-              </View>
-
-
-
-              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    {
-                      'test'
-                    }
-                  </Text>
-                </View>
-                <View style={[styles.DetailDetailContainer, {
-                  marginBottom: 0
-                }]}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {
-                     'test'
-                    }
-                  </Text>
-                </View>
-              </View>
-
-
-              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    {
-                      'test'
-                    }
-                  </Text>
-                </View>
-                <View style={[styles.DetailDetailContainer, {
-                  marginBottom: 0
-                }]}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {
-                     'test'
-                    }
-                  </Text>
-                </View>
-              </View>
-
-
-
 
 
 
