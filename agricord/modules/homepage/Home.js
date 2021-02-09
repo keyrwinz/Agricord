@@ -33,7 +33,7 @@ import _ from "lodash"
 import { Dimensions } from 'react-native';
 // const width = Math.round(Dimensions.get('window').width);
 // const height = Math.round(Dimensions.get('window').height);
-const height = Math.round(Dimensions.get('window').height)
+const height = Math.round((Dimensions.get('window').height - 90))
 
 const getIcon = (type) => {
   switch(type) {
@@ -151,7 +151,7 @@ const Home = (props) => {
             justifyContent: 'center',
             paddingBottom: 30,
             width: '100%',
-            marginTop: '15%'} : 
+            marginTop: '5%'} : 
           Style.MainContainer}>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
@@ -202,8 +202,17 @@ const Home = (props) => {
               </View>
             </View>
           </View>
+          
 
-          {/* IN FOCUS */}
+          
+          {
+           (orders?.orders?.length <= 0 && orders?.infocus?.length <= 0 && orders?.recent?.length <= 0) || (orders?.orders == undefined  && orders?.infocus == undefined  || orders?.recent == undefined) ? (
+            <View style={{padding: 20, justifyContent:'center',marginTop:20}}>
+              <Text style={{textAlign:'center', color:'white', fontWeight:'bold'}}>It's a little quiet here, go online to add new orders and tasks</Text>
+            </View>
+           ): (
+             <View>
+               {/* IN FOCUS */}
           {
             orders?.orders?.length > 0 ? (
                 <View style={Style.InFocusContainer}>
@@ -369,6 +378,9 @@ const Home = (props) => {
               <View></View>
               )
             }
+             </View>
+           )
+          }
         </View>
         </ImageBackground>
       </SafeAreaView>
