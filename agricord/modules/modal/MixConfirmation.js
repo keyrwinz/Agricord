@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, ScrollView} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -28,7 +28,9 @@ class MixConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <View style={styles.ContentContainer}>
+          <ScrollView
+            style={styles.ContentContainer}
+            showsVerticalScrollIndicator={false}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -41,7 +43,7 @@ class MixConfirmation extends Component {
                 style={styles.iconStyle}
               />
             </TouchableOpacity>
-            <View>
+            <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
             <View style={styles.DetailsContainer}>
@@ -110,7 +112,11 @@ class MixConfirmation extends Component {
             </View>
 
             <View
-            style={{marginTop: 33, width: '100%'}}
+            style={{
+              marginTop: 33,
+              width: '100%',
+              marginBottom: 20
+            }}
             >
               <SlidingButtonRelative
               icon={faCheck}
@@ -119,9 +125,13 @@ class MixConfirmation extends Component {
               onComplete={() => this.props.onSuccess()}
               widthLeft={'30%'}
               widthRight={'70%'}
+              style={{
+                borderBottomLeftRadius: BasicStyles.standardBorderRadius,
+                borderBottomRightRadius: BasicStyles.standardBorderRadius,
+              }}
               />
             </View>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     );

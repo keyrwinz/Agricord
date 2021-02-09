@@ -18,20 +18,21 @@ export default {
     flex: 1,
     backgroundColor: Color.white,
     elevation: 10,
-    height: height / 2,
-    marginTop: height / 4,
-    marginBottom: height / 4,
+    marginTop: height / 5,
+    marginBottom: height / 5,
     borderRadius: BasicStyles.standardBorderRadius,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 50,
     width: '90%',
     marginLeft: '5%',
-    marginRight: '5%'
+    marginRight: '5%',
+  },
+  TitleContainer: {
+    width: '100%',
   },
   TitleTextStyle: {
     fontSize: BasicStyles.standardHeaderFontSize,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20
   },
   DetailsContainer: {
     width: '90%',

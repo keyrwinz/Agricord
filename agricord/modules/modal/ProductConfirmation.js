@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity, Platform} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, Platform, ScrollView} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -26,7 +26,10 @@ class ProductConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <View style={styles.ContentContainer}>
+          <ScrollView
+            style={styles.ContentContainer}
+            showsVerticalScrollIndicator={false}
+            >
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -39,7 +42,7 @@ class ProductConfirmation extends Component {
                 style={styles.iconStyle}
               />
             </TouchableOpacity>
-            <View>
+            <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>{data.title}</Text>
             </View>
             <View style={styles.DetailsContainer}>
@@ -91,7 +94,7 @@ class ProductConfirmation extends Component {
               widthLeft={'30%'}
               widthRight={'70%'}
               />
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     );
