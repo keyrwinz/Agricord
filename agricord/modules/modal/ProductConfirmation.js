@@ -29,7 +29,6 @@ class ProductConfirmation extends Component {
           <View
             style={styles.ContentContainer}
             >
-            <ScrollView showsVerticalScrollIndicator={false}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -45,47 +44,49 @@ class ProductConfirmation extends Component {
             <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>{data.title}</Text>
             </View>
-            <View style={styles.DetailsContainer}>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>Batch</Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.batch_number}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Manufacture Date
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.manufacturing_date}
-                  </Text>
-                </View>
-              </View>
 
-              <View style={[styles.DetailContainer, {
-                marginBottom: 25
-              }]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Volume Remaining
-                  </Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.DetailsContainer}>
+                <View style={styles.DetailContainer}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>Batch</Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.batch_number}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.volume_remaining}
-                  </Text>
+                <View style={styles.DetailContainer}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>
+                      Manufacture Date
+                    </Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.manufacturing_date}
+                    </Text>
+                  </View>
                 </View>
-              </View>
 
-            </View>
-          </ScrollView>
+                <View style={[styles.DetailContainer, {
+                  marginBottom: 25
+                }]}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>
+                      Volume Remaining
+                    </Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.volume_remaining}
+                    </Text>
+                  </View>
+                </View>
+
+              </View>
+            </ScrollView>
 
 
 
@@ -97,7 +98,7 @@ class ProductConfirmation extends Component {
               widthLeft={'30%'}
               widthRight={'70%'}
               />
-            </View>
+          </View>
         </View>
       </Modal>
     );
