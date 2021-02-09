@@ -7,6 +7,7 @@ export default {
     position: 'absolute',
     right: 10,
     top: 10,
+    zIndex: 100
   },
   ModalContainer: {
     alignItems: 'center',
@@ -27,6 +28,8 @@ export default {
   },
   TitleContainer: {
     width: '100%',
+    position: 'relative',
+    zIndex: 50
   },
   TitleTextStyle: {
     fontSize: BasicStyles.standardHeaderFontSize,
