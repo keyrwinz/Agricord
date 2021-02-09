@@ -244,7 +244,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {this.props.navigation.state.params.data.volume ? this.props.navigation.state.params.data.volume : '100L'}
+                {this.props.navigation.state.params.data.variation ? this.props.navigation.state.params.data.variation[0].payload_value + this.props.navigation.state.params.data.variation[0].payload : '100L'}
               </Text>
             )
           }

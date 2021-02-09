@@ -289,6 +289,12 @@ class paddockPage extends Component{
         if(this.state.matchedProduct) {
           this.setState({newScanned: response.data[0]})
         }
+        let index = this.state.data.filter(function(item, index) {
+          if(item.id === response.data[0].id) {
+            return index;
+          }
+        })
+        this.state.data[index].batch_number.push(response.data[0].batch_number)
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
@@ -403,7 +409,6 @@ class paddockPage extends Component{
     const { task } = this.props.state;
     let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
     let volume = n ? n[n.length - 1] : null;
-    console.log(data, "=====================");
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -425,22 +430,25 @@ class paddockPage extends Component{
                 {
                   this.renderTopCard()
                 }
-                <TouchableOpacity
-                style={[
-                  BasicStyles.standardCardContainer
-                  ]}
-                onPress={() => this.startScanning()}
-              >
-                <View  style={{
-                    width: '100%',
-                  }}>
-                    <Text style={{
-                      fontSize: BasicStyles.standardTitleFontSize,
-                      textAlign: 'center',
-                      fontWeight: 'bold'
-                    }}>SCAN NFC</Text>
-                </View>
-              </TouchableOpacity>
+                { this.props.state.dedicatedNfc === false ?
+                  <TouchableOpacity
+                    style={[
+                      BasicStyles.standardCardContainer
+                      ]}
+                    onPress={() => this.startScanning()}
+                  >
+                    <View  style={{
+                        width: '100%',
+                      }}>
+                        <Text style={{
+                          fontSize: BasicStyles.standardTitleFontSize,
+                          textAlign: 'center',
+                          fontWeight: 'bold'
+                        }}>SCAN NFC</Text>
+                    </View>
+                  </TouchableOpacity>
+                : null }
+                
                  {
                   data.map( item => (
                     <ProductCard

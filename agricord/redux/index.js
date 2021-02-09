@@ -29,6 +29,7 @@ const types = {
   SET_MIX_NAME: 'SET_MIX_NAME',
   SET_PADDOCK: 'SET_PADDOCK',
   SET_PRODUCT: 'SET_PRODUCT',
+  SET_DEDICATED_NFC: 'SET_DEDICATED_NFC'
 };
 
 export const actions = {
@@ -107,6 +108,9 @@ export const actions = {
   },
   setProduct(product){
     return { type: types.SET_PRODUCT, product };
+  },
+  setDedicatedNfc(dedicatedNfc) {
+    return { type: types.SET_DEDICATED_NFC, dedicatedNfc };
   }
 };
 
@@ -132,6 +136,7 @@ const initialState = {
   mix: null,
   paddock: null,
   product: null,
+  dedicatedNfc: false
 };
 
 storeData = async (key, value) => {
@@ -154,6 +159,7 @@ const reducer = (state = initialState, action) => {
   const { selectedOrder } = action;
   const { task, setting, paddock } = action;
   const { product } = action;
+  const { dedicatedNfc } = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -435,6 +441,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         product
+      }
+    case types.SET_DEDICATED_NFC:
+      return {
+        ...state,
+        dedicatedNfc
       }
     default:
       return {...state, nav: state.nav};
