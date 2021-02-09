@@ -124,7 +124,10 @@ const Home = (props) => {
     }, 1000)
   }, [])
   return orders != undefined ?  (
-    <ScrollView style={Style.ScrollView}>
+    <ScrollView
+      style={Style.ScrollView}
+      showsVerticalScrollIndicator={false}
+    >
         <Spinner mode="overlay" />
         <SafeAreaView>
       <View style={Style.background}>
