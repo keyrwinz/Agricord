@@ -267,7 +267,7 @@ class paddockPage extends Component{
     const user = this.props.state.user
     let parameter = {
       condition: [{
-        //code: '25739366062713749471680984040588', C89B5424080104E0
+        //code: '25739366062713749471680984040588', 'C89B5424080104E0'
         value: params.code,
         column: 'code',
         clause: '='
@@ -294,7 +294,7 @@ class paddockPage extends Component{
             return index;
           }
         })
-        this.state.data[index].batch_number.push(response.data[0].batch_number)
+        this.state.data[index].batch_number.push(response.data[0].product.batch_number)
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
