@@ -1,5 +1,5 @@
 import { Color, BasicStyles } from 'common';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 export default {
@@ -17,8 +17,10 @@ export default {
   ContentContainer: {
     flex: 1,
     backgroundColor: Color.white,
-    marginVertical: 120,
     elevation: 10,
+    height: height / 2,
+    marginTop: height / 4,
+    marginBottom: height / 4,
     borderRadius: BasicStyles.standardBorderRadius,
     justifyContent: 'flex-start',
     alignItems: 'center',
