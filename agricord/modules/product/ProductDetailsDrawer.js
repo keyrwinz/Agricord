@@ -60,7 +60,7 @@ const ProductDetailsDrawerStack = createStackNavigator({
             {navigation.state.params.data ? navigation.state.params.data.title : ''}
           </Text>
           <Text style={{ color: '#81CB9C', marginLeft: 7, fontSize: BasicStyles.standardHeaderFontSize }}>
-            ({navigation.state.params.data.variation ? navigation.state.params.data.variation[0].payload_value + navigation.state.params.data.variation[0].payload : '100L'})
+            ({navigation.state.params.data.variation ? navigation.state.params.data.variation[0].payload_value + navigation.state.params.data.variation[0].payload : (navigation.state.params.data.volume ? navigation.state.params.data.volume : '100L')})
           </Text>
         </View>
       ),
