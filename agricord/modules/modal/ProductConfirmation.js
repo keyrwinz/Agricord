@@ -26,10 +26,10 @@ class ProductConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <ScrollView
+          <View
             style={styles.ContentContainer}
-            showsVerticalScrollIndicator={false}
             >
+            <ScrollView showsVerticalScrollIndicator={false}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -85,6 +85,9 @@ class ProductConfirmation extends Component {
               </View>
 
             </View>
+          </ScrollView>
+
+
 
             <SlidingButtonRelative
               icon={faPlus}
@@ -94,7 +97,7 @@ class ProductConfirmation extends Component {
               widthLeft={'30%'}
               widthRight={'70%'}
               />
-          </ScrollView>
+            </View>
         </View>
       </Modal>
     );

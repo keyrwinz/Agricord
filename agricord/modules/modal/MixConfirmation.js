@@ -28,9 +28,8 @@ class MixConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <ScrollView
-            style={styles.ContentContainer}
-            showsVerticalScrollIndicator={false}>
+          <View
+            style={styles.ContentContainer}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -46,6 +45,9 @@ class MixConfirmation extends Component {
             <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
+            
+            <ScrollView 
+            showsVerticalScrollIndicator={false}>
             <View style={styles.DetailsContainer}>
               <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: .5, borderTopColor: '#969696', borderTopWidth: 1, paddingBottom: 15, paddingTop: -1 }]}>
                 <View style={styles.DetailTitleContainer}>
@@ -109,29 +111,119 @@ class MixConfirmation extends Component {
                 ))
               }
 
-            </View>
 
-            <View
-            style={{
-              marginTop: 33,
-              width: '100%',
-              marginBottom: 20
-            }}
-            >
+
+
+
+
+
+              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
+                <View style={styles.DetailTitleContainer}>
+                  <Text style={styles.DetailTitleTextStyle}>
+                    {
+                      'test'
+                    }
+                  </Text>
+                </View>
+                <View style={[styles.DetailDetailContainer, {
+                  marginBottom: 0
+                }]}>
+                  <Text style={styles.DetailDetailTextStyle}>
+                    {
+                     'test'
+                    }
+                  </Text>
+                </View>
+              </View>
+
+
+              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
+                <View style={styles.DetailTitleContainer}>
+                  <Text style={styles.DetailTitleTextStyle}>
+                    {
+                      'test'
+                    }
+                  </Text>
+                </View>
+                <View style={[styles.DetailDetailContainer, {
+                  marginBottom: 0
+                }]}>
+                  <Text style={styles.DetailDetailTextStyle}>
+                    {
+                     'test'
+                    }
+                  </Text>
+                </View>
+              </View>
+
+
+
+              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
+                <View style={styles.DetailTitleContainer}>
+                  <Text style={styles.DetailTitleTextStyle}>
+                    {
+                      'test'
+                    }
+                  </Text>
+                </View>
+                <View style={[styles.DetailDetailContainer, {
+                  marginBottom: 0
+                }]}>
+                  <Text style={styles.DetailDetailTextStyle}>
+                    {
+                     'test'
+                    }
+                  </Text>
+                </View>
+              </View>
+
+
+              <View style={[styles.DetailContainer, {borderBottomColor: '#969696', borderBottomWidth: .5, paddingBottom: 15}]}>
+                <View style={styles.DetailTitleContainer}>
+                  <Text style={styles.DetailTitleTextStyle}>
+                    {
+                      'test'
+                    }
+                  </Text>
+                </View>
+                <View style={[styles.DetailDetailContainer, {
+                  marginBottom: 0
+                }]}>
+                  <Text style={styles.DetailDetailTextStyle}>
+                    {
+                     'test'
+                    }
+                  </Text>
+                </View>
+              </View>
+
+
+
+
+
+
+
+              </View>
+            </ScrollView>
+            <View style={{
+              borderBottomLeftRadius: BasicStyles.standaradBorderRadius,
+              borderBottomRightRadius: BasicStyles.standaradBorderRadius,
+              marginBottom: 10
+            }}>
               <SlidingButtonRelative
-              icon={faCheck}
-              title={this.props.volume}
-              label={'Swipe Right to Confirm'}
-              onComplete={() => this.props.onSuccess()}
-              widthLeft={'30%'}
-              widthRight={'70%'}
-              style={{
-                borderBottomLeftRadius: BasicStyles.standardBorderRadius,
-                borderBottomRightRadius: BasicStyles.standardBorderRadius,
-              }}
-              />
+                icon={faCheck}
+                title={this.props.volume}
+                label={'Swipe Right to Confirm'}
+                onComplete={() => this.props.onSuccess()}
+                widthLeft={'30%'}
+                widthRight={'70%'}
+                style={{
+                  borderBottomLeftRadius: BasicStyles.standaradBorderRadius,
+                  borderBottomRightRadius: BasicStyles.standaradBorderRadius,
+                }}
+                />
             </View>
-          </ScrollView>
+          </View>
         </View>
       </Modal>
     );
