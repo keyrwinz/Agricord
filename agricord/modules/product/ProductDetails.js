@@ -66,6 +66,7 @@ class ProductDetails extends Component {
         this.setState({
           loading: false
         })
+        console.log(response.data, "==========response");
         if(response.data !== null && response.data.length > 0){
           this.setState({data: response.data[0]})
         }else{
@@ -213,7 +214,7 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && (
+            data && data.details && data.details.active && (
               <Text style={Style.itemDetailValue}>
                 {data.details.active.join(', ') || 'No data'}
               </Text>
@@ -228,7 +229,7 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && (
+            data && data.details && (
               <Text style={Style.itemDetailValue}>
                 {data.details.solvent || 'No data'}
               </Text>
@@ -244,7 +245,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {this.props.navigation.state.params.data.variation ? this.props.navigation.state.params.data.variation[0].payload_value + this.props.navigation.state.params.data.variation[0].payload : '100L'}
+                {this.props.navigation.state.params.data.variation ? this.props.navigation.state.params.data.variation[0].payload_value + this.props.navigation.state.params.data.variation[0].payload : (data.volume ? data.volume : 'No data')}
               </Text>
             )
           }
@@ -256,7 +257,7 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && (
+            data && data.details && (
               <Text style={Style.itemDetailValue}>
                 {data.details.formulation || 'No data'}
               </Text>
@@ -270,7 +271,7 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && (
+            data && data.details && data.details.mixing_order && (
               <Text style={Style.itemDetailValue}>
                 {data.details.mixing_order.join(", ") || 'No data'}
               </Text>
