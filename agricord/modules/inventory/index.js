@@ -158,7 +158,7 @@ const Inventory = (props) => {
         type: user.account_type,
         productType: 'all',
         limit: limit,
-        tags: tag.toLowerCase(),
+        tags: tag.toLowerCase() !== 'other' ? '%' + tag.toLowerCase() + '%' : tag.toLowerCase(),
         offset: flag == true && offset > 0 ? (offset * limit) : offset,
       }
     }
@@ -288,10 +288,12 @@ const Inventory = (props) => {
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
+        console.log(response.data[0], "volume");
         props.parentNav.navigate('productDetailsStack', {
           data: {
             ...response.data[0],
-            title: title
+            title: title,
+            volume: response.data[0].volume
           }
         })
       } else {
