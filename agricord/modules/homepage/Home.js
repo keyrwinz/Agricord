@@ -33,7 +33,7 @@ import _ from "lodash"
 import { Dimensions } from 'react-native';
 // const width = Math.round(Dimensions.get('window').width);
 // const height = Math.round(Dimensions.get('window').height);
-const height = Math.round((Dimensions.get('window').height - 90))
+const height = Math.round(Dimensions.get('window').height)
 
 const getIcon = (type) => {
   switch(type) {
