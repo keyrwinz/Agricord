@@ -66,7 +66,6 @@ class ProductDetails extends Component {
         this.setState({
           loading: false
         })
-        console.log(response.data, "==========response");
         if(response.data !== null && response.data.length > 0){
           this.setState({data: response.data[0]})
         }else{
