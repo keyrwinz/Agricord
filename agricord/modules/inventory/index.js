@@ -141,7 +141,6 @@ const Inventory = (props) => {
         limit: limit,
         offset: flag == true && offset > 0 ? (offset * limit) : offset,
       }
-      console.log(parameter, "===================================");
     } else if(user.account_type === 'MANUFACTURER') {
       parameter = params
       route = Routes.inventoryMerchant
@@ -162,11 +161,9 @@ const Inventory = (props) => {
         tags: tag.toLowerCase(),
         offset: flag == true && offset > 0 ? (offset * limit) : offset,
       }
-      console.log(parameter, "=================parameter");
     }
     Api.request(route, parameter, response => {
       setLoading(false)
-      console.log(response, "==================");
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
         // setHerbicideData(response.data)
