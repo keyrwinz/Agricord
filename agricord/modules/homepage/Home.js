@@ -78,7 +78,7 @@ const Home = (props) => {
     const { user } = props.state
     let parameters = {
       condition: [{
-          column: 'merchant_id',
+          column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
           value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
         }, {

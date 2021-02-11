@@ -113,8 +113,8 @@ export const actions = {
   setDedicatedNfc(dedicatedNfc) {
     return { type: types.SET_DEDICATED_NFC, dedicatedNfc };
   },
-  setStayLoggedIn(flag) {
-    return { type: types.SET_STAY_LOGGED_IN, flag };
+  setStayLoggedIn(stayLoggedIn) {
+    return { type: types.SET_STAY_LOGGED_IN, stayLoggedIn };
   }
 };
 
@@ -165,6 +165,7 @@ const reducer = (state = initialState, action) => {
   const { task, setting, paddock } = action;
   const { product } = action;
   const { dedicatedNfc, flag } = action;
+  const { stayLoggedIn } = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -454,10 +455,10 @@ const reducer = (state = initialState, action) => {
         dedicatedNfc
       }
     case types.SET_STAY_LOGGED_IN:
-      storeData('logged_in', flag ? '1' : '0');
+      storeData('logged_in', stayLoggedIn ? '1' : '0');
       return {
         ...state,
-        stayLoggedIn: flag
+        stayLoggedIn
       }
     default:
       return {...state, nav: state.nav};
