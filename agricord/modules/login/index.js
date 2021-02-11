@@ -168,9 +168,19 @@ class Login extends Component {
   getData = async () => {
     try {
       const token = await AsyncStorage.getItem(Helper.APP_NAME + 'token');
+      const nfc = await AsyncStorage.getItem(Helper.APP_NAME + 'nfc');
+      const loggedIn = await AsyncStorage.getItem(Helper.APP_NAME + 'logged_in');
       if(token != null) {
         this.setState({token});
         this.login();
+      }
+      if(nfc){
+        const { setDedicatedNfc } = this.props;
+        setDedicatedNfc(nfc == '1' ? true : false)
+      }
+      if(loggedIn){
+        const { setStayLoggedIn } = this.props;
+        setDedicatedNfc(loggedIn == '1' ? true : false)
       }
     } catch(e) {
       // error reading value
@@ -342,7 +352,6 @@ class Login extends Component {
             </View> : null}
             <View style={styles.UsernameContainer}>
               <LoginInputField
-                autoFocus = {true}
                 icon={faUserAlt}
                 placeholder="Username or Email"
                 handler={this.usernameHandler}
@@ -411,9 +420,9 @@ const mapStateToProps = state => ({state: state});
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
   return {
-    login: (response, token) => {
-      dispatch(actions.login(response, token));
-    },
+    login: (response, token) => dispatch(actions.login(response, token)),
+    setDedicatedNfc: (flag) => dispatch(actions.setDedicatedNfc(flag)),
+    setStayLoggedIn: (flag) => dispatch(actions.setStayLoggedIn(flag))
   };
 };
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, Platform, ScrollView} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -26,7 +26,9 @@ class ProductConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <View style={styles.ContentContainer}>
+          <View
+            style={styles.ContentContainer}
+            >
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -39,49 +41,54 @@ class ProductConfirmation extends Component {
                 style={styles.iconStyle}
               />
             </TouchableOpacity>
-            <View>
+            <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>{data.title}</Text>
             </View>
-            <View style={styles.DetailsContainer}>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>Batch</Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.batch_number}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.DetailContainer}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Manufacture Date
-                  </Text>
-                </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.manufacturing_date}
-                  </Text>
-                </View>
-              </View>
 
-              <View style={[styles.DetailContainer, {
-                marginBottom: 25
-              }]}>
-                <View style={styles.DetailTitleContainer}>
-                  <Text style={styles.DetailTitleTextStyle}>
-                    Volume Remaining
-                  </Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.DetailsContainer}>
+                <View style={styles.DetailContainer}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>Batch</Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.batch_number}
+                    </Text>
+                  </View>
                 </View>
-                <View style={styles.DetailDetailContainer}>
-                  <Text style={styles.DetailDetailTextStyle}>
-                    {data.volume_remaining}
-                  </Text>
+                <View style={styles.DetailContainer}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>
+                      Manufacture Date
+                    </Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.manufacturing_date}
+                    </Text>
+                  </View>
                 </View>
-              </View>
 
-            </View>
+                <View style={[styles.DetailContainer, {
+                  marginBottom: 25
+                }]}>
+                  <View style={styles.DetailTitleContainer}>
+                    <Text style={styles.DetailTitleTextStyle}>
+                      Volume Remaining
+                    </Text>
+                  </View>
+                  <View style={styles.DetailDetailContainer}>
+                    <Text style={styles.DetailDetailTextStyle}>
+                      {data.volume_remaining}
+                    </Text>
+                  </View>
+                </View>
+
+              </View>
+            </ScrollView>
+
+
 
             <SlidingButtonRelative
               icon={faPlus}

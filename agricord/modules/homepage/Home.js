@@ -78,7 +78,7 @@ const Home = (props) => {
     const { user } = props.state
     let parameters = {
       condition: [{
-          column: 'merchant_id',
+          column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
           value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
           clause: '=',
         }, {
@@ -124,7 +124,10 @@ const Home = (props) => {
     }, 1000)
   }, [])
   return orders != undefined ?  (
-    <ScrollView style={Style.ScrollView}>
+    <ScrollView
+      style={Style.ScrollView}
+      showsVerticalScrollIndicator={false}
+    >
         <Spinner mode="overlay" />
         <SafeAreaView>
       <View style={Style.background}>
@@ -148,7 +151,7 @@ const Home = (props) => {
             justifyContent: 'center',
             paddingBottom: 30,
             width: '100%',
-            marginTop: '15%'} : 
+            marginTop: '5%'} : 
           Style.MainContainer}>
           <View>
             <Text style={[Style.username, Style.textWhite]}>
@@ -199,8 +202,17 @@ const Home = (props) => {
               </View>
             </View>
           </View>
+          
 
-          {/* IN FOCUS */}
+          
+          {
+           (orders?.orders?.length <= 0 && orders?.infocus?.length <= 0 && orders?.recent?.length <= 0) || (orders?.orders == undefined  && orders?.infocus == undefined  || orders?.recent == undefined) ? (
+            <View style={{padding: 20, justifyContent:'center',marginTop:20}}>
+              <Text style={{textAlign:'center', color:'white', fontWeight:'bold'}}>It's a little quiet here, go online to add new orders and tasks</Text>
+            </View>
+           ): (
+             <View>
+               {/* IN FOCUS */}
           {
             orders?.orders?.length > 0 ? (
                 <View style={Style.InFocusContainer}>
@@ -366,6 +378,9 @@ const Home = (props) => {
               <View></View>
               )
             }
+             </View>
+           )
+          }
         </View>
         </ImageBackground>
       </SafeAreaView>

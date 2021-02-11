@@ -145,14 +145,24 @@ class paddockPage extends Component{
 
   manageProductConfirmation(){
     const { newScanned, matchedProduct, data } = this.state;
+    let scanned = null;
+    if(newScanned !== null) {
+      scanned = newScanned;
+    } else {
+      scanned = matchedProduct;
+    }
     if(newScanned?.product_id === matchedProduct?.product_id) {
       for (let i = 0; i <= data.length - 1; i++) {
         if(data[i].product_id == matchedProduct.product_id) {
           data[i].product.qty += newScanned.product.qty;
         }
       }
-      
     }
+    data.filter(function(item, index) {
+      if(item.product.id === scanned.product.id) {
+        data[index].product.batch_number.push(scanned.batch_number)
+      }
+    })
     this.setState({productConfirmation: false});
     this.setState({isAdded: true});
   }
@@ -267,7 +277,7 @@ class paddockPage extends Component{
     const user = this.props.state.user
     let parameter = {
       condition: [{
-        //code: '25739366062713749471680984040588', C89B5424080104E0
+        //code: '25739366062713749471680984040588', 'C89B5424080104E0'
         value: params.code,
         column: 'code',
         clause: '='
@@ -403,7 +413,6 @@ class paddockPage extends Component{
     const { task } = this.props.state;
     let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
     let volume = n ? n[n.length - 1] : null;
-    console.log(data, "=====================");
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -425,22 +434,25 @@ class paddockPage extends Component{
                 {
                   this.renderTopCard()
                 }
-                <TouchableOpacity
-                style={[
-                  BasicStyles.standardCardContainer
-                  ]}
-                onPress={() => this.startScanning()}
-              >
-                <View  style={{
-                    width: '100%',
-                  }}>
-                    <Text style={{
-                      fontSize: BasicStyles.standardTitleFontSize,
-                      textAlign: 'center',
-                      fontWeight: 'bold'
-                    }}>SCAN NFC</Text>
-                </View>
-              </TouchableOpacity>
+                { this.props.state.dedicatedNfc === false ?
+                  <TouchableOpacity
+                    style={[
+                      BasicStyles.standardCardContainer
+                      ]}
+                    onPress={() => this.startScanning()}
+                  >
+                    <View  style={{
+                        width: '100%',
+                      }}>
+                        <Text style={{
+                          fontSize: BasicStyles.standardTitleFontSize,
+                          textAlign: 'center',
+                          fontWeight: 'bold'
+                        }}>SCAN NFC</Text>
+                    </View>
+                  </TouchableOpacity>
+                : null }
+                
                  {
                   data.map( item => (
                     <ProductCard

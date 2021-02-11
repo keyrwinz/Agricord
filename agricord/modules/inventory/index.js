@@ -141,7 +141,6 @@ const Inventory = (props) => {
         limit: limit,
         offset: flag == true && offset > 0 ? (offset * limit) : offset,
       }
-      console.log(parameter, "===================================");
     } else if(user.account_type === 'MANUFACTURER') {
       parameter = params
       route = Routes.inventoryMerchant
@@ -159,14 +158,12 @@ const Inventory = (props) => {
         type: user.account_type,
         productType: 'all',
         limit: limit,
-        tags: tag.toLowerCase(),
+        tags: tag.toLowerCase() !== 'other' ? '%' + tag.toLowerCase() + '%' : tag.toLowerCase(),
         offset: flag == true && offset > 0 ? (offset * limit) : offset,
       }
-      console.log(parameter, "=================parameter");
     }
     Api.request(route, parameter, response => {
       setLoading(false)
-      console.log(response, "==================");
       if (response.data.length > 0) {
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
         // setHerbicideData(response.data)
@@ -291,10 +288,12 @@ const Inventory = (props) => {
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
+        console.log(response.data[0], "volume");
         props.parentNav.navigate('productDetailsStack', {
           data: {
             ...response.data[0],
-            title: title
+            title: title,
+            volume: response.data[0].volume
           }
         })
       } else {

@@ -1,5 +1,5 @@
 import { Color, BasicStyles } from 'common';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 export default {
@@ -7,6 +7,7 @@ export default {
     position: 'absolute',
     right: 10,
     top: 10,
+    zIndex: 100
   },
   ModalContainer: {
     alignItems: 'center',
@@ -17,19 +18,24 @@ export default {
   ContentContainer: {
     flex: 1,
     backgroundColor: Color.white,
-    marginVertical: 120,
     elevation: 10,
+    marginTop: height / 5,
+    marginBottom: height / 5,
     borderRadius: BasicStyles.standardBorderRadius,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 50,
     width: '90%',
     marginLeft: '5%',
-    marginRight: '5%'
+    marginRight: '5%',
+  },
+  TitleContainer: {
+    width: '100%',
+    position: 'relative',
+    zIndex: 50
   },
   TitleTextStyle: {
     fontSize: BasicStyles.standardHeaderFontSize,
     fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20
   },
   DetailsContainer: {
     width: '90%',

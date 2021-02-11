@@ -29,6 +29,8 @@ const types = {
   SET_MIX_NAME: 'SET_MIX_NAME',
   SET_PADDOCK: 'SET_PADDOCK',
   SET_PRODUCT: 'SET_PRODUCT',
+  SET_DEDICATED_NFC: 'SET_DEDICATED_NFC',
+  SET_STAY_LOGGED_IN: 'SET_STAY_LOGGED_IN'
 };
 
 export const actions = {
@@ -107,6 +109,12 @@ export const actions = {
   },
   setProduct(product){
     return { type: types.SET_PRODUCT, product };
+  },
+  setDedicatedNfc(dedicatedNfc) {
+    return { type: types.SET_DEDICATED_NFC, dedicatedNfc };
+  },
+  setStayLoggedIn(stayLoggedIn) {
+    return { type: types.SET_STAY_LOGGED_IN, stayLoggedIn };
   }
 };
 
@@ -132,6 +140,8 @@ const initialState = {
   mix: null,
   paddock: null,
   product: null,
+  dedicatedNfc: false,
+  stayLoggedIn: false
 };
 
 storeData = async (key, value) => {
@@ -154,6 +164,8 @@ const reducer = (state = initialState, action) => {
   const { selectedOrder } = action;
   const { task, setting, paddock } = action;
   const { product } = action;
+  const { dedicatedNfc, flag } = action;
+  const { stayLoggedIn } = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -435,6 +447,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         product
+      }
+    case types.SET_DEDICATED_NFC:
+      storeData('nfc', dedicatedNfc ? '1' : '0');
+      return {
+        ...state,
+        dedicatedNfc
+      }
+    case types.SET_STAY_LOGGED_IN:
+      storeData('logged_in', stayLoggedIn ? '1' : '0');
+      return {
+        ...state,
+        stayLoggedIn
       }
     default:
       return {...state, nav: state.nav};

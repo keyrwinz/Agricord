@@ -27,6 +27,7 @@ class SlidingButtonRelative extends Component{
           width: '100%',
           alignItems: 'center',
           backgroundColor: Color.white,
+          ...this.props.style
         }}>
         <RNSlidingButton
           style={{

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, ScrollView} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -27,7 +27,8 @@ class MixConfirmation extends Component {
         }}
         collapsable={true}>
         <View style={styles.ModalContainer}>
-          <View style={styles.ContentContainer}>
+          <View
+            style={styles.ContentContainer}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -40,9 +41,12 @@ class MixConfirmation extends Component {
                 style={styles.iconStyle}
               />
             </TouchableOpacity>
-            <View>
+            <View style={styles.TitleContainer}>
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
+
+            <ScrollView 
+            showsVerticalScrollIndicator={false}>
             <View style={styles.DetailsContainer}>
               <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: .5, borderTopColor: '#969696', borderTopWidth: 1, paddingBottom: 15, paddingTop: -1 }]}>
                 <View style={styles.DetailTitleContainer}>
@@ -106,19 +110,28 @@ class MixConfirmation extends Component {
                 ))
               }
 
-            </View>
 
-            <View
-            style={{marginTop: 33, width: '100%'}}
-            >
+
+
+              </View>
+            </ScrollView>
+            <View style={{
+              borderBottomLeftRadius: BasicStyles.standaradBorderRadius,
+              borderBottomRightRadius: BasicStyles.standaradBorderRadius,
+              marginBottom: 10
+            }}>
               <SlidingButtonRelative
-              icon={faCheck}
-              title={this.props.volume}
-              label={'Swipe Right to Confirm'}
-              onComplete={() => this.props.onSuccess()}
-              widthLeft={'30%'}
-              widthRight={'70%'}
-              />
+                icon={faCheck}
+                title={this.props.volume}
+                label={'Swipe Right to Confirm'}
+                onComplete={() => this.props.onSuccess()}
+                widthLeft={'30%'}
+                widthRight={'70%'}
+                style={{
+                  borderBottomLeftRadius: BasicStyles.standaradBorderRadius,
+                  borderBottomRightRadius: BasicStyles.standaradBorderRadius,
+                }}
+                />
             </View>
           </View>
         </View>
