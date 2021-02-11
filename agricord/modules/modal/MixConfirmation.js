@@ -17,7 +17,6 @@ class MixConfirmation extends Component {
   render() {
     const { task } = this.props.state;
     const { data } = this.props;
-    console.log("task", task)
     return (
       <Modal
         animationType='fade'
