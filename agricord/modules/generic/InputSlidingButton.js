@@ -108,6 +108,7 @@ class InputSlidingButton extends Component{
               height: 50,
             }}
             keyboardType='numeric'
+            placeholder={'Type quantity...'}
             onChangeText={text => this.changeText(text)}>
           </TextInput>
         </View>
