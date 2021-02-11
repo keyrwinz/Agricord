@@ -145,14 +145,24 @@ class paddockPage extends Component{
 
   manageProductConfirmation(){
     const { newScanned, matchedProduct, data } = this.state;
+    let scanned = null;
+    if(newScanned !== null) {
+      scanned = newScanned;
+    } else {
+      scanned = matchedProduct;
+    }
     if(newScanned?.product_id === matchedProduct?.product_id) {
       for (let i = 0; i <= data.length - 1; i++) {
         if(data[i].product_id == matchedProduct.product_id) {
           data[i].product.qty += newScanned.product.qty;
         }
       }
-      
     }
+    data.filter(function(item, index) {
+      if(item.product.id === scanned.product.id) {
+        data[index].product.batch_number.push(scanned.batch_number)
+      }
+    })
     this.setState({productConfirmation: false});
     this.setState({isAdded: true});
   }
@@ -289,12 +299,6 @@ class paddockPage extends Component{
         if(this.state.matchedProduct) {
           this.setState({newScanned: response.data[0]})
         }
-        let index = this.state.data.filter(function(item, index) {
-          if(item.id === response.data[0].id) {
-            return index;
-          }
-        })
-        this.state.data[index].batch_number.push(response.data[0].product.batch_number)
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})

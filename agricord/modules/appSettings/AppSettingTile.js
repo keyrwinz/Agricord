@@ -8,6 +8,7 @@ import WifiSvg from 'assets/settings/wifi.svg';
 import WifiOfflineSvg from 'assets/settings/wifioffline.svg';
 import BellSvg from 'assets/settings/bell.svg';
 import ImageSvg from 'assets/settings/image.svg';
+import {connect} from 'react-redux';
 
 class AppSettingTile extends Component {
   constructor(props) {
@@ -17,8 +18,10 @@ class AppSettingTile extends Component {
     };
   }
 
-  onToggle = () => {
+  setDedicatedNfc = () => {
     this.setState({isEnabled: !this.state.isEnabled});
+    const { setDedicatedNfc } = this.props;
+    setDedicatedNfc(!this.state.isEnabled)
   };
 
   render() {
@@ -67,7 +70,7 @@ class AppSettingTile extends Component {
         </View>
         <View style={styles.AppSettingTileContainerRight}>
           <CustomSwitch
-            onToggle={this.onToggle}
+            onToggle={this.setDedicatedNfc}
             isEnabled={this.state.isEnabled}
           />
         </View>
@@ -76,4 +79,15 @@ class AppSettingTile extends Component {
   }
 }
 
-export default AppSettingTile;
+const mapStateToProps = state => ({state: state});
+
+const mapDispatchToProps = dispatch => {
+  const {actions} = require('@redux');
+  return {
+    setDedicatedNfc: dedicatedNfc => dispatch(actions.setDedicatedNfc(dedicatedNfc)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AppSettingTile);
