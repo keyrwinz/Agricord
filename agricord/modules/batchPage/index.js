@@ -44,12 +44,18 @@ class paddockPage extends Component{
       newScanned: null,
       createdBatch: null,
       confirmTask: false,
-      notes: null
+      notes: null,
+      scanned: [],
+      quantity: 0
     }
   }
 
   notesHandler = (value) => {
     this.setState({notes: value});
+  }
+
+  quantityHandler = (value) => {
+    this.setState({quantity: value})
   }
 
   componentDidMount(){
@@ -144,25 +150,32 @@ class paddockPage extends Component{
   }
 
   manageProductConfirmation(){
-    const { newScanned, matchedProduct, data } = this.state;
-    let scanned = null;
-    if(newScanned !== null) {
-      scanned = newScanned;
-    } else {
-      scanned = matchedProduct;
-    }
-    if(newScanned?.product_id === matchedProduct?.product_id) {
-      for (let i = 0; i <= data.length - 1; i++) {
-        if(data[i].product_id == matchedProduct.product_id) {
-          data[i].product.qty += newScanned.product.qty;
+    const { newScanned, matchedProduct, data, quantity } = this.state;
+    // let scanned = null;
+    // if(newScanned !== null) {
+    //   scanned = newScanned;
+    // } else {
+    //   scanned = matchedProduct;
+    // }
+    if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
+      this.state.scanned.push(matchedProduct.batch_number)
+      data.filter(function(item, index) {
+        if(item.product.id === matchedProduct.product.id) {
+          data[index].product.batch_number.push(matchedProduct.batch_number)
+           data[index].product.qty += quantity;
+          console.log(quantity, "==================");
         }
-      }
+      })
+    } else {
+      Alert.alert(
+        "Opps",
+        "You have already scanned this product trace!",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
     }
-    data.filter(function(item, index) {
-      if(item.product.id === scanned.product.id) {
-        data[index].product.batch_number.push(scanned.batch_number)
-      }
-    })
     this.setState({productConfirmation: false});
     this.setState({isAdded: true});
   }
@@ -296,9 +309,9 @@ class paddockPage extends Component{
     Api.request(Routes.productTraceRetrieve, parameter, response => {
       this.setState({isLoading: false});
       if(response.data != null && response.data.length > 0) {
-        if(this.state.matchedProduct) {
-          this.setState({newScanned: response.data[0]})
-        }
+        // if(this.state.matchedProduct) {
+        //   this.setState({newScanned: response.data[0]})
+        // }
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
@@ -311,9 +324,9 @@ class paddockPage extends Component{
   checkProduct(array, id, value) {
     array.map(item => {
       if (item.product.id === id) {
-        if(!this.state.matchedProduct) {
+        // if(!this.state.matchedProduct) {
           this.setState({matchedProduct: value});
-        }
+        // }
         this.setState({
           productConfirmation: true
         })
@@ -411,8 +424,6 @@ class paddockPage extends Component{
   render() {
     const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask } = this.state;
     const { task } = this.props.state;
-    let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
-    let volume = n ? n[n.length - 1] : null;
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -463,8 +474,8 @@ class paddockPage extends Component{
                         key={item.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
-                        addedProduct={matchedProduct}
-                        isAdded={isAdded}
+                        // addedProduct={matchedProduct}
+                        // isAdded={isAdded}
                       />
                   ))
                 }
@@ -514,7 +525,7 @@ class paddockPage extends Component{
          </View>
         </ScrollView>
         {
-          (isAdded) && (
+          (this.state.data.length === this.state.scanned.length) && (
             <SlidingButton
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
@@ -524,7 +535,7 @@ class paddockPage extends Component{
           )
         }
         {
-          (matchedProduct) && (
+          (productConfirmation) && (
             <ProductConfirmationModal
               visible={productConfirmation}
               onClose={() => this.setState({
@@ -533,10 +544,11 @@ class paddockPage extends Component{
               data={{
                 title: matchedProduct.product.title,
                 manufacturing_date: matchedProduct.manufacturing_date,
-                volume_remaining: volume,
+                volume_remaining: matchedProduct.volume,
                 batch_number: matchedProduct.batch_number
               }}
               onSuccess={() => this.manageProductConfirmation()}
+              changeText={this.quantityHandler}
             />
           )
         }

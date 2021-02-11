@@ -112,6 +112,7 @@ class OrderDetails extends Component {
 
   render() {
     const {selectedOrder} = this.props.state;
+    console.log(selectedOrder, "===========iiii");
     const {parentNav} = this.props.navigation.state.params;
     return (
       <ImageBackground
@@ -129,7 +130,7 @@ class OrderDetails extends Component {
               marginTop: 15
           }}>
               <OrderContainer
-                title={selectedOrder.merchant.name}
+                title={selectedOrder.merchant_from.name}
                 height={selectedOrder.status === 'pending' ? 140 : 180}>
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>
