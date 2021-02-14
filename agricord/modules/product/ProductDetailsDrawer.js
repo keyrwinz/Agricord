@@ -56,6 +56,7 @@ const ProductDetailsDrawerStack = createStackNavigator({
             width: '80%',
             marginLeft: '10%',
             marginRight: '10%',
+            textAlign: 'center',
             fontSize: BasicStyles.standardHeaderFontSize
           }}
           numberOfLines={1}
@@ -68,7 +69,7 @@ const ProductDetailsDrawerStack = createStackNavigator({
         </View>
       ),
       headerLeft: <HeaderOptions navigationProps={navigation} data={navigation.state.params.data} />,
-      ...BasicStyles.headerDrawerStyleNoPadding
+      ...BasicStyles.headerDrawerStyle
     })
   }
 })
