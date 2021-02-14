@@ -336,7 +336,11 @@ class ProductDetails extends Component {
 
   recentFiles(data){
     return(
-      <View>
+      <View style={{
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%'
+      }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10, marginTop: 10 }}>
           Recent Files
         </Text>
