@@ -185,7 +185,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.tags || 'No data'}
               </Text>
             )
           }
@@ -365,6 +365,7 @@ class ProductDetails extends Component {
   render() {
     const { data } = this.state
     const { modal, loading } = this.state;
+    console.log('data', data)
     return (
       <SafeAreaView
         style={{
