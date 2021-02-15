@@ -45,7 +45,7 @@ class MixConfirmation extends Component {
               <Text style={styles.TitleTextStyle}>Confirm</Text>
             </View>
 
-            <ScrollView 
+            <ScrollView
             showsVerticalScrollIndicator={false}>
             <View style={styles.DetailsContainer}>
               <View style={[styles.DetailContainer, { borderBottomColor: '#969696', borderBottomWidth: .5, borderTopColor: '#969696', borderTopWidth: 1, paddingBottom: 15, paddingTop: -1 }]}>
@@ -109,9 +109,6 @@ class MixConfirmation extends Component {
                   </View>
                 ))
               }
-
-
-
 
               </View>
             </ScrollView>
