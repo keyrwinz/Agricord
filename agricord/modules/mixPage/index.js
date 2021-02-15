@@ -169,7 +169,7 @@ const MixPage = (props) => {
   }
 
   const closeModal = () =>{
-    setMessage(message == false)
+    setMessage(message)
     setPartial(partialss == false)
     setAppRateSwitch(!appRateSwitch)
     setTotalArea(totalArea)
