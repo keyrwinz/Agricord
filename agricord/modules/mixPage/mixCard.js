@@ -44,7 +44,7 @@ class MixCard extends Component {
   }
 
   render = () => {
-    const { data, hasCheck, totalRate, maxRate } = this.props;
+    const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
     const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
     const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
     let borderColor = ''
@@ -87,7 +87,7 @@ class MixCard extends Component {
                   flexDirection: 'row'
                 }}>
                   {
-                    (data && data.item.partial_flag && this.props.from == 'selected') && (
+                    (data && data.item.partial_flag && this.props.from == 'selected' && partialss == false) && (
                       <TouchableOpacity
                         onPress={() => this.props.onPartialChange(data.item)}>
                         <View style={{

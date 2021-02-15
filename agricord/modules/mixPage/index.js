@@ -101,6 +101,7 @@ const MixPage = (props) => {
   const [totalHigher, setTotalHigher] = useState(false)
   const [test, setTest] = useState(0)
   const [avail, setAvail] = useState([])
+  const [partialss, setPartial] = useState(true)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -168,12 +169,14 @@ const MixPage = (props) => {
   }
 
   const closeModal = () =>{
-    setMessage(false)
+    setMessage(message == false)
+    setPartial(partialss == false)
     setAppRateSwitch(!appRateSwitch)
+    setTotalArea(totalArea)
     setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
-    if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) > setTotalArea(totalArea)){
+    if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) > totalArea){
       setTotalHigher(false)
-    }else if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == setTotalArea(totalArea)){
+    }else if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == totalArea){
       setTotalHigher(false)
     }else{
       setTotalHigher(true)
@@ -193,7 +196,6 @@ const MixPage = (props) => {
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
-          console.log('+++++++++++++++++++++++++++++++++++++++++++', response.data)
           setPaddocks(response.data)
         }else{
           setPaddocks([])
@@ -230,14 +232,19 @@ const MixPage = (props) => {
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
-        console.log('++++++++++++++++sdf', selectedPaddock, paddock)
       if(paddock.id != item.id){
           return item
         }
       })
       // setTotalArea(totalArea - item.area)
       setTotalArea(totalArea - item.remaining_area)
-      console.log('===========================', item)
+      if((parseFloat(totalArea - item.remaining_area).toFixed(2)) > maxArea){
+        setTotalHigher(true)
+      }else if((parseFloat(totalArea - item.remaining_area).toFixed(2)) == maxArea){
+        setTotalHigher(false)
+      }else{
+        setTotalHigher(false)
+      }
       setSelectedPaddock(newSelectedPaddock)
       setAvail([...paddocks, ...[item]])
     }else{
@@ -270,10 +277,9 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea < totalArea){
+      if(maxArea <= totalArea){
         setTotalHigher(true)
       }else if(maxArea >= (item.area + totalArea)){
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', selectedPaddock, paddocks)
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
           setSelectedPaddock([...selectedPaddock, ...[item]])
@@ -339,6 +345,7 @@ const MixPage = (props) => {
               totalRate={totalArea}
               maxRate={maxArea}
               hasCheck={true}
+              partialss={partialss}
               addToSelected={() => {}}
               removePaddock={(from, item) => removePaddock(from, item)}
               
