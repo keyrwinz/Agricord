@@ -96,4 +96,5 @@ export default {
   batchCreate: apiUrl + 'batches/create',
   batchUpdateStatus: apiUrl + 'batches/update',
   batchRetrieve: apiUrl + 'batches/retrieve',
+  productTraceRetrieveUser: apiUrl + 'product_traces/retrieve_by_params_end_user',
 };

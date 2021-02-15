@@ -98,6 +98,7 @@ class ProductConfirmation extends Component {
               widthLeft={'30%'}
               widthRight={'70%'}
               changeText={this.props.changeText}
+              quantity={this.props.data.quantity}
               />
           </View>
         </View>
