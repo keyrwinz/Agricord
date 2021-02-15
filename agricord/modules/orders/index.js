@@ -76,7 +76,7 @@ class OrdersPage extends Component {
         created_at: 'desc'
       },
       limit: this.state.limit,
-      offset: flag === true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
+      offset: this.state.offset,
     };
 
     Api.request(Routes.ordersRetrieveByParams, parameters, response => {

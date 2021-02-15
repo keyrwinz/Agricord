@@ -59,8 +59,8 @@ const Inventory = (props) => {
   const [filteredFungicideData, setFilteredFungicideData] = useState([])
   const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
   const [filteredOtherData, setFilteredOtherData] = useState([])
-  
-  var offset = 0;
+  const [offset, setOffset] = useState(0)
+
   var limit = 5;
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const Inventory = (props) => {
       account_id: user.id,
       inventory_type: 'product_trace',
       limit: limit,
-      offset: flag == true && offset > 0 ? (offset * limit) : offset,
+      offset: offset,
       tags: '%' + tag.toLowerCase() + '%'
     }
     let parameter = null
@@ -139,7 +139,7 @@ const Inventory = (props) => {
         type: user.account_type,
         productType: 'all',
         limit: limit,
-        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+        offset: offset,
       }
     } else if(user.account_type === 'MANUFACTURER') {
       parameter = params
@@ -159,13 +159,14 @@ const Inventory = (props) => {
         productType: 'all',
         limit: limit,
         tags: tag.toLowerCase() !== 'other' ? '%' + tag.toLowerCase() + '%' : tag.toLowerCase(),
-        offset: flag == true && offset > 0 ? (offset * limit) : offset,
+        offset: offset,
       }
     }
     Api.request(route, parameter, response => {
       setLoading(false)
       if (response.data.length > 0) {
-        setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'id'))
+        setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'code'))
+        setOffset(flag == false ? 0 : offset + 1);
         // setHerbicideData(response.data)
         // setFungicideData(response.data)
         // setInsecticideData(response.data)
@@ -177,6 +178,7 @@ const Inventory = (props) => {
         // setFilteredOtherData(response.data)
       } else {
         setData(flag == false ? [] : data)
+         setOffset(flag == false ? 0 : offset);
       }
     }, error => {
       setLoading(false)

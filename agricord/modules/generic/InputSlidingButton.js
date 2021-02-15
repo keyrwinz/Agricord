@@ -31,6 +31,14 @@ class InputSlidingButton extends Component{
   render(){
     return (
       <View>
+        {this.state.quantity > parseInt(this.props.quantity) && (
+          <Text style={{
+            alignItems: 'center',
+            textAlign: 'center',
+            color: 'red',
+            marginBottom: 5
+          }}>Ooops. Quantity should be less than or equal to original product quantity ({this.props.quantity}).</Text>
+        )}
       <View style={{
           width: '90%',
           alignItems: 'center',
@@ -41,17 +49,19 @@ class InputSlidingButton extends Component{
           borderWidth: 1,
           marginLeft: 20,
           borderRadius: BasicStyles.standardBorderRadius,
+          borderTopLeftRadius: 15,
+          borderBottomLeftRadius: 15,
         }}>
         <RNSlidingButton
           style={{
-            width: '65%',
+            width: '100%',
             borderRadius: BasicStyles.standardBorderRadius,
             backgroundColor: Color.white,
             zIndex: 0,
           }}
           height={52}
           onSlidingSuccess={() => {
-            this.props.onComplete();
+            this.props.onComplete()
           }}
           slideDirection={SlideDirection.RIGHT}>
           <View
@@ -67,6 +77,7 @@ class InputSlidingButton extends Component{
               this.props.onComplete();
             }}
             slideDirection={SlideDirection.RIGHT}>
+            {this.state.quantity > 0 && this.state.quantity <= parseInt(this.props.quantity) && (
             <View
               style={{
                 backgroundColor: Color.blue,
@@ -91,21 +102,24 @@ class InputSlidingButton extends Component{
 
                 )
               }
-            </View>
+            </View>)}
           </View>
         </RNSlidingButton>
         <View
           style={{
             justifyContent: 'center',
             alignItems: 'center',
+            left: 50,
             width: 230,
             height: 52,
+            position: 'absolute'
           }}>
           <TextInput
             value={this.state.quantity}
             style={{
-              width: 300,
+              width: 100,
               height: 50,
+              color: this.state.quantity > parseInt(this.props.quantity) ? 'red' : 'black',
             }}
             keyboardType='numeric'
             placeholder={'Type quantity...'}
