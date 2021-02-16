@@ -55,15 +55,17 @@ export default {
   itemDetailsContainer: {
     alignItems: 'center',
     flexDirection: 'row',
-    width: '100%',
-    paddingTop: 15,
-    paddingBottom: 15,
+    width: '90%',
+    paddingTop: 13,
+    paddingBottom: 13,
     borderBottomWidth: 1,
+    marginLeft: '5%',
+    marginRight: '5%',
     borderBottomColor: Color.lightGray,
   },
   itemDetailLabel: {
     fontSize: BasicStyles.standardFontSize,
-    color: Color.gray,
+    color: Color.appGray,
     width: '50%',
     fontWeight: 'bold'
   },

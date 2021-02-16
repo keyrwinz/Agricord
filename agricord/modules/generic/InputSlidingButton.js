@@ -17,31 +17,51 @@ import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 
 const height = Math.round(Dimensions.get('window').height);
 
-class SlidingButtonRelative extends Component{
+class InputSlidingButton extends Component{
   constructor(props){
     super(props);
+    this.state = {
+      quantity: null
+    }
+  }
+  changeText = (value) => {
+    this.setState({quantity: value})
+    this.props.changeText(value);
   }
   render(){
     return (
+      <View>
+        {this.state.quantity > parseInt(this.props.quantity) && (
+          <Text style={{
+            alignItems: 'center',
+            textAlign: 'center',
+            color: 'red',
+            marginBottom: 5
+          }}>Ooops. Quantity should be less than or equal to original product quantity ({this.props.quantity}).</Text>
+        )}
       <View style={{
-          width: '100%',
+          width: '90%',
           alignItems: 'center',
           backgroundColor: Color.white,
-          ...this.props.style
+          ...this.props.style,
+          flexDirection: 'row',
+          borderColor: Color.gray,
+          borderWidth: 1,
+          marginLeft: 20,
+          borderRadius: BasicStyles.standardBorderRadius,
+          borderTopLeftRadius: 15,
+          borderBottomLeftRadius: 15,
         }}>
         <RNSlidingButton
           style={{
-            marginTop: 5,
-            width: '90%',
+            width: '100%',
             borderRadius: BasicStyles.standardBorderRadius,
             backgroundColor: Color.white,
-            borderColor: Color.gray,
-            borderWidth: 1,
             zIndex: 0,
           }}
-          height={45}
+          height={52}
           onSlidingSuccess={() => {
-            this.props.onComplete();
+            this.props.onComplete()
           }}
           slideDirection={SlideDirection.RIGHT}>
           <View
@@ -52,16 +72,17 @@ class SlidingButtonRelative extends Component{
               zIndex: 0,
               flexDirection: 'row'
             }}
-            height={45}
+            height={52}
             onSlidingSuccess={() => {
               this.props.onComplete();
             }}
             slideDirection={SlideDirection.RIGHT}>
+            {this.state.quantity > 0 && this.state.quantity <= parseInt(this.props.quantity) && (
             <View
               style={{
                 backgroundColor: Color.blue,
-                height: 45,
-                width: this.props.widthLeft,
+                height: 52,
+                width: 100,
                 borderRadius: BasicStyles.standardBorderRadius,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -81,37 +102,44 @@ class SlidingButtonRelative extends Component{
 
                 )
               }
-            </View>
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: this.props.widthRight
-              }}>
-              <Text
-                style={{
-                  fontSize: BasicStyles.standardTitleFontSize,
-                  fontWeight: 'bold',
-                  color: '#5A84EE',
-                }}>
-                {this.props.title}
-              </Text>
-            </View>
+            </View>)}
           </View>
         </RNSlidingButton>
-        <Text
+        <View
           style={{
-            fontSize: BasicStyles.standardFontSize - 1,
-            color: '#969696',
-            textAlign: 'left',
-            width: '80%',
-            marginLeft: '10%',
-            marginRight: '10%',
-            marginBottom: 20
+            justifyContent: 'center',
+            alignItems: 'center',
+            left: 50,
+            width: 230,
+            height: 52,
+            position: 'absolute'
           }}>
-          {this.props.label}
-        </Text>
+          <TextInput
+            value={this.state.quantity}
+            style={{
+              width: 100,
+              height: 50,
+              color: this.state.quantity > parseInt(this.props.quantity) ? 'red' : 'black',
+            }}
+            keyboardType='numeric'
+            placeholder={'Type quantity...'}
+            onChangeText={text => this.changeText(text)}>
+          </TextInput>
+        </View>
       </View>
+      <Text
+      style={{
+        fontSize: BasicStyles.standardFontSize - 1,
+        color: '#969696',
+        textAlign: 'left',
+        width: '80%',
+        marginLeft: '10%',
+        marginRight: '10%',
+        marginBottom: 20
+      }}>
+      {this.props.label}
+    </Text>
+    </View>
     );
   }
 }
@@ -124,4 +152,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(SlidingButtonRelative);
+)(InputSlidingButton);

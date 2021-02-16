@@ -100,6 +100,8 @@ const MixPage = (props) => {
   const [message, setMessage] = useState(false)
   const [totalHigher, setTotalHigher] = useState(false)
   const [test, setTest] = useState(0)
+  const [avail, setAvail] = useState([])
+  const [partialss, setPartial] = useState(true)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -112,15 +114,18 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
-  const newRates = async() => {
-    if(setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2)) < totalArea){
-      await setTotalHigher(true)
+  const newRates = () => {
+    if(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2) >= totalArea){
+      setTotalArea(totalArea)
+      setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+      setTotalHigher(false)
       setAppRateSwitch(test)
-      await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
     }else{
-      await setTotalHigher(false)
+      setTotalArea(totalArea)
+      setTotalHigher(true)
+      setMessage(true)
       setAppRateSwitch(test)
-      await setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+      setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
     }
   }
 
@@ -128,35 +133,52 @@ const MixPage = (props) => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
+        setTotalArea(totalArea)
+        setTest(Math.round(task.machine.capacity / totalArea))
         setAppliedRate(Math.round(task.machine.capacity / totalArea))
-        if(test == 0 || test == ''){
+        if(test == 0 || test == '' || test == '0'){
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         }else{
-          setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
-          setAppliedRate(test)
+          setAppliedRate(Math.round(task.machine.capacity / totalArea))
+          setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
+          // setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
         }
-        if(totalArea > maxArea){
+        if(maxArea > totalArea){
+          setTotalHigher(false)
+          setMessage(false)
+        }else if(maxArea == totalArea){
+          setTotalHigher(false)
+          setMessage(false)
+        }else {
           setTotalHigher(true)
           setMessage(true)
         }
       }else{
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+        setTotalArea(totalArea)
         setAppliedRate(Math.round(task.spray_mix.application_rate))
-        setTimeout(() => {
-          if(totalArea > maxArea){
-            setTotalHigher(true)
-          }
-        }, 25)
+        if(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2) > totalArea){
+          setTotalHigher(false)
+        }else if((parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == totalArea){
+          setTotalHigher(false)
+        }else{
+          setTotalHigher(true)
+        }
       }
     }, 25)
   }
 
   const closeModal = () =>{
     setMessage(false)
+    setPartial(partialss == false)
     setAppRateSwitch(!appRateSwitch)
-    if(totalArea <= maxArea){
+    setTotalArea(totalArea)
+    setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+    if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) > totalArea){
       setTotalHigher(false)
-    }else {
+    }else if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == totalArea){
+      setTotalHigher(false)
+    }else{
       setTotalHigher(true)
     }
   }
@@ -172,7 +194,6 @@ const MixPage = (props) => {
     };
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
-      console.log(response)
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
@@ -217,15 +238,22 @@ const MixPage = (props) => {
       })
       // setTotalArea(totalArea - item.area)
       setTotalArea(totalArea - item.remaining_area)
+      if((parseFloat(totalArea - item.remaining_area).toFixed(2)) > maxArea){
+        setTotalHigher(true)
+      }else if((parseFloat(totalArea - item.remaining_area).toFixed(2)) == maxArea){
+        setTotalHigher(false)
+      }else{
+        setTotalHigher(false)
+      }
       setSelectedPaddock(newSelectedPaddock)
-      setPaddocks([...paddocks, ...[item]])
+      setAvail([...paddocks, ...[item]])
     }else{
       const newPaddocks = paddocks.filter((paddock, idx) => {
         if(paddock.id != item.id){
           return item
         }
       })
-      setPaddocks((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
+      setAvail((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
     }
   }
 
@@ -249,12 +277,12 @@ const MixPage = (props) => {
       }
     }
     if(status == false){
-      if(maxArea < totalArea){
+      if(maxArea <= totalArea){
         setTotalHigher(true)
       }else if(maxArea >= (item.area + totalArea)){
         setTotalArea(totalArea + item.area)
         setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[item]])  
+          setSelectedPaddock([...selectedPaddock, ...[item]])
           removePaddock('available', item)
         }, 100)  
       }else{
@@ -317,6 +345,7 @@ const MixPage = (props) => {
               totalRate={totalArea}
               maxRate={maxArea}
               hasCheck={true}
+              partialss={partialss}
               addToSelected={() => {}}
               removePaddock={(from, item) => removePaddock(from, item)}
               
@@ -442,23 +471,23 @@ const MixPage = (props) => {
                   :
                   <View style={{flexDirection:'row'}}>
                     <TextInput 
-                        style={[Style.searchInput, {
-                          opacity: 5,
-                          borderColor: 'grey',
-                          borderWidth: 1,
-                          color: 'grey',
-                          marginRight: -20,
-                          height: 35,
-                          borderTopLeftRadius: 10, 
-                          borderTopRightRadius: 10,
-                          borderBottomRightRadius: 10,
-                          borderBottomLeftRadius: 10 }]}
-                        keyboardType={'numeric'}
-                        onChangeText={(newRate) => setTest(newRate)}
-                        value={(selectedPaddock.length > 0) ? test : '0' }
-                        placeholderTextColor='grey'
-                        paddingLeft={12}
-                        placeholder={appliedRate.toString()}>
+                      style={[Style.searchInput, {
+                        opacity: 5,
+                        borderColor: 'grey',
+                        borderWidth: 1,
+                        color: 'grey',
+                        marginRight: -20,
+                        height: 35,
+                        borderTopLeftRadius: 10, 
+                        borderTopRightRadius: 10,
+                        borderBottomRightRadius: 10,
+                        borderBottomLeftRadius: 10 }]}
+                      keyboardType={'numeric'}
+                      onChangeText={(newRate) => setTest(newRate)}
+                      value={(selectedPaddock.length > 0) ? test : '0' }
+                      placeholderTextColor='grey'
+                      paddingLeft={12}
+                      placeholder={appliedRate.toString()}>
                     </TextInput>
                     <TouchableOpacity
                       style={{
@@ -467,6 +496,7 @@ const MixPage = (props) => {
                         backgroundColor: '#5A84EE',
                         paddingLeft: 20
                       }}
+                      activeOpacity={.95}
                       onPress={() => newRates()}>
                         <Text style={{
                           marginTop: 7,
@@ -479,9 +509,6 @@ const MixPage = (props) => {
                         >
                         Confirm
                         </Text>
-                    {/* <Button>
-                      
-                    </Button> */}
                     </TouchableOpacity>
                   </View>
                 }
@@ -497,23 +524,24 @@ const MixPage = (props) => {
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                { totalHigher === false ?
-                  <View style={Style.totalAreaBox}>
-                    <Text style={{
-                      fontSize: BasicStyles.standardFontSize
-                    }}>{totalArea} Ha</Text>
-                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                      TOTAL AREA
-                    </Text>
-                  </View> :
+                { totalHigher === true ?
                   <View style={[Style.totalAreaBox, {borderColor: '#FF0000'}]}>
                     <Text style={{
                       fontSize: BasicStyles.standardFontSize, color: '#FF0000'
                     }}>{totalArea} Ha</Text>
                     <Text style={{ color: '#FF0000', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                      TOTAL AREA
+                    TOTAL AREA
                     </Text>
-                  </View>
+                  </View> :
+                  <View style={Style.totalAreaBox}>
+                  <Text style={{
+                    color: '#5A84EE', 
+                    fontSize: BasicStyles.standardFontSize
+                  }}>{totalArea} Ha</Text>
+                  <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                    TOTAL AREA
+                  </Text>
+                </View>
                 }
                 {
                   (selectedPaddock.length > 0) && (

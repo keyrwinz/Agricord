@@ -18,6 +18,7 @@ export default {
   tertiary: tertiary,
   blue: '#5A84EE',
   containerBackground: '#F1F1F1',
+  appGray: '#969696',
   setPrimary(color){
     this.primary = color
   },
