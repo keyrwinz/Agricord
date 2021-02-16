@@ -76,6 +76,7 @@ const Home = (props) => {
 
   const retrieve = (flag) => {
     const { user } = props.state
+    console.log("==================", user.sub_account.merchant.id);
     let parameters = {
       condition: [{
           column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
