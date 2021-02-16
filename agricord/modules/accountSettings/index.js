@@ -51,7 +51,7 @@ class AccountSettings extends Component {
               {
                 (user) && (
                   <Text style={Style.DescriptionTextStyle}>
-                    {user.username}
+                    {user.account_information.first_name != null && user.account_information.last_name != null ? `${user.account_information.first_name} ${user.account_information.last_name}` : user.username}
                   </Text>
                 )
               }
@@ -97,7 +97,12 @@ class AccountSettings extends Component {
               <Text style={Style.HeadingTextStyle}>Last Login</Text>
             </View>
             <View style={Style.DescriptionContainer}>
-              <Text style={Style.DescriptionTextStyle}>{Moment(user.updated_at).format('D MMMM YYYY')}</Text>
+              {
+                (user && user.updated_at && (
+                  <Text style={Style.DescriptionTextStyle}>{Moment(user.updated_at).format('D MMMM YYYY')}</Text>
+                )
+                )
+              }
             </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
