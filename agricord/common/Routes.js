@@ -96,4 +96,6 @@ export default {
   batchCreate: apiUrl + 'batches/create',
   batchUpdateStatus: apiUrl + 'batches/update',
   batchRetrieve: apiUrl + 'batches/retrieve',
+
+  updateLastLogin: apiUrl + 'accounts/update_last_log_in'
 };

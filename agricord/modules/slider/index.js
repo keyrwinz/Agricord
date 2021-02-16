@@ -14,11 +14,12 @@ import {
   Platform
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Helper, BasicStyles, Color } from 'common';
+import { Helper, BasicStyles, Color, Routes } from 'common';
 import Config from 'src/config.js';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserCircle, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
+import Api from 'services/api/index.js'
 import Pusher from 'services/Pusher.js';
 import HouseIcon from '../../assets/drawer/profile/houseIcon.svg';
 
@@ -29,6 +30,7 @@ class Slider extends Component {
     super(props);
     this.state = {
       collapsed: null,
+      isLoading: false,
     }
   }
 
@@ -131,19 +133,25 @@ class Slider extends Component {
   }
 
   logoutAction(){
+    const { user } = this.props.state
     //clear storage
-    const { logout, setActiveRoute } = this.props;
+    this.setState({isLoading: true});
+    Api.request(Routes.updateLastLogin, {account_id: user.id}, response => {
+      if(response.data != null){
+        this.setState({isLoading: false});
+        const { logout, setActiveRoute } = this.props;
+        this.props.navigation.navigate('loginStack');
+        // unsubscribe pusher
+        if (Pusher.pusher) {
+          Pusher.pusher.unsubscribe(Helper.pusher.channel);
+          Pusher.pusher = null
+          Pusher.channel = null
+        }
 
-    this.props.navigation.navigate('loginStack');
-
-    // unsubscribe pusher
-    if (Pusher.pusher) {
-      Pusher.pusher.unsubscribe(Helper.pusher.channel);
-      Pusher.pusher = null
-      Pusher.channel = null
-    }
-
-    logout();
+        logout();
+      }
+      this.setState({isLoading: false});
+    })
     // setActiveRoute(null)
   }
 
