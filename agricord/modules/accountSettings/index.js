@@ -3,7 +3,7 @@ import {View, Image, Text, Dimensions} from 'react-native';
 import {connect} from 'react-redux';
 import Style from './Style.js';
 import {Divider} from 'react-native-elements';
-
+import Moment from 'moment';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 import FileSvg from 'assets/settings/file.svg';
@@ -71,7 +71,6 @@ class AccountSettings extends Component {
                   </Text>
                 )
               }
-              <Text style={Style.DescriptionTextStyle}>Agricord. Inc</Text>
             </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
@@ -98,7 +97,7 @@ class AccountSettings extends Component {
               <Text style={Style.HeadingTextStyle}>Last Login</Text>
             </View>
             <View style={Style.DescriptionContainer}>
-              <Text style={Style.DescriptionTextStyle}>22 October 2020</Text>
+              <Text style={Style.DescriptionTextStyle}>{Moment(user.updated_at).format('D MMMM YYYY')}</Text>
             </View>
           </View>
           <Divider style={{height: 0.5, marginLeft: 10, marginRight: 10}} />
