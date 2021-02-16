@@ -44,7 +44,9 @@ class paddockPage extends Component{
       newScanned: null,
       createdBatch: null,
       confirmTask: false,
-      notes: null
+      notes: null,
+      scanned: [],
+      quantity: 0
     }
   }
 
@@ -52,7 +54,14 @@ class paddockPage extends Component{
     this.setState({notes: value});
   }
 
+  quantityHandler = (value) => {
+    this.setState({quantity: value})
+  }
+
   componentDidMount(){
+    if(this.props.state.dedicatedNfc === true) {
+      this.startScanning();
+    }
     const { task } = this.props.state; 
     if (task == null && (task && task.spray_mix == null)) {
       return
@@ -144,27 +153,37 @@ class paddockPage extends Component{
   }
 
   manageProductConfirmation(){
-    const { newScanned, matchedProduct, data } = this.state;
-    let scanned = null;
-    if(newScanned !== null) {
-      scanned = newScanned;
-    } else {
-      scanned = matchedProduct;
-    }
-    if(newScanned?.product_id === matchedProduct?.product_id) {
-      for (let i = 0; i <= data.length - 1; i++) {
-        if(data[i].product_id == matchedProduct.product_id) {
-          data[i].product.qty += newScanned.product.qty;
+    const { newScanned, matchedProduct, data, quantity } = this.state;
+    // let scanned = null;
+    // if(newScanned !== null) {
+    //   scanned = newScanned;
+    // } else {
+    //   scanned = matchedProduct;
+    // }
+    if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
+      this.state.scanned.push(matchedProduct.batch_number)
+      data.filter(function(item, index) {
+        if(item.product.id === matchedProduct.product.id) {
+          data[index].product.batch_number.push(matchedProduct.batch_number)
+           data[index].product.qty += quantity;
+          console.log(quantity, "==================");
         }
-      }
+      })
+    } else {
+      Alert.alert(
+        "Opps",
+        "You have already scanned this product trace!",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
     }
-    data.filter(function(item, index) {
-      if(item.product.id === scanned.product.id) {
-        data[index].product.batch_number.push(scanned.batch_number)
-      }
-    })
     this.setState({productConfirmation: false});
     this.setState({isAdded: true});
+    if(this.props.state.dedicatedNfc === true) {
+      setTimeout(() => {  this.startScanning(); }, 4000);
+    }
   }
 
   manageTaskConfirmation(){
@@ -292,13 +311,20 @@ class paddockPage extends Component{
   }
 
   manageRequest = (parameter) => {
+    const user = this.props.state.user
     this.setState({isLoading: true});
-    Api.request(Routes.productTraceRetrieve, parameter, response => {
+    let route = null;
+    if(user.account_type === 'USER') {
+      route = Routes.productTraceRetrieveUser
+    } else {
+      route = Routes.productTraceRetrieve
+    }
+    Api.request(route, parameter, response => {
       this.setState({isLoading: false});
       if(response.data != null && response.data.length > 0) {
-        if(this.state.matchedProduct) {
-          this.setState({newScanned: response.data[0]})
-        }
+        // if(this.state.matchedProduct) {
+        //   this.setState({newScanned: response.data[0]})
+        // }
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
@@ -311,9 +337,9 @@ class paddockPage extends Component{
   checkProduct(array, id, value) {
     array.map(item => {
       if (item.product.id === id) {
-        if(!this.state.matchedProduct) {
+        // if(!this.state.matchedProduct) {
           this.setState({matchedProduct: value});
-        }
+        // }
         this.setState({
           productConfirmation: true
         })
@@ -411,8 +437,7 @@ class paddockPage extends Component{
   render() {
     const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask } = this.state;
     const { task } = this.props.state;
-    let n = matchedProduct ? matchedProduct.product.title.split(" ") : null;
-    let volume = n ? n[n.length - 1] : null;
+    console.log(data[0], "==================================data");
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -463,8 +488,8 @@ class paddockPage extends Component{
                         key={item.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
-                        addedProduct={matchedProduct}
-                        isAdded={isAdded}
+                        // addedProduct={matchedProduct}
+                        // isAdded={isAdded}
                       />
                   ))
                 }
@@ -514,7 +539,7 @@ class paddockPage extends Component{
          </View>
         </ScrollView>
         {
-          (isAdded) && (
+          (this.state.data.length === this.state.scanned.length) && (
             <SlidingButton
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
@@ -524,7 +549,7 @@ class paddockPage extends Component{
           )
         }
         {
-          (matchedProduct) && (
+          (productConfirmation) && (
             <ProductConfirmationModal
               visible={productConfirmation}
               onClose={() => this.setState({
@@ -533,10 +558,12 @@ class paddockPage extends Component{
               data={{
                 title: matchedProduct.product.title,
                 manufacturing_date: matchedProduct.manufacturing_date,
-                volume_remaining: volume,
-                batch_number: matchedProduct.batch_number
+                volume_remaining: matchedProduct.volume,
+                batch_number: matchedProduct.batch_number,
+                quantity: matchedProduct.product.qty[0].total_remaining_product
               }}
               onSuccess={() => this.manageProductConfirmation()}
+              changeText={this.quantityHandler}
             />
           )
         }

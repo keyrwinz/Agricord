@@ -185,7 +185,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {data.type || 'No data'}
+                {data.tags || 'No data'}
               </Text>
             )
           }
@@ -336,7 +336,11 @@ class ProductDetails extends Component {
 
   recentFiles(data){
     return(
-      <View>
+      <View style={{
+        width: '90%',
+        marginLeft: '5%',
+        marginRight: '5%'
+      }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10, marginTop: 10 }}>
           Recent Files
         </Text>
@@ -365,6 +369,7 @@ class ProductDetails extends Component {
   render() {
     const { data } = this.state
     const { modal, loading } = this.state;
+    console.log('data', data)
     return (
       <SafeAreaView
         style={{

@@ -97,5 +97,6 @@ export default {
   batchUpdateStatus: apiUrl + 'batches/update',
   batchRetrieve: apiUrl + 'batches/retrieve',
 
-  updateLastLogin: apiUrl + 'accounts/update_last_log_in'
+  updateLastLogin: apiUrl + 'accounts/update_last_log_in',
+  productTraceRetrieveUser: apiUrl + 'product_traces/retrieve_by_params_end_user',
 };
