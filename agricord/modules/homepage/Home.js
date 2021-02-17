@@ -124,7 +124,7 @@ const Home = (props) => {
       retrieve(false)
     }, 1000)
   }, [])
-  return orders != undefined ?  (
+  return  (
     <ScrollView
       style={Style.ScrollView}
       showsVerticalScrollIndicator={false}
@@ -154,243 +154,263 @@ const Home = (props) => {
             width: '100%',
             marginTop: '5%'} : 
           Style.MainContainer}>
-          <View>
-            <Text style={[Style.username, Style.textWhite]}>
-              Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
-            </Text>
-            <Text style={Style.textWhite}>
-              Welcome to Your Dashboard
-            </Text>
-          </View>
-
-          {/* OVERVIEW CONTAINER */}
-
-          <View style={Style.overviewChart}>
-            <Circles />
-            <View style={Style.flexRow}>
-              <View style={Style.graphContainer}>
-                {/* <CircleGraph /> */}
-                <VictoryPie
-                    innerRadius={50}
-                    data={data}
-                    colorScale={["#5A84EE", "#4BB543", "#FFDF00"]}
-                    labels={() => null}
-                    width={180} height={150}
-                    radius={70}
-                    animate={{duration: 2000, onLoad: {duration: 1000}, onEnter: {duration: 500, before: () => ({y: 0})}}}
-                  />
-                <View style={Style.graphTextContainer}>
-                  <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
-                  <Text style={Style.graphText}>Activities</Text>
-                </View>
-              </View>
-              <View style={Style.chartDetails}>
-                <Text style={{ color: Color.gray }}>
-                  Overview Chart
+            <View style={orders ? {} : {marginTop:-300}}>
+              <View>
+                <Text style={[Style.username, Style.textWhite]}>
+                  Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
                 </Text>
-                <View style={[Style.flexRow, Style.graphLabel]}>
-                  <GreenCircle style={{ marginRight: 10 }} />
-                  <Text>{totalRecentData !== undefined ? totalRecentData.recent : 0} Recent Event</Text>
-                </View>
-                <View style={[Style.flexRow, Style.graphLabel]}>
-                  <YellowCircle style={{ marginRight: 10 }} />
-                  <Text>{totalTasksData ? totalTasksData.tasks : 0} Task in Focus</Text>
-                </View>
-                <View style={[Style.flexRow, Style.graphLabel]}>
-                  <BlueCircle style={{ marginRight: 10 }} />
-                  <Text>{totalOrderData ? totalOrderData.orders : 0} Order in Focus</Text>
+                <Text style={Style.textWhite}>
+                  Welcome to Your Dashboard
+                </Text>
+              </View>
+
+              {/* OVERVIEW CONTAINER */}
+
+              <View style={Style.overviewChart}>
+                <Circles />
+                <View style={Style.flexRow}>
+                  <View style={Style.graphContainer}>
+                    {/* <CircleGraph /> */}
+                    <VictoryPie
+                        innerRadius={50}
+                        data={data}
+                        colorScale={["#5A84EE", "#4BB543", "#FFDF00"]}
+                        labels={() => null}
+                        width={180} height={150}
+                        radius={70}
+                        animate={{duration: 2000, onLoad: {duration: 1000}, onEnter: {duration: 500, before: () => ({y: 0})}}}
+                      />
+                    <View style={Style.graphTextContainer}>
+                      <Text style={Style.graphTextBold}>{totalActivities ? totalActivities : 0}</Text>
+                      <Text style={Style.graphText}>Activities</Text>
+                    </View>
+                  </View>
+                  <View style={Style.chartDetails}>
+                    <Text style={{ color: Color.gray }}>
+                      Overview Chart
+                    </Text>
+                    <View style={[Style.flexRow, Style.graphLabel]}>
+                      <GreenCircle style={{ marginRight: 10 }} />
+                      <Text>{totalRecentData !== undefined ? totalRecentData.recent : 0} Recent Event</Text>
+                    </View>
+                    <View style={[Style.flexRow, Style.graphLabel]}>
+                      <YellowCircle style={{ marginRight: 10 }} />
+                      <Text>{totalTasksData ? totalTasksData.tasks : 0} Task in Focus</Text>
+                    </View>
+                    <View style={[Style.flexRow, Style.graphLabel]}>
+                      <BlueCircle style={{ marginRight: 10 }} />
+                      <Text>{totalOrderData ? totalOrderData.orders : 0} Order in Focus</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
-            </View>
           </View>
           
 
-          
           {
-           (orders?.orders?.length <= 0 && orders?.infocus?.length <= 0 && orders?.recent?.length <= 0) || (orders?.orders == undefined  && orders?.infocus == undefined  || orders?.recent == undefined) ? (
-            <View style={{padding: 20, justifyContent:'center',marginTop:20}}>
-              <Text style={{textAlign:'center', color:'white', fontWeight:'bold'}}>It's a little quiet here, go online to add new orders and tasks</Text>
-            </View>
-           ): (
-             <View>
-               {/* IN FOCUS */}
-          {
-            orders?.orders?.length > 0 ? (
-                <View style={Style.InFocusContainer}>
-                  <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
-                  {
-                    orders?.orders?.length > 0 && (<View>{orders?.orders.map( (obj, idx) => {
-                        if (idx > 1 && !isExpanded) return
-                        const icon = getIcon('Order')
-                        return (
-                          <TouchableOpacity
-                            key={idx}
-                            onPress={() => redirectToOrder(obj, props)}
-                          >
-                            <View style={Style.focusTask}>
-                              {icon}
-                              <View style={Style.focusTaskDetails}>
-                                <View style={Style.flexRow}>
-                                  <InProgressIcon />
-                                  <Text style={Style.eventText}>
-                                    {obj.status}
-                                  </Text>
-                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                                    {obj.date_of_delivery}
-                                  </Text>
-                                  <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
-                                    {obj.merchant.name}
-                                  </Text>
-                                </View>
-                                <View style={Style.flexRow}>
-                                  <Text style={Style.taskPayloadText}>
-                                    {obj.order_number}
-                                  </Text>
-                                  <Text style={Style.taskPayloadText}>
-                                    {obj.payload_value}
-                                  </Text>
-                                </View>
-                              </View>
-                              <View>
-                                <FontAwesomeIcon
-                                  icon={faChevronRight}
-                                  color={Color.gray}
-                                  size={45}
-                                />
-                              </View>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                    })}</View>)
-                  }
-                  {
-                    orders?.infocus?.length > 0 && (<View>{orders?.infocus.map( (obj, idx) => {
-                        if (idx > 1 && !isExpanded) return
-                        const icon = getIcon('Task')
-                        return (
-                          <TouchableOpacity
-                            key={idx}
-                            onPress={() => redirectToTask(obj, props)}
-                          >
-                            <View style={Style.focusTask}>
-                              {icon}
-                              <View style={Style.focusTaskDetails}>
-                                <View style={Style.flexRow}>
-                                  <InProgressIcon />
-                                  <Text style={Style.eventText}>
-                                    {obj.status}
-                                  </Text>
-                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                                    {obj.due_date_format}
-                                  </Text>
-                                  <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
-                                    {obj.nickname}
-                                  </Text>
-                                </View>
-                                <View style={Style.flexRow}>
-                                  <Text style={Style.taskPayloadText}>
-                                    {obj.paddock.name}
-                                  </Text>
-                                  <Text style={Style.taskPayloadText}>
-                                    {/* {obj.payload_value} */}
-                                  </Text>
-                                </View>
-                              </View>
-                              <View>
-                                <FontAwesomeIcon
-                                  icon={faChevronRight}
-                                  color={Color.gray}
-                                  size={45}
-                                />
-                              </View>
-                            </View>
-                          </TouchableOpacity>
-                        )
-                    })}</View>)
-                  }
-                  <TouchableOpacity
-                    style={Style.chevronDown}
-                    onPress={() => setExpand(!isExpanded)}
-                  >
-                    <FontAwesomeIcon
-                      icon={isExpanded ? faChevronUp : faChevronDown}
-                      color={Color.gray}
-                      size={45}
-                    />
-                  </TouchableOpacity>
-                </View>
-            ) : (
-              <View></View>
-            )
-          }
+            orders ? (
+              <View>
+                {
+                (orders?.orders?.length <= 0 && orders?.infocus?.length <= 0 && orders?.recent?.length <= 0) || (orders?.orders == undefined  && orders?.infocus == undefined  || orders?.recent == undefined) ? (
+                  <View style={{padding: 20, justifyContent:'center',marginTop:20}}>
+                    <Text style={{textAlign:'center', color:'white', fontWeight:'bold'}}>It's a little quiet here, go online to add new orders and tasks</Text>
+                  </View>
+                ): (
+                  <View>
+                    {/* IN FOCUS */}
+                {
+                  orders?.orders?.length > 0 ? (
+                      <View style={Style.InFocusContainer}>
+                        <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
+                        {
+                          orders?.orders?.length > 0 && (<View>{orders?.orders.map( (obj, idx) => {
+                              if (idx > 1 && !isExpanded) return
+                              const icon = getIcon('Order')
+                              return (
+                                <TouchableOpacity
+                                  key={idx}
+                                  onPress={() => redirectToOrder(obj, props)}
+                                >
+                                  <View style={Style.focusTask}>
+                                    {icon}
+                                    <View style={Style.focusTaskDetails}>
+                                      <View style={Style.flexRow}>
+                                        <InProgressIcon />
+                                        <Text style={Style.eventText}>
+                                          {obj.status}
+                                        </Text>
+                                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                          {obj.date_of_delivery}
+                                        </Text>
+                                        <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
+                                          {obj.merchant.name}
+                                        </Text>
+                                      </View>
+                                      <View style={Style.flexRow}>
+                                        <Text style={Style.taskPayloadText}>
+                                          {obj.order_number}
+                                        </Text>
+                                        <Text style={Style.taskPayloadText}>
+                                          {obj.payload_value}
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <View>
+                                      <FontAwesomeIcon
+                                        icon={faChevronRight}
+                                        color={Color.gray}
+                                        size={45}
+                                      />
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              )
+                          })}</View>)
+                        }
+                        {
+                          orders?.infocus?.length > 0 && (<View>{orders?.infocus.map( (obj, idx) => {
+                              if (idx > 1 && !isExpanded) return
+                              const icon = getIcon('Task')
+                              return (
+                                <TouchableOpacity
+                                  key={idx}
+                                  onPress={() => redirectToTask(obj, props)}
+                                >
+                                  <View style={Style.focusTask}>
+                                    {icon}
+                                    <View style={Style.focusTaskDetails}>
+                                      <View style={Style.flexRow}>
+                                        <InProgressIcon />
+                                        <Text style={Style.eventText}>
+                                          {obj.status}
+                                        </Text>
+                                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                          {obj.due_date_format}
+                                        </Text>
+                                        <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
+                                          {obj.nickname}
+                                        </Text>
+                                      </View>
+                                      <View style={Style.flexRow}>
+                                        <Text style={Style.taskPayloadText}>
+                                          {obj.paddock.name}
+                                        </Text>
+                                        <Text style={Style.taskPayloadText}>
+                                          {/* {obj.payload_value} */}
+                                        </Text>
+                                      </View>
+                                    </View>
+                                    <View>
+                                      <FontAwesomeIcon
+                                        icon={faChevronRight}
+                                        color={Color.gray}
+                                        size={45}
+                                      />
+                                    </View>
+                                  </View>
+                                </TouchableOpacity>
+                              )
+                          })}</View>)
+                        }
+                        <TouchableOpacity
+                          style={Style.chevronDown}
+                          onPress={() => setExpand(!isExpanded)}
+                        >
+                          <FontAwesomeIcon
+                            icon={isExpanded ? faChevronUp : faChevronDown}
+                            color={Color.gray}
+                            size={45}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                  ) : (
+                    <View></View>
+                  )
+                }
 
-          {/* RECENT EVENTS */}
-          {
-            orders?.recent?.length > 0 ? (
-                  <View style={Style.RecentEventsContainer}>
-                      <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
-                      {
-                        orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
-                          return (
-                            <View
-                              key={idx}
-                              style={[
-                                Style.flexRow,
-                                {
-                                  position: 'relative',
-                                  marginLeft: 15
-                                }
-                              ]}
-                            >
-                              {
-                                idx + 1 === response.data.recent.length ? (
-                                  <CompleteIcon style={Style.eventIcon} />
-                                ) : (
-                                  <CompletedEventIcon style={Style.eventIcon} />
+                {/* RECENT EVENTS */}
+                {
+                  orders?.recent?.length > 0 ? (
+                        <View style={Style.RecentEventsContainer}>
+                            <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>Recent Event</Text>
+                            {
+                              orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
+                                return (
+                                  <View
+                                    key={idx}
+                                    style={[
+                                      Style.flexRow,
+                                      {
+                                        position: 'relative',
+                                        marginLeft: 15
+                                      }
+                                    ]}
+                                  >
+                                    {
+                                      idx + 1 === response.data.recent.length ? (
+                                        <CompleteIcon style={Style.eventIcon} />
+                                      ) : (
+                                        <CompletedEventIcon style={Style.eventIcon} />
+                                      )
+                                    }
+                                    <View style={Style.eventDetailsContainer}>
+                                      <View style={Style.flexRow}>
+                                        <Text style={Style.eventText}>
+                                          Task
+                                        </Text>
+                                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                          {obj.due_date}
+                                        </Text>
+                                        <Text style={Style.eventText}>
+                                          {obj.nickname}
+                                        </Text>
+                                      </View>
+                                      <View style={Style.flexRow}>
+                                        <Text style={Style.eventPayloadText}>
+                                          {obj.paddock.name}
+                                        </Text>
+                                        <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
+                                          {/* {obj.payload_value} */}
+                                        </Text>
+                                      </View>
+                                    </View>
+                                  </View>
                                 )
-                              }
-                              <View style={Style.eventDetailsContainer}>
-                                <View style={Style.flexRow}>
-                                  <Text style={Style.eventText}>
-                                    Task
-                                  </Text>
-                                  <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                                    {obj.due_date}
-                                  </Text>
-                                  <Text style={Style.eventText}>
-                                    {obj.nickname}
-                                  </Text>
-                                </View>
-                                <View style={Style.flexRow}>
-                                  <Text style={Style.eventPayloadText}>
-                                    {obj.paddock.name}
-                                  </Text>
-                                  <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
-                                    {/* {obj.payload_value} */}
-                                  </Text>
-                                </View>
-                              </View>
-                            </View>
-                          )
-                        })}</View>)
-                      }
-                    </View>
-                  ): (
-              <View></View>
-              )
-            }
-             </View>
-           )
-          }
+                              })}</View>)
+                            }
+                          </View>
+                        ): (
+                    <View></View>
+                    )
+                  }
+                  </View>
+                )
+                }
+          </View>
+            ):(
+              <Spinner mode="overlay"/>
+            )
+        }
         </View>
         </ImageBackground>
       </SafeAreaView>
       </ScrollView>
-      ) : (
-        <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: height}}>
-          <Spinner mode="overlay"/>
-        </ImageBackground>
-      )
+      ) 
+      // : (
+      //   <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: height}}>
+      //     <View style={Style.MainContainer}>
+      //     <View style={{marginTop:-300}}>
+      //       <Text style={[Style.username, Style.textWhite]}>
+      //         Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
+      //       </Text>
+      //       <Text style={Style.textWhite}>
+      //         Welcome to Your Dashboard
+      //       </Text>
+      //     </View>
+      //     </View>
+      //     <Spinner mode="overlay"/>
+      //   </ImageBackground>
+      // )
 
   // return (
   //   <Text></Text>
