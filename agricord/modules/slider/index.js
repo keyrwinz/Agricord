@@ -136,7 +136,7 @@ class Slider extends Component {
     const { user } = this.props.state
     //clear storage
     this.setState({isLoading: true});
-    Api.request(Routes.updateLastLogin, {account_id: user.id}, response => {
+    Api.request(Routes.updateLastLogin, {account_id: user?.id}, response => {
       if(response.data != null){
         this.setState({isLoading: false});
         const { logout, setActiveRoute } = this.props;
