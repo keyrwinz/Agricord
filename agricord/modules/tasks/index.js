@@ -99,7 +99,7 @@ class TasksPage extends Component {
       }
     };
 
-    Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
+    Api.request(activeIndex != 1 ? Routes.paddockPlanTasksRetrieve : Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
       console.log('parameter', response)
         this.setState({
           isLoading: false

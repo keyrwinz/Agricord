@@ -100,7 +100,7 @@ class AccountSettings extends Component {
               {
                 (user && user.updated_at && (
                   <Text style={Style.DescriptionTextStyle}>{Moment(user.updated_at).format('D MMMM YYYY')}</Text>
-                )
+                  )
                 )
               }
             </View>
