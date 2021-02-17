@@ -488,8 +488,7 @@ class paddockPage extends Component{
                         key={item.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
-                        // addedProduct={matchedProduct}
-                        // isAdded={isAdded}
+                        batch={true}
                       />
                   ))
                 }
