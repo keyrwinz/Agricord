@@ -213,9 +213,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && data.details.active && (
+            (data && data.details && data.details.active) && (
               <Text style={Style.itemDetailValue}>
-                {data.details.active.join(', ') || 'No data'}
+                {data.details.active || 'No data'}
               </Text>
             )
           }
