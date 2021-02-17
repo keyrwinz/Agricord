@@ -175,6 +175,7 @@ class MixName extends Component {
                         key={item.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
+                        batch={false}
                       />
                     ) 
                   )
