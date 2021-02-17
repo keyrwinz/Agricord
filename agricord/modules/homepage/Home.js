@@ -281,7 +281,7 @@ const Home = (props) => {
                                     {obj.status}
                                   </Text>
                                   <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                                    {obj.due_date}
+                                    {obj.due_date_format}
                                   </Text>
                                   <Text style={[Style.eventText, Style.overFlowText]} numberOfLines={1} ellipsizeMode="tail">
                                     {obj.nickname}
@@ -387,7 +387,9 @@ const Home = (props) => {
       </SafeAreaView>
       </ScrollView>
       ) : (
-        <Spinner mode="overlay"/>
+        <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: height}}>
+          <Spinner mode="overlay"/>
+        </ImageBackground>
       )
 
   // return (
