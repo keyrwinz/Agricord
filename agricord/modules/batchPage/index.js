@@ -46,7 +46,9 @@ class paddockPage extends Component{
       confirmTask: false,
       notes: null,
       scanned: [],
-      quantity: 0
+      quantity: 0,
+      rates: [],
+      newlyScanned: null
     }
   }
 
@@ -82,25 +84,6 @@ class paddockPage extends Component{
       isLoading: true
     })
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-      // let alpha = {
-      //   id: 3,
-      //   product: {
-      //     code: "2EHKQT9RSFCXU5LOW7801IJNMBVGZYPA",
-      //     id: 16,
-      //     merchant_id: "1",
-      //     qty: 5,
-      //     title: "Alpha 110L",
-      //     type: "regular",
-      //     variation: [{payload: "Millilitres (ml)", payload_value: "1000"}]
-      //   },
-      //   product_id: 16,
-      //   rate: 2000.000,
-      //   spray_mix_id: 65,
-      //   status: "draft",
-      //   units: "",
-      //   updated_at: '2021-01-09 07:20:57'
-      // }
-      // response.data.push(alpha)
       this.setState({data: response.data, isLoading: false});
     },
     error => {
@@ -153,20 +136,14 @@ class paddockPage extends Component{
   }
 
   manageProductConfirmation(){
-    const { newScanned, matchedProduct, data, quantity } = this.state;
-    // let scanned = null;
-    // if(newScanned !== null) {
-    //   scanned = newScanned;
-    // } else {
-    //   scanned = matchedProduct;
-    // }
+    const { matchedProduct, data, quantity, rates } = this.state;
     if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
       this.state.scanned.push(matchedProduct.batch_number)
       data.filter(function(item, index) {
         if(item.product.id === matchedProduct.product.id) {
           data[index].product.batch_number.push(matchedProduct.batch_number)
-           data[index].product.qty += quantity;
-          console.log(quantity, "==================");
+          rates.push(item.product.rate > matchedProduct.product.qty[0].total_remaining_product ? matchedProduct.product.qty[0].total_remaining_product : item.product.rate)
+          data[index].product.qty += quantity;
         }
       })
     } else {
@@ -296,7 +273,6 @@ class paddockPage extends Component{
     const user = this.props.state.user
     let parameter = {
       condition: [{
-        //code: '25739366062713749471680984040588', 'C89B5424080104E0'
         value: params.code,
         column: 'code',
         clause: '='
@@ -304,7 +280,6 @@ class paddockPage extends Component{
       nfc: params.nfc,
       // 3 
       merchant_id: user.sub_account.merchant.id,
-      // MANUFACTURER user.account_type
       account_type: user.account_type
     }
     this.manageRequest(parameter);
@@ -322,9 +297,6 @@ class paddockPage extends Component{
     Api.request(route, parameter, response => {
       this.setState({isLoading: false});
       if(response.data != null && response.data.length > 0) {
-        // if(this.state.matchedProduct) {
-        //   this.setState({newScanned: response.data[0]})
-        // }
         this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
       } else {
         this.setState({message: response.error})
@@ -337,9 +309,8 @@ class paddockPage extends Component{
   checkProduct(array, id, value) {
     array.map(item => {
       if (item.product.id === id) {
-        // if(!this.state.matchedProduct) {
-          this.setState({matchedProduct: value});
-        // }
+        this.setState({matchedProduct: value});
+        this.setState({newlyScanned: item});
         this.setState({
           productConfirmation: true
         })
@@ -349,8 +320,8 @@ class paddockPage extends Component{
 
   total = () => {
     let total = this.state.total;
-    this.state.data.map(item => {
-      total += item.product.qty
+    this.state.rates.map(item => {
+      total += parseInt(item);
     })
     this.setState({total: total})
     return total;
@@ -435,9 +406,8 @@ class paddockPage extends Component{
   }
 
   render() {
-    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask } = this.state;
+    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask, newlyScanned } = this.state;
     const { task } = this.props.state;
-    console.log(data[0], "==================================data");
     return (
       <SafeAreaView>
         <ScrollView showsVerticalScrollIndicator={false}
@@ -559,7 +529,8 @@ class paddockPage extends Component{
                 manufacturing_date: matchedProduct.manufacturing_date,
                 volume_remaining: matchedProduct.volume,
                 batch_number: matchedProduct.batch_number,
-                quantity: matchedProduct.product.qty[0].total_remaining_product
+                quantity: matchedProduct.product.qty[0].total_remaining_product,
+                rate: newlyScanned.product.rate
               }}
               onSuccess={() => this.manageProductConfirmation()}
               changeText={this.quantityHandler}
