@@ -16,6 +16,7 @@ import ThCircleSvg from 'assets/settings/thcircle.svg';
 import {Spinner} from 'components';
 import Api from 'services/api';
 import SlidingButton from 'modules/generic/SlidingButton';
+import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 const height = Math.round(Dimensions.get('window').height);
 
@@ -28,11 +29,60 @@ class ApplyTask extends Component {
       selectedPicker: 0,
       isLoading: false,
       data: null,
-      isPressed: false
+      isPressed: false,
+      taskConfirmation: false,
+      createdBatch: 0,
+      confirmTask: false
     };
     if(this.props.navigation.state.params) {
     } else {
       this.props.state.task = null;
+    }
+  }
+
+  manageTaskConfirmation(){
+    console.log(this.state.createdBatch);
+    const {user } = this.props.state;
+    this.setState({confirmTask: true});
+    let parameter = {
+      id: this.state.createdBatch,
+      status: 'completed'
+    }
+    this.setState({isLoading: true});
+    Api.request(Routes.batchUpdateStatus, parameter, response => {
+      // console.log("===============================", JSON.parse(response))
+      this.setState({confirmTask: false, taskConfirmation: false, isLoading: false, createdBatch: 0})
+      this.retrieveBatch(user);
+      },
+      error => {
+        this.setState({
+          isLoading: false
+        })
+        console.log({error});
+      },
+    );
+  }
+
+  retrieveBatch(user){
+    let parameter={
+      merchant_id: user.sub_account.merchant.id,
+      status: 'inprogress'
+    }
+
+    Api.request(Routes.batchesRetrieveUnApplyTask, parameter, response => {
+      if(response.data.length > 0){
+        console.log("===============================", response.data);
+        this.setState({createdBatch: response.data[0].id, confirmTask: true, taskConfirmation: true})
+      }
+    })
+
+  }
+
+  unAppliedTaskCheck(){
+    if(this.state.createdBatch != 0){
+      this.setState({taskConfirmation: false})
+    }else{
+      this.setState({taskConfirmation: true})
     }
   }
 
@@ -58,6 +108,7 @@ class ApplyTask extends Component {
         console.log({error});
       },
     );
+    this.retrieveBatch(user);
   }
 
   setActive(){
@@ -110,22 +161,26 @@ class ApplyTask extends Component {
 
   selectPaddocks = () => {
     const { setTask } = this.props;
-    const { selectedMachine, selectedMix } = this.state;
+    const { selectedMachine, selectedMix, createdBatch} = this.state;
     const { task } = this.props.state;
-    if (this.state.selectedMachine != null && this.state.selectedMix != null) {
-      let task = {
-        machine: selectedMachine,
-        spray_mix: selectedMix
-      };
-      setTask(task);
-      this.props.navigation.navigate('mixPageStack', {
-        data: {
+    if(createdBatch != 0){
+      this.setState({taskConfirmation: true})
+    }else{
+      if (this.state.selectedMachine != null && this.state.selectedMix != null) {
+        let task = {
           machine: selectedMachine,
           spray_mix: selectedMix
-        }
-      });
-    } else {
-      alert('Please select a machine or mix.');
+        };
+        setTask(task);
+        this.props.navigation.navigate('mixPageStack', {
+          data: {
+            machine: selectedMachine,
+            spray_mix: selectedMix
+          }
+        });
+      } else {
+        alert('Please select a machine or mix.');
+      }
     }
   };
 
@@ -143,7 +198,7 @@ class ApplyTask extends Component {
   };
 
   render() {
-    const { data, selectedMix, selectedMachine } = this.state;
+    const { data, selectedMix, selectedMachine, taskConfirmation, confirmTask } = this.state;
     const { task } = this.props.state;
     return (
       <View style={styles.MainContainer}>
@@ -240,6 +295,18 @@ class ApplyTask extends Component {
               }
             </View>
           </View>
+          {
+          (taskConfirmation) && (
+            <TaskConfirmationModal
+              onSuccess={() => this.manageTaskConfirmation()}
+              taskConfirmation={confirmTask}
+              visible={confirmTask}
+              onClose={() => this.setState({
+                taskConfirmation: false
+              })}
+            />
+          )
+        }
         </ScrollView>
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
         {

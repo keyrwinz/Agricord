@@ -38,7 +38,6 @@ class paddockPage extends Component{
   componentDidMount(){
     // const {data}=this.props.navigation.state.params.data
     // console.log(data)
-
     this.retrieveData()
 
   }
@@ -61,7 +60,6 @@ class paddockPage extends Component{
         clause: '='
       }]
     }
-
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
       this.setState({
         isLoading: false
@@ -89,6 +87,8 @@ class paddockPage extends Component{
           (paddock && paddock.from == "due" && data) && (
             <React.Fragment>
               <View style={Style.imageContainer}>
+                {
+                  data.crop_name != null ? (
                 <Image
                   style={Style.image}
                   source={data.crop_name.toLowerCase() == 'field pea' ? require('assets/FieldPea.png') :
@@ -96,7 +96,8 @@ class paddockPage extends Component{
                           data.crop_name.toLowerCase() == 'wheat' ? require('assets/Wheat.png') :
                           data.crop_name.toLowerCase() == 'fallow' ? require('assets/Fallow.png') :
                           require('assets/Canola.png')}
-                />
+                />) : (<View></View>)
+              }
               </View>
               <View style={Style.textContainer}>
                 {/* <Text style={Style.text}>Field Pea</Text> */}
@@ -158,7 +159,7 @@ class paddockPage extends Component{
               <Text style={Style.labelTitle}>
                 Machine
               </Text>
-              <Text style={Style.label}>{data.machine ? data.machine : ''}</Text>
+              <Text style={Style.label}>{paddock ? paddock.machine[0].name : null}</Text>
             </View>
 
             <Divider style={BasicStyles.starndardDivider}/>

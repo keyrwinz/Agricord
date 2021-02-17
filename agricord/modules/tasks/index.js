@@ -43,6 +43,7 @@ class TasksPage extends Component {
     if (user == null) {
       return
     }
+    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>Active index", this.state.activeIndex);
     this.setState({
       activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
     })
