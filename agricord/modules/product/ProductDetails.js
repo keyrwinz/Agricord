@@ -215,7 +215,7 @@ class ProductDetails extends Component {
           {
             (data && data.details && data.details.active) && (
               <Text style={Style.itemDetailValue}>
-                {data.details.active || 'No data'}
+              {`${data.details.active.active_name} ${data.details.active.value} ${data.details.active.attributes}` || 'No data'}
               </Text>
             )
           }
@@ -272,7 +272,7 @@ class ProductDetails extends Component {
           {
             data && data.details && data.details.mixing_order && (
               <Text style={Style.itemDetailValue}>
-                {data.details.mixing_order.join(", ") || 'No data'}
+                {data.details.mixing_order || 'No data'}
               </Text>
             )
           }

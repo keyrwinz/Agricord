@@ -84,8 +84,8 @@ const Home = (props) => {
           clause: '=',
         }, {
           column: 'status',
-          value: 'completed',
-          clause: '!='
+          value: 'inprogress',
+          clause: '='
         }
       ],
       sort: {

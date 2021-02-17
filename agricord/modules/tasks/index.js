@@ -81,7 +81,7 @@ class TasksPage extends Component {
     this.setState({
       isLoading: true,
     });
-
+    console.log("=====================active", activeIndex);
     const parameter = {
       condition: [{
         value: user.sub_account.merchant.id,
@@ -98,9 +98,34 @@ class TasksPage extends Component {
         due_date: 'desc'
       }
     };
-
-    console.log('parameter', parameter)
-    Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
+    if(activeIndex == 1){
+      Api.request(Routes.paddockPlanTasksRetrieve, parameter, response => {
+        console.log('parameter', response)
+          this.setState({
+            isLoading: false
+          });
+          console.log('response', response)
+          if(response.data.length > 0){
+            this.setState({
+              data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
+              numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
+              offset: flag == false ? 1 : (this.state.offset + 1)
+            })
+          }else{
+            this.setState({
+              data: flag == false ? [] : this.state.data,
+              numberOfPages: null,
+              offset: flag == false ? 0 : this.state.offset
+            })
+          }
+        }, error => {
+          this.setState({isLoading: false});
+          console.log('ERROR HAPPENS', error);
+        },
+      );
+    }else{
+    Api.request(Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
+      console.log('parameter', response)
         this.setState({
           isLoading: false
         });
@@ -123,6 +148,7 @@ class TasksPage extends Component {
         console.log('ERROR HAPPENS', error);
       },
     );
+    }
   };
 
   getStatusValue(index){

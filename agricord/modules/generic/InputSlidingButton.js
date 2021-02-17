@@ -127,7 +127,7 @@ class InputSlidingButton extends Component{
           </TextInput>
         </View>
       </View>
-      <Text
+      {this.state.quantity > 0 && this.state.quantity <= parseInt(this.props.quantity) && (<Text
       style={{
         fontSize: BasicStyles.standardFontSize - 1,
         color: '#969696',
@@ -138,7 +138,7 @@ class InputSlidingButton extends Component{
         marginBottom: 20
       }}>
       {this.props.label}
-    </Text>
+    </Text>)}
     </View>
     );
   }
