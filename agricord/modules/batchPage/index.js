@@ -470,7 +470,7 @@ class paddockPage extends Component{
                     }}>{ isLoading ? '' : 'No products found'}</Text>
                   )
                 }
-               <TouchableOpacity style={[
+               <View style={[
                   BasicStyles.standardCardContainer,
                   {
                     backgroundColor: Color.blue,
@@ -499,8 +499,8 @@ class paddockPage extends Component{
                       fontWeight: 'bold',
                       textAlign: 'right',
                       width: '30%'
-                    }}>{task && task.params ? task.params.volume + task.params.units : ''}</Text>
-               </TouchableOpacity>
+                    }}>{(this.props.navigation.state.params.max_area * this.props.navigation.state.params.application_rate) - this.state.total} L</Text>
+               </View>
               {
                 this.renderNotesCard()
               }
