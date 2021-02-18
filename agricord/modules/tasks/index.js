@@ -38,13 +38,12 @@ class TasksPage extends Component {
   }
   
 
-  componentDidMount(){
+  async componentDidMount(){
     const { user } = this.props.state;
     if (user == null) {
       return
     }
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>Active index", this.state.activeIndex);
-    this.setState({
+    await this.setState({
       activeIndex: this.props.parentNav.state && this.props.parentNav.state.params ? this.props.parentNav.state.params.index : 0
     })
     // if (this.props.initialPage != null) {
