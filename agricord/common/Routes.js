@@ -85,6 +85,7 @@ export default {
 
   // batches
   batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks',
+  batchesRetrieveUnApplyTask: apiUrl + 'batches/retrieve_unapply_tasks',
 
   //tasks
   paddockPlanTasksRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params',
