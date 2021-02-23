@@ -46,6 +46,7 @@ class MixCard extends Component {
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
     const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
+    console.log('origi', totalRate, 'maz', maxRate, 'data', data.item.remaining_area);
     const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
     let borderColor = ''
     if (data != null) {

@@ -102,7 +102,7 @@ const MixPage = (props) => {
   const [test, setTest] = useState(0)
   const [avail, setAvail] = useState([])
   const [partialss, setPartial] = useState(true)
-  const [partialValue, setPartialValue] = useState(false)
+  const [maxPartial, setMaxValue] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -185,7 +185,6 @@ const MixPage = (props) => {
   }
 
   const closePar = () => {
-    console.log('[Enable Partial]');
     setMessage(false)
     setPartial(false)
     setTotalHigher(false)
@@ -353,6 +352,10 @@ const MixPage = (props) => {
   }
 
   const selectedPaddockView = () => {
+    setTimeout(() => {
+      const { task } = props.state;
+      setMaxValue(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+    }, 100)
     return(
       <View style={{
         marginBottom: 100
@@ -368,7 +371,7 @@ const MixPage = (props) => {
             renderItem={(data) => (
               <MixCard data={data}
               totalRate={totalArea}
-              maxRate={maxArea}
+              maxRate={maxPartial}
               hasCheck={true}
               partialss={partialss}
               addToSelected={() => {}}
