@@ -47,8 +47,9 @@ class paddockPage extends Component{
       notes: null,
       scanned: [],
       quantity: 0,
-      rates: [],
-      newlyScanned: null
+      newlyScanned: null,
+      batchProducts: [],
+      totalPaddockArea: 0
     }
   }
 
@@ -61,6 +62,13 @@ class paddockPage extends Component{
   }
 
   componentDidMount(){
+    if(this.props.navigation.state.params?.selected_paddock) {
+      let total = 0;
+      this.props.navigation.state.params.selected_paddock.map((item) => {
+        total += item.area;
+      })
+      this.setState({totalPaddockArea: total});
+    }
     if(this.props.state.dedicatedNfc === true) {
       this.startScanning();
     }
@@ -105,7 +113,7 @@ class paddockPage extends Component{
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
       notes: this.state.notes,
-      water: (this.props.navigation.state.params.max_area * this.props.navigation.state.params.application_rate) - this.total(),
+      water: this.props.navigation.state?.params?.total_volume - this.total(),
       status: 'inprogress'
     }
     let tasks = {
@@ -118,8 +126,11 @@ class paddockPage extends Component{
       merchant_id: user.sub_account.merchant.id,
       status: 'inprogress',
     }
+
+    let batch_products = this.state.batchProducts
+
     let parameter = {
-      batch, tasks
+      batch, tasks, batch_products
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchCreate, parameter, response => {
@@ -136,14 +147,23 @@ class paddockPage extends Component{
   }
 
   manageProductConfirmation(){
-    const { matchedProduct, data, quantity, rates } = this.state;
+    const user = this.props.state.user;
+    const { matchedProduct, data, quantity, batchProducts } = this.state;
     if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
       this.state.scanned.push(matchedProduct.batch_number)
       data.filter(function(item, index) {
         if(item.product.id === matchedProduct.product.id) {
           data[index].product.batch_number.push(matchedProduct.batch_number)
-          rates.push(item.product.rate > matchedProduct.product.qty[0].total_remaining_product ? matchedProduct.product.qty[0].total_remaining_product : item.product.rate)
+          // rates.push(item.product.rate > matchedProduct.product.qty[0].total_remaining_product ? matchedProduct.product.qty[0].total_remaining_product : item.product.rate)
           data[index].product.qty += quantity;
+          let product = {
+            product_id: item.product.id,
+            merchant_id: user.sub_account.merchant.id,
+            account_id: user.account_information.account_id,
+            product_trace_id: matchedProduct.id,
+            applied_rate: this.props.navigation.state.params.application_rate
+          }
+          batchProducts.push(product);
         }
       })
     } else {
@@ -320,10 +340,9 @@ class paddockPage extends Component{
 
   total = () => {
     let total = this.state.total;
-    this.state.rates.map(item => {
-      total += parseInt(item);
+    this.state.data.map(item => {
+      total += parseInt(item.rate) * this.state.totalPaddockArea;
     })
-    this.setState({total: total})
     return total;
   }
 
@@ -499,7 +518,7 @@ class paddockPage extends Component{
                       fontWeight: 'bold',
                       textAlign: 'right',
                       width: '30%'
-                    }}>{(this.props.navigation.state.params.max_area * this.props.navigation.state.params.application_rate) - this.state.total} L</Text>
+                    }}>{this.props.navigation.state?.params?.total_volume - this.total()}L</Text>
                </View>
               {
                 this.renderNotesCard()
