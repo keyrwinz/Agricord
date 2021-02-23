@@ -21,7 +21,7 @@ class MessageModal extends Component {
         <Modal isVisible={this.props.visible}>
           <View style={styles.mainContainer}>
             <View style={[styles.container, {
-              height: '30%',
+              height: '35%',
               marginTop: '10%'
             }]}>
               <View style={{

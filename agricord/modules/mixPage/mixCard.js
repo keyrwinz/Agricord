@@ -140,7 +140,7 @@ class MixCard extends Component {
                   </View>
                   <View style={Style.detailRow}>
                     <Text style={[Style.textBold, { color: '#969696', fontSize: BasicStyles.standardFontSize }]}>
-                      Area
+                      Remaining Area
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
                     {data?.item?.area + ' ' + data?.item?.units} 
@@ -154,14 +154,13 @@ class MixCard extends Component {
                           borderColor: Color.primary
                         }]}>
                           <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                            PARTIAL
+                            APPLIED RATE
                           </Text>
-                          <View style={{
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }}>
-                            <TextInput
+                            <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                              {origPartial + ' ' + data?.item?.units}
+                            </Text>
+                            
+                            {/* <TextInput
                               value={partials >= 0 || partials == '' || partials == NaN ? partials : this.messageModal()}
                               placeholder={origPartial}
                               keyboardType={'numeric'}
@@ -174,11 +173,10 @@ class MixCard extends Component {
                               onChangeText={(input) => {
                                 this.fun(input)
                               }}
-                            />
-                            <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
+                            /> */}
+                            {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
-                            </Text>
-                          </View>
+                            </Text> */}
                           <View>
                             { 
                               this.state.message === true ?
