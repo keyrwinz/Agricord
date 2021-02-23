@@ -197,6 +197,7 @@ const MixPage = (props) => {
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
+          setAvail(response.data)
         }else{
           setPaddocks([])
         }
@@ -246,14 +247,18 @@ const MixPage = (props) => {
         setTotalHigher(false)
       }
       setSelectedPaddock(newSelectedPaddock)
-      setAvail([...paddocks, ...[item]])
+      avail.forEach(el => {
+        if(el.id == item.id){
+          setPaddocks([...paddocks, ...[el]])
+        }
+      })
     }else{
-      const newPaddocks = paddocks.filter((paddock, idx) => {
+      const newPaddocks = avail.filter((paddock, idx) => {
         if(paddock.id != item.id){
           return item
         }
       })
-      setAvail((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
+      setPaddocks((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
     }
   }
 
