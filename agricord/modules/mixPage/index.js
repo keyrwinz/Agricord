@@ -182,6 +182,13 @@ const MixPage = (props) => {
       setTotalHigher(true)
     }
   }
+
+  const closePar = () => {
+    console.log('[Enable Partial]');
+    setMessage(false)
+    setPartial(false)
+    setTotalHigher(false)
+  }
  
   const retrieve = () => {
     const { task, user } = props.state;
@@ -194,6 +201,7 @@ const MixPage = (props) => {
     };
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
+        console.log('[retrievePaddocksPlan]', response.data);
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
@@ -247,13 +255,14 @@ const MixPage = (props) => {
         setTotalHigher(false)
       }
       setSelectedPaddock(newSelectedPaddock)
+      // setPaddocks([...paddocks, ...[item]])
       avail.forEach(el => {
         if(el.id == item.id){
           setPaddocks([...paddocks, ...[el]])
         }
       })
     }else{
-      const newPaddocks = avail.filter((paddock, idx) => {
+      const newPaddocks = paddocks.filter((paddock, idx) => {
         if(paddock.id != item.id){
           return item
         }
@@ -529,7 +538,7 @@ const MixPage = (props) => {
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                { totalHigher === true ?
+                {/* { totalHigher === true ?
                   <View style={[Style.totalAreaBox, {borderColor: '#FF0000'}]}>
                     <Text style={{
                       fontSize: BasicStyles.standardFontSize, color: '#FF0000'
@@ -537,7 +546,7 @@ const MixPage = (props) => {
                     <Text style={{ color: '#FF0000', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                     TOTAL AREA
                     </Text>
-                  </View> :
+                  </View> : */}
                   <View style={Style.totalAreaBox}>
                   <Text style={{
                     color: '#5A84EE', 
@@ -547,7 +556,7 @@ const MixPage = (props) => {
                     TOTAL AREA
                   </Text>
                 </View>
-                }
+                {/* } */}
                 {
                   (selectedPaddock.length > 0) && (
                     <View style={{
@@ -723,6 +732,15 @@ const MixPage = (props) => {
 
       </ScrollView>
       {
+        totalHigher == true ?
+          <Message
+            visible={true}
+            title={'Area is too High'}
+            message={`This mix would require a total area lower than ${maxArea} ha, which is required for this mix. \n\n\t Remove paddock or complete a partial application`}
+            onClose={() => closePar()}
+          /> : null
+      }
+      {
         (totalHigher == false && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
@@ -756,7 +774,7 @@ const MixPage = (props) => {
             onClose={() => {
               setMixConfirmation(false)
             }}
-            onSuccess={() => redirect('batchStack')}
+            onSuccess={() => this.props.navigation.navigate('batchStack', {total_volume: parseFloat(task.machine.capacity * totalArea).toFixed(2), selected_paddock: selectedPaddock})}
             data={selectedPaddock}
             volume={'BATCH ' + totalArea + 'HA ' + parseFloat(task.machine.capacity * totalArea).toFixed(2) + ' L'}
           />
