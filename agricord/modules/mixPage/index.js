@@ -102,6 +102,7 @@ const MixPage = (props) => {
   const [test, setTest] = useState(0)
   const [avail, setAvail] = useState([])
   const [partialss, setPartial] = useState(true)
+  const [maxPartial, setMaxValue] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -184,7 +185,6 @@ const MixPage = (props) => {
   }
 
   const closePar = () => {
-    console.log('[Enable Partial]');
     setMessage(false)
     setPartial(false)
     setTotalHigher(false)
@@ -201,7 +201,6 @@ const MixPage = (props) => {
     };
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
-        console.log('[retrievePaddocksPlan]', response.data);
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
@@ -281,48 +280,59 @@ const MixPage = (props) => {
   }
 
   const addToSelected = (item) => {
-    setSelectedFlag(true)
-    let status = false
-    for (var i = 0; i < selectedPaddock.length; i++) {
-      let paddock = selectedPaddock[i]
-      if(paddock.id == item.id){
-        status = true
-        break
-      }
-    }
-    if(status == false){
-      if(maxArea <= totalArea){
-        setTotalHigher(true)
-      }else if(maxArea >= (item.area + totalArea)){
-        setTotalArea(totalArea + item.area)
-        setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[item]])
-          removePaddock('available', item)
-        }, 100)  
-      }else{
-        let remainingArea = maxArea - totalArea
-        let newItem = {
-          ...item,
-          remaining_area: remainingArea,
-          partial_flag: true
-        }
-        setTotalArea(totalArea + remainingArea)
-        setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[newItem]])
-          removePaddock('available', item)
-        }, 100)
-      }
-      
-    }else{
-      console.log('already existed')
+    if(item.partial == true){
       Alert.alert(
         'Error Message',
-        item.name + ' already exist!',
+        'When partial is selected, you will no longer allowed to add new Paddock.',
         [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
+          {text: 'OK', onPress: () => console.log('Okay Pressed')},
         ],
         { cancelable: false }
-      );
+      )
+    }else{
+      setSelectedFlag(true)
+      let status = false
+      for (var i = 0; i < selectedPaddock.length; i++) {
+        let paddock = selectedPaddock[i]
+        if(paddock.id == item.id){
+          status = true
+          break
+        }
+      }
+      if(status == false){
+        if(maxArea <= totalArea){
+          setTotalHigher(true)
+        }else if(maxArea >= (item.area + totalArea)){
+          setTotalArea(totalArea + item.area)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[item]])
+            removePaddock('available', item)
+          }, 100)  
+        }else{
+          let remainingArea = maxArea - totalArea
+          let newItem = {
+            ...item,
+            remaining_area: remainingArea,
+            partial_flag: true
+          }
+          setTotalArea(totalArea + remainingArea)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            removePaddock('available', item)
+          }, 100)
+        }
+        
+      }else{
+        console.log('already existed')
+        Alert.alert(
+          'Error Message',
+          item.name + ' already exist!',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ],
+          { cancelable: false }
+        );
+      }
     }
 
   }
@@ -342,6 +352,10 @@ const MixPage = (props) => {
   }
 
   const selectedPaddockView = () => {
+    setTimeout(() => {
+      const { task } = props.state;
+      setMaxValue(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+    }, 100)
     return(
       <View style={{
         marginBottom: 100
@@ -357,7 +371,7 @@ const MixPage = (props) => {
             renderItem={(data) => (
               <MixCard data={data}
               totalRate={totalArea}
-              maxRate={maxArea}
+              maxRate={maxPartial}
               hasCheck={true}
               partialss={partialss}
               addToSelected={() => {}}

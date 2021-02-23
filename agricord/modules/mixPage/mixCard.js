@@ -46,6 +46,7 @@ class MixCard extends Component {
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
     const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
+    console.log('origi', totalRate, 'maz', maxRate, 'data', data.item.remaining_area);
     const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
     let borderColor = ''
     if (data != null) {
@@ -179,13 +180,13 @@ class MixCard extends Component {
                             </Text> */}
                           <View>
                             { 
-                              this.state.message === true ?
+                              (this.state.message === true || origPartial < 0) ?
                                 <Message
                                   visible={true}
                                   title={'Area too large'}
                                   message={`You've still selected too many hectares. \n\n\t Remove a whole paddock or complete a partial application on another paddock to continue.`}
                                   onClose={() => this.closeModal()}
-                                /> : null 
+                                /> : null
                             }
                           </View>
                         </View>
