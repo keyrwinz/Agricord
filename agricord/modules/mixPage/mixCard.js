@@ -179,13 +179,13 @@ class MixCard extends Component {
                             </Text> */}
                           <View>
                             { 
-                              this.state.message === true ?
+                              (this.state.message === true || origPartial < 0) ?
                                 <Message
                                   visible={true}
                                   title={'Area too large'}
                                   message={`You've still selected too many hectares. \n\n\t Remove a whole paddock or complete a partial application on another paddock to continue.`}
                                   onClose={() => this.closeModal()}
-                                /> : null 
+                                /> : null
                             }
                           </View>
                         </View>
