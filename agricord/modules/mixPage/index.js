@@ -102,6 +102,7 @@ const MixPage = (props) => {
   const [test, setTest] = useState(0)
   const [avail, setAvail] = useState([])
   const [partialss, setPartial] = useState(true)
+  const [checkMard, setCheckMark] = useState(true)
   const [maxPartial, setMaxValue] = useState(0)
   const { task } = props.state;
 
@@ -244,13 +245,13 @@ const MixPage = (props) => {
           return item
         }
       })
+      let diff = totalArea - parseInt(item.remaining_area)
+      setTotalArea(diff)
       // setTotalArea(totalArea - item.area)
       setTotalArea(totalArea - item.remaining_area)
-      if((parseFloat(totalArea - item.remaining_area).toFixed(2)) > maxArea){
+      if(parseFloat(totalArea - parseInt(item.remaining_area)).toFixed(2) > maxArea){
         setTotalHigher(true)
-      }else if((parseFloat(totalArea - item.remaining_area).toFixed(2)) == maxArea){
-        setTotalHigher(false)
-      }else{
+      }else {
         setTotalHigher(false)
       }
       setSelectedPaddock(newSelectedPaddock)
@@ -279,8 +280,9 @@ const MixPage = (props) => {
     }
   }
 
+
   const addToSelected = (item) => {
-    if(item.partial == true){
+    if(checkMard == false){
       Alert.alert(
         'Error Message',
         'When partial is selected, you will no longer allowed to add new Paddock.',
@@ -300,14 +302,25 @@ const MixPage = (props) => {
         }
       }
       if(status == false){
-        if(maxArea <= totalArea){
+       if(totalArea >= maxArea){
           setTotalHigher(true)
+          // let remainingArea = totalArea + item.area
+          let newItem = {
+            ...item,
+            // remaining_area: remainingArea,
+            partial_flag: true
+          }
+          setTotalArea(totalArea + item.area)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            removePaddock('available', item)
+          }, 100)
         }else if(maxArea >= (item.area + totalArea)){
           setTotalArea(totalArea + item.area)
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
-          }, 100)  
+          }, 100)
         }else{
           let remainingArea = maxArea - totalArea
           let newItem = {
@@ -321,7 +334,6 @@ const MixPage = (props) => {
             removePaddock('available', item)
           }, 100)
         }
-        
       }else{
         console.log('already existed')
         Alert.alert(
@@ -338,6 +350,9 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    setCheckMark(item.partial)
+    // await setCheckMark(item.partial == false ? (checkMard = true) : (checkMard = false))
+    console.log("[item]", item.partial, checkMard, item);
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
         return {
@@ -749,13 +764,13 @@ const MixPage = (props) => {
         totalHigher == true ?
           <Message
             visible={true}
-            title={'Area is too High'}
-            message={`This mix would require a total area lower than ${maxArea} ha, which is required for this mix. \n\n\t Remove paddock or complete a partial application`}
+            title={'Area too Large'}
+            message={`You've selected too many hectares.\n\n\t Remove certain paddock or complete partial application on another paddock to continue.`}
             onClose={() => closePar()}
           /> : null
       }
       {
-        (totalHigher == false && (selectedFlag && selectedPaddock.length > 0)) && (
+        ((totalArea < maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
