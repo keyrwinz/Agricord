@@ -136,7 +136,7 @@ const Home = (props) => {
         </View>
       <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: 
         orders == undefined ||
-        (orders?.infocus == undefined ||
+        (orders?.infocus == undefined &&
         orders?.infocus.length <= 3 ) &&
         (orders?.orders == undefined ||
         orders?.orders.length <= 3) ? 
