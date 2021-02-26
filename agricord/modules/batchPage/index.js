@@ -148,6 +148,7 @@ class paddockPage extends Component{
 
   manageProductConfirmation(){
     const user = this.props.state.user;
+    const application_rate = this.props.navigation.state.params
     const { matchedProduct, data, quantity, batchProducts } = this.state;
     if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
       this.state.scanned.push(matchedProduct.batch_number)
@@ -161,7 +162,7 @@ class paddockPage extends Component{
             merchant_id: user.sub_account.merchant.id,
             account_id: user.account_information.account_id,
             product_trace_id: matchedProduct.id,
-            applied_rate: this.props.navigation.state.params.application_rate
+            applied_rate: application_rate
           }
           batchProducts.push(product);
         }
