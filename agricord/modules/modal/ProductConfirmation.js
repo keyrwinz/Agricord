@@ -10,6 +10,10 @@ import { connect } from 'react-redux';
 import styles from './Styles.js'
 class ProductConfirmation extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
   redirect(){
 
   }
