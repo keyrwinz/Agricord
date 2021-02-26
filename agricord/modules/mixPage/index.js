@@ -790,7 +790,7 @@ const MixPage = (props) => {
             }}
             onSuccess={() => {
               setMixConfirmation(false)
-              props.navigation.navigate('batchStack', {total_volume: parseFloat(task.machine.capacity * totalArea).toFixed(2), selected_paddock: selectedPaddock})
+              props.navigation.navigate('batchStack', {total_volume: parseFloat(task.machine.capacity * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             }}
             data={selectedPaddock}
             volume={'BATCH ' + totalArea + 'HA ' + parseFloat(task.machine.capacity * totalArea).toFixed(2) + ' L'}
