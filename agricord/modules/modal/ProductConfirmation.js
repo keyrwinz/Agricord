@@ -5,7 +5,7 @@ import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
-import SlidingButtonRelative from 'modules/generic/InputSlidingButton.js';
+import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 import { connect } from 'react-redux';
 import styles from './Styles.js'
 class ProductConfirmation extends Component {
@@ -92,13 +92,11 @@ class ProductConfirmation extends Component {
 
             <SlidingButtonRelative
               icon={faPlus}
-              title={'ADD 76,8 L'}
+              title={`ADD ${data.rate}L`}
               label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess()}
               widthLeft={'30%'}
               widthRight={'70%'}
-              changeText={this.props.changeText}
-              quantity={this.props.data.quantity}
               />
           </View>
         </View>

@@ -102,6 +102,7 @@ const MixPage = (props) => {
   const [test, setTest] = useState(0)
   const [avail, setAvail] = useState([])
   const [partialss, setPartial] = useState(true)
+  const [maxPartial, setMaxValue] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -182,6 +183,12 @@ const MixPage = (props) => {
       setTotalHigher(true)
     }
   }
+
+  const closePar = () => {
+    setMessage(false)
+    setPartial(false)
+    setTotalHigher(false)
+  }
  
   const retrieve = () => {
     const { task, user } = props.state;
@@ -198,6 +205,7 @@ const MixPage = (props) => {
         setLoading(false)
         if(response.data !== null && response.data.length > 0){
           setPaddocks(response.data)
+          setAvail(response.data)
         }else{
           setPaddocks([])
         }
@@ -247,14 +255,19 @@ const MixPage = (props) => {
         setTotalHigher(false)
       }
       setSelectedPaddock(newSelectedPaddock)
-      setAvail([...paddocks, ...[item]])
+      // setPaddocks([...paddocks, ...[item]])
+      avail.forEach(el => {
+        if(el.id == item.id){
+          setPaddocks([...paddocks, ...[el]])
+        }
+      })
     }else{
       const newPaddocks = paddocks.filter((paddock, idx) => {
         if(paddock.id != item.id){
           return item
         }
       })
-      setAvail((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
+      setPaddocks((newPaddocks != null && newPaddocks.length > 0) ? newPaddocks : [])
     }
   }
 
@@ -268,48 +281,59 @@ const MixPage = (props) => {
   }
 
   const addToSelected = (item) => {
-    setSelectedFlag(true)
-    let status = false
-    for (var i = 0; i < selectedPaddock.length; i++) {
-      let paddock = selectedPaddock[i]
-      if(paddock.id == item.id){
-        status = true
-        break
-      }
-    }
-    if(status == false){
-      if(maxArea <= totalArea){
-        setTotalHigher(true)
-      }else if(maxArea >= (item.area + totalArea)){
-        setTotalArea(totalArea + item.area)
-        setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[item]])
-          removePaddock('available', item)
-        }, 100)  
-      }else{
-        let remainingArea = maxArea - totalArea
-        let newItem = {
-          ...item,
-          remaining_area: remainingArea,
-          partial_flag: true
-        }
-        setTotalArea(totalArea + remainingArea)
-        setTimeout(() => {
-          setSelectedPaddock([...selectedPaddock, ...[newItem]])
-          removePaddock('available', item)
-        }, 100)
-      }
-      
-    }else{
-      console.log('already existed')
+    if(item.partial == true){
       Alert.alert(
         'Error Message',
-        item.name + ' already exist!',
+        'When partial is selected, you will no longer allowed to add new Paddock.',
         [
-          { text: 'OK', onPress: () => console.log('OK Pressed') }
+          {text: 'OK', onPress: () => console.log('Okay Pressed')},
         ],
         { cancelable: false }
-      );
+      )
+    }else{
+      setSelectedFlag(true)
+      let status = false
+      for (var i = 0; i < selectedPaddock.length; i++) {
+        let paddock = selectedPaddock[i]
+        if(paddock.id == item.id){
+          status = true
+          break
+        }
+      }
+      if(status == false){
+        if(maxArea <= totalArea){
+          setTotalHigher(true)
+        }else if(maxArea >= (item.area + totalArea)){
+          setTotalArea(totalArea + item.area)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[item]])
+            removePaddock('available', item)
+          }, 100)  
+        }else{
+          let remainingArea = maxArea - totalArea
+          let newItem = {
+            ...item,
+            remaining_area: remainingArea,
+            partial_flag: true
+          }
+          setTotalArea(totalArea + remainingArea)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            removePaddock('available', item)
+          }, 100)
+        }
+        
+      }else{
+        console.log('already existed')
+        Alert.alert(
+          'Error Message',
+          item.name + ' already exist!',
+          [
+            { text: 'OK', onPress: () => console.log('OK Pressed') }
+          ],
+          { cancelable: false }
+        );
+      }
     }
 
   }
@@ -329,6 +353,10 @@ const MixPage = (props) => {
   }
 
   const selectedPaddockView = () => {
+    setTimeout(() => {
+      const { task } = props.state;
+      setMaxValue(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+    }, 100)
     return(
       <View style={{
         marginBottom: 100
@@ -344,7 +372,7 @@ const MixPage = (props) => {
             renderItem={(data) => (
               <MixCard data={data}
               totalRate={totalArea}
-              maxRate={maxArea}
+              maxRate={maxPartial}
               hasCheck={true}
               partialss={partialss}
               addToSelected={() => {}}
@@ -525,7 +553,7 @@ const MixPage = (props) => {
             </View>
             <View style={{ width: '100%', flex: 1, alignItems: 'flex-start' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-                { totalHigher === true ?
+                {/* { totalHigher === true ?
                   <View style={[Style.totalAreaBox, {borderColor: '#FF0000'}]}>
                     <Text style={{
                       fontSize: BasicStyles.standardFontSize, color: '#FF0000'
@@ -533,7 +561,7 @@ const MixPage = (props) => {
                     <Text style={{ color: '#FF0000', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                     TOTAL AREA
                     </Text>
-                  </View> :
+                  </View> : */}
                   <View style={Style.totalAreaBox}>
                   <Text style={{
                     color: '#5A84EE', 
@@ -543,7 +571,7 @@ const MixPage = (props) => {
                     TOTAL AREA
                   </Text>
                 </View>
-                }
+                {/* } */}
                 {
                   (selectedPaddock.length > 0) && (
                     <View style={{
@@ -719,6 +747,15 @@ const MixPage = (props) => {
 
       </ScrollView>
       {
+        totalHigher == true ?
+          <Message
+            visible={true}
+            title={'Area is too High'}
+            message={`This mix would require a total area lower than ${maxArea} ha, which is required for this mix. \n\n\t Remove paddock or complete a partial application`}
+            onClose={() => closePar()}
+          /> : null
+      }
+      {
         (totalHigher == false && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
@@ -752,7 +789,10 @@ const MixPage = (props) => {
             onClose={() => {
               setMixConfirmation(false)
             }}
-            onSuccess={() => redirect('batchStack')}
+            onSuccess={() => {
+              setMixConfirmation(false)
+              props.navigation.navigate('batchStack', {total_volume: parseFloat(task.machine.capacity * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+            }}
             data={selectedPaddock}
             volume={'BATCH ' + totalArea + 'HA ' + parseFloat(task.machine.capacity * totalArea).toFixed(2) + ' L'}
           />
