@@ -192,6 +192,7 @@ const MixPage = (props) => {
       merchant_id: user.sub_account.merchant.id,
       spray_mix_id: task.spray_mix.id
     };
+    console.log("[PARAMETER]", parameter);
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
         setLoading(false)
