@@ -50,7 +50,6 @@ class ApplyTask extends Component {
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchUpdateStatus, parameter, response => {
-      // console.log("===============================", JSON.parse(response))
       this.setState({confirmTask: false, taskConfirmation: false, isLoading: false, createdBatch: 0})
       this.retrieveBatch(user);
       },

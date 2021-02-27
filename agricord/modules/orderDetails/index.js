@@ -19,6 +19,7 @@ import styles from 'modules/orderDetails/Styles.js';
 import TaskIcon from 'components/Products/TaskIcon.js';
 import TaskButton from 'modules/generic/TaskButton.js';
 import ProductCard from 'components/Products/thumbnail/ProductCard.js';
+import _ from "lodash"
 
 class OrderDetails extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class OrderDetails extends Component {
     this.state = {
       products: [],
       isLoading: false,
+      scannedProducts: 0
     };
   }
 
@@ -45,6 +47,7 @@ class OrderDetails extends Component {
     this.setState({isLoading: true});
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
+      this.sumProducts();
     }, error => {
       this.setState({
         products: [],
@@ -52,6 +55,13 @@ class OrderDetails extends Component {
       })
     });
   };
+
+  async sumProducts(){
+    let qty = _.sumBy(this.state.products, function(el){
+      return el.qty
+    })
+    await this.setState({scannedProducts: qty})
+  }
 
   _renderProducts = () => {
     return this.state.products.map((product, index) => {
@@ -83,7 +93,7 @@ class OrderDetails extends Component {
                   borderColor: '#4570DD',
                 }}>
                 <Text style={styles.ProductNumberOfItemsTextStyle}>
-                  {product.qty}
+                  {this.state.qty}
                 </Text>
               </View>
             </View>
@@ -174,7 +184,7 @@ class OrderDetails extends Component {
                     <View style={styles.DetailsTextContainer}>
                       <Text
                         style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                        {this.state.products.length}
+                        {this.state.scannedProducts}
                       </Text>
                     </View>
                   </View>
