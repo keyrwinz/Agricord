@@ -367,7 +367,7 @@ const Home = (props) => {
                                       </View>
                                       <View style={Style.flexRow}>
                                         <Text style={Style.eventPayloadText}>
-                                          {obj.paddock.name}
+                                          {obj?.paddock?.name}
                                         </Text>
                                         <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
                                           {/* {obj.payload_value} */}
