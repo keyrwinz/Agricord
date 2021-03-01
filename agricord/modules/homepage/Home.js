@@ -94,7 +94,7 @@ const Home = (props) => {
       limit: limit,
       offset: flag == true && offset > 0 ? (offset * limit) : offset,
     };
-    setLoading(true)
+    setLoading(false)
     Api.request(Routes.dashboardRetrieve, parameters, response => {
       setLoading(false)
       setOrders()
@@ -108,7 +108,6 @@ const Home = (props) => {
         setTotalTasksData({tasks: response.data.totalInfocus})
         setData([response.data.totalOrders != undefined ? response.data.totalOrders : 0, response.data.totalRecent != undefined ? response.data.totalRecent : 0, response.data.totalInfocus != undefined ? response.data.totalInfocus : 0])
         setTotalActivities(response.data.totalInfocus + response.data.totalRecent + response.data.totalOrders)
-
       }else{
         setOrders(
           !flag ? null : orders,
