@@ -104,6 +104,7 @@ const MixPage = (props) => {
   const [partialss, setPartial] = useState(true)
   const [checkMard, setCheckMark] = useState(true)
   const [maxPartial, setMaxValue] = useState(0)
+  const [partialVal, setPartialVal] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -113,6 +114,7 @@ const MixPage = (props) => {
       setLoading(false)
       setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
       retrieve()
+      setAppliedRate(task.spray_mix.application_rate)
     }, 100)
   }, [])
 
@@ -146,13 +148,10 @@ const MixPage = (props) => {
           // setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
         }
         if(maxArea > totalArea){
-          setTotalHigher(false)
           setMessage(false)
         }else if(maxArea == totalArea){
-          setTotalHigher(false)
           setMessage(false)
         }else {
-          setTotalHigher(true)
           setMessage(true)
         }
       }else{
@@ -303,12 +302,11 @@ const MixPage = (props) => {
         }
       }
       if(status == false){
-       if(totalArea >= maxArea){
+       if(selectedPaddock.length == 0){
+        if(item.area > maxArea){
           setTotalHigher(true)
-          // let remainingArea = totalArea + item.area
           let newItem = {
             ...item,
-            // remaining_area: remainingArea,
             partial_flag: true
           }
           setTotalArea(totalArea + item.area)
@@ -316,6 +314,16 @@ const MixPage = (props) => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
+        }else if(maxArea >= (item.area + totalArea)){
+          setTotalArea(totalArea + item.area)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[item]])
+            removePaddock('available', item)
+          }, 100)
+        }
+      }else{
+        if(totalArea >= maxArea){
+          setTotalHigher(true)
         }else if(maxArea >= (item.area + totalArea)){
           setTotalArea(totalArea + item.area)
           setTimeout(() => {
@@ -335,6 +343,7 @@ const MixPage = (props) => {
             removePaddock('available', item)
           }, 100)
         }
+      }
       }else{
         console.log('already existed')
         Alert.alert(
@@ -351,9 +360,10 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    if(item.partial == false){
+      setPartialVal(parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2))
+    }
     setCheckMark(item.partial)
-    // await setCheckMark(item.partial == false ? (checkMard = true) : (checkMard = false))
-    console.log("[item]", item.partial, checkMard, item);
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
         return {
@@ -771,7 +781,7 @@ const MixPage = (props) => {
           /> : null
       }
       {
-        ((totalArea < maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+        ((totalArea <= maxArea || checkMard == false) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
@@ -797,8 +807,8 @@ const MixPage = (props) => {
         )
       } */}
 
-      {
-        (mixConfirmation) && (
+      { checkMard == false ?
+        (mixConfirmation) && (checkMard == false) && (
           <MixConfirmationModal
             visible={mixConfirmation}
             onClose={() => {
@@ -806,10 +816,24 @@ const MixPage = (props) => {
             }}
             onSuccess={() => {
               setMixConfirmation(false)
-              props.navigation.navigate('batchStack', {total_volume: parseFloat(task.machine.capacity * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+              props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             }}
             data={selectedPaddock}
-            volume={'BATCH ' + totalArea + 'HA ' + parseFloat(task.machine.capacity * totalArea).toFixed(2) + ' L'}
+            volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
+          />
+        ) :
+        (mixConfirmation) && (checkMard == true) && (
+          <MixConfirmationModal
+            visible={mixConfirmation}
+            onClose={() => {
+              setMixConfirmation(false)
+            }}
+            onSuccess={() => {
+              setMixConfirmation(false)
+              props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+            }}
+            data={selectedPaddock}
+            volume={'BATCH ' + totalArea + 'HA ' + parseFloat(appliedRate * totalArea).toFixed(2) + ' L'}
           />
         )
       }
@@ -828,4 +852,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(MixPage);
+)(MixPage)
