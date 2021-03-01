@@ -59,7 +59,8 @@ class MixName extends Component {
       activeIndex: 0,
       data: [],
       isLoading: false,
-      spray_mix: null
+      spray_mix: null,
+      sprayMix: null
     };
   }
 
@@ -86,6 +87,7 @@ class MixName extends Component {
     console.log('parameter', parameter)
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
         console.log('response', response)
+        this.retrieveOneSpray();
         this.setState({data: response.data, isLoading: false, spray_mix: response.spray_mix});
       },
       error => {
@@ -96,6 +98,29 @@ class MixName extends Component {
         })
         console.log({error});
       },
+    );
+  }
+
+  retrieveOneSpray = () => {
+    const { paddock } = this.props.state;
+    const parameter = {
+      condition: [{
+        value: '%%',
+        column: 'name',
+        clause: 'like'
+      }, {
+        value: paddock.spray_mix_id,
+        column: 'id',
+        clause: '='
+      }],
+      sort: {name: 'asc'},
+      limit: 1,
+      offset: 0
+    }
+    this.setState({isLoading: true})
+    Api.request(Routes.sprayMixOneRetrieve, parameter, response => {
+        this.setState({sprayMix: response.data[0], isLoading: false});
+      }
     );
   }
 
@@ -146,7 +171,7 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  65L/Ha
+                {this.state.sprayMix?.application_rate}L/Ha
                 </Text>
               </View>
             </View>
