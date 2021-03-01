@@ -12,9 +12,6 @@ import { faCheckCircle, faCheckSquare, faSquare } from '@fortawesome/free-solid-
 import { Color, BasicStyles } from 'common';
 import Style from './Style.js';
 import Message from 'modules/modal/MessageModal.js';
-import Draggable from 'react-native-draggable';
-import { remove } from 'lodash';
-import { check } from 'react-native-permissions';
 const COLORS = ['#FFC700', '#5A84EE', '#9AD267'];
 
 class MixCard extends Component {
@@ -47,7 +44,7 @@ class MixCard extends Component {
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
     const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
-    const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
+    // const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
