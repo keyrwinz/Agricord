@@ -19,6 +19,7 @@ import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import config from 'src/config';
 import { Helper } from 'common';
 import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
+import Conversion from 'services/Conversion';
 
 
 const width = Math.round(Dimensions.get('window').width);
@@ -49,7 +50,8 @@ class paddockPage extends Component{
       quantity: 0,
       newlyScanned: null,
       batchProducts: [],
-      totalPaddockArea: 0
+      totalPaddockArea: 0,
+      totalVolume: 0
     }
   }
 
@@ -59,6 +61,38 @@ class paddockPage extends Component{
 
   quantityHandler = (value) => {
     this.setState({quantity: value})
+  }
+
+  getTotalVolume = (data) => {
+    let total = 0; // in Liters
+    data.map(item => {
+      if(item.units == 'Millilitres (ml)'){
+        let rate = Conversion.getLFromMl(item.rate)
+        total = rate * this.state.totalPaddockArea
+      }else{
+        total += parseFloat(item.rate) * this.state.totalPaddockArea;
+      }
+    })
+    console.log('totalVolume', total)
+    this.setState({
+      totalVolume: total
+    })
+  }
+
+  manageProductRate = (data) => {
+    let currentData = data.map(item => {
+      return {
+        ...item,
+        rate: parseFloat(item.rate) * this.state.totalPaddockArea,
+        product: {
+          ...item.product,
+          rate: parseFloat(item.rate) * this.state.totalPaddockArea
+        }
+      }
+    })
+    this.setState({
+      data: currentData
+    })
   }
 
   componentDidMount(){
@@ -92,7 +126,10 @@ class paddockPage extends Component{
       isLoading: true
     })
     Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-      this.setState({data: response.data, isLoading: false});
+      console.log('data', response.data)
+      this.getTotalVolume(response.data)
+      this.setState({isLoading: false});
+      this.manageProductRate(response.data)
     },
     error => {
       this.setState({
@@ -113,7 +150,7 @@ class paddockPage extends Component{
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
       notes: this.state.notes,
-      water: this.props.navigation.state?.params?.total_volume - this.total(),
+      water: this.props.navigation.state?.params?.total_volume - this.state.totalVolume,
       status: 'inprogress'
     }
     let tasks = {
@@ -340,11 +377,6 @@ class paddockPage extends Component{
   }
 
   total = () => {
-    let total = this.state.total;
-    this.state.data.map(item => {
-      total += parseInt(item.rate) * this.state.totalPaddockArea;
-    })
-    return total;
   }
 
   else() {
@@ -519,7 +551,7 @@ class paddockPage extends Component{
                       fontWeight: 'bold',
                       textAlign: 'right',
                       width: '30%'
-                    }}>{this.props.navigation.state?.params?.total_volume - this.total()}L</Text>
+                    }}>{this.props.navigation.state?.params?.total_volume - this.state.totalVolume}L</Text>
                </View>
               {
                 this.renderNotesCard()
