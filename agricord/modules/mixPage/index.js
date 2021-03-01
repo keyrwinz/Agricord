@@ -236,6 +236,10 @@ const MixPage = (props) => {
     }, 100)
   }
 
+  onloads = () => {
+    console.log('disabled');
+  }
+
   const removePaddock = (from, item) => {
     item.partial = false;
     // setTotalArea(item.area + totalArea)
@@ -472,26 +476,49 @@ const MixPage = (props) => {
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
-              <Switch
-                value={appRateSwitch}
-                onChangeValue={() => onload()}
-                activeText={'ON'}
-                inactiveText={'OFF'}
-                fontSize={BasicStyles.standardFontSize}
-                activeTextColor={'rgba(255, 255, 255, 1)'}
-                inactiveTextColor={'rgba(255, 255, 255, 1)'}
-                activeBackgroundColor={'#9AD267'}
-                inactiveBackgroundColor={'#C6C6C6'}
-                activeButtonBackgroundColor={'rgba(255, 255, 255, 1)'}
-                inactiveButtonBackgroundColor={'#F2F2F2'}
-                switchHeight={25}
-                switchBorderRadius={5}
-                buttonWidth={30}
-                buttonHeight={20}
-                buttonBorderRadius={5}
-                animationTime={150}
-                padding={true}
-              />
+              {
+                selectedPaddock.length == 0 ?
+                <Switch
+                  value={appRateSwitch}
+                  onChangeValue={() => onloads()}
+                  activeText={'ON'}
+                  inactiveText={'OFF'}
+                  fontSize={BasicStyles.standardFontSize}
+                  activeTextColor={'rgba(255, 255, 255, 1)'}
+                  inactiveTextColor={'rgba(255, 255, 255, 1)'}
+                  activeBackgroundColor={'#9AD267'}
+                  inactiveBackgroundColor={'#C6C6C6'}
+                  activeButtonBackgroundColor={'rgba(255, 255, 255, 1)'}
+                  inactiveButtonBackgroundColor={'#F2F2F2'}
+                  switchHeight={25}
+                  switchBorderRadius={5}
+                  buttonWidth={30}
+                  buttonHeight={20}
+                  buttonBorderRadius={5}
+                  animationTime={150}
+                  padding={true}
+                /> :
+                <Switch
+                  value={appRateSwitch}
+                  onChangeValue={() => onload()}
+                  activeText={'ON'}
+                  inactiveText={'OFF'}
+                  fontSize={BasicStyles.standardFontSize}
+                  activeTextColor={'rgba(255, 255, 255, 1)'}
+                  inactiveTextColor={'rgba(255, 255, 255, 1)'}
+                  activeBackgroundColor={'#9AD267'}
+                  inactiveBackgroundColor={'#C6C6C6'}
+                  activeButtonBackgroundColor={'rgba(255, 255, 255, 1)'}
+                  inactiveButtonBackgroundColor={'#F2F2F2'}
+                  switchHeight={25}
+                  switchBorderRadius={5}
+                  buttonWidth={30}
+                  buttonHeight={20}
+                  buttonBorderRadius={5}
+                  animationTime={150}
+                  padding={true}
+                />
+              }
               <View style={{ marginLeft: 40 }}
               >
                 {message === true ?
