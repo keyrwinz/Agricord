@@ -336,45 +336,47 @@ const Home = (props) => {
                             {
                               orders?.recent?.length > 0  && ( <View>{orders?.recent.map((obj, idx) => {
                                 return (
-                                  <View
+                                  <TouchableOpacity
                                     key={idx}
-                                    style={[
-                                      Style.flexRow,
-                                      {
-                                        position: 'relative',
-                                        marginLeft: 15
-                                      }
-                                    ]}
+                                    onPress={() => obj?.order_number ? redirectToOrder(obj, props) :  redirectToTask(obj, props)}
                                   >
-                                    {
-                                      idx + 1 === response.data.recent.length ? (
-                                        <CompleteIcon style={Style.eventIcon} />
-                                      ) : (
-                                        <CompletedEventIcon style={Style.eventIcon} />
-                                      )
-                                    }
-                                    <View style={Style.eventDetailsContainer}>
-                                      <View style={Style.flexRow}>
-                                        <Text style={Style.eventText}>
-                                          Task
-                                        </Text>
-                                        <Text style={[Style.eventText, { color: '#54BAEC' }]}>
-                                          {obj.due_date}
-                                        </Text>
-                                        <Text style={Style.eventText}>
-                                          {obj.nickname}
-                                        </Text>
+                                      <View
+                                        key={idx}
+                                        style={[
+                                          Style.flexRow,
+                                          {
+                                            position: 'relative',
+                                            marginLeft: 15
+                                          }
+                                        ]}
+                                      >
+                                        {
+                                          idx + 1 === response.data.recent.length ? (
+                                            <CompleteIcon style={Style.eventIcon} />
+                                          ) : (
+                                            <CompletedEventIcon style={Style.eventIcon} />
+                                          )
+                                        }
+                                        <View style={Style.eventDetailsContainer}>
+                                          <View style={Style.flexRow}>
+                                            <Text style={Style.eventText}>
+                                              {obj?.order_number ? 'Order' : 'Task'}
+                                            </Text>
+                                            <Text style={[Style.eventText, { color: '#54BAEC' }]}>
+                                              {obj?.order_number ? obj.delivered_date : obj.date_completed}
+                                            </Text>
+                                            <Text style={Style.eventText}>
+                                              {obj?.order_number ? obj.delivered_by : obj.nickname}
+                                            </Text>
+                                          </View>
+                                          <View style={Style.flexRow}>
+                                            <Text style={Style.eventPayloadText}>
+                                              {obj?.order_number ? obj.order_number : obj.paddock?.name}
+                                            </Text>
+                                          </View>
+                                        </View>
                                       </View>
-                                      <View style={Style.flexRow}>
-                                        <Text style={Style.eventPayloadText}>
-                                          {obj?.paddock?.name}
-                                        </Text>
-                                        <Text style={[Style.eventPayloadText, { marginLeft: 15 }]}>
-                                          {/* {obj.payload_value} */}
-                                        </Text>
-                                      </View>
-                                    </View>
-                                  </View>
+                                  </TouchableOpacity>
                                 )
                               })}</View>)
                             }
