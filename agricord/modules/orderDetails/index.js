@@ -58,7 +58,7 @@ class OrderDetails extends Component {
 
   async sumProducts(){
     let qty = _.sumBy(this.state.products, function(el){
-      return el.qty
+      return parseInt(el.qty)
     })
     await this.setState({scannedProducts: qty})
   }
