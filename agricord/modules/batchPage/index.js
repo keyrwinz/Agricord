@@ -153,15 +153,19 @@ class paddockPage extends Component{
       water: this.props.navigation.state?.params?.total_volume - this.state.totalVolume,
       status: 'inprogress'
     }
+    let taskArray = [];
+    this.props.navigation.state.params.selected_paddock.map((item) => {
+      taskArray.push(item.plan_task_id);
+    })
+    let areas = [];
+    this.props.navigation.state.params.selected_paddock.map((item) => {
+      areas.push(item.remaining_area);
+    })
     let tasks = {
-      paddock_plan_id: paddock.data[0].paddock_plan_id,
-      paddock_id: paddock.data[0].paddock_id,
-      category: paddock.data[0].category,
-      due_date: paddock.data[0].due_date,
-      nickname: paddock.data[0].nickname,
-      spray_mix_id: task.spray_mix.id,
+      paddock_plan_task_id: taskArray,
       merchant_id: user.sub_account.merchant.id,
-      status: 'inprogress',
+      account_id: user.account_information.account_id,
+      area: areas
     }
 
     let batch_products = this.state.batchProducts
