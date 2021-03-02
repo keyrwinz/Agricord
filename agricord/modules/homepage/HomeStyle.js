@@ -12,10 +12,7 @@ export default {
   MainContainer: {
     flex: 1,
     paddingHorizontal: 15,
-    justifyContent: 'center',
-    paddingBottom: 30,
     width: '100%',
-    marginTop: '15%',
     // top: '10%',
     // bottom: '20%',
     backgroundImage: 'assets/homescreen/background.svg'

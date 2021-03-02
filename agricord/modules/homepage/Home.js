@@ -134,27 +134,9 @@ const Home = (props) => {
       <View style={Style.background}>
           <Background style={Style.backgroundImage} />
         </View>
-      <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: 
-        orders == undefined ||
-        (orders?.infocus == undefined &&
-        orders?.infocus.length <= 3 ) &&
-        (orders?.orders == undefined ||
-        orders?.orders.length <= 3) ? 
-        height : null}}>
-        <View style={
-          orders == undefined ||
-          (orders?.infocus == undefined ||
-          orders?.infocus.length <= 3 ) &&
-          (orders?.orders == undefined ||
-          orders?.orders.length <= 3) ? 
-          {flex: 1,
-            paddingHorizontal: 15,
-            justifyContent: 'center',
-            paddingBottom: 30,
-            width: '100%',
-            marginTop: '5%'} : 
-          Style.MainContainer}>
-            <View style={orders ? {} : {marginTop:-300}}>
+      <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, minHeight: height}}>
+        <View style={Style.MainContainer}>
+            <View>
               <View>
                 <Text style={[Style.username, Style.textWhite]}>
                   Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
