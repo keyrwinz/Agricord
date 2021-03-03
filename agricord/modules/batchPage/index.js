@@ -176,7 +176,9 @@ class paddockPage extends Component{
     this.setState({isLoading: true});
     Api.request(Routes.batchCreate, parameter, response => {
       this.setState({isLoading: false});
-      this.setState({createdBatch: response.data});
+      if(response.data !== null) {
+        this.setState({createdBatch: response.data.batch[0]});
+      }
     },
     error => {
       this.setState({
@@ -226,9 +228,10 @@ class paddockPage extends Component{
   }
 
   manageTaskConfirmation(){
+    const { createdBatch } = this.state;
     this.setState({confirmTask: true});
     let parameter = {
-      id: this.state.createdBatch?.id,
+      id: createdBatch?.id,
       status: 'completed'
     }
     this.setState({isLoading: true});
