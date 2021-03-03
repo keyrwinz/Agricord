@@ -8,6 +8,7 @@ import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
 import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 import { connect } from 'react-redux';
 import styles from './Styles.js'
+import Conversion from 'services/Conversion';
 class ProductConfirmation extends Component {
 
   constructor(props) {
@@ -46,7 +47,7 @@ class ProductConfirmation extends Component {
               />
             </TouchableOpacity>
             <View style={styles.TitleContainer}>
-              <Text style={styles.TitleTextStyle}>{data.title}</Text>
+              <Text style={styles.TitleTextStyle}>{data.product.title}</Text>
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -84,7 +85,7 @@ class ProductConfirmation extends Component {
                   </View>
                   <View style={styles.DetailDetailContainer}>
                     <Text style={styles.DetailDetailTextStyle}>
-                      {data.volume_remaining}
+                      {data.qty + ' ' + Conversion.getUnitsAbbreviation(data.units)}
                     </Text>
                   </View>
                 </View>
@@ -96,9 +97,9 @@ class ProductConfirmation extends Component {
 
             <SlidingButtonRelative
               icon={faPlus}
-              title={`ADD ${data.rate}L`}
+              title={`ADD ${data.rate} ${Conversion.getUnitsAbbreviation(data.units)}`}
               label={'Swipe Right to Confirm'}
-              onComplete={() => this.props.onSuccess()}
+              onComplete={() => this.props.onSuccess(data)}
               widthLeft={'30%'}
               widthRight={'70%'}
               />

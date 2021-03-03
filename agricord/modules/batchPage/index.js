@@ -10,6 +10,7 @@ import _, { isError } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 // import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
 import { faExclamationTriangle as faExclamationTriangle, faTint} from '@fortawesome/free-solid-svg-icons';
+import { NavigationActions, StackActions } from 'react-navigation';
 import {data} from './data-test.js';
 import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import KeySvg from 'assets/settings/key.svg';
@@ -51,7 +52,10 @@ class paddockPage extends Component{
       newlyScanned: null,
       batchProducts: [],
       totalPaddockArea: 0,
-      totalVolume: 0
+      totalVolume: 0,
+      scannedTraces: [],
+      scannedTraceIds: [],
+      completeFlag: false
     }
   }
 
@@ -140,10 +144,31 @@ class paddockPage extends Component{
     );
   }
 
+  navigateToScreen = () => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'drawerStack',
+      action: StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+            NavigationActions.navigate({routeName: 'Homepage', params: {
+              initialRouteName: 'Home',
+              index: 0
+            }}),
+        ]
+      })
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
   setApplyTank(){
-    this.setState({confirmTask: true, taskConfirmation: true})
+    this.setState({confirmTask: true, taskConfirmation: false})
     const { task, paddock } = this.props.state;
     const user = this.props.state.user
+    if(user == null){
+      return
+    }
     let batch = {
       spray_mix_id: task.spray_mix.id,
       machine_id: task.machine.id,
@@ -167,17 +192,26 @@ class paddockPage extends Component{
       account_id: user.account_information.account_id,
       area: areas
     }
-
-    let batch_products = this.state.batchProducts
+    const { scannedTraces } = this.state;
+    let batch_products = scannedTraces.map((item, index) => {
+      return {
+        product_id: item.product_id,
+        merchant_id: user.sub_account.merchant.id,
+        account_id: user.id,
+        product_trace_id: item.id,
+        applied_rate: item.rate
+      }
+    })
 
     let parameter = {
       batch, tasks, batch_products
     }
     this.setState({isLoading: true});
+    console.log('[Batch Create] parameter', JSON.stringify(parameter))
     Api.request(Routes.batchCreate, parameter, response => {
       this.setState({isLoading: false});
       if(response.data !== null) {
-        this.setState({createdBatch: response.data.batch[0]});
+        this.setState({createdBatch: response.data.batch[0], taskConfirmation: true});
       }
     },
     error => {
@@ -189,7 +223,7 @@ class paddockPage extends Component{
   );
   }
 
-  manageProductConfirmation(){
+  manageProductConfirmation(param){
     const user = this.props.state.user;
     const { application_rate } = this.props.navigation.state.params
     const { matchedProduct, data, quantity, batchProducts } = this.state;
@@ -227,6 +261,64 @@ class paddockPage extends Component{
     }
   }
 
+  addProductToBatch(trace){
+    const { data, scannedTraces, scannedTraceIds } = this.state;
+    this.setState({
+      completeFlag: false
+    })
+    if(scannedTraceIds.indexOf(trace.id) < 0){
+      let updated = data.map((item, index) => {
+        if(item.product_id == trace.product_id){
+          let rate = parseFloat(item.rate) - parseFloat(trace.rate)
+          scannedTraces.push(trace)
+          scannedTraceIds.push(trace.id)
+          let batch = item.product.batch_number
+          batch.push(trace.batch_number)
+          return {
+            ...item,
+            rate: rate,
+            product: {
+              ...item.product,
+              rate: rate,
+              batch_number: batch
+            }
+          }
+        }
+        return item
+      })
+      this.setState({
+        data: updated,
+        productConfirmation: false
+      })
+      let flag = true
+      for (var i = 0; i < updated.length; i++) {
+        let item = updated[i]
+        let length = updated.length - 1
+        if(item.rate > 0){
+          break
+        }
+        if(length == i && item.rate <= 0){
+          this.setState({
+            completeFlag: true
+          })
+        }
+      }
+    }else{
+      this.setState({
+        productConfirmation: false
+      })
+      Alert.alert(
+        "Error Message",
+        "Product Trace already in the list",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+    }
+
+  }
+
   manageTaskConfirmation(){
     const { createdBatch } = this.state;
     this.setState({confirmTask: true});
@@ -236,7 +328,8 @@ class paddockPage extends Component{
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchUpdateStatus, parameter, response => {
-      this.setState({confirmTask: false, taskConfirmation: false, isLoading: false})
+        this.setState({confirmTask: false, taskConfirmation: false, isLoading: false})
+        this.navigateToScreen()
       },
       error => {
         this.setState({
@@ -362,25 +455,81 @@ class paddockPage extends Component{
     Api.request(route, parameter, response => {
       this.setState({isLoading: false});
       if(response.data != null && response.data.length > 0) {
-        this.checkProduct(this.state.data, response.data[0].product.id, response.data[0])
+        console.log('[NFC]', response.data)
+        this.checkProduct(response.data[0])
       } else {
         this.setState({message: response.error})
-        this.else();
+        Alert.alert(
+          "Error Message",
+          response.error,
+          [
+            { text: "OK"}
+          ],
+          { cancelable: false }
+        );
       }
     }
     );
   }
 
-  checkProduct(array, id, value) {
-    array.map(item => {
-      if (item.product.id === id) {
-        this.setState({matchedProduct: value});
-        this.setState({newlyScanned: item});
-        this.setState({
-          productConfirmation: true
-        })
+  checkProduct(productTrace) {
+    const { scannedTraceIds, data } = this.state;
+    console.log('again')
+  
+    if(scannedTraceIds.indexOf(parseFloat(productTrace.id)) >= 0){
+      Alert.alert(
+        "Error Message",
+        "Product Trace already in the list",
+        [
+          { text: "OK"}
+        ],
+        { cancelable: false }
+      );
+      return
+    }
+    console.log('again 1')
+    for (var i = 0; i < data.length; i++) {
+      let item = data[i]
+      let itemProductId = parseInt(item.product.id)
+      let traceProductId = parseInt(productTrace.product_id)  
+      if (itemProductId == traceProductId) {
+        let itemRate = item.product.rate;
+        let qty = productTrace.qty
+        this.setState({matchedProduct: productTrace});
+        if(itemRate <= 0 || qty <= 0){
+          Alert.alert(
+            "Error Message",
+            "Remaining rate is 0. Not Allowed",
+            [
+              { text: "OK"}
+            ],
+            { cancelable: false }
+          );
+          return
+        }
+        if(itemRate > 0 && qty > 0 && itemRate >= qty){
+          this.setState({
+            newlyScanned: {
+              ...productTrace,
+              rate: productTrace.qty
+            }
+          })
+        }
+        if(itemRate > 0 && qty > 0 && itemRate < qty){
+          this.setState({
+            newlyScanned: {
+              ...productTrace,
+              rate: itemRate
+            }
+          })
+        }
+        setTimeout(() => {
+          this.setState({
+            productConfirmation: true
+          })
+        }, 100)
       }
-    })
+    }
   }
 
   total = () => {
@@ -466,6 +615,7 @@ class paddockPage extends Component{
 
   render() {
     const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask, newlyScanned } = this.state;
+    const { completeFlag } = this.state;
     const { task } = this.props.state;
     return (
       <SafeAreaView>
@@ -488,7 +638,7 @@ class paddockPage extends Component{
                 {
                   this.renderTopCard()
                 }
-                { this.props.state.dedicatedNfc === false ?
+                { this.props.state.dedicatedNfc === false && completeFlag == false ?
                   <TouchableOpacity
                     style={[
                       BasicStyles.standardCardContainer
@@ -508,13 +658,13 @@ class paddockPage extends Component{
                 : null }
                 
                  {
-                  data.map( item => (
+                  data.map( dataItem => (
                     <ProductCard
                         item={{
-                          ...item.product,
+                          ...dataItem.product,
                           from: 'paddockPage'
                         }}
-                        key={item.id}
+                        key={dataItem.id}
                         navigation={this.props.navigation}
                         theme={'v2'}
                         batch={true}
@@ -567,7 +717,7 @@ class paddockPage extends Component{
          </View>
         </ScrollView>
         {
-          (this.state.data.length === this.state.scanned.length) && (
+          (completeFlag) && (
             <SlidingButton
               title={'Apply Tank'}
               label={'Swipe Right to Complete'}
@@ -583,15 +733,8 @@ class paddockPage extends Component{
               onClose={() => this.setState({
                 productConfirmation: false
               })}
-              data={{
-                title: matchedProduct.product.title,
-                manufacturing_date: matchedProduct.manufacturing_date,
-                volume_remaining: matchedProduct.volume,
-                batch_number: matchedProduct.batch_number,
-                quantity: matchedProduct.product.qty[0].total_remaining_product,
-                rate: newlyScanned.product.rate
-              }}
-              onSuccess={() => this.manageProductConfirmation()}
+              data={newlyScanned}
+              onSuccess={(param) => this.addProductToBatch(param)}
               changeText={this.quantityHandler}
             />
           )
@@ -602,9 +745,12 @@ class paddockPage extends Component{
               onSuccess={() => this.manageTaskConfirmation()}
               taskConfirmation={confirmTask}
               visible={confirmTask}
-              onClose={() => this.setState({
-                taskConfirmation: false
-              })}
+              onClose={() => {
+                this.setState({
+                  taskConfirmation: false
+                })
+                this.navigateToScreen()
+              }}
             />
           )
         }

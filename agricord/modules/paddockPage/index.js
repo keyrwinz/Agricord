@@ -60,6 +60,7 @@ class paddockPage extends Component{
         clause: '='
       }]
     }
+    console.log("[Paddock Page] parameter", parameter)
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
       this.setState({
         isLoading: false

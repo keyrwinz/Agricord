@@ -287,6 +287,17 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
+    if(item.remaining_area <= 0){
+      Alert.alert(
+        'Invalid Selection',
+        item.name + ' has 0 remaining area.',
+        [
+          {text: 'OK', onPress: () => console.log('Okay Pressed')},
+        ],
+        { cancelable: false }
+      )
+      return
+    }
     if(checkMard == false){
       Alert.alert(
         'Error Message',

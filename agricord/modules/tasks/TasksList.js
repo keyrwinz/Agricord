@@ -47,6 +47,13 @@ class TasksList extends Component {
     super(props);
   }
 
+  getLabelByStatus(status){
+    switch(status){
+      case 'history': return 'COMPLETED';
+      case 'due': return 'DUE';
+      case 'inprogress': return 'DUE DATE'
+    }
+  }
   render() {
     const { data, loading } = this.props;
     console.log(">>>>>>>>>>>>>>>>>>>>>>>>", data);
@@ -92,7 +99,7 @@ class TasksList extends Component {
                   <PaddockCard item={{
                       ...item,
                       from: this.props.from,
-                      status: this.props.from == 'history' ? 'COMPLETED' : 'DUE'
+                      status: this.getLabelByStatus(this.props.from)
                     }}
                     key={item.id}
                     navigation={this.props.navigation}

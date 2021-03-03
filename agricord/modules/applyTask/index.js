@@ -18,6 +18,7 @@ import Api from 'services/api';
 import SlidingButton from 'modules/generic/SlidingButton';
 import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { NavigationActions, StackActions } from 'react-navigation';
 const height = Math.round(Dimensions.get('window').height);
 
 class ApplyTask extends Component {
@@ -75,6 +76,24 @@ class ApplyTask extends Component {
       }
     })
 
+  }
+
+  navigateToScreen = () => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'drawerStack',
+      action: StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+            NavigationActions.navigate({routeName: 'Homepage', params: {
+              initialRouteName: 'Home',
+              index: 0
+            }}),
+        ]
+      })
+    });
+
+    this.props.navigation.dispatch(navigateAction);
   }
 
   unAppliedTaskCheck(){
@@ -300,9 +319,12 @@ class ApplyTask extends Component {
               onSuccess={() => this.manageTaskConfirmation()}
               taskConfirmation={confirmTask}
               visible={confirmTask}
-              onClose={() => this.setState({
-                taskConfirmation: false
-              })}
+              onClose={() => {
+                this.setState({
+                  taskConfirmation: false
+                })
+                this.navigateToScreen()
+              }}
             />
           )
         }
