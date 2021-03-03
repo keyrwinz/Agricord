@@ -57,7 +57,9 @@ class TaskConfirmation extends Component {
                 paddingBottom: 25,
                 borderBottomColor: Color.gray,
                 borderBottomWidth: 2,
-                width: 310
+                width: 310,
+                marginRight: 'auto',
+                marginLeft: 'auto'
               }]}>SWIPE TO COMPLETE WHEN TANK IS EMPTY</Text>
             </View>
 

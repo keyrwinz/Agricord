@@ -123,6 +123,7 @@ const Home = (props) => {
       retrieve(false)
     }, 1000)
   }, [])
+  console.log('[INFOCUS]', orders?.infocus);
   return  (
     <ScrollView
       style={Style.ScrollView}
@@ -200,7 +201,7 @@ const Home = (props) => {
                   <View>
                     {/* IN FOCUS */}
                 {
-                  orders?.orders?.length > 0 ? (
+                  orders?.orders?.length > 0 || orders?.infocus.length > 0 ? (
                       <View style={Style.InFocusContainer}>
                         <Text style={{ marginLeft: 10, fontSize: 20, fontWeight: 'bold' }}>In Focus</Text>
                         {

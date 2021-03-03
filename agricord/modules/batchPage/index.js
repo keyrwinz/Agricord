@@ -189,7 +189,7 @@ class paddockPage extends Component{
 
   manageProductConfirmation(){
     const user = this.props.state.user;
-    const application_rate = this.props.navigation.state.params
+    const { application_rate } = this.props.navigation.state.params
     const { matchedProduct, data, quantity, batchProducts } = this.state;
     if(this.state.scanned.includes(matchedProduct.batch_number) === false) {
       this.state.scanned.push(matchedProduct.batch_number)
