@@ -86,7 +86,6 @@ class ApplyTask extends Component {
   }
 
   componentDidMount(){
-    console.log("selected", this.state.selectedPicker, this.state.isPressed);
     const {user } = this.props.state;
     if (user == null) {
       return
@@ -100,7 +99,8 @@ class ApplyTask extends Component {
         this.setState({isLoading: false});
         this.setState({data: response.data});
         if(this.props.state.task) {
-          this.setState({selectedMix: this.props.state.task.spray_mix.name})
+          this.setState({selectedMix: this.props.state.task.spray_mix})
+          // this.setState({selectedMix: this.props.state.task.spray_mix.name})
         }
       }, error => {
         this.setState({isLoading: false});
