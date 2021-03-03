@@ -366,6 +366,7 @@ const MixPage = (props) => {
 
   const partialChange = (item) => {
     if(item.partial == false){
+      item.area = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
       setPartialVal(parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2))
     }
     setCheckMark(item.partial)
@@ -837,7 +838,6 @@ const MixPage = (props) => {
 
       { checkMard == false ?
         (mixConfirmation) && (checkMard == false) && (
-          console.log('[inside here]', appliedRate, '[Partial Val]', partialVal),
           <MixConfirmationModal
           visible={mixConfirmation}
           onClose={() => {
@@ -852,7 +852,6 @@ const MixPage = (props) => {
           />
           ) :
           (mixConfirmation) && (checkMard == true) && (
-          console.log('[inside here]', appliedRate, '[Partial Val]', totalArea),
           <MixConfirmationModal
             visible={mixConfirmation}
             onClose={() => {
