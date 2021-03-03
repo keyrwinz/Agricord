@@ -241,6 +241,7 @@ const MixPage = (props) => {
   }
 
   const removePaddock = (from, item) => {
+    setCheckMark(true)
     item.partial = false;
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
@@ -836,20 +837,22 @@ const MixPage = (props) => {
 
       { checkMard == false ?
         (mixConfirmation) && (checkMard == false) && (
+          console.log('[inside here]', appliedRate, '[Partial Val]', partialVal),
           <MixConfirmationModal
-            visible={mixConfirmation}
-            onClose={() => {
-              setMixConfirmation(false)
-            }}
-            onSuccess={() => {
-              setMixConfirmation(false)
-              props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
-            }}
-            data={selectedPaddock}
-            volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
+          visible={mixConfirmation}
+          onClose={() => {
+            setMixConfirmation(false)
+          }}
+          onSuccess={() => {
+            setMixConfirmation(false)
+            props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+          }}
+          data={selectedPaddock}
+          volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
           />
-        ) :
-        (mixConfirmation) && (checkMard == true) && (
+          ) :
+          (mixConfirmation) && (checkMard == true) && (
+          console.log('[inside here]', appliedRate, '[Partial Val]', totalArea),
           <MixConfirmationModal
             visible={mixConfirmation}
             onClose={() => {
