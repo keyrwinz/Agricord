@@ -75,12 +75,12 @@ export default {
   },
   fileUploaded: {
     paddingVertical: 5,
-    flexDirection: 'row',
-    alignItems: 'center'
+    // alignItems: 'center'
   },
   fileUploadedText: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 2
   },
   Details: {
     marginTop: 10,
