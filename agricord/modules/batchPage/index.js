@@ -199,7 +199,8 @@ class paddockPage extends Component{
         merchant_id: user.sub_account.merchant.id,
         account_id: user.id,
         product_trace_id: item.id,
-        applied_rate: item.rate
+        applied_rate: item.rate,
+        product_attribute_id: item.product_attribute_id
       }
     })
 
