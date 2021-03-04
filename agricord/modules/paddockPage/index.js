@@ -39,11 +39,13 @@ class paddockPage extends Component{
     // const {data}=this.props.navigation.state.params.data
     // console.log(data)
     this.retrieveData()
+    console.log("[PADDOCK]", this.props.state);
 
   }
 
   retrieveData = () => {
     const { paddock, user } = this.props.state;
+    console.log("[PADDOCKS]", paddock);
 
     if(paddock == null || user == null){
       return
@@ -55,11 +57,12 @@ class paddockPage extends Component{
 
     const parameter={
       condition: [{
-        value: paddock.paddock_id,
+        value: paddock.paddock?.id,
         column: 'id',
         clause: '='
       }]
     }
+    console.log("[REQUEST]", response);
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
       this.setState({
         isLoading: false

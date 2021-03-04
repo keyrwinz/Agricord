@@ -63,6 +63,10 @@ class paddockPage extends Component{
     this.setState({quantity: value})
   }
 
+  redirect(route){
+    this.props.navigation.navigate(route)
+  }
+
   getTotalVolume = (data) => {
     let total = 0; // in Liters
     data.map(item => {
@@ -174,6 +178,7 @@ class paddockPage extends Component{
       batch, tasks, batch_products
     }
     this.setState({isLoading: true});
+    console.log("[PARAMTER]", parameter);
     Api.request(Routes.batchCreate, parameter, response => {
       this.setState({isLoading: false});
       if(response.data !== null) {
@@ -236,7 +241,9 @@ class paddockPage extends Component{
     }
     this.setState({isLoading: true});
     Api.request(Routes.batchUpdateStatus, parameter, response => {
+      console.log("[RESPONSE]", response);
       this.setState({confirmTask: false, taskConfirmation: false, isLoading: false})
+      this.redirect('applyTaskStack')
       },
       error => {
         this.setState({
@@ -245,6 +252,13 @@ class paddockPage extends Component{
         console.log({error});
       },
     );
+  }
+
+  closeTaskConfirmation(){
+    this.setState({
+      taskConfirmation: false
+    })
+    this.redirect('applyTaskStack')
   }
 
   scan = (parameter) => {
@@ -602,9 +616,7 @@ class paddockPage extends Component{
               onSuccess={() => this.manageTaskConfirmation()}
               taskConfirmation={confirmTask}
               visible={confirmTask}
-              onClose={() => this.setState({
-                taskConfirmation: false
-              })}
+              onClose={() => this.closeTaskConfirmation()}
             />
           )
         }
