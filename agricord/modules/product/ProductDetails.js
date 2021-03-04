@@ -10,6 +10,7 @@ import {
   Alert,
   Image
 } from 'react-native';
+import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -35,7 +36,8 @@ class ProductDetails extends Component {
     this.state = {
       modal: false,
       loading: false,
-      data: null
+      data: null,
+      safetyEquipments: [],
     }
   }
 
@@ -81,7 +83,9 @@ class ProductDetails extends Component {
     );
   }
 
-  renderModal(){
+  renderModal(data){
+    console.log("DATA", data);
+    let details = JSON.parse(data.details)
     const { modal } = this.state;
     return(
       <Modal
@@ -113,7 +117,7 @@ class ProductDetails extends Component {
 
             <View style={Style.modalContent}>
               {
-              data && data.details && data.details.safety_equipment.map(item => (
+              data && details && details.safety_equipment.map(item => (
               <View style={Style.modalContentRow}>
                 <CheckIcon />
                 <Text style={{ paddingHorizontal: 20 }}>
@@ -161,6 +165,8 @@ class ProductDetails extends Component {
   }
 
   productInformation(data){
+    let details = JSON.parse(data.details)
+    console.log("[PRODUCT]", details);
     return(
       <View style={Style.Details}>
         <View style={Style.itemDetailsContainer}>
@@ -196,14 +202,19 @@ class ProductDetails extends Component {
           <Text style={Style.itemDetailLabel}>
             Group
           </Text>
-        
+          <View>
           {
-            data && (
-              <Text style={Style.itemDetailValue}>
-                {data.group || 'No data'}
-              </Text>
+            !Array.isArray(details.group) ? (
+              <Text style={{fontSize: 12}}>{details.group}</Text>
+            ) : (
+              details.group && details?.group.map((el, idx) => (
+                  <ListItem key={idx}>
+                      <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
+                  </ListItem>
+              ))
             )
           }
+          </View>
         </View>
 
 
@@ -211,14 +222,23 @@ class ProductDetails extends Component {
           <Text style={Style.itemDetailLabel}>
             Active
           </Text>
-        
+          <View>
           {
-            (data && data.details && data.details.active) && (
-              <Text style={Style.itemDetailValue}>
-              {`${data.details.active.active_name} ${data.details.active.value} ${data.details.active.attributes}` || 'No data'}
-              </Text>
+            !Array.isArray(details.active) ? (
+              <Text style={{fontSize: 12}}>
+                {`${details.active.active_name}` || 'No data'}
+                </Text>
+            ) : (
+              data && details?.active.map((el, idx) => {
+                return(
+                  <ListItem key={idx}>
+                      <Text style={{fontSize: 12}}>{el.active_name || 'No Data'}</Text>
+                  </ListItem>
+                )
+              })
             )
           }
+          </View>
         </View>
 
 
@@ -228,9 +248,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && (
+            data && (
               <Text style={Style.itemDetailValue}>
-                {data.details.solvent || 'No data'}
+                {details.solvent || 'No data'}
               </Text>
             )
           }
@@ -256,9 +276,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && (
+            data  && (
               <Text style={Style.itemDetailValue}>
-                {data.details.formulation || 'No data'}
+                {details.formulation || 'No data'}
               </Text>
             )
           }
@@ -270,9 +290,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && data.details.mixing_order && (
+            data && (
               <Text style={Style.itemDetailValue}>
-                {data.details.mixing_order || 'No data'}
+                {details.mixing_order || 'No data'}
               </Text>
             )
           }
@@ -335,6 +355,7 @@ class ProductDetails extends Component {
   }
 
   recentFiles(data){
+    let details = JSON.parse(data.details)
     return(
       <View style={{
         width: '90%',
@@ -352,15 +373,43 @@ class ProductDetails extends Component {
             justifyContent: 'space-between'
           }]}
         >
+          <View>
           {
-              data && data.details && data.details.files === Array && data.details.files.map(item => (
+            Array.isArray(details.files) ? (
+              data && details && details.files.map(item => (
                 <View style={Style.fileUploaded}>
-                <FileIcon />
-                <Text style={Style.fileUploadedText}>
-                  {item.title}
-                </Text>
+                <View>
+                  <FileIcon />
+                  <Text style={Style.fileUploadedText}>
+                    {item.label.title}
+                  </Text>
+                </View>
+                <View style={{marginTop: 10}}>
+                  <FileIcon />
+                  <Text style={Style.fileUploadedText}>
+                    {item.sds.title}
+                  </Text>
+                </View>
               </View>
-              ))}
+              ))
+            ) : (
+              <View style={Style.fileUploaded}>
+                <View>
+                  <FileIcon />
+                  <Text style={Style.fileUploadedText}>
+                    {details.files.label.title}
+                  </Text>
+                </View>
+                <View style={{marginTop: 10}}>
+                  <FileIcon />
+                  <Text style={Style.fileUploadedText}>
+                    {details.files.sds.title}
+                  </Text>
+                </View>
+              </View>
+            )
+          }
+          </View>
         </View>
       </View>
     )
@@ -377,7 +426,7 @@ class ProductDetails extends Component {
           position: 'relative',
           backgroundColor: Color.containerBackground
         }}>
-        {this.renderModal()}
+        {data && this.renderModal(data)}
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <Background style={{ position: 'absolute' }} />
