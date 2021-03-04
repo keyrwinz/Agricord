@@ -195,7 +195,7 @@ class MixCard extends Component {
                     <View style={Style.mixRightDetail}>
                       <View style={Style.remainingBox}>
                         <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                          REMAINING AREA
+                          {this.props.from == 'selected' ? 'APPLIED RATE' : 'REMAINING AREA'}
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                           {parseFloat(data?.item?.remaining_area).toFixed(2) + ' ' + 'Ha'}

@@ -241,6 +241,7 @@ const MixPage = (props) => {
   }
 
   const removePaddock = (from, item) => {
+    setCheckMark(true)
     item.partial = false;
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
@@ -286,6 +287,17 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
+    if(item.remaining_area <= 0){
+      Alert.alert(
+        'Invalid Selection',
+        item.name + ' has 0 remaining area.',
+        [
+          {text: 'OK', onPress: () => console.log('Okay Pressed')},
+        ],
+        { cancelable: false }
+      )
+      return
+    }
     if(checkMard == false){
       Alert.alert(
         'Error Message',
@@ -365,6 +377,7 @@ const MixPage = (props) => {
 
   const partialChange = (item) => {
     if(item.partial == false){
+      item.area = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
       setPartialVal(parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2))
     }
     setCheckMark(item.partial)
@@ -837,19 +850,19 @@ const MixPage = (props) => {
       { checkMard == false ?
         (mixConfirmation) && (checkMard == false) && (
           <MixConfirmationModal
-            visible={mixConfirmation}
-            onClose={() => {
-              setMixConfirmation(false)
-            }}
-            onSuccess={() => {
-              setMixConfirmation(false)
-              props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
-            }}
-            data={selectedPaddock}
-            volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
+          visible={mixConfirmation}
+          onClose={() => {
+            setMixConfirmation(false)
+          }}
+          onSuccess={() => {
+            setMixConfirmation(false)
+            props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+          }}
+          data={selectedPaddock}
+          volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
           />
-        ) :
-        (mixConfirmation) && (checkMard == true) && (
+          ) :
+          (mixConfirmation) && (checkMard == true) && (
           <MixConfirmationModal
             visible={mixConfirmation}
             onClose={() => {

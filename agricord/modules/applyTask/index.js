@@ -18,6 +18,7 @@ import Api from 'services/api';
 import SlidingButton from 'modules/generic/SlidingButton';
 import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { NavigationActions, StackActions } from 'react-navigation';
 const height = Math.round(Dimensions.get('window').height);
 
 class ApplyTask extends Component {
@@ -77,6 +78,24 @@ class ApplyTask extends Component {
 
   }
 
+  navigateToScreen = () => {
+    const navigateAction = NavigationActions.navigate({
+      routeName: 'drawerStack',
+      action: StackActions.reset({
+        index: 0,
+        key: null,
+        actions: [
+            NavigationActions.navigate({routeName: 'Homepage', params: {
+              initialRouteName: 'Home',
+              index: 0
+            }}),
+        ]
+      })
+    });
+
+    this.props.navigation.dispatch(navigateAction);
+  }
+
   unAppliedTaskCheck(){
     if(this.state.createdBatch != 0){
       this.setState({taskConfirmation: false})
@@ -86,7 +105,6 @@ class ApplyTask extends Component {
   }
 
   componentDidMount(){
-    console.log("selected", this.state.selectedPicker, this.state.isPressed);
     const {user } = this.props.state;
     if (user == null) {
       return
@@ -100,7 +118,8 @@ class ApplyTask extends Component {
         this.setState({isLoading: false});
         this.setState({data: response.data});
         if(this.props.state.task) {
-          this.setState({selectedMix: this.props.state.task.spray_mix.name})
+          this.setState({selectedMix: this.props.state.task.spray_mix})
+          // this.setState({selectedMix: this.props.state.task.spray_mix.name})
         }
       }, error => {
         this.setState({isLoading: false});
@@ -300,9 +319,12 @@ class ApplyTask extends Component {
               onSuccess={() => this.manageTaskConfirmation()}
               taskConfirmation={confirmTask}
               visible={confirmTask}
-              onClose={() => this.setState({
-                taskConfirmation: false
-              })}
+              onClose={() => {
+                this.setState({
+                  taskConfirmation: false
+                })
+                this.navigateToScreen()
+              }}
             />
           )
         }

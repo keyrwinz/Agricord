@@ -325,7 +325,7 @@ class Login extends Component {
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={styles.BackgroundContainer}>
-        <ScrollView style={{height: '100%'}}>
+        <ScrollView style={{height: '100%'}} showsVerticalScrollIndicator={false}>
           {this.state.isLoading ? <Spinner mode="overlay" /> : null}
           <SafeAreaView style={Platform.OS == 'android' ? styles.LoginContainer : styles.LoginContainerIOS}>
             <Image
