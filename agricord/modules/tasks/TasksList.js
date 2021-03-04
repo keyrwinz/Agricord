@@ -105,7 +105,7 @@ class TasksList extends Component {
                     navigation={this.props.navigation}
                   />
                 )}) : (
-                  <Text style={{ marginTop: 10 }}>{ loading ? '' : 'No product found'}</Text>
+                  <Text style={{ marginTop: 10 }}>{ loading ? '' : 'No paddock found'}</Text>
                 )
             }
           </View>

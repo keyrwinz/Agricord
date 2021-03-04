@@ -67,6 +67,10 @@ class paddockPage extends Component{
     this.setState({quantity: value})
   }
 
+  redirect(route){
+    this.props.navigation.navigate(route)
+  }
+
   getTotalVolume = (data) => {
     let total = 0; // in Liters
     data.map(item => {
@@ -339,6 +343,13 @@ class paddockPage extends Component{
         console.log({error});
       },
     );
+  }
+
+  closeTaskConfirmation(){
+    this.setState({
+      taskConfirmation: false
+    })
+    this.redirect('applyTaskStack')
   }
 
   scan = (parameter) => {
