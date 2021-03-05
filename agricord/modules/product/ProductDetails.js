@@ -27,6 +27,12 @@ import CheckIcon from 'assets/inventory/check_icon.svg';
 import { Spinner } from 'components';
 import { data } from '../batchPage/data-test.js';
 import Config from 'src/config';
+import RNFetchBlob from 'rn-fetch-blob';
+import config from 'src/config';
+import { PermissionsAndroid } from 'react-native';
+
+const url = config.IS_DEV;
+let apiUrl = url;
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -43,6 +49,57 @@ class ProductDetails extends Component {
 
   componentDidMount(){
     this.retrieve()
+  }
+
+  askPermission(file){
+    if(Platform.OS === 'ios'){
+      this.downloadFile(file)
+    }else{
+      try {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'storage title',
+            message: 'description'
+          }
+        ).then(granted => {
+          if(granted == PermissionsAndroid.RESULTS.GRANTED){
+            console.log("[GRANTED]");
+            this.downloadFile(file);
+          }else{
+            console.log("[DENIED]");
+          }
+        })
+      } catch (error) {
+        console.log("[ERROR]", error);
+      }
+    }
+  }
+
+  downloadFile(file){
+    var date = new Date();
+    var url = apiUrl + file
+    var ext = this.extension(url);
+    ext = "." + ext[0];
+    const { config, fs } = RNFetchBlob
+    let fileDir = fs.dirs.DocumentDir
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        description : 'PDF'
+      }
+    }
+    console.log("[DIR]", options);
+    config(options).fetch('GET', url).then(res => {
+      console.log("[RESPONSE]", res);
+      Alert.alert("Success download")
+    })
+  }
+
+  extension(file){
+    return (/[.]/.exec(file)) ? /[^.]+$/.exec(file) : undefined;
   }
 
   retrieve(){
@@ -379,13 +436,17 @@ class ProductDetails extends Component {
               data && details && details.files.map(item => (
                 <View style={Style.fileUploaded}>
                 <View>
-                  <FileIcon />
+                <TouchableOpacity>
+                      <FileIcon />
+                  </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {item.label.title}
                   </Text>
                 </View>
                 <View style={{marginTop: 10}}>
-                  <FileIcon />
+                <TouchableOpacity>
+                      <FileIcon />
+                  </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {item.sds.title}
                   </Text>
@@ -395,13 +456,17 @@ class ProductDetails extends Component {
             ) : (
               <View style={Style.fileUploaded}>
                 <View>
-                  <FileIcon />
+                  <TouchableOpacity onPress={() => this.askPermission(details.files.label.url)}>
+                      <FileIcon />
+                  </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {details.files.label.title}
                   </Text>
                 </View>
                 <View style={{marginTop: 10}}>
-                  <FileIcon />
+                <TouchableOpacity onPress={() => this.askPermission(details.files.sds.url)}>
+                      <FileIcon />
+                  </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {details.files.sds.title}
                   </Text>
