@@ -57,7 +57,7 @@ class paddockPage extends Component{
 
     const parameter={
       condition: [{
-        value: paddock.paddock?.id,
+        value: paddock.paddock_id,
         column: 'id',
         clause: '='
       }]

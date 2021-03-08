@@ -10,6 +10,7 @@ import {
   Alert,
   Image
 } from 'react-native';
+import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -26,6 +27,12 @@ import CheckIcon from 'assets/inventory/check_icon.svg';
 import { Spinner } from 'components';
 import { data } from '../batchPage/data-test.js';
 import Config from 'src/config';
+import RNFetchBlob from 'rn-fetch-blob';
+import config from 'src/config';
+import { PermissionsAndroid } from 'react-native';
+
+const url = config.IS_DEV;
+let apiUrl = url;
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -35,12 +42,64 @@ class ProductDetails extends Component {
     this.state = {
       modal: false,
       loading: false,
-      data: null
+      data: null,
+      safetyEquipments: [],
     }
   }
 
   componentDidMount(){
     this.retrieve()
+  }
+
+  askPermission(file){
+    if(Platform.OS === 'ios'){
+      this.downloadFile(file)
+    }else{
+      try {
+        PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'storage title',
+            message: 'description'
+          }
+        ).then(granted => {
+          if(granted == PermissionsAndroid.RESULTS.GRANTED){
+            console.log("[GRANTED]");
+            this.downloadFile(file);
+          }else{
+            console.log("[DENIED]");
+          }
+        })
+      } catch (error) {
+        console.log("[ERROR]", error);
+      }
+    }
+  }
+
+  downloadFile(file){
+    var date = new Date();
+    var url = apiUrl + file
+    var ext = this.extension(url);
+    ext = "." + ext[0];
+    const { config, fs } = RNFetchBlob
+    let fileDir = fs.dirs.DocumentDir
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        description : 'PDF'
+      }
+    }
+    console.log("[DIR]", options);
+    config(options).fetch('GET', url).then(res => {
+      console.log("[RESPONSE]", res);
+      Alert.alert("Success download")
+    })
+  }
+
+  extension(file){
+    return (/[.]/.exec(file)) ? /[^.]+$/.exec(file) : undefined;
   }
 
   retrieve(){
@@ -81,7 +140,9 @@ class ProductDetails extends Component {
     );
   }
 
-  renderModal(){
+  renderModal(data){
+    console.log("DATA", data);
+    let details = JSON.parse(data.details)
     const { modal } = this.state;
     return(
       <Modal
@@ -113,7 +174,7 @@ class ProductDetails extends Component {
 
             <View style={Style.modalContent}>
               {
-              data && data.details && data.details.safety_equipment.map(item => (
+              data && details && details.safety_equipment.map(item => (
               <View style={Style.modalContentRow}>
                 <CheckIcon />
                 <Text style={{ paddingHorizontal: 20 }}>
@@ -161,6 +222,8 @@ class ProductDetails extends Component {
   }
 
   productInformation(data){
+    let details = JSON.parse(data.details)
+    console.log("[PRODUCT]", details);
     return(
       <View style={Style.Details}>
         <View style={Style.itemDetailsContainer}>
@@ -196,14 +259,19 @@ class ProductDetails extends Component {
           <Text style={Style.itemDetailLabel}>
             Group
           </Text>
-        
+          <View>
           {
-            data && (
-              <Text style={Style.itemDetailValue}>
-                {data.group || 'No data'}
-              </Text>
+            !Array.isArray(details.group) ? (
+              <Text style={{fontSize: 12}}>{details.group}</Text>
+            ) : (
+              details.group && details?.group.map((el, idx) => (
+                  <ListItem key={idx}>
+                      <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
+                  </ListItem>
+              ))
             )
           }
+          </View>
         </View>
 
 
@@ -211,14 +279,23 @@ class ProductDetails extends Component {
           <Text style={Style.itemDetailLabel}>
             Active
           </Text>
-        
+          <View>
           {
-            (data && data.details && data.details.active) && (
-              <Text style={Style.itemDetailValue}>
-              {`${data.details.active.active_name} ${data.details.active.value} ${data.details.active.attributes}` || 'No data'}
-              </Text>
+            !Array.isArray(details.active) ? (
+              <Text style={{fontSize: 12}}>
+                {`${details.active.active_name}` || 'No data'}
+                </Text>
+            ) : (
+              data && details?.active.map((el, idx) => {
+                return(
+                  <ListItem key={idx}>
+                      <Text style={{fontSize: 12}}>{el.active_name || 'No Data'}</Text>
+                  </ListItem>
+                )
+              })
             )
           }
+          </View>
         </View>
 
 
@@ -228,9 +305,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && (
+            data && (
               <Text style={Style.itemDetailValue}>
-                {data.details.solvent || 'No data'}
+                {details.solvent || 'No data'}
               </Text>
             )
           }
@@ -256,9 +333,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && (
+            data  && (
               <Text style={Style.itemDetailValue}>
-                {data.details.formulation || 'No data'}
+                {details.formulation || 'No data'}
               </Text>
             )
           }
@@ -270,9 +347,9 @@ class ProductDetails extends Component {
           </Text>
         
           {
-            data && data.details && data.details.mixing_order && (
+            data && (
               <Text style={Style.itemDetailValue}>
-                {data.details.mixing_order || 'No data'}
+                {details.mixing_order || 'No data'}
               </Text>
             )
           }
@@ -335,6 +412,7 @@ class ProductDetails extends Component {
   }
 
   recentFiles(data){
+    let details = JSON.parse(data.details)
     return(
       <View style={{
         width: '90%',
@@ -352,15 +430,51 @@ class ProductDetails extends Component {
             justifyContent: 'space-between'
           }]}
         >
+          <View>
           {
-              data && data.details && data.details.files === Array && data.details.files.map(item => (
+            Array.isArray(details.files) ? (
+              data && details && details.files.map(item => (
                 <View style={Style.fileUploaded}>
-                <FileIcon />
-                <Text style={Style.fileUploadedText}>
-                  {item.title}
-                </Text>
+                <View>
+                <TouchableOpacity>
+                      <FileIcon />
+                  </TouchableOpacity>
+                  <Text style={Style.fileUploadedText}>
+                    {item.label.title}
+                  </Text>
+                </View>
+                <View style={{marginTop: 10}}>
+                <TouchableOpacity>
+                      <FileIcon />
+                  </TouchableOpacity>
+                  <Text style={Style.fileUploadedText}>
+                    {item.sds.title}
+                  </Text>
+                </View>
               </View>
-              ))}
+              ))
+            ) : (
+              <View style={Style.fileUploaded}>
+                <View>
+                  <TouchableOpacity onPress={() => this.askPermission(details.files.label.url)}>
+                      <FileIcon />
+                  </TouchableOpacity>
+                  <Text style={Style.fileUploadedText}>
+                    {details.files.label.title}
+                  </Text>
+                </View>
+                <View style={{marginTop: 10}}>
+                <TouchableOpacity onPress={() => this.askPermission(details.files.sds.url)}>
+                      <FileIcon />
+                  </TouchableOpacity>
+                  <Text style={Style.fileUploadedText}>
+                    {details.files.sds.title}
+                  </Text>
+                </View>
+              </View>
+            )
+          }
+          </View>
         </View>
       </View>
     )
@@ -377,7 +491,7 @@ class ProductDetails extends Component {
           position: 'relative',
           backgroundColor: Color.containerBackground
         }}>
-        {this.renderModal()}
+        {data && this.renderModal(data)}
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <Background style={{ position: 'absolute' }} />
