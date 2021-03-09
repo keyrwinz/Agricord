@@ -51,7 +51,7 @@ const InventoryList = (props) => {
                 <ProductCard item={{
                     ...item,
                     from: 'inventory',
-                    qty: parseFloat(item.qty).toFixed(1)
+                    qty: item.qty
                   }}
                   key={item.id}
                   navigation={props.parentNav}
