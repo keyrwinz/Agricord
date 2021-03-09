@@ -437,7 +437,9 @@ class ProductDetails extends Component {
                 <View style={Style.fileUploaded}>
                 <View>
                 <TouchableOpacity>
-                      <FileIcon />
+                  {
+                    item.label.title != null ? <FileIcon /> : <Text>No available label file</Text>
+                  }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {item.label.title}
@@ -445,7 +447,9 @@ class ProductDetails extends Component {
                 </View>
                 <View style={{marginTop: 10}}>
                 <TouchableOpacity>
-                      <FileIcon />
+                      {
+                        item.sds.title != null ? <FileIcon /> : <Text>No available sds file</Text>
+                      }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {item.sds.title}
@@ -457,7 +461,9 @@ class ProductDetails extends Component {
               <View style={Style.fileUploaded}>
                 <View>
                   <TouchableOpacity onPress={() => this.askPermission(details.files.label.url)}>
-                      <FileIcon />
+                      {
+                        details.files.label.title != null ? <FileIcon /> : <Text>No available label file</Text>
+                      }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {details.files.label.title}
@@ -465,7 +471,9 @@ class ProductDetails extends Component {
                 </View>
                 <View style={{marginTop: 10}}>
                 <TouchableOpacity onPress={() => this.askPermission(details.files.sds.url)}>
-                      <FileIcon />
+                      {
+                        details.files.sds.title != null ? <FileIcon /> : <Text>No available sds file</Text>
+                      }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
                     {details.files.sds.title}
