@@ -262,7 +262,7 @@ class ProductDetails extends Component {
           <View>
           {
             !Array.isArray(details.group) ? (
-              <Text style={{fontSize: 12}}>{details.group}</Text>
+              <Text style={{fontSize: 12}}>{details.group || 'No Data'}</Text>
             ) : (
               details.group && details?.group.map((el, idx) => (
                   <ListItem key={idx}>
