@@ -126,7 +126,6 @@ const MixPage = (props) => {
       setAppRateSwitch(test)
     }else{
       setTotalArea(totalArea)
-      setTotalHigher(true)
       setMessage(true)
       setAppRateSwitch(test)
       setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
@@ -175,9 +174,7 @@ const MixPage = (props) => {
     setAppRateSwitch(!appRateSwitch)
     setTotalArea(totalArea)
     setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
-    if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) > totalArea){
-      setTotalHigher(false)
-    }else if(setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == totalArea){
+    if(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2) >= totalArea){
       setTotalHigher(false)
     }else{
       setTotalHigher(true)
@@ -337,7 +334,7 @@ const MixPage = (props) => {
           }, 100)
         }
       }else{
-        if(totalArea >= maxArea){
+        if((totalArea + item.remaining_area) >= maxArea){
           setTotalHigher(true)
         }else if(maxArea >= (item.area + totalArea)){
           setTotalArea(totalArea + item.area)
