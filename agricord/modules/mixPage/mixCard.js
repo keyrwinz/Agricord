@@ -138,7 +138,7 @@ class MixCard extends Component {
                   </View>
                   <View style={Style.detailRow}>
                     <Text style={[Style.textBold, { color: '#969696', fontSize: BasicStyles.standardFontSize }]}>
-                      Remaining Area
+                      {this.props.from == 'selected' ? 'Remaining Area' : 'Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
                     {data?.item?.area + ' ' + data?.item?.units} 
