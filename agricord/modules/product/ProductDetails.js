@@ -257,18 +257,28 @@ class ProductDetails extends Component {
 
         <View style={Style.itemDetailsContainer}>
           <Text style={Style.itemDetailLabel}>
-            Group
+            Group 
           </Text>
           <View>
           {
             !Array.isArray(details.group) ? (
               <Text style={{fontSize: 12}}>{details.group || 'No Data'}</Text>
             ) : (
-              details.group && details?.group.map((el, idx) => (
-                  <ListItem key={idx}>
-                      <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
-                  </ListItem>
-              ))
+              <View>
+                {
+                  details.group.length <= 0 ? (
+                    <Text style={{fontSize: 12}}>No Data</Text>
+                  ):(
+                    details.group && details?.group.map((el, idx) => {
+                      return (
+                        <ListItem key={idx}>
+                            <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
+                        </ListItem>
+                      )
+                    })
+                  )
+                }
+              </View>
             )
           }
           </View>
