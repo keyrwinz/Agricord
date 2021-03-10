@@ -122,6 +122,9 @@ const Home = (props) => {
     setTimeout(() => {
       retrieve(false)
     }, 1000)
+    props.navigation.addListener('didfocus', () => {
+      this.retrieve()
+    })
   }, [])
   console.log('[INFOCUS]', orders?.infocus);
   return  (

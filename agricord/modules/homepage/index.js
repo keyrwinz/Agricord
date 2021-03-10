@@ -67,7 +67,7 @@ export default function Homepage(props) {
         />
         <Tab.Screen
           name="Home"
-          children={route => <Home {...route} parentNav={props.navigation} />}
+          children={route => <Home {...route} initialPage={props.navigation.state.routeName} parentNav={props.navigation} />}
           options={{
             tabBarLabel: '',
             tabBarIcon: () => <HomeIcon style={{marginTop: 10}} />,
