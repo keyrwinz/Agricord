@@ -229,7 +229,8 @@ class paddockPage extends Component{
 
   renderMixCards = (item) => {
     const { paddock } = this.props.state;
-    return(
+    console.log("[ITEM]", item);
+    return item.spray_mix != null ?(
       <TouchableOpacity
       onPress={()=>{
         this.props.navigation.navigate('mixNameStack', {
@@ -268,6 +269,10 @@ class paddockPage extends Component{
           </View>  
         </React.Fragment>
       </TouchableOpacity>
+    ): (
+      <View>
+        <Text>No Applied Mix Available</Text>
+      </View>
     )
   }
 
