@@ -24,10 +24,10 @@ export default {
     ...BasicStyles.standardShadow,
   },
   modalTitle: {
-    fontSize: 16,
     marginBottom: 15,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: 'gray',
     width: '100%'
   },
   modalContent: {
@@ -75,12 +75,15 @@ export default {
   },
   fileUploaded: {
     paddingVertical: 5,
-    // alignItems: 'center'
+    // alignItems: 'center',
+    flex:1, 
+    flexDirection: 'row'
   },
   fileUploadedText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 2
+    marginBottom: 2,
+    width: 150
   },
   Details: {
     marginTop: 10,

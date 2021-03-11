@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   Modal,
   Alert,
-  Image
+  Image,
+  SectionList
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -269,13 +270,21 @@ class ProductDetails extends Component {
                   details.group.length <= 0 ? (
                     <Text style={{fontSize: 12}}>No Data</Text>
                   ):(
-                    details.group && details?.group.map((el, idx) => {
-                      return (
-                        <ListItem key={idx}>
-                            <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
-                        </ListItem>
-                      )
-                    })
+                    <View style={{flex: 1}}>
+                      <SectionList
+                      sections={[{data:details?.group}]}
+                      renderItem={({item}) => <Text style={{
+                        padding: 1,
+                        fontSize: 12,
+                        height: 50,
+                        width: 150,
+                        flex: 1,
+                        flexWrap: 'wrap',
+                        marginBottom: -20
+                      }}>{item.group}</Text>}
+                      keyExtractor={(item, index) => index}
+                      />
+                    </View>
                   )
                 }
               </View>
@@ -296,13 +305,23 @@ class ProductDetails extends Component {
                 {`${details.active.active_name}` || 'No data'}
                 </Text>
             ) : (
-              data && details?.active.map((el, idx) => {
-                return(
-                  <ListItem key={idx}>
-                      <Text style={{fontSize: 12}}>{el.active_name || 'No Data'}</Text>
-                  </ListItem>
-                )
-              })
+              // data && details?.active.map((el, idx) => {
+              //   return(
+                <View style={{flex: 1}}>
+                  <SectionList
+                  sections={[{data:details?.active}]}
+                  renderItem={({item}) => <Text style={{
+                    padding: 1,
+                    fontSize: 12,
+                    height: 50,
+                    width: 170,
+                    flex: 1,
+                    flexWrap: 'wrap',
+                    marginBottom: -20
+                  }}>{item.active_name || 'No Data'}</Text>}
+                  keyExtractor={(item, index) => index}
+                  />
+                </View>
             )
           }
           </View>
@@ -443,7 +462,7 @@ class ProductDetails extends Component {
           <View>
           {
               <View style={Style.fileUploaded}>
-                <View>
+                <View style={{marginRight: 5}}>
                   <TouchableOpacity onPress={() => details.files?.label?.title != null ? this.askPermission(details.files?.label?.url) : {}}>
                       {
                         details.files?.label?.title != null ? <FileIcon /> : <Text>No available label file</Text>
@@ -453,7 +472,7 @@ class ProductDetails extends Component {
                     {details.files?.label?.title}
                   </Text>
                 </View>
-                <View style={{marginTop: 10}}>
+                <View >
                 <TouchableOpacity onPress={() => details.files?.sds?.title != null ? this.askPermission(details.files?.sds?.url) : {}}>
                       {
                         details.files?.sds?.title != null ? <FileIcon /> : <Text>No available sds file</Text>
