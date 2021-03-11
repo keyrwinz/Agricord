@@ -270,20 +270,18 @@ class ProductDetails extends Component {
                   details.group.length <= 0 ? (
                     <Text style={{fontSize: 12}}>No Data</Text>
                   ):(
-                    <View style={{flex: 1}}>
-                      <SectionList
-                      sections={[{data:details?.group}]}
-                      renderItem={({item}) => <Text style={{
-                        padding: 1,
-                        fontSize: 12,
-                        height: 50,
-                        width: 150,
-                        flex: 1,
-                        flexWrap: 'wrap',
-                        marginBottom: -20
-                      }}>{item.group}</Text>}
-                      keyExtractor={(item, index) => index}
-                      />
+                    <View>
+                      {/* <SafeAreaView> */}
+                      {
+                         details.group.map(el => {
+                           return (
+                            <View style={{width: 200, paddingRight: 30}}><Text numberOfLines={2} style={{
+                              fontSize: 12,
+                              lineHeight: 20,
+                            }}>{el.group}</Text></View>
+                           )
+                         })
+                      }
                     </View>
                   )
                 }
@@ -305,23 +303,27 @@ class ProductDetails extends Component {
                 {`${details.active.active_name}` || 'No data'}
                 </Text>
             ) : (
-              // data && details?.active.map((el, idx) => {
-              //   return(
-                <View style={{flex: 1}}>
-                  <SectionList
-                  sections={[{data:details?.active}]}
-                  renderItem={({item}) => <Text style={{
-                    padding: 1,
-                    fontSize: 12,
-                    height: 50,
-                    width: 170,
-                    flex: 1,
-                    flexWrap: 'wrap',
-                    marginBottom: -20
-                  }}>{item.active_name || 'No Data'}</Text>}
-                  keyExtractor={(item, index) => index}
-                  />
-                </View>
+              <View>
+                {
+                  details?.active.length <= 0 ? (
+                    <Text style={{fontSize: 12}}>No Data</Text>
+                  ):(
+                    <View>
+                      {/* <SafeAreaView> */}
+                      {
+                         details?.active.map(el => {
+                           return (
+                            <View style={{width: 200, paddingRight: 30}}><Text numberOfLines={2} style={{
+                              fontSize: 12,
+                              lineHeight: 20,
+                            }}>{el.active_name}</Text></View>
+                           )
+                         })
+                      }
+                    </View>
+                  )
+                }
+              </View>
             )
           }
           </View>
