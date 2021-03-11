@@ -24,10 +24,10 @@ export default {
     ...BasicStyles.standardShadow,
   },
   modalTitle: {
-    fontSize: 16,
     marginBottom: 15,
     textAlign: 'center',
     fontWeight: 'bold',
+    color: 'gray',
     width: '100%'
   },
   modalContent: {
@@ -62,6 +62,7 @@ export default {
     marginLeft: '5%',
     marginRight: '5%',
     borderBottomColor: Color.lightGray,
+    
   },
   itemDetailLabel: {
     fontSize: BasicStyles.standardFontSize,
@@ -75,12 +76,26 @@ export default {
   },
   fileUploaded: {
     paddingVertical: 5,
-    // alignItems: 'center'
+    // alignItems: 'center',
+    flex:1, 
+    flexDirection: 'row'
   },
   fileUploadedText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 2
+    marginTop: 2,
+    width: 100
+  },
+  fileContainer: {
+    marginTop: 10,
+    width: '110%',
+    marginLeft: -15,
+    minHeight: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingLeft: 10,
+    paddingRight: 10,
+    ...BasicStyles.standardShadow
   },
   Details: {
     marginTop: 10,

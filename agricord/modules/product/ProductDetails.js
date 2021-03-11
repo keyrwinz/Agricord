@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   Modal,
   Alert,
-  Image
+  Image,
+  SectionList
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -153,8 +154,8 @@ class ProductDetails extends Component {
           Alert.alert("Modal has been closed.");
         }}
       >
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <View style={Style.modalBody}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+          <View style={[Style.modalBody, {borderWidth: 5, borderColor: Color.primary }]}>
             <TouchableOpacity
               style={Style.modalCloseBtn}
               onPress={() => this.setState({
@@ -269,13 +270,21 @@ class ProductDetails extends Component {
                   details.group.length <= 0 ? (
                     <Text style={{fontSize: 12}}>No Data</Text>
                   ):(
-                    details.group && details?.group.map((el, idx) => {
-                      return (
-                        <ListItem key={idx}>
-                            <Text style={{fontSize: 12}}>{el.group || 'No Data'}</Text>
-                        </ListItem>
-                      )
-                    })
+                    <View style={{flex: 1}}>
+                      <SectionList
+                      sections={[{data:details?.group}]}
+                      renderItem={({item}) => <Text style={{
+                        padding: 1,
+                        fontSize: 12,
+                        height: 50,
+                        width: 150,
+                        flex: 1,
+                        flexWrap: 'wrap',
+                        marginBottom: -20
+                      }}>{item.group}</Text>}
+                      keyExtractor={(item, index) => index}
+                      />
+                    </View>
                   )
                 }
               </View>
@@ -296,13 +305,23 @@ class ProductDetails extends Component {
                 {`${details.active.active_name}` || 'No data'}
                 </Text>
             ) : (
-              data && details?.active.map((el, idx) => {
-                return(
-                  <ListItem key={idx}>
-                      <Text style={{fontSize: 12}}>{el.active_name || 'No Data'}</Text>
-                  </ListItem>
-                )
-              })
+              // data && details?.active.map((el, idx) => {
+              //   return(
+                <View style={{flex: 1}}>
+                  <SectionList
+                  sections={[{data:details?.active}]}
+                  renderItem={({item}) => <Text style={{
+                    padding: 1,
+                    fontSize: 12,
+                    height: 50,
+                    width: 170,
+                    flex: 1,
+                    flexWrap: 'wrap',
+                    marginBottom: -20
+                  }}>{item.active_name || 'No Data'}</Text>}
+                  keyExtractor={(item, index) => index}
+                  />
+                </View>
             )
           }
           </View>
@@ -430,7 +449,7 @@ class ProductDetails extends Component {
         marginRight: '5%'
       }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10, marginTop: 10 }}>
-          Recent Files
+          Attached Files
         </Text>
         <View
           style={[Style.itemDescContainer, {
@@ -440,29 +459,30 @@ class ProductDetails extends Component {
             justifyContent: 'space-between'
           }]}
         >
-          <View>
+          <View style={Style.fileContainer}>
           {
               <View style={Style.fileUploaded}>
-                <View>
+                {/* <View style={{marginRight: 5}}> */}
                   <TouchableOpacity onPress={() => details.files?.label?.title != null ? this.askPermission(details.files?.label?.url) : {}}>
                       {
                         details.files?.label?.title != null ? <FileIcon /> : <Text>No available label file</Text>
                       }
                   </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {details.files?.label?.title}
+                  <Text style={details.files?.label?.title != null ? Style.fileUploadedText : {width: 30}}>
+                    {/* {details.files?.label?.title} */}
+                    {details.files?.label?.title != null ? 'Label' : null}
                   </Text>
-                </View>
-                <View style={{marginTop: 10}}>
+                {/* </View> */}
+                {/* <View > */}
                 <TouchableOpacity onPress={() => details.files?.sds?.title != null ? this.askPermission(details.files?.sds?.url) : {}}>
                       {
                         details.files?.sds?.title != null ? <FileIcon /> : <Text>No available sds file</Text>
                       }
                   </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {details.files?.sds?.title}
+                  <Text style={details.files?.sds?.title != null ? Style.fileUploadedText : null}>
+                    {details.files?.sds?.title != null ? 'Safety Data (SDS)' : null}
                   </Text>
-                </View>
+                {/* </View> */}
               </View>
           }
           </View>
