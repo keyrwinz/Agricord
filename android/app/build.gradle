@@ -132,8 +132,8 @@ android {
         applicationId "com.agricord"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 68
-        versionName "6.8"
+        versionCode 69
+        versionName "6.9"
         missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled true
     }
