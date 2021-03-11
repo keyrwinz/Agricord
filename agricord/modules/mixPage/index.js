@@ -246,10 +246,10 @@ const MixPage = (props) => {
           return item
         }
       })
-      let diff = totalArea - parseInt(item.remaining_area)
+      let diff = parseFloat(totalArea - item.remaining_area).toFixed(2)
       setTotalArea(diff)
       // setTotalArea(totalArea - item.area)
-      setTotalArea(totalArea - item.remaining_area)
+      // setTotalArea(totalArea - item.remaining_area)
       if(parseFloat(totalArea - parseInt(item.remaining_area)).toFixed(2) > maxArea){
         setTotalHigher(true)
       }else {
