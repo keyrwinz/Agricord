@@ -119,16 +119,16 @@ const MixPage = (props) => {
   }, [])
 
   const newRates = () => {
-    if(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2) >= totalArea){
+    if(parseFloat(task.machine.capacity / test).toFixed(2) >= totalArea){
       setTotalArea(totalArea)
-      setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+      setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
       setTotalHigher(false)
       setAppRateSwitch(test)
     }else{
       setTotalArea(totalArea)
       setMessage(true)
       setAppRateSwitch(test)
-      setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
+      setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
     }
   }
 
@@ -138,7 +138,7 @@ const MixPage = (props) => {
       if(!appRateSwitch){
         setTotalArea(totalArea)
         setTest(Math.round(task.machine.capacity / totalArea))
-        setAppliedRate(Math.round(task.machine.capacity / totalArea))
+        setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         if(test == 0 || test == '' || test == '0'){
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         }else{
@@ -242,7 +242,7 @@ const MixPage = (props) => {
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
-      if(paddock.id != item.id){
+        if(paddock.id != item.id){
           return item
         }
       })
@@ -250,6 +250,9 @@ const MixPage = (props) => {
       setTotalArea(diff)
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
+      if(selectedPaddock.length == 0){
+        setAppRateSwitch(!appRateSwitch)
+      }
       if(parseFloat(totalArea - parseInt(item.remaining_area)).toFixed(2) > maxArea){
         setTotalHigher(true)
       }else {
@@ -543,7 +546,7 @@ const MixPage = (props) => {
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                { appRateSwitch === false ?
+                { appRateSwitch === false || selectedPaddock.length == 0 ?
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <LinearGradient
                   colors={['#ABD770', '#D3E584']}
@@ -678,10 +681,19 @@ const MixPage = (props) => {
                 }
               </View>
               {
-                (task && task.machine) && (
+                (task && task.machine) && (selectedPaddock.length > 0) && (
                   <View style={{ marginTop: 5, paddingLeft: 0 }}>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       MAX AREA: {maxArea}HA
+                    </Text>
+                  </View>    
+                )
+              }
+              {
+                (task && task.machine) && (selectedPaddock.length == 0) && (
+                  <View style={{ marginTop: 5, paddingLeft: 0 }}>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      MAX AREA: {parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)}HA
                     </Text>
                   </View>    
                 )
