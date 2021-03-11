@@ -154,8 +154,8 @@ class ProductDetails extends Component {
           Alert.alert("Modal has been closed.");
         }}
       >
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-          <View style={Style.modalBody}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center"}}>
+          <View style={[Style.modalBody, {borderWidth: 5, borderColor: Color.primary }]}>
             <TouchableOpacity
               style={Style.modalCloseBtn}
               onPress={() => this.setState({
