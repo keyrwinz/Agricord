@@ -442,55 +442,28 @@ class ProductDetails extends Component {
         >
           <View>
           {
-            Array.isArray(details.files) ? (
-              data && details && details.files.map(item => (
-                <View style={Style.fileUploaded}>
-                <View>
-                <TouchableOpacity>
-                  {
-                    item.label.title != null ? <FileIcon /> : <Text>No available label file</Text>
-                  }
-                  </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {item.label.title}
-                  </Text>
-                </View>
-                <View style={{marginTop: 10}}>
-                <TouchableOpacity>
-                      {
-                        item.sds.title != null ? <FileIcon /> : <Text>No available sds file</Text>
-                      }
-                  </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {item.sds.title}
-                  </Text>
-                </View>
-              </View>
-              ))
-            ) : (
               <View style={Style.fileUploaded}>
                 <View>
-                  <TouchableOpacity onPress={() => this.askPermission(details.files.label.url)}>
+                  <TouchableOpacity onPress={() => details.files?.label?.title != null ? this.askPermission(details.files?.label?.url) : {}}>
                       {
-                        details.files.label.title != null ? <FileIcon /> : <Text>No available label file</Text>
+                        details.files?.label?.title != null ? <FileIcon /> : <Text>No available label file</Text>
                       }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
-                    {details.files.label.title}
+                    {details.files?.label?.title}
                   </Text>
                 </View>
                 <View style={{marginTop: 10}}>
-                <TouchableOpacity onPress={() => this.askPermission(details.files.sds.url)}>
+                <TouchableOpacity onPress={() => details.files?.sds?.title != null ? this.askPermission(details.files?.sds?.url) : {}}>
                       {
-                        details.files.sds.title != null ? <FileIcon /> : <Text>No available sds file</Text>
+                        details.files?.sds?.title != null ? <FileIcon /> : <Text>No available sds file</Text>
                       }
                   </TouchableOpacity>
                   <Text style={Style.fileUploadedText}>
-                    {details.files.sds.title}
+                    {details.files?.sds?.title}
                   </Text>
                 </View>
               </View>
-            )
           }
           </View>
         </View>

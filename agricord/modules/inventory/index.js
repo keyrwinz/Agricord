@@ -165,6 +165,7 @@ const Inventory = (props) => {
     Api.request(route, parameter, response => {
       setLoading(false)
       if (response.data.length > 0) {
+        console.log("[DAAT]", response.data);
         setData(flag == false ? response.data : _.uniqBy([...data, ...response.data], 'code'))
         setOffset(flag == false ? 0 : offset + 1);
         // setHerbicideData(response.data)
