@@ -449,7 +449,7 @@ class ProductDetails extends Component {
         marginRight: '5%'
       }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold', marginLeft: 10, marginBottom: 10, marginTop: 10 }}>
-          Recent Files
+          Attached Files
         </Text>
         <View
           style={[Style.itemDescContainer, {
@@ -459,29 +459,30 @@ class ProductDetails extends Component {
             justifyContent: 'space-between'
           }]}
         >
-          <View>
+          <View style={Style.fileContainer}>
           {
               <View style={Style.fileUploaded}>
-                <View style={{marginRight: 5}}>
+                {/* <View style={{marginRight: 5}}> */}
                   <TouchableOpacity onPress={() => details.files?.label?.title != null ? this.askPermission(details.files?.label?.url) : {}}>
                       {
                         details.files?.label?.title != null ? <FileIcon /> : <Text>No available label file</Text>
                       }
                   </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {details.files?.label?.title}
+                  <Text style={details.files?.label?.title != null ? Style.fileUploadedText : {width: 30}}>
+                    {/* {details.files?.label?.title} */}
+                    {details.files?.label?.title != null ? 'Label' : null}
                   </Text>
-                </View>
-                <View >
+                {/* </View> */}
+                {/* <View > */}
                 <TouchableOpacity onPress={() => details.files?.sds?.title != null ? this.askPermission(details.files?.sds?.url) : {}}>
                       {
                         details.files?.sds?.title != null ? <FileIcon /> : <Text>No available sds file</Text>
                       }
                   </TouchableOpacity>
-                  <Text style={Style.fileUploadedText}>
-                    {details.files?.sds?.title}
+                  <Text style={details.files?.sds?.title != null ? Style.fileUploadedText : null}>
+                    {details.files?.sds?.title != null ? 'Safety Data (SDS)' : null}
                   </Text>
-                </View>
+                {/* </View> */}
               </View>
           }
           </View>

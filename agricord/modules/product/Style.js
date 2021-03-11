@@ -62,6 +62,7 @@ export default {
     marginLeft: '5%',
     marginRight: '5%',
     borderBottomColor: Color.lightGray,
+    
   },
   itemDetailLabel: {
     fontSize: BasicStyles.standardFontSize,
@@ -82,8 +83,19 @@ export default {
   fileUploadedText: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 2,
-    width: 150
+    marginTop: 2,
+    width: 100
+  },
+  fileContainer: {
+    marginTop: 10,
+    width: '110%',
+    marginLeft: -15,
+    minHeight: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    paddingLeft: 10,
+    paddingRight: 10,
+    ...BasicStyles.standardShadow
   },
   Details: {
     marginTop: 10,
