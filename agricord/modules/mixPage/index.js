@@ -154,8 +154,8 @@ const MixPage = (props) => {
           setMessage(true)
         }
       }else{
-        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
         setTotalArea(totalArea)
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
         setAppliedRate(Math.round(task.spray_mix.application_rate))
         if(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2) > totalArea){
           setTotalHigher(false)
@@ -238,7 +238,7 @@ const MixPage = (props) => {
 
   const removePaddock = (from, item) => {
     setCheckMark(true)
-    item.partial = false;
+    item.partial = false
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
@@ -250,8 +250,15 @@ const MixPage = (props) => {
       setTotalArea(diff)
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
-      if(selectedPaddock.length == 0){
+      if(selectedPaddock.length <= 1 && appRateSwitch){
         setAppRateSwitch(!appRateSwitch)
+        setTotalArea(0)
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
+      }
+      if(selectedPaddock.length <= 1 && checkMard == false){
+        setAppRateSwitch(appRateSwitch)
+        setTotalArea(0)
+        setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
       }
       if(parseFloat(totalArea - parseInt(item.remaining_area)).toFixed(2) > maxArea){
         setTotalHigher(true)
