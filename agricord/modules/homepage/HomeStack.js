@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -33,7 +33,12 @@ const HomeScreen = props => {
         options={({route}) => {
           return {
             headerTitle: '',
-            headerStyle: {position: 'absolute', backgroundColor: '#c9e49d', elevation: 0},
+            headerStyle: {
+              position: 'absolute',
+              backgroundColor: '#c9e49d',
+              elevation: 0,
+              height: 100
+            },
             headerLeft: () => (
               <View
                 style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
@@ -58,7 +63,7 @@ const HomeScreen = props => {
                 <User user={{
                   ...user,
                   profile: user?.account_profile
-                }} color={'white'} size={40} style={Style.image}/>
+                }} color={'white'} size={30} style={{...Style.image, marginBottom: 10}}/>
               </View>
             )
           };
