@@ -37,7 +37,7 @@ const HomeScreen = props => {
               position: 'absolute',
               backgroundColor: '#c9e49d',
               elevation: 0,
-              height: 100
+              height: Platform.OS == 'ios' ? 100 : 50
             },
             headerLeft: () => (
               <View
