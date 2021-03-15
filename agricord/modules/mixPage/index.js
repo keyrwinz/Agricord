@@ -26,6 +26,7 @@ import { Spinner } from 'components';
 import Styles from 'modules/generic/OrderCardStyle';
 import Api from 'services/api/index.js';
 import Message from 'modules/modal/MessageModal.js';
+import _ from 'lodash'
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
@@ -105,6 +106,7 @@ const MixPage = (props) => {
   const [checkMard, setCheckMark] = useState(true)
   const [maxPartial, setMaxValue] = useState(0)
   const [partialVal, setPartialVal] = useState(0)
+  const [totalPart, setTotalPart] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -346,6 +348,15 @@ const MixPage = (props) => {
       }else{
         if((totalArea + item.remaining_area) >= maxArea){
           setTotalHigher(true)
+          let newItem = {
+            ...item,
+            partial_flag: true
+          }
+          setTotalArea(totalArea + item.area)
+          setTimeout(() => {
+            setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            removePaddock('available', item)
+          }, 100)
         }else if(maxArea >= (item.area + totalArea)){
           setTotalArea(totalArea + item.area)
           setTimeout(() => {
@@ -383,8 +394,13 @@ const MixPage = (props) => {
 
   const partialChange = (item) => {
     if(item.partial == false){
+      let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
+      setTotalPart(totalPar)
       item.area = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
-      setPartialVal(parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2))
+      let partVal = _.sumBy(selectedPaddock, function(e){
+        return Number(e.area)
+      })
+      setPartialVal(partVal)
     }
     setCheckMark(item.partial)
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
@@ -633,15 +649,28 @@ const MixPage = (props) => {
                     TOTAL AREA
                     </Text>
                   </View> : */}
+                {
+                  checkMard == false ?
                   <View style={Style.totalAreaBox}>
-                  <Text style={{
-                    color: '#5A84EE', 
-                    fontSize: BasicStyles.standardFontSize
-                  }}>{totalArea} Ha</Text>
-                  <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
-                    TOTAL AREA
-                  </Text>
-                </View>
+                    <Text style={{
+                      color: '#5A84EE', 
+                      fontSize: BasicStyles.standardFontSize
+                    }}>{totalPart} Ha</Text>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View>
+                  :
+                  <View style={Style.totalAreaBox}>
+                    <Text style={{
+                      color: '#5A84EE', 
+                      fontSize: BasicStyles.standardFontSize
+                    }}>{totalArea} Ha</Text>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                      TOTAL AREA
+                    </Text>
+                  </View>
+                }
                 {/* } */}
                 {
                   (selectedPaddock.length > 0) && (
