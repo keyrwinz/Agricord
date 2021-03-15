@@ -44,7 +44,7 @@ class MixCard extends Component {
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
     const origPartial = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2)
-    // const partials = parseFloat(data.item.remaining_area - (totalRate - maxRate)).toFixed(2) - this.state.text
+    const remainCalc = parseFloat(data.item.remaining_area - origPartial).toFixed(2)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -141,7 +141,7 @@ class MixCard extends Component {
                       {this.props.from == 'selected' ? 'Remaining Area' : 'Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data?.item?.area + ' ' + data?.item?.units} 
+                    {data.item.partial == true ? remainCalc : data?.item?.remaining_area + ' ' + data?.item?.units} 
                     </Text>
                   </View>
                 </View>
@@ -152,7 +152,7 @@ class MixCard extends Component {
                           borderColor: Color.primary
                         }]}>
                           <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                            APPLIED RATE
+                            APPLIED AREA
                           </Text>
                             <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {origPartial + ' ' + data?.item?.units}
@@ -195,7 +195,7 @@ class MixCard extends Component {
                     <View style={Style.mixRightDetail}>
                       <View style={Style.remainingBox}>
                         <Text style={{ color: '#5A84EE', fontSize: BasicStyles.standardFontSize, fontWeight: 'bold', marginBottom: 5 }}>
-                          {this.props.from == 'selected' ? 'APPLIED RATE' : 'REMAINING AREA'}
+                          {this.props.from == 'selected' ? 'APPLIED AREA' : 'REMAINING AREA'}
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                           {parseFloat(data?.item?.remaining_area).toFixed(2) + ' ' + 'Ha'}
