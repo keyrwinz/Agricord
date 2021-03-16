@@ -141,7 +141,7 @@ class MixCard extends Component {
                       {this.props.from == 'selected' ? 'Remaining Area' : 'Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data.item.partial == true ? remainCalc : data?.item?.remaining_area + ' ' + data?.item?.units} 
+                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.remaining_area + ' ' + data?.item?.units} 
                     </Text>
                   </View>
                 </View>
