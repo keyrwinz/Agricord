@@ -107,6 +107,7 @@ const MixPage = (props) => {
   const [maxPartial, setMaxValue] = useState(0)
   const [partialVal, setPartialVal] = useState(0)
   const [totalPart, setTotalPart] = useState(0)
+  const [countClick, setCountClick] = useState(1)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -134,23 +135,28 @@ const MixPage = (props) => {
     }
   }
 
-  const onload = () => {
+  const onload = (data) => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
+        setCountClick(countClick + 1)
+        if(countClick == 2){
+          data[data.length - 1].partial_flag = false
+          setCountClick(0)
+        }else{
+          data[data.length - 1].partial_flag = true
+        }
         setTotalArea(totalArea)
         setTest(Math.round(task.machine.capacity / totalArea))
         setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         if(test == 0 || test == '' || test == '0'){
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         }else{
-          setAppliedRate(Math.round(task.machine.capacity / totalArea))
+          setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
           // setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
         }
-        if(maxArea > totalArea){
-          setMessage(false)
-        }else if(maxArea == totalArea){
+        if(parseFloat(task.machine.capacity / totalArea).toFixed(2) > task.spray_mix.minimum_rate){
           setMessage(false)
         }else {
           setMessage(true)
@@ -393,6 +399,9 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    if(countClick % 2 == 0){
+      item.partial_flag = false
+    }
     if(item.partial == false){
       let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
       setTotalPart(totalPar)
@@ -535,7 +544,7 @@ const MixPage = (props) => {
                 /> :
                 <Switch
                   value={appRateSwitch}
-                  onChangeValue={() => onload()}
+                  onChangeValue={() => onload(selectedPaddock)}
                   activeText={'ON'}
                   inactiveText={'OFF'}
                   fontSize={BasicStyles.standardFontSize}
