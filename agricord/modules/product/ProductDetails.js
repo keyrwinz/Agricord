@@ -15,7 +15,7 @@ import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { faTimesCircle, faImage } from '@fortawesome/free-regular-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Color, BasicStyles, Routes } from 'common';
 import Style from './Style.js';
@@ -207,7 +207,11 @@ class ProductDetails extends Component {
           }
           {
             (data && data.featured == null) && (
-                <ItemImage />
+              <FontAwesomeIcon
+                style={{ color: Color.gray }}
+                icon={faImage}
+                size={100}
+              />
               )
           }
           {
