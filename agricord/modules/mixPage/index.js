@@ -204,15 +204,22 @@ const MixPage = (props) => {
       merchant_id: user.sub_account.merchant.id,
       spray_mix_id: task.spray_mix.id
     };
+    console.log('[parameter]', parameter);
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
-        setLoading(false)
-        if(response.data !== null && response.data.length > 0){
-          setPaddocks(response.data)
-          setAvail(response.data)
-        }else{
-          setPaddocks([])
-        }
+      setLoading(false)
+      if(Array.isArray(response) == true){
+        setPaddocks(response)
+      }else{
+        setPaddocks(response.data)
+      }
+      // if(response.data !== null && response.length > 0){
+      //   setPaddocks(response.data)
+      //   setAvail(response.data)
+      //   console.log('[retrieveddd]');
+      //   }else{
+      //     setPaddocks(response)
+      //   }
       },
       error => {
         setLoading(false)
@@ -775,15 +782,17 @@ const MixPage = (props) => {
       );
   }
 
+
+
   const availablePaddocksView = () => {
+    console.log('[Paddocks]', paddocks);
     return(
       <View style={{
           marginTop: 15
         }}>
         <Text style={Style.textHeader}>Available Paddocks</Text>
         <View style={{ alignItems: 'center', position: 'relative' }}>
-
-           <Carousel
+          <Carousel
               layout={"default"}
               ref={carouselRef}
               data={paddocks}
@@ -800,7 +809,6 @@ const MixPage = (props) => {
               )}
               onSnapToItem = { index => setAvailablePaddockIndex(index) }
             />
-
           <Text style={{
             position: 'absolute',
             bottom: -12,
@@ -845,8 +853,26 @@ const MixPage = (props) => {
               </Text>
             )
           }
-          
-        </View>
+          </View>
+      </View>
+    )
+  }
+
+  const noAvailablePaddocksView = () => {
+    return(
+      <View style={{
+          marginTop: 15
+        }}>
+        {/* <Text style={Style.textHeader}>Available Paddocks</Text> */}
+          <View style={{ alignItems: 'center', position: 'relative' }}>
+            <Text style={{
+            marginLeft: '5%',
+            marginRight: '5%',
+            fontSize: 15,
+            color: '#C0C0C0'}}>
+              Looks like you have not added a Paddock on this Spray Mix or you don't have enough Area.
+            </Text>
+          </View>
       </View>
     )
   }
@@ -856,8 +882,8 @@ const MixPage = (props) => {
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
 
-        {(paddocks != null && paddocks.length > 0) && availablePaddocksView()}
-       
+        {(paddocks != null && paddocks.length > 0) ? availablePaddocksView() : noAvailablePaddocksView()}
+        
         {applicationRate()}
 
         { (selectedFlag && selectedPaddock.length > 0 && scanProductFlag) && ( selectedPaddockView()) }
