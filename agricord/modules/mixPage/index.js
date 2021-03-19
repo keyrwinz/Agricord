@@ -106,7 +106,6 @@ const MixPage = (props) => {
   const [checkMard, setCheckMark] = useState(true)
   const [maxPartial, setMaxValue] = useState(0)
   const [partialVal, setPartialVal] = useState(0)
-  const [totalPart, setTotalPart] = useState(0)
   const [countClick, setCountClick] = useState(1)
   const { task } = props.state;
 
@@ -204,7 +203,6 @@ const MixPage = (props) => {
       merchant_id: user.sub_account.merchant.id,
       spray_mix_id: task.spray_mix.id
     };
-    console.log('[parameter]', parameter);
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
       setLoading(false)
@@ -212,13 +210,14 @@ const MixPage = (props) => {
         setPaddocks(response)
       }else{
         setPaddocks(response.data)
+        setAvail(response.data)
       }
       // if(response.data !== null && response.length > 0){
       //   setPaddocks(response.data)
       //   setAvail(response.data)
       //   console.log('[retrieveddd]');
       //   }else{
-      //     setPaddocks(response)
+      //     setPaddocks([])
       //   }
       },
       error => {
@@ -262,7 +261,7 @@ const MixPage = (props) => {
         }
       })
       let diff = parseFloat(totalArea - item.remaining_area).toFixed(2)
-      setTotalArea(diff)
+      setTotalArea(Number(diff))
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
       if(selectedPaddock.length <= 1 && appRateSwitch){
@@ -410,8 +409,17 @@ const MixPage = (props) => {
       item.partial_flag = false
     }
     if(item.partial == false){
-      let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
-      setTotalPart(totalPar)
+      // if(selectedPaddock.length > 1){
+      //   let partVal = _.sumBy(selectedPaddock, function(e){
+      //     return Number(e.area)
+      //   })
+      //   let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
+      //   console.log('[selectedPaddock]', partVal, totalPar);
+      //   setTotalPart(totalPar)
+      // }else{
+      //   let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
+      //   setTotalPart(totalPar)
+      // }
       item.area = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
       let partVal = _.sumBy(selectedPaddock, function(e){
         return Number(e.area)
@@ -671,7 +679,7 @@ const MixPage = (props) => {
                     <Text style={{
                       color: '#5A84EE', 
                       fontSize: BasicStyles.standardFontSize
-                    }}>{totalPart} Ha</Text>
+                    }}>{partialVal} Ha</Text>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       TOTAL AREA
                     </Text>
@@ -785,7 +793,6 @@ const MixPage = (props) => {
 
 
   const availablePaddocksView = () => {
-    console.log('[Paddocks]', paddocks);
     return(
       <View style={{
           marginTop: 15
@@ -819,6 +826,19 @@ const MixPage = (props) => {
           }}>
             Drag Paddock tile to Application Box
           </Text>
+          {/* {
+            paddocks.length == 0 && (
+              <View style={{ alignItems: 'center', position: 'relative' }}>
+                <Text style={{
+                marginLeft: '5%',
+                marginRight: '5%',
+                fontSize: 15,
+                color: '#C0C0C0'}}>
+                  Looks like you have not added a Paddock on this Spray Mix or you don't have enough Area.
+                </Text>
+              </View>
+            )
+          } */}
           {
             paddocks.length < 10 && (
               <Pagination
@@ -863,7 +883,6 @@ const MixPage = (props) => {
       <View style={{
           marginTop: 15
         }}>
-        {/* <Text style={Style.textHeader}>Available Paddocks</Text> */}
           <View style={{ alignItems: 'center', position: 'relative' }}>
             <Text style={{
             marginLeft: '5%',
@@ -882,7 +901,9 @@ const MixPage = (props) => {
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor:  Color.containerBackground}}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
 
-        {(paddocks != null && paddocks.length > 0) ? availablePaddocksView() : noAvailablePaddocksView()}
+        {(paddocks != null && paddocks.length > 0) && availablePaddocksView()}
+
+        {(paddocks.length == 0 && selectedPaddock.length < 1) && noAvailablePaddocksView()}
         
         {applicationRate()}
 
