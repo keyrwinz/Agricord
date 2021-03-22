@@ -358,7 +358,17 @@ const MixPage = (props) => {
           }, 100)
         }
       }else{
-        if((totalArea + item.remaining_area) >= maxArea){
+        if(selectedPaddock[selectedPaddock.length -1].partial_flag == true){
+          Alert.alert(
+            'Error Message',
+            'You will no longer allowed to add new Paddock. Please select partial to proceed.',
+            [
+              {text: 'OK', onPress: () => console.log('Okay Pressed')},
+            ],
+            { cancelable: false }
+          )
+        }
+        else if((totalArea + item.remaining_area) >= maxArea){
           setTotalHigher(true)
           let newItem = {
             ...item,
@@ -390,7 +400,6 @@ const MixPage = (props) => {
         }
       }
       }else{
-        console.log('already existed')
         Alert.alert(
           'Error Message',
           item.name + ' already exist!',
