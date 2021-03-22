@@ -170,7 +170,7 @@ class OrderDetails extends Component {
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                       {selectedOrder.status === 'pending'
                         ? selectedOrder.order_number
-                        : selectedOrder.delivered_date}
+                        : selectedOrder.date_of_delivery}
                     </Text>
                   </View>
                 </View>
