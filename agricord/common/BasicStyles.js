@@ -249,14 +249,14 @@ export default {
     justifyContent: 'center',
     borderRadius: 25
   },
-  standardTextInput: {
+  standardFormControl: {
     height: 50,
     borderColor: Color.lightGray,
     borderWidth: 1,
     width: '100%',
     borderRadius: 25,
     paddingLeft: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   standardTextInputNotCentered: {
     height: 50,
@@ -273,4 +273,7 @@ export default {
     borderRadius: 25,
     paddingLeft: 10
   },
+  standardLoginContainer: {
+    width: '80%'
+  }
 }
