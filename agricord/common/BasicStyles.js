@@ -240,5 +240,37 @@ export default {
     flexDirection:'row',
     paddingTop: 15,
     paddingBottom: 15
-  }
+  },
+  standardButton: {
+    height: 50,
+    backgroundColor: Color.primary,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25
+  },
+  standardTextInput: {
+    height: 50,
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10,
+    justifyContent: 'center'
+  },
+  standardTextInputNotCentered: {
+    height: 50,
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10,
+  },
+  standardTextInputMultiline: {
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10
+  },
 }
