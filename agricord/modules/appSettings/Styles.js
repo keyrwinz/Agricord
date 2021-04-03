@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   AppSettingTileTextContainer: {
     justifyContent: 'flex-start',
-    width: '70%',
+    width: '20%',
   },
   AppSettingTileTitleTextStyle: {
     fontWeight: 'bold',

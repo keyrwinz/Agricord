@@ -9,6 +9,7 @@ import WifiOfflineSvg from 'assets/settings/wifioffline.svg';
 import BellSvg from 'assets/settings/bell.svg';
 import ImageSvg from 'assets/settings/image.svg';
 import {connect} from 'react-redux';
+import { BasicStyles, Color } from 'common';
 
 class AppSettingTile extends Component {
   constructor(props) {
@@ -45,48 +46,76 @@ class AppSettingTile extends Component {
       isEnabled = this.props.state.stayLoggedIn
     }
     return (
-      <View style={styles.AppSettingTileContainer}>
-        <View style={styles.AppSettingTileContainerLeft}>
-          <View style={styles.AppSettingTileIconContainer}>
+      <View style={{
+        flexDirection: 'row',
+        width: '100%',
+        minHeight: 75,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        paddingHorizontal: '4%',
+      }}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: '80%',
+        }}>
+          <View style={{
+            width: '10%'
+          }}>
             {
               this.props.icon == 'logout' && (
-                <LogoutSvg style={styles.AppSettingTileIconStyle}/>
+                <LogoutSvg/>
               )
             }
             {
               this.props.icon == 'wifi' && (
-                <WifiSvg style={styles.AppSettingTileIconStyle}/>
+                <WifiSvg/>
               )
             }
             {
               this.props.icon == 'wifioffline' && (
-                <WifiOfflineSvg style={styles.AppSettingTileIconStyle}/>
+                <WifiOfflineSvg/>
               )
             }
             {
               this.props.icon == 'bell' && (
-                <BellSvg style={styles.AppSettingTileIconStyle}/>
+                <BellSvg/>
               )
             }
 
             {
               this.props.icon == 'image' && (
-                <ImageSvg style={styles.AppSettingTileIconStyle}/>
+                <ImageSvg/>
               )
             }
           </View>
-          <View style={styles.AppSettingTileTextContainer}>
-            <Text style={styles.AppSettingTileTitleTextStyle}>
+          <View style={{
+            width: '90%',
+            paddingLeft: 10,
+            paddingRight: 10
+          }}>
+            <Text style={{
+              fontsize: BasicStyles.standardTitleFontSize,
+              fontWeight: 'bold',
+              width: '100%'
+            }}>
               {this.props.title}
             </Text>
             {this.props.description && (
-              <Text style={styles.AppSettingTileDescriptionTextStyle}>
+              <Text style={{
+                fontsize: BasicStyles.standardFontSize,
+                color: Color.gray,
+                width: '100%',
+                paddingTop: 5
+              }}>
                 {this.props.description}
               </Text>
             )}
           </View>
         </View>
-        <View style={styles.AppSettingTileContainerRight}>
+        <View style={{
+          width: '20%'
+        }}>
           <CustomSwitch
             onToggle={this.switchAction}
             isEnabled={isEnabled}
