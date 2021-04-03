@@ -42,7 +42,8 @@ class MessageModal extends Component {
               }]}>
                 <Text style={{
                   color: Color.black,
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  width: '100%'
                 }}>
                 {
                   this.props.message
