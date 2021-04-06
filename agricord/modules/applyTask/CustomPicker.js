@@ -209,19 +209,23 @@ class CustomPicker extends Component {
                 alignItems: 'center',
                 justifyContent: 'center',
                 paddingVertical: 3,
-                paddingHorizontal: 4,
                 borderColor: select !== null ? '#7AA0FF' : '#FFFFFF',
                 borderWidth: select !== null ? 1 : 0,
                 borderRadius: select !== null ? 7 : 0,
                 backgroundColor,
                 flexDirection: 'row',
                 zIndex: this.props.zIndex + 20,
-                position: 'relative'
+                position: 'relative',
+                maxWidth: '80%',
+                paddingLeft: 2,
+                paddingRight: 2
               }}>
               <Text
+                numberOfLines={1}
                 style={{
                   textAlign: 'left',
                   color: this.checkIfAllowDropdown() ? '#FFFFFF' : '#084EFF',
+                  width: '90%'
                 }}>
                 {select !== null
                   ? select.name ? select.name : select

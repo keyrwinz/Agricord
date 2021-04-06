@@ -593,7 +593,7 @@ const MixPage = (props) => {
                   <Message
                     visible={true}
                     title={'Application volume too low'}
-                    message={`This task would require an application volume lower than ${appliedRate} L/ha, which is too low for this spray mix. \n\n\t Remove paddock or complete a partial application`}
+                    message={`This task would require an application volume lower than ${appliedRate} L/ha, which is too low for this spray mix. \n\n Remove paddock or complete a partial application`}
                     onClose={() => closeModal()}
                   /> : null }
               </View>
@@ -925,7 +925,7 @@ const MixPage = (props) => {
           <Message
             visible={true}
             title={'Area too Large'}
-            message={`You've selected too many hectares.\n\n\t Remove certain paddock or complete partial application on another paddock to continue.`}
+            message={`You've selected too many hectares.\n\n Remove certain paddock or complete partial application on another paddock to continue.`}
             onClose={() => closePar()}
           /> : null
       }
