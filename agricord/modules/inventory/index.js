@@ -289,7 +289,7 @@ const Inventory = (props) => {
   const manageRequest = (parameter, title) => {
     setLoading(true)
     console.log("TRACE::", parameter);
-    Api.request(Routes.productTraceRetrieveUser, parameter, response => {
+    Api.request(Routes.productTraceRetrieve, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
         console.log(response.data[0], "volume");
