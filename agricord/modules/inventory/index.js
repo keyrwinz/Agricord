@@ -272,7 +272,7 @@ const Inventory = (props) => {
   }
 
   const retrieveProduct = (params) => {
-    const user = props.state.user
+    const { user } = props.state;
     let parameter = {
       condition: [{
         value: params.code,
@@ -288,7 +288,8 @@ const Inventory = (props) => {
 
   const manageRequest = (parameter, title) => {
     setLoading(true)
-    Api.request(Routes.productTraceRetrieve, parameter, response => {
+    console.log("TRACE::", parameter);
+    Api.request(Routes.productTraceRetrieveUser, parameter, response => {
       setLoading(false)
       if(response.data != null && response.data.length > 0) {
         console.log(response.data[0], "volume");
