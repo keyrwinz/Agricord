@@ -122,6 +122,7 @@ class ProductDetails extends Component {
     this.setState({
       loading: true
     })
+    console.log('PARAMETER', parameter)
     Api.request(Routes.productsRetrieveWithOrderId, parameter, response => {
         this.setState({
           loading: false
