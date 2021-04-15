@@ -7,6 +7,7 @@ export default {
       case 'Litres (L)': return 'L';
       case 'Millilitres (ml)': return 'ml';
       case 'Kilograms (kg)': return 'kg';
+      default: return units;
     }
   }
 }
