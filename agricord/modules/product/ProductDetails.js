@@ -117,11 +117,13 @@ class ProductDetails extends Component {
       }],
       inventory_type: 'product_trace',
       account_id: user.id,
-      order_request_id: selectedOrder ? selectedOrder.id : null
+      order_request_id: selectedOrder ? selectedOrder.id : null,
+      product_attribute_id: this.props.navigation.state.params.data.product_attribute_id
     }
     this.setState({
       loading: true
     })
+    console.log('PARAMETER', parameter)
     Api.request(Routes.productsRetrieveWithOrderId, parameter, response => {
         this.setState({
           loading: false
