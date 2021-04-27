@@ -77,6 +77,7 @@ export default {
     alignItems: 'center',
     paddingVertical: 5,
     margin: 7,
+    marginLeft: '13%',
     borderWidth: 0.5,
     borderColor: '#CDCDCD',
     borderRadius: 6
