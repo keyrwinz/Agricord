@@ -31,6 +31,7 @@ import Config from 'src/config';
 import RNFetchBlob from 'rn-fetch-blob';
 import config from 'src/config';
 import { PermissionsAndroid } from 'react-native';
+import Conversion from 'services/Conversion';
 
 const url = config.IS_DEV;
 let apiUrl = url;
@@ -358,7 +359,7 @@ class ProductDetails extends Component {
           {
             data && (
               <Text style={Style.itemDetailValue}>
-                {this.props.navigation.state.params.data.variation ? this.props.navigation.state.params.data.variation[0].payload_value + this.props.navigation.state.params.data.variation[0].payload : (data.volume ? data.volume : 'No data')}
+                {this.props.navigation.state.params.data.variation ? Conversion.getConvertedUnit(this.props.navigation.state.params.data.variation[0].payload, this.props.navigation.state.params.data.variation[0].payload_value) : (data.volume ? data.volume : 'No data')}
               </Text>
             )
           }
