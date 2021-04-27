@@ -9,7 +9,8 @@ import {
   Modal,
   Alert,
   Image,
-  SectionList
+  SectionList,
+  Platform
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -32,7 +33,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import config from 'src/config';
 import { PermissionsAndroid } from 'react-native';
 import Conversion from 'services/Conversion';
-import { Platform } from 'react-native';
 
 const url = config.IS_DEV;
 let apiUrl = url;
