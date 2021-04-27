@@ -339,7 +339,7 @@ class ProductDetails extends Component {
           {
             !Array.isArray(details.active) ? (
               <Text style={{fontSize: 12}}>
-                {`${details.active.active_name}` || 'No data'}
+                {`${details.active.active_name} ${details.active.value}` || 'No data'}
                 </Text>
             ) : (
               <View>
@@ -355,7 +355,7 @@ class ProductDetails extends Component {
                             <View style={{width: 200, paddingRight: 30}}><Text numberOfLines={2} style={{
                               fontSize: 12,
                               lineHeight: 20,
-                            }}>{el.active_name}</Text></View>
+                            }}>{el.active_name} {el.value}{Conversion.getUnitsAbbreviation(el.attribute)}/{Conversion.getUnitsAbbreviation(el.attribute2)}</Text></View>
                            )
                          })
                       }
