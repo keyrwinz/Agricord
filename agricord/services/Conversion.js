@@ -4,10 +4,13 @@ export default {
   },
   getUnitsAbbreviation(units){
     switch(units){
-      case 'Litres (L)': return 'L';
-      case 'Millilitres (ml)': return 'ml';
-      case 'Kilograms (kg)': return 'kg';
-      default: return units;
+      case 'Liters (L)': return 'L'
+      case 'Litres (L)': return 'L'
+      case 'Milliliters (ml)': return 'ml'
+      case 'Millilitres (ml)': return 'ml'
+      case 'Kilograms (kg)': return 'kg'
+      case 'Grams (g)': return 'g'
+      case 'Milligrams (mg)': return 'mg'
     }
   },
   getConvertedUnit(payload, payloadValue){

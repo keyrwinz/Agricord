@@ -9,7 +9,8 @@ import {
   Modal,
   Alert,
   Image,
-  SectionList
+  SectionList,
+  Platform
 } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -84,19 +85,50 @@ class ProductDetails extends Component {
     var ext = this.extension(url);
     ext = "." + ext[0];
     const { config, fs } = RNFetchBlob
-    let fileDir = fs.dirs.DocumentDir
-    let options = {
+    let fileDir =  Platform.OS == 'ios' ? fs.dirs.DocumentDir : fs.dirs.DownloadDir
+    let configfb = {
       fileCache: true,
+      useDownloadManager: true,
+      notification: true,
+      mediaScannable: true,
+      title: file,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
         description : 'PDF'
-      }
+      },
+      path: `${fileDir}/${file}`,
     }
-    console.log("[DIR]", options);
-    config(options).fetch('GET', url).then(res => {
-      console.log("[RESPONSE]", res);
-      Alert.alert("Success download")
+    const configOptions = Platform.select({
+      ios: {
+          fileCache: configfb.fileCache,
+          title: configfb.title,
+          path: configfb.path,
+          notification: true,
+          useDownloadManager: true,
+          appendExt: 'pdf',
+      },
+      android: configfb,
+    });
+
+    // let options = {
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true,
+    //     notification: true,
+    //     description : 'PDF'
+    //   }
+    // }
+    config(configOptions).fetch('GET', url).then(res => {
+      if(Platform.OS == 'ios'){
+        RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
+        RNFetchBlob.ios.previewDocument(configfb.path);
+        Alert.alert("Success download")
+      }else if(Platform.OS == 'android'){
+        Alert.alert("Success download")
+      }
+    }).catch(e => {
+      console.log('The file saved to ERROR', e.message)
     })
   }
 
@@ -307,7 +339,7 @@ class ProductDetails extends Component {
           {
             !Array.isArray(details.active) ? (
               <Text style={{fontSize: 12}}>
-                {`${details.active.active_name}` || 'No data'}
+                {`${details.active.active_name} ${details.active.value}${Conversion.getUnitsAbbreviation(details.active.attribute)}/${Conversion.getUnitsAbbreviation(details.active.attribute2)}` || 'No data'}
                 </Text>
             ) : (
               <View>
@@ -323,7 +355,7 @@ class ProductDetails extends Component {
                             <View style={{width: 200, paddingRight: 30}}><Text numberOfLines={2} style={{
                               fontSize: 12,
                               lineHeight: 20,
-                            }}>{el.active_name}</Text></View>
+                            }}>{el.active_name} {el.value}{Conversion.getUnitsAbbreviation(el.attribute)}/{Conversion.getUnitsAbbreviation(el.attribute2)}</Text></View>
                            )
                          })
                       }
