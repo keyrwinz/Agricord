@@ -32,6 +32,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import config from 'src/config';
 import { PermissionsAndroid } from 'react-native';
 import Conversion from 'services/Conversion';
+import { Platform } from 'react-native';
 
 const url = config.IS_DEV;
 let apiUrl = url;
@@ -84,19 +85,50 @@ class ProductDetails extends Component {
     var ext = this.extension(url);
     ext = "." + ext[0];
     const { config, fs } = RNFetchBlob
-    let fileDir = fs.dirs.DocumentDir
-    let options = {
+    let fileDir =  Platform.OS == 'ios' ? fs.dirs.DocumentDir : fs.dirs.DownloadDir
+    let configfb = {
       fileCache: true,
+      useDownloadManager: true,
+      notification: true,
+      mediaScannable: true,
+      title: file,
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
         description : 'PDF'
-      }
+      },
+      path: `${fileDir}/${file}`,
     }
-    console.log("[DIR]", options);
-    config(options).fetch('GET', url).then(res => {
-      console.log("[RESPONSE]", res);
-      Alert.alert("Success download")
+    const configOptions = Platform.select({
+      ios: {
+          fileCache: configfb.fileCache,
+          title: configfb.title,
+          path: configfb.path,
+          notification: true,
+          useDownloadManager: true,
+          appendExt: 'pdf',
+      },
+      android: configfb,
+    });
+
+    // let options = {
+    //   fileCache: true,
+    //   addAndroidDownloads: {
+    //     useDownloadManager: true,
+    //     notification: true,
+    //     description : 'PDF'
+    //   }
+    // }
+    config(configOptions).fetch('GET', url).then(res => {
+      if(Platform.OS == 'ios'){
+        RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
+        RNFetchBlob.ios.previewDocument(configfb.path);
+        Alert.alert("Success download")
+      }else if(Platform.OS == 'android'){
+        Alert.alert("Success download")
+      }
+    }).catch(e => {
+      console.log('The file saved to ERROR', e.message)
     })
   }
 
