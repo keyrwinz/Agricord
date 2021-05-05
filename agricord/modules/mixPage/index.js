@@ -699,7 +699,7 @@ const MixPage = (props) => {
                       color: '#5A84EE', 
                       fontSize: BasicStyles.standardFontSize
                     }}>{totalArea} Ha</Text>
-                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize, backgroundColor: 'yellow' }}>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       TOTAL AREA
                     </Text>
                   </View>
