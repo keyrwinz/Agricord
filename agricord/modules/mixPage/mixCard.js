@@ -43,8 +43,8 @@ class MixCard extends Component {
 
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
-    const origPartial = parseFloat(data.item.spray_area - (totalRate - maxRate)).toFixed(2)
-    const remainCalc = parseFloat(data.item.spray_area - origPartial).toFixed(2)
+    const origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+    const remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -141,7 +141,7 @@ class MixCard extends Component {
                       {this.props.from == 'selected' ? 'Remaining Spray Area' : 'Spray Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.spray_area + ' ' + data?.item?.units} 
+                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.remaining_spray_area + ' ' + data?.item?.units} 
                     </Text>
                   </View>
                 </View>
@@ -198,7 +198,7 @@ class MixCard extends Component {
                           {this.props.from == 'selected' ? 'APPLIED AREA' : 'REMAINING SPRAY AREA'}
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {parseFloat(data?.item?.spray_area).toFixed(2) + ' ' + 'Ha'}
+                          {parseFloat(data?.item?.remaining_spray_area).toFixed(2) + ' ' + 'Ha'}
                         </Text>
                       </View>
                     </View>

@@ -260,7 +260,7 @@ const MixPage = (props) => {
           return item
         }
       })
-      let diff = parseFloat(totalArea - item.spray_area).toFixed(2)
+      let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
       setTotalArea(Number(diff))
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
@@ -274,7 +274,7 @@ const MixPage = (props) => {
         setTotalArea(0)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
       }
-      if(parseFloat(totalArea - parseInt(item.spray_area)).toFixed(2) > maxArea){
+      if(parseFloat(totalArea - parseInt(item.remaining_spray_area)).toFixed(2) > maxArea){
         setTotalHigher(true)
       }else {
         setTotalHigher(false)
@@ -307,7 +307,7 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
-    if(item.spray_area <= 0){
+    if(item.remaining_spray_area <= 0){
       Alert.alert(
         'Invalid Selection',
         item.name + ' has 0 remaining area.',
@@ -339,19 +339,19 @@ const MixPage = (props) => {
       }
       if(status == false){
        if(selectedPaddock.length == 0){
-        if(item.area > maxArea){
+        if(parseInt(item.spray_area) > maxArea){
           setTotalHigher(true)
           let newItem = {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + item.area)
+          setTotalArea(totalArea + parseInt(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (item.area + totalArea)){
-          setTotalArea(totalArea + item.area)
+        }else if(maxArea >= (parseInt(item.spray_area) + totalArea)){
+          setTotalArea(totalArea + parseInt(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
@@ -368,19 +368,19 @@ const MixPage = (props) => {
             { cancelable: false }
           )
         }
-        else if((totalArea + item.spray_area) >= maxArea){
+        else if((totalArea + item.remaining_spray_area) >= maxArea){
           setTotalHigher(true)
           let newItem = {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + item.area)
+          setTotalArea(totalArea + parseInt(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (item.area + totalArea)){
-          setTotalArea(totalArea + item.area)
+        }else if(maxArea >= (parseInt(item.spray_area) + totalArea)){
+          setTotalArea(totalArea + parseInt(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
@@ -389,7 +389,7 @@ const MixPage = (props) => {
           let remainingArea = maxArea - totalArea
           let newItem = {
             ...item,
-            spray_area: remainingArea,
+            remaining_spray_area: remainingArea,
             partial_flag: true
           }
           setTotalArea(totalArea + remainingArea)
@@ -429,9 +429,9 @@ const MixPage = (props) => {
       //   let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
       //   setTotalPart(totalPar)
       // }
-      item.area = parseFloat(item.spray_area - (totalArea - maxArea)).toFixed(2)
+      item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
       let partVal = _.sumBy(selectedPaddock, function(e){
-        return Number(e.area)
+        return Number(e.spray_area)
       })
       setPartialVal(partVal)
     }
@@ -699,7 +699,7 @@ const MixPage = (props) => {
                       color: '#5A84EE', 
                       fontSize: BasicStyles.standardFontSize
                     }}>{totalArea} Ha</Text>
-                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
+                    <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize, backgroundColor: 'yellow' }}>
                       TOTAL AREA
                     </Text>
                   </View>
