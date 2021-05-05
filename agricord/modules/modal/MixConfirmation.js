@@ -102,7 +102,7 @@ class MixConfirmation extends Component {
                     }]}>
                       <Text style={styles.DetailDetailTextStyle}>
                         {
-                          item.area + ' ha'
+                          item.spray_area + ' ha'
                         }
                       </Text>
                     </View>
