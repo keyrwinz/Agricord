@@ -107,7 +107,7 @@ class paddockPage extends Component{
     if(this.props.navigation.state.params?.selected_paddock) {
       let total = 0;
       this.props.navigation.state.params.selected_paddock.map((item) => {
-        total += item.area;
+        total += item.spray_area;
       })
       this.setState({totalPaddockArea: total});
     }
@@ -188,7 +188,7 @@ class paddockPage extends Component{
     })
     let areas = [];
     this.props.navigation.state.params.selected_paddock.map((item) => {
-      areas.push(item.remaining_area);
+      areas.push(item.remaining_spray_area);
     })
     let tasks = {
       paddock_plan_task_id: taskArray,
