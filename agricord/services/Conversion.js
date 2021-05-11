@@ -11,6 +11,7 @@ export default {
       case 'Kilograms (kg)': return 'kg'
       case 'Grams (g)': return 'g'
       case 'Milligrams (mg)': return 'mg'
+      default: return units
     }
   },
   getConvertedUnit(payload, payloadValue){
