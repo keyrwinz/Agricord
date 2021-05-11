@@ -471,14 +471,7 @@ class paddockPage extends Component{
         this.checkProduct(response.data[0])
       } else {
         this.setState({message: response.error})
-        Alert.alert(
-          "Error Message",
-          response.error,
-          [
-            { text: "OK"}
-          ],
-          { cancelable: false }
-        );
+        alert('Invalid NFC code.');
       }
     }
     );
