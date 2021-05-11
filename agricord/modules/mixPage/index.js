@@ -260,7 +260,7 @@ const MixPage = (props) => {
           return item
         }
       })
-      let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
+      let diff = parseFloat(totalArea - item.spray_area).toFixed(2)
       setTotalArea(Number(diff))
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
@@ -274,7 +274,7 @@ const MixPage = (props) => {
         setTotalArea(0)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
       }
-      if(parseFloat(totalArea - parseInt(item.remaining_spray_area)).toFixed(2) > maxArea){
+      if((totalArea - parseInt(item.remaining_spray_area)) > Number(maxArea)){
         setTotalHigher(true)
       }else {
         setTotalHigher(false)
