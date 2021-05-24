@@ -97,6 +97,7 @@ const MixPage = (props) => {
   const [totalArea, setTotalArea] = useState(0)
   const [paddocks, setPaddocks] = useState([])
   const [maxArea, setMaxArea] = useState(0)
+  const [totalRates, setTotalRate] = useState(0)
   const [appliedRate, setAppliedRate] = useState(0)
   const [message, setMessage] = useState(false)
   const [totalHigher, setTotalHigher] = useState(false)
@@ -307,6 +308,14 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
+    let a = []
+    item.rate_per_hectar.forEach(el => {
+      a.push(el.rate)
+      let b = a.reduce(function (c, d) {
+        return c + d
+      })
+      setTotalRate(b)
+    })
     if(item.remaining_spray_area <= 0){
       Alert.alert(
         'Invalid Selection',
@@ -448,7 +457,7 @@ const MixPage = (props) => {
     })
     setSelectedPaddock(newSelectedPaddock)
   }
-
+  
   const selectedPaddockView = () => {
     setTimeout(() => {
       const { task } = props.state;
@@ -506,13 +515,13 @@ const MixPage = (props) => {
             }}
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
-          />
+            />
         </View>
       </View>
     )
   }
-
-
+  
+  
   const applicationRate = () => {
     const { task } = props.state;
     return (
@@ -797,13 +806,13 @@ const MixPage = (props) => {
           }
         </View>
       );
-  }
-
-
-
-  const availablePaddocksView = () => {
-    return(
-      <View style={{
+    }
+    
+    
+    
+    const availablePaddocksView = () => {
+      return(
+        <View style={{
           marginTop: 15
         }}>
         <Text style={Style.textHeader}>Available Paddocks</Text>
@@ -965,10 +974,11 @@ const MixPage = (props) => {
           }}
           onSuccess={() => {
             setMixConfirmation(false)
-            props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+            props.navigation.navigate('batchStack', {total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+            // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
           }}
           data={selectedPaddock}
-          volume={'BATCH ' + partialVal + 'HA ' + parseFloat(appliedRate * partialVal).toFixed(2) + ' L'}
+          volume={'BATCH ' + partialVal + 'HA ' + parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2) + ' L'}
           />
           ) :
           (mixConfirmation) && (checkMard == true) && (
@@ -979,10 +989,11 @@ const MixPage = (props) => {
             }}
             onSuccess={() => {
               setMixConfirmation(false)
-              props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+              props.navigation.navigate('batchStack', {total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
+              // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             }}
             data={selectedPaddock}
-            volume={'BATCH ' + totalArea + 'HA ' + parseFloat(appliedRate * totalArea).toFixed(2) + ' L'}
+            volume={'BATCH ' + totalArea + 'HA ' + parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2) + ' L'}
           />
         )
       }
