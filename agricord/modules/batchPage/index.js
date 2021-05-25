@@ -731,7 +731,7 @@ class paddockPage extends Component {
                   fontWeight: 'bold',
                   textAlign: 'right',
                   width: '30%'
-                }}>{this.props.navigation.state?.params?.total_volume - this.state.totalVolume}L</Text>
+                }}>{parseFloat(this.props.navigation.state?.params?.total_volume - this.state.totalVolume).toFixed(2)}L</Text>
               </View>
               {
                 this.renderNotesCard()
