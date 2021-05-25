@@ -354,13 +354,13 @@ const MixPage = (props) => {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + parseInt(item.spray_area))
+          setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
         }else if(maxArea >= (parseInt(item.spray_area) + totalArea)){
-          setTotalArea(totalArea + parseInt(item.spray_area))
+          setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
