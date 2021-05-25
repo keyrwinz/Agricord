@@ -348,7 +348,7 @@ const MixPage = (props) => {
       }
       if(status == false){
        if(selectedPaddock.length == 0){
-        if(parseInt(item.spray_area) > maxArea){
+        if(parseFloat(item.spray_area) > maxArea){
           setTotalHigher(true)
           let newItem = {
             ...item,
@@ -359,7 +359,7 @@ const MixPage = (props) => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (parseInt(item.spray_area) + totalArea)){
+        }else if(maxArea >= (parseFloat(item.spray_area) + totalArea)){
           setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
@@ -383,13 +383,13 @@ const MixPage = (props) => {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + parseInt(item.spray_area))
+          setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (parseInt(item.spray_area) + totalArea)){
-          setTotalArea(totalArea + parseInt(item.spray_area))
+        }else if(maxArea >= (parseFloat(item.spray_area) + totalArea)){
+          setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
