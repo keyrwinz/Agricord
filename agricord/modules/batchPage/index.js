@@ -181,7 +181,7 @@ class paddockPage extends Component {
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
       notes: this.state.notes,
-      water: this.props.navigation.state?.params?.total_volume - this.state.totalVolume,
+      water: this.props.navigation.state?.params?.total_volume,
       status: 'inprogress'
     }
     let taskArray = [];
@@ -731,7 +731,7 @@ class paddockPage extends Component {
                   fontWeight: 'bold',
                   textAlign: 'right',
                   width: '30%'
-                }}>{parseFloat(this.props.navigation.state?.params?.total_volume - this.state.totalVolume).toFixed(2)}L</Text>
+                }}>{this.props.navigation.state?.params?.total_volume}L</Text>
               </View>
               {
                 this.renderNotesCard()
