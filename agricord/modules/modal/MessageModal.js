@@ -52,22 +52,23 @@ class MessageModal extends Component {
                 </Text>
               </View>
               <View style={[styles.action, {
-                height: '10%'
+                height: '10%',
+                marginTop: '5%'
               }]}>
-                <View style={{
-                  width: '50%',
-                  alignItems: 'center',
-                  marginTop: 25,
-                  height: '100%'
-                }}>
                   <TouchableOpacity
                     underlayColor={Color.gray} 
-                    style={[{backgroundColor: Color.primary, width: '80%', marginRight: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: 40, borderRadius: 5,}]}
+                    style={[{backgroundColor: Color.primary, width: '40%', marginRight: 5, alignItems: 'center', justifyContent: 'center', alignSelf: 'center', height: 40, borderRadius: 5,}]}
                     onPress={() => this.props.onClose()}
                     >
-                    <Text style={{ color: Color.white}}>Close</Text>
+                      <View style={{
+                        width: '50%',
+                        alignItems: 'center',
+                        marginTop: 25,
+                        height: '100%'
+                      }}>
+                        <Text style={{ color: Color.white}}>Close</Text>
+                      </View>
                   </TouchableOpacity>
-                </View>
               </View>
             </View>
           </View>

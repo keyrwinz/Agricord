@@ -311,9 +311,9 @@ const MixPage = (props) => {
     let a = []
     item.rate_per_hectar.forEach(el => {
       a.push(el.rate)
-      let b = a.reduce(function (c, d) {
-        return c + d
-      })
+      let b = a.reduce(function(c, d){
+        return (Number(c) || 0) + (Number(d) || 0);
+      });
       setTotalRate(b)
     })
     if(item.remaining_spray_area <= 0){
@@ -359,13 +359,22 @@ const MixPage = (props) => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (parseFloat(item.spray_area) + totalArea)){
+        }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
           setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
           }, 100)
         }
+      }else if(parseInt(totalArea) === parseInt(maxArea)){
+        Alert.alert(
+          'Error Message',
+          'You will no longer allowed to add new Paddock. Remove paddock or Create batch.',
+          [
+            {text: 'OK', onPress: () => console.log('Okay Pressed')},
+          ],
+          { cancelable: false }
+        )
       }else{
         if(selectedPaddock[selectedPaddock.length -1].partial_flag == true){
           Alert.alert(
@@ -377,7 +386,7 @@ const MixPage = (props) => {
             { cancelable: false }
           )
         }
-        else if((totalArea + item.remaining_spray_area) >= maxArea){
+        else if((totalArea + item.remaining_spray_area) > maxArea){
           setTotalHigher(true)
           let newItem = {
             ...item,
@@ -388,7 +397,7 @@ const MixPage = (props) => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea >= (parseFloat(item.spray_area) + totalArea)){
+        }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
           setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
@@ -982,7 +991,7 @@ const MixPage = (props) => {
           />
           ) :
           (mixConfirmation) && (checkMard == true) && (
-          <MixConfirmationModal
+            <MixConfirmationModal
             visible={mixConfirmation}
             onClose={() => {
               setMixConfirmation(false)
