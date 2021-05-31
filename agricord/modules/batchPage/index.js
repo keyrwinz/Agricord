@@ -107,7 +107,7 @@ class paddockPage extends Component {
     if (this.props.navigation.state.params?.selected_paddock) {
       let total = 0;
       this.props.navigation.state.params.selected_paddock.map((item) => {
-        total += item.spray_area;
+        total += parseFloat(item.spray_area);
       })
       this.setState({ totalPaddockArea: total });
     }
