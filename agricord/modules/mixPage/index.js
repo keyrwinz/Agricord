@@ -308,14 +308,6 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
-    let a = []
-    item.rate_per_hectar.forEach(el => {
-      a.push(el.rate)
-      let b = a.reduce(function(c, d){
-        return (Number(c) || 0) + (Number(d) || 0);
-      });
-      setTotalRate(b)
-    })
     if(item.remaining_spray_area <= 0){
       Alert.alert(
         'Invalid Selection',
@@ -348,6 +340,7 @@ const MixPage = (props) => {
       }
       if(status == false){
        if(selectedPaddock.length == 0){
+        setTotalRate(item.rate_per_hectar)
         if(parseFloat(item.spray_area) > maxArea){
           setTotalHigher(true)
           let newItem = {
