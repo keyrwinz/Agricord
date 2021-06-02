@@ -137,6 +137,7 @@ class ProductDetails extends Component {
   }
 
   retrieve(){
+    console.log('[ROUTE PARAMS]:',  this.props.navigation.state.params);
     const { user, selectedOrder } = this.props.state;
     if(user == null || !this.props.navigation.state.params || (this.props.navigation.state.params && this.props.navigation.state.params.data == null)){
       return
@@ -151,12 +152,12 @@ class ProductDetails extends Component {
       inventory_type: 'product_trace',
       account_id: user.id,
       order_request_id: selectedOrder ? selectedOrder.id : null,
-      product_attribute_id: this.props.navigation.state.params.data.product_attribute_id
+      product_attribute_id: this.props.navigation.state.params.data.product_attribute_id !== undefined ? this.props.navigation.state.params.data.product_attribute_id : null
     }
     this.setState({
       loading: true
     })
-    console.log('PARAMETER', parameter)
+    console.log('PARAMETER',Routes.productsRetrieveWithOrderId, parameter)
     Api.request(Routes.productsRetrieveWithOrderId, parameter, response => {
         this.setState({
           loading: false
@@ -177,7 +178,6 @@ class ProductDetails extends Component {
   }
 
   renderModal(data){
-    console.log("DATA", data);
     let details = JSON.parse(data.details)
     const { modal } = this.state;
     return(
@@ -263,6 +263,7 @@ class ProductDetails extends Component {
 
   productInformation(data){
     let details = JSON.parse(data.details)
+    console.log("PARAMS", this.props.navigation.state.params.data);
     console.log("[PRODUCT]", details);
     return(
       <View style={Style.Details}>
@@ -448,14 +449,14 @@ class ProductDetails extends Component {
         
 
         {
-          (data && data.product_trace) && (
+          (data && data.product_traces && this.props.navigation.state.params.data.fromScan !== undefined) && (
             <View style={Style.itemDetailsContainer}>
               <Text style={Style.itemDetailLabel}>
                 Batch
               </Text>
               <Text style={Style.itemDetailValue}>
                 {
-                  data?.product_trace?.batch_number
+                  data?.product_traces?.batch_number
                 }
               </Text>
             </View>
@@ -463,14 +464,14 @@ class ProductDetails extends Component {
         }
 
         {
-          (data && data.product_trace) && (
+          (data && data.product_traces && this.props.navigation.state.params.data.fromScan !== undefined) && (
             <View style={Style.itemDetailsContainer}>
               <Text style={Style.itemDetailLabel}>
                 Manufactured
               </Text>
               <Text style={Style.itemDetailValue}>
                 {
-                  data?.product_trace?.manufacturing_date
+                  data?.product_traces?.manufacturing_date
                 }
               </Text>
             </View>

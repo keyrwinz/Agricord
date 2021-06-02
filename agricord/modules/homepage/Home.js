@@ -126,10 +126,24 @@ const Home = (props) => {
       this.retrieve()
     })
   }, [])
+
+ const handleScroll = (e) => {
+    console.log('[SCROLL]', e.nativeEvent.contentOffset.y);
+    if(e.nativeEvent.contentOffset.y === 0){
+      retrieve(false)
+    }
+    return (
+      <View>
+        <Spinner mode="overlay"/>
+      </View>
+    )
+ }
+
   console.log('[INFOCUS]', orders?.infocus);
   return  (
     <ScrollView
       style={Style.ScrollView}
+      onScroll={handleScroll}
       showsVerticalScrollIndicator={false}
     >
         <Spinner mode="overlay" />
