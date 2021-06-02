@@ -297,7 +297,8 @@ const Inventory = (props) => {
           data: {
             ...response.data[0],
             title: title,
-            volume: response.data[0].volume
+            volume: response.data[0].volume,
+            fromScan: true
           }
         })
       } else {
