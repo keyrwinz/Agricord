@@ -139,13 +139,7 @@ const MixPage = (props) => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
-        setCountClick(countClick + 1)
-        if(countClick == 2){
-          data[data.length - 1].partial_flag = false
-          setCountClick(0)
-        }else{
-          data[data.length - 1].partial_flag = true
-        }
+        data[data.length - 1].partial_flag = false
         setTotalArea(totalArea)
         setTest(Math.round(task.machine.capacity / totalArea))
         setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
@@ -162,6 +156,7 @@ const MixPage = (props) => {
           setMessage(true)
         }
       }else{
+        data[data.length - 1].partial_flag = true
         setTotalArea(totalArea)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
         setAppliedRate(Math.round(task.spray_mix.application_rate))
@@ -261,7 +256,7 @@ const MixPage = (props) => {
           return item
         }
       })
-      let diff = parseFloat(totalArea - item.spray_area).toFixed(2)
+      let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
       setTotalArea(Number(diff))
       // setTotalArea(totalArea - item.area)
       // setTotalArea(totalArea - item.remaining_area)
@@ -381,13 +376,21 @@ const MixPage = (props) => {
         }
         else if((totalArea + item.remaining_spray_area) > maxArea){
           setTotalHigher(true)
+          setTotalArea(totalArea + parseFloat(item.spray_area))
           let newItem = {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
-            setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            // setSelectedPaddock([...selectedPaddock, ...[newItem]])
+            selectedPaddock.forEach(element => {
+              let newPartial = {
+                ...element,
+                partial_flag: true
+              }
+              console.log('sdf', newPartial)
+              setSelectedPaddock([...[newPartial], ...[newItem]])
+            });
             removePaddock('available', item)
           }, 100)
         }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
@@ -441,9 +444,11 @@ const MixPage = (props) => {
       //   setTotalPart(totalPar)
       // }
       item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
+      console.log('spray', item.spray_area)
       let partVal = _.sumBy(selectedPaddock, function(e){
         return Number(e.spray_area)
       })
+      console.log('spray', partVal)
       setPartialVal(partVal)
     }
     setCheckMark(item.partial)
