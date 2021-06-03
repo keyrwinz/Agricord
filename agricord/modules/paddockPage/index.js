@@ -56,11 +56,7 @@ class paddockPage extends Component{
     })
 
     const parameter={
-      condition: [{
-        value: paddock.paddock_id,
-        column: 'id',
-        clause: '='
-      }]
+      id: paddock.id,
     }
     console.log("[Paddock Page] parameter", parameter)
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
