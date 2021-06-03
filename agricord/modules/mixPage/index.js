@@ -107,7 +107,6 @@ const MixPage = (props) => {
   const [checkMard, setCheckMark] = useState(true)
   const [maxPartial, setMaxValue] = useState(0)
   const [partialVal, setPartialVal] = useState(0)
-  const [countClick, setCountClick] = useState(1)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -388,7 +387,6 @@ const MixPage = (props) => {
                 ...element,
                 partial_flag: true
               }
-              console.log('sdf', newPartial)
               setSelectedPaddock([...[newPartial], ...[newItem]])
             });
             removePaddock('available', item)
@@ -428,28 +426,12 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
-    if(countClick % 2 == 0){
-      item.partial_flag = false
-    }
     if(item.partial == false){
-      // if(selectedPaddock.length > 1){
-      //   let partVal = _.sumBy(selectedPaddock, function(e){
-      //     return Number(e.area)
-      //   })
-      //   let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
-      //   console.log('[selectedPaddock]', partVal, totalPar);
-      //   setTotalPart(totalPar)
-      // }else{
-      //   let totalPar = parseFloat(item.remaining_area - (totalArea - maxArea)).toFixed(2)
-      //   setTotalPart(totalPar)
-      // }
-      item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
-      console.log('spray', item.spray_area)
+      let area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
       let partVal = _.sumBy(selectedPaddock, function(e){
         return Number(e.spray_area)
       })
-      console.log('spray', partVal)
-      setPartialVal(partVal)
+      // setPartialVal(partVal)
     }
     setCheckMark(item.partial)
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
@@ -459,7 +441,23 @@ const MixPage = (props) => {
           partial: !paddock.partial
         }
       }else{
-        return paddock
+        if(paddock.partial === true){
+          return {
+            ...paddock,
+            partial: false
+          }
+        }else {
+          return paddock
+        }
+      }
+    })
+    newSelectedPaddock.forEach(el => {
+      if(el.partial === true){
+        item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
+        let partVal = _.sumBy(selectedPaddock, function(e){
+          return Number(e.spray_area)
+        })
+        setPartialVal(partVal)
       }
     })
     setSelectedPaddock(newSelectedPaddock)
