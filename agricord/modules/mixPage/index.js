@@ -138,7 +138,14 @@ const MixPage = (props) => {
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
-        data[data.length - 1].partial_flag = false
+        setTimeout(() => {
+          setSelectedPaddock(selectedPaddock.filter(el => {
+            el.partial_flag = false;
+            return el;
+          }))
+          removePaddock('available', data)
+        }, 100)
+        // data[data.length - 1].partial_flag = false
         setTotalArea(totalArea)
         setTest(Math.round(task.machine.capacity / totalArea))
         setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
@@ -155,7 +162,11 @@ const MixPage = (props) => {
           setMessage(true)
         }
       }else{
-        data[data.length - 1].partial_flag = true
+        setSelectedPaddock(selectedPaddock.filter(el => {
+          el.partial_flag = true;
+          return el;
+        }))
+        // data[data.length - 1].partial_flag = true
         setTotalArea(totalArea)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
         setAppliedRate(Math.round(task.spray_mix.application_rate))
@@ -173,6 +184,10 @@ const MixPage = (props) => {
   const closeModal = () =>{
     setMessage(false)
     setPartial(partialss == false)
+    setSelectedPaddock(selectedPaddock.filter(el => {
+      el.partial_flag = true;
+      return el;
+    }))
     setAppRateSwitch(!appRateSwitch)
     setTotalArea(totalArea)
     setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
@@ -196,8 +211,8 @@ const MixPage = (props) => {
     }
     const parameter = {
       merchant_id: user.sub_account.merchant.id,
-      spray_mix_id: task.spray_mix.id
-    };
+      spray_mix_id: task.spray_mix.id 
+    }
     setLoading(true)
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
       setLoading(false)
@@ -335,25 +350,25 @@ const MixPage = (props) => {
       if(status == false){
        if(selectedPaddock.length == 0){
         setTotalRate(item.rate_per_hectar)
-        if(parseFloat(item.spray_area) > maxArea){
+        if(parseFloat(item.spray_area) > Number(maxArea)){
           setTotalHigher(true)
           let newItem = {
             ...item,
             partial_flag: true
           }
-          setTotalArea(totalArea + parseFloat(item.spray_area))
+          setTotalArea(Number(totalArea) + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[newItem]])
             removePaddock('available', item)
           }, 100)
-        }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
+        }else if(Number(maxArea) > (parseFloat(item.spray_area) + totalArea)){
           setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
             setSelectedPaddock([...selectedPaddock, ...[item]])
             removePaddock('available', item)
           }, 100)
         }
-      }else if(parseInt(totalArea) === parseInt(maxArea)){
+      }else if(Number(totalArea) === Number(maxArea)){
         Alert.alert(
           'Error Message',
           'You will no longer allowed to add new Paddock. Remove paddock or Create batch.',
@@ -381,14 +396,11 @@ const MixPage = (props) => {
             partial_flag: true
           }
           setTimeout(() => {
-            // setSelectedPaddock([...selectedPaddock, ...[newItem]])
-            selectedPaddock.forEach(element => {
-              let newPartial = {
-                ...element,
-                partial_flag: true
-              }
-              setSelectedPaddock([...[newPartial], ...[newItem]])
-            });
+            selectedPaddock.push(newItem)
+            setSelectedPaddock(selectedPaddock.filter(el => {
+              el.partial_flag = true;
+              return el;
+            }))
             removePaddock('available', item)
           }, 100)
         }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
@@ -426,14 +438,13 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    setCheckMark(item.partial)
     if(item.partial == false){
       let area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
       let partVal = _.sumBy(selectedPaddock, function(e){
         return Number(e.spray_area)
       })
-      // setPartialVal(partVal)
     }
-    setCheckMark(item.partial)
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
         return {
@@ -453,11 +464,24 @@ const MixPage = (props) => {
     })
     newSelectedPaddock.forEach(el => {
       if(el.partial === true){
-        item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
-        let partVal = _.sumBy(selectedPaddock, function(e){
-          return Number(e.spray_area)
-        })
-        setPartialVal(partVal)
+        if(item.remaining_spray_area >= (totalArea - maxArea)){
+          item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
+          let partVal = _.sumBy(selectedPaddock, function(e){
+            return Number(e.spray_area)
+          })
+          setPartialVal(partVal)
+        }else{
+          Alert.alert(
+            'Try Again!',
+            'Paddock is not applicable for partial.',
+            [
+              {text: 'OK', onPress: () => console.log('Okay Pressed')},
+            ],
+            { cancelable: false }
+          )
+          setPartialVal(totalArea)
+          return
+        }
       }
     })
     setSelectedPaddock(newSelectedPaddock)
@@ -559,7 +583,7 @@ const MixPage = (props) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
               {
-                selectedPaddock.length == 0 ?
+                (selectedPaddock.length == 0 || ((Number(maxArea) <= Number(partialVal)) && (checkMard == false))) ?
                 <Switch
                   value={appRateSwitch}
                   onChangeValue={() => loadSwitch()}
@@ -601,6 +625,7 @@ const MixPage = (props) => {
                   padding={true}
                 />
               }
+
               <View style={{ marginLeft: 40 }}
               >
                 {message === true ?
@@ -944,7 +969,19 @@ const MixPage = (props) => {
           /> : null
       }
       {
-        ((totalArea <= maxArea || checkMard == false) && (selectedFlag && selectedPaddock.length > 0)) && (
+        checkMard ===  true ?
+        ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+          <SlidingButton
+            title={'Create Batch'}
+            label={'Swipe Right'}
+            position={mixConfirmation}
+            onSuccess={() => {
+              setMixConfirmation(true)
+            }}
+          />
+        )
+        :
+        ((partialVal <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
