@@ -581,12 +581,7 @@ const MixPage = (props) => {
               />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
-              {
-                (Number(maxArea) > Number(totalArea)) ?
-                <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>{maxArea} {totalArea}Lastsdf Load?</Text>
-                :
-                <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>{totalArea} {partialVal}Last Load?</Text>
-              }
+              <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
               {
                 (selectedPaddock.length == 0 || ((Number(maxArea) <= Number(partialVal)) && (checkMard == false))) ?
                 <Switch
