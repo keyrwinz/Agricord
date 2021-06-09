@@ -265,6 +265,10 @@ const MixPage = (props) => {
     item.partial = false
     // setTotalArea(item.area + totalArea)
     if(from == 'selected'){
+      setSelectedPaddock(selectedPaddock.filter(el => {
+        el.partial_flag = false;
+        return el;
+      }))
       const newSelectedPaddock = selectedPaddock.filter((paddock, idx) => {
         if(paddock.id != item.id){
           return item
@@ -583,7 +587,7 @@ const MixPage = (props) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
               {
-                (selectedPaddock.length == 0 || ((Number(maxArea) <= Number(partialVal)) && (checkMard == false))) ?
+                (selectedPaddock.length == 0 || (checkMard === false ? (Number(maxArea) >= Number(partialVal)) : (Number(maxArea) >= Number(totalArea)))) ?
                 <Switch
                   value={appRateSwitch}
                   onChangeValue={() => loadSwitch()}
