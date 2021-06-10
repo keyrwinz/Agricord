@@ -393,20 +393,37 @@ const MixPage = (props) => {
           )
         }
         else if((totalArea + item.remaining_spray_area) > maxArea){
-          setTotalHigher(true)
-          setTotalArea(totalArea + parseFloat(item.spray_area))
-          let newItem = {
-            ...item,
-            partial_flag: true
+          if(appRateSwitch === true){
+            setTotalHigher(true)
+            setTotalArea(parseFloat(Number(totalArea) + parseFloat(item.spray_area)).toFixed(2))
+            let newItem = {
+              ...item,
+              partial_flag: false
+            }
+            setTimeout(() => {
+              selectedPaddock.push(newItem)
+              setSelectedPaddock(selectedPaddock.filter(el => {
+                el.partial_flag = false;
+                return el;
+              }))
+              removePaddock('available', item)
+            }, 100)
+          }else{
+            setTotalHigher(true)
+            setTotalArea(parseFloat(totalArea + parseFloat(item.spray_area)).toFixed(2))
+            let newItem = {
+              ...item,
+              partial_flag: true
+            }
+            setTimeout(() => {
+              selectedPaddock.push(newItem)
+              setSelectedPaddock(selectedPaddock.filter(el => {
+                el.partial_flag = true;
+                return el;
+              }))
+              removePaddock('available', item)
+            }, 100)
           }
-          setTimeout(() => {
-            selectedPaddock.push(newItem)
-            setSelectedPaddock(selectedPaddock.filter(el => {
-              el.partial_flag = true;
-              return el;
-            }))
-            removePaddock('available', item)
-          }, 100)
         }else if(maxArea > (parseFloat(item.spray_area) + totalArea)){
           setTotalArea(totalArea + parseFloat(item.spray_area))
           setTimeout(() => {
