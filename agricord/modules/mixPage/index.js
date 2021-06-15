@@ -269,6 +269,7 @@ const MixPage = (props) => {
         if(el.partial == false && item.partial == false && appRateSwitch == true){
           let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
           setTotalArea(Number(diff))
+          setAppliedRate(item.application_rate)
           if(diff > maxArea){
             setTotalHigher(true)
           }else{
