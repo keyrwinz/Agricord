@@ -198,7 +198,8 @@ class MixCard extends Component {
                           {this.props.from == 'selected' ? 'APPLIED AREA' : 'REMAINING SPRAY AREA'}
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {parseFloat(data?.item?.remaining_spray_area).toFixed(2) + ' ' + 'Ha'}
+                          {parseFloat(data?.item?.spray_area).toFixed(2) + ' ' + 'Ha'}
+                          {/* {parseFloat(data?.item?.remaining_spray_area).toFixed(2) + ' ' + 'Ha'} */}
                         </Text>
                       </View>
                     </View>
