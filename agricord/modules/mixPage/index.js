@@ -121,6 +121,7 @@ const MixPage = (props) => {
   }, [])
 
   const newRates = () => {
+    const { task } = props.state;
     if(parseFloat(task.machine.capacity / test).toFixed(2) >= totalArea){
       setTotalArea(totalArea)
       setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
@@ -135,6 +136,7 @@ const MixPage = (props) => {
   }
 
   const onload = (data) => {
+    const { task } = props.state;
     setTimeout(() => {
       setAppRateSwitch(!appRateSwitch)
       if(!appRateSwitch){
@@ -156,16 +158,12 @@ const MixPage = (props) => {
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
           // setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
         }
-        if(parseFloat(task.machine.capacity / totalArea).toFixed(2) > task.spray_mix.minimum_rate){
+        if((parseFloat(task.machine.capacity / totalArea).toFixed(2) >= task.spray_mix.minimum_rate) && (parseFloat(task.machine.capacity / totalArea).toFixed(2) <= task.spray_mix.maximum_rate)){
           setMessage(false)
         }else {
           setMessage(true)
         }
       }else{
-        setSelectedPaddock(selectedPaddock.filter(el => {
-          el.partial_flag = true;
-          return el;
-        }))
         // data[data.length - 1].partial_flag = true
         setTotalArea(totalArea)
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
@@ -175,6 +173,10 @@ const MixPage = (props) => {
         }else if((parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) == totalArea){
           setTotalHigher(false)
         }else{
+          setSelectedPaddock(selectedPaddock.filter(el => {
+            el.partial_flag = true;
+            return el;
+          }))
           setTotalHigher(true)
         }
       }
@@ -182,12 +184,23 @@ const MixPage = (props) => {
   }
 
   const closeModal = () =>{
+    const { task } = props.state;
     setMessage(false)
     setPartial(partialss == false)
-    setSelectedPaddock(selectedPaddock.filter(el => {
-      el.partial_flag = true;
-      return el;
-    }))
+    let partVal = _.sumBy(selectedPaddock, function(e){
+      return Number(e.spray_area)
+    })
+    if(partVal > maxArea){
+      setSelectedPaddock(selectedPaddock.filter(el => {
+        el.partial_flag = true;
+        return el;
+      }))
+    }else{
+      setSelectedPaddock(selectedPaddock.filter(el => {
+        el.partial_flag = false;
+        return el;
+      }))
+    }
     setAppRateSwitch(!appRateSwitch)
     setTotalArea(totalArea)
     setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
@@ -261,6 +274,7 @@ const MixPage = (props) => {
   }
 
   const removePaddock = (from, item) => {
+    const { task } = props.state;
     setCheckMark(true)
     item.partial = false
     // setTotalArea(item.area + totalArea)
@@ -348,7 +362,7 @@ const MixPage = (props) => {
       // setPaddocks([...paddocks, ...[item]])
       avail.forEach(el => {
         if(el.id == item.id){
-          setPaddocks([...paddocks, ...[el]])
+          setPaddocks([...paddocks, ...[item]])
         }
       })
     }else{
@@ -373,6 +387,7 @@ const MixPage = (props) => {
 
 
   const addToSelected = (item) => {
+    const { task } = props.state;
     if(item.remaining_spray_area <= 0){
       Alert.alert(
         'Invalid Selection',
@@ -419,11 +434,27 @@ const MixPage = (props) => {
           }, 100)
         }else{
         // }else if(Number(maxArea) > (parseFloat(item.spray_area) + totalArea)){
-          setTotalArea(totalArea + parseFloat(item.spray_area))
-          setTimeout(() => {
-            setSelectedPaddock([...selectedPaddock, ...[item]])
-            removePaddock('available', item)
-          }, 100)
+          if(appRateSwitch){
+            setTotalArea(totalArea + parseFloat(item.spray_area))
+            setAppliedRate(parseFloat(task.machine.capacity / (totalArea + parseFloat(item.spray_area))).toFixed(2))
+            item.partial_flag = false;
+            setTimeout(() => {
+              setSelectedPaddock([...selectedPaddock, ...[item]])
+              removePaddock('available', item)
+            }, 100)
+            if((parseFloat(task.machine.capacity / (totalArea + parseFloat(item.spray_area))).toFixed(2) >= task.spray_mix.minimum_rate) && (parseFloat(task.machine.capacity / (totalArea + parseFloat(item.spray_area))).toFixed(2) <= task.spray_mix.maximum_rate)){
+              setMessage(false)
+            }else {
+              setMessage(true)
+            }
+          }else{
+            setTotalArea(totalArea + parseFloat(item.spray_area))
+            item.partial_flag = false;
+            setTimeout(() => {
+              setSelectedPaddock([...selectedPaddock, ...[item]])
+              removePaddock('available', item)
+            }, 100)
+          }
         }
       }else if(Number(totalArea) === Number(maxArea)){
         Alert.alert(
@@ -443,9 +474,9 @@ const MixPage = (props) => {
               {text: 'OK', onPress: () => console.log('Okay Pressed')},
             ],
             { cancelable: false }
-          )
-        }
-        else if((Number(totalArea) + parseFloat(item.remaining_spray_area)) > maxArea){
+            )
+          }
+          else if((Number(totalArea) + parseFloat(item.remaining_spray_area)) > maxArea){
           if(appRateSwitch === true){
             setTotalHigher(true)
             setTotalArea(parseFloat(Number(totalArea) + parseFloat(item.spray_area)).toFixed(2))
@@ -497,7 +528,7 @@ const MixPage = (props) => {
           }, 100)
         }
       }
-      }else{
+    }else{
         Alert.alert(
           'Error Message',
           item.name + ' already exist!',
@@ -512,6 +543,7 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    const { task } = props.state;
     setCheckMark(item.partial)
     if(item.partial == false){
       let partVal = _.sumBy(selectedPaddock, function(e){
@@ -658,7 +690,7 @@ const MixPage = (props) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: -15 }}>
               <Text style={{ fontSize: BasicStyles.standardFontSize, marginLeft: 20, marginRight: 5 }}>Last Load?</Text>
               {
-                (selectedPaddock.length == 0 || (checkMard === false ? (Number(maxArea) >= Number(partialVal)) : (Number(maxArea) >= Number(totalArea)))) ?
+                (checkMard === false ) ?
                 <Switch
                   value={appRateSwitch}
                   onChangeValue={() => loadSwitch()}
@@ -716,64 +748,72 @@ const MixPage = (props) => {
           <View style={[Style.mixDetails, { flexDirection: 'column' }]}>
             <View style={Style.appliedRate}>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                { appRateSwitch === false || selectedPaddock.length == 0 ?
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <LinearGradient
-                  colors={['#ABD770', '#D3E584']}
-                  style={{
-                    height: 15,
-                    width: 15,
-                    borderRadius: 7.5,
-                    marginRight: 5
-                  }}
-                  />
-                  <Text style={{
-                    fontSize: BasicStyles.standardFontSize
-                  }}>Applied Rate</Text>
-                </View>
+                {
+                  (appRateSwitch == true && selectedPaddock.length == 0) ?
+                  (
+                    <View><Text></Text></View>
+                  )
                   :
-                  <View style={{flexDirection:'row'}}>
-                    <TextInput 
-                      style={[Style.searchInput, {
-                        opacity: 5,
-                        borderColor: 'grey',
-                        borderWidth: 1,
-                        color: 'grey',
-                        marginRight: -20,
-                        height: 35,
-                        borderTopLeftRadius: 10, 
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
-                        borderBottomLeftRadius: 10 }]}
-                      keyboardType={'numeric'}
-                      onChangeText={(newRate) => setTest(newRate)}
-                      value={(selectedPaddock.length > 0) ? test : '0' }
-                      placeholderTextColor='grey'
-                      paddingLeft={12}
-                      placeholder={appliedRate.toString()}>
-                    </TextInput>
-                    <TouchableOpacity
-                      style={{
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
-                        backgroundColor: '#5A84EE',
-                        paddingLeft: 20
-                      }}
-                      activeOpacity={.95}
-                      onPress={() => newRates()}>
-                        <Text style={{
-                          marginTop: 7,
-                          marginRight: 20,
-                          fontSize: 13,
-                          color: "#fff",
-                          fontWeight: "bold",
-                          alignSelf: "center",
-                          textTransform: "uppercase"}}
-                        >
-                        Confirm
-                        </Text>
-                    </TouchableOpacity>
+                  (appRateSwitch == false) ?
+                  // { appRateSwitch === false || selectedPaddock.length == 0 ?
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <LinearGradient
+                    colors={['#ABD770', '#D3E584']}
+                    style={{
+                      height: 15,
+                      width: 15,
+                      borderRadius: 7.5,
+                      marginRight: 5
+                    }}
+                    />
+                    <Text style={{
+                      fontSize: BasicStyles.standardFontSize
+                    }}>Applied Rate</Text>
                   </View>
+                    :
+                    <View style={{flexDirection:'row'}}>
+                      <TextInput 
+                        style={[Style.searchInput, {
+                          opacity: 5,
+                          borderColor: 'grey',
+                          borderWidth: 1,
+                          color: 'grey',
+                          marginRight: -20,
+                          height: 35,
+                          borderTopLeftRadius: 10, 
+                          borderTopRightRadius: 10,
+                          borderBottomRightRadius: 10,
+                          borderBottomLeftRadius: 10 }]}
+                        keyboardType={'numeric'}
+                        onChangeText={(newRate) => setTest(newRate)}
+                        value={(test == undefined || test == 'Infinity') ? 0 : test }
+                        // value={(selectedPaddock.length > 0) ? test : '0' }
+                        placeholderTextColor='grey'
+                        paddingLeft={12}
+                        placeholder={appliedRate.toString()}>
+                      </TextInput>
+                      <TouchableOpacity
+                        style={{
+                          borderTopRightRadius: 10,
+                          borderBottomRightRadius: 10,
+                          backgroundColor: '#5A84EE',
+                          paddingLeft: 20
+                        }}
+                        activeOpacity={.95}
+                        onPress={() => newRates()}>
+                          <Text style={{
+                            marginTop: 7,
+                            marginRight: 20,
+                            fontSize: 13,
+                            color: "#fff",
+                            fontWeight: "bold",
+                            alignSelf: "center",
+                            textTransform: "uppercase"}}
+                          >
+                          Confirm
+                          </Text>
+                      </TouchableOpacity>
+                    </View>
                 }
               </View>
               <View>
@@ -864,7 +904,8 @@ const MixPage = (props) => {
                 }
               </View>
               {
-                (task && task.machine) && (selectedPaddock.length > 0) && (
+                (task && task.machine) && (
+                // (task && task.machine) && (selectedPaddock.length > 0) && (
                   <View style={{ marginTop: 5, paddingLeft: 0 }}>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       MAX AREA: {maxArea}HA
@@ -872,7 +913,7 @@ const MixPage = (props) => {
                   </View>    
                 )
               }
-              {
+              {/* {
                 (task && task.machine) && (selectedPaddock.length == 0) && (
                   <View style={{ marginTop: 5, paddingLeft: 0 }}>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
@@ -880,7 +921,7 @@ const MixPage = (props) => {
                     </Text>
                   </View>    
                 )
-              }
+              } */}
             </View>
           </View>
           {
@@ -1044,7 +1085,7 @@ const MixPage = (props) => {
           /> : null
       }
       {
-        checkMard ===  true ?
+        checkMard == true ?
         ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
