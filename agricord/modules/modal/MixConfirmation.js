@@ -16,7 +16,7 @@ class MixConfirmation extends Component {
 
   render() {
     const { task } = this.props.state;
-    const { data, value } = this.props;
+    const { data, value, applied } = this.props;
     data.filter(e => {
       if(e.partial === true){
         return e.spray_area = value
@@ -89,7 +89,8 @@ class MixConfirmation extends Component {
                 </View>
                 <View style={styles.DetailDetailContainer}>
                   <Text style={styles.DetailDetailTextStyle}>
-                    {task.spray_mix ? task.spray_mix.application_rate + ' L / ha' : null}
+                    {applied != undefined ? applied + ' L / ha' : task.spray_mix.application_rate + ' L / ha'}
+                    {/* {task.spray_mix ? task.spray_mix.application_rate + ' L / ha' : null} */}
                   </Text>
                 </View>
               </View>

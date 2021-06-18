@@ -1173,6 +1173,7 @@ const MixPage = (props) => {
               // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             }}
             data={selectedPaddock}
+            applied={onLastLoad === true ? appliedRate : undefined}
             volume={'BATCH ' + totalArea + 'HA ' + Math.round(appliedRate * totalArea) + ' L'}
           />
         )
