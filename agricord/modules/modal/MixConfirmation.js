@@ -16,7 +16,14 @@ class MixConfirmation extends Component {
 
   render() {
     const { task } = this.props.state;
-    const { data } = this.props;
+    const { data, value } = this.props;
+    data.filter(e => {
+      if(e.partial === true){
+        return e.spray_area = value
+      }else{
+        return e
+      }
+    })
     return (
       <Modal
         animationType='fade'
@@ -103,6 +110,7 @@ class MixConfirmation extends Component {
                       <Text style={styles.DetailDetailTextStyle}>
                         {
                           item.spray_area + ' ha'
+                          // item.spray_area + ' ha'
                         }
                       </Text>
                     </View>

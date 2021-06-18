@@ -105,8 +105,10 @@ const MixPage = (props) => {
   const [avail, setAvail] = useState([])
   const [partialss, setPartial] = useState(true)
   const [checkMard, setCheckMark] = useState(true)
+  const [onLastLoad, setOnLastLoad] = useState(false)
   const [maxPartial, setMaxValue] = useState(0)
   const [partialVal, setPartialVal] = useState(0)
+  const [appliedArea, setAppliedArea] = useState(0)
   const { task } = props.state;
 
   // THIS IS A FIX FOR NOT RENDERING THE PADDOCK CARDS ONCE THIS COMPONENT IS MOUNTED
@@ -122,6 +124,7 @@ const MixPage = (props) => {
 
   const newRates = () => {
     const { task } = props.state;
+    setOnLastLoad(true)
     if(parseFloat(task.machine.capacity / test).toFixed(2) >= totalArea){
       setTotalArea(totalArea)
       setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
@@ -149,7 +152,7 @@ const MixPage = (props) => {
         }, 100)
         // data[data.length - 1].partial_flag = false
         setTotalArea(totalArea)
-        setTest(Math.round(task.machine.capacity / totalArea))
+        setTest(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         if(test == 0 || test == '' || test == '0'){
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
@@ -577,6 +580,7 @@ const MixPage = (props) => {
       if(el.partial === true){
         if(item.remaining_spray_area >= (totalArea - maxArea)){
           item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
+          setAppliedArea(parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2))
           let partVal = _.sumBy(selectedPaddock, function(e){
             return Number(e.spray_area)
           })
@@ -589,6 +593,11 @@ const MixPage = (props) => {
           setPartialVal(totalArea)
           return
         }
+      }else{
+        setSelectedPaddock(selectedPaddock.filter(el => {
+          el.remaining_spray_area = el.spray_area;
+          return el;
+        }))
       }
     })
     setSelectedPaddock(newSelectedPaddock)
@@ -1086,7 +1095,8 @@ const MixPage = (props) => {
       }
       {
         checkMard == true ?
-        ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+        ( appRateSwitch == true ?
+          ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0) && onLastLoad) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
@@ -1096,6 +1106,17 @@ const MixPage = (props) => {
             }}
           />
         )
+        :
+        ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+          <SlidingButton
+            title={'Create Batch'}
+            label={'Swipe Right'}
+            position={mixConfirmation}
+            onSuccess={() => {
+              setMixConfirmation(true)
+            }}
+          />
+        ))
         :
         ((partialVal <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
@@ -1136,6 +1157,7 @@ const MixPage = (props) => {
             // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
           }}
           data={selectedPaddock}
+          value={appliedArea}
           volume={'BATCH ' + partialVal + 'HA ' + Math.round(appliedRate * partialVal) + ' L'}
           />
           ) :
