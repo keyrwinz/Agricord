@@ -165,7 +165,7 @@ const MixPage = (props) => {
         const capacity = parseFloat(task.machine.capacity / totalArea).toFixed(2)
         const max = parseFloat(task.spray_mix.maximum_rate).toFixed(2)
         const min = parseFloat(task.spray_mix.minimum_rate).toFixed(2)
-        if((parseInt(capacity) <= parseInt(max)) && (parseInt(capacity) >= parseInt(min))){
+        if((Number(capacity) <= Number(max)) && (Number(capacity) >= Number(min))){
           setMessage(false)
         }else {
           setMessage(true)
@@ -211,7 +211,7 @@ const MixPage = (props) => {
         return el;
       }))
     }
-    if(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2) >= totalArea){
+    if(Number(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2)) >= Number(totalArea)){
       setTotalHigher(false)
     }else{
       setTotalHigher(true)
