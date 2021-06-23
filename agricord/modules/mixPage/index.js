@@ -125,17 +125,17 @@ const MixPage = (props) => {
   const newRates = () => {
     const { task } = props.state;
     setOnLastLoad(true)
-    if(parseFloat(task.machine.capacity / test).toFixed(2) >= totalArea){
-      setTotalArea(totalArea)
-      setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
-      setTotalHigher(false)
-      setAppRateSwitch(test)
-    }else{
-      setTotalArea(totalArea)
-      setMessage(true)
-      setAppRateSwitch(test)
-      setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
-    }
+    // if(parseFloat(task.machine.capacity / test).toFixed(2) >= totalArea){
+    //   setTotalArea(totalArea)
+    //   setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
+    //   setTotalHigher(false)
+    //   setAppRateSwitch(test)
+    // }else{
+    //   setTotalArea(totalArea)
+    //   setMessage(true)
+    //   setAppRateSwitch(test)
+    //   setMaxArea(parseFloat(task.machine.capacity / test).toFixed(2))
+    // }
   }
 
   const onload = (data) => {
@@ -152,7 +152,7 @@ const MixPage = (props) => {
         }, 100)
         // data[data.length - 1].partial_flag = false
         setTotalArea(totalArea)
-        setTest(parseFloat(task.machine.capacity / totalArea).toFixed(2))
+        setTest(parseInt(parseFloat(task.machine.capacity / totalArea).toFixed(2)))
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         if(test == 0 || test == '' || test == '0'){
@@ -801,9 +801,11 @@ const MixPage = (props) => {
                         onChangeText={(newRate) => setTest(newRate)}
                         value={(test == undefined || test == 'Infinity') ? 0 : test }
                         // value={(selectedPaddock.length > 0) ? test : '0' }
+                        editable={false}
                         placeholderTextColor='grey'
                         paddingLeft={12}
-                        placeholder={appliedRate.toString()}>
+                        placeholder={test.toString()}>
+                        {/* placeholder={appliedRate.toString()}> */}
                       </TextInput>
                       <TouchableOpacity
                         style={{
