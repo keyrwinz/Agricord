@@ -196,6 +196,7 @@ const MixPage = (props) => {
     setPartial(partialss == false)
     setAppRateSwitch(!appRateSwitch)
     setTotalArea(totalArea)
+    setAppliedRate(Math.round(task.spray_mix.application_rate))
     setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
     let partVal = _.sumBy(selectedPaddock, function(e){
       return Number(e.spray_area)
