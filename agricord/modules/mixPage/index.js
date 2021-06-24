@@ -118,7 +118,7 @@ const MixPage = (props) => {
       setLoading(false)
       setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
       retrieve()
-      setAppliedRate(task.spray_mix.application_rate)
+      setAppliedRate(Math.round(task.spray_mix.application_rate))
     }, 100)
   }, [])
 
@@ -152,17 +152,17 @@ const MixPage = (props) => {
         }, 100)
         // data[data.length - 1].partial_flag = false
         setTotalArea(totalArea)
-        setTest(parseInt(parseFloat(task.machine.capacity / totalArea).toFixed(2)))
+        setTest(Math.round(parseFloat(task.machine.capacity / totalArea).toFixed(2)))
         setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
-        setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
+        setAppliedRate(Math.round(parseFloat(task.machine.capacity / totalArea).toFixed(2)))
         if(test == 0 || test == '' || test == '0'){
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
         }else{
-          setAppliedRate(parseFloat(task.machine.capacity / totalArea).toFixed(2))
+          setAppliedRate(Math.round(parseFloat(task.machine.capacity / totalArea).toFixed(2)))
           setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.minimum_rate).toFixed(2))
           // setMaxArea(parseFloat(task.machine.capacity / parseInt(test)).toFixed(2))
         }
-        const capacity = parseFloat(task.machine.capacity / totalArea).toFixed(2)
+        const capacity = Math.round(parseFloat(task.machine.capacity / totalArea).toFixed(2))
         const max = parseFloat(task.spray_mix.maximum_rate).toFixed(2)
         const min = parseFloat(task.spray_mix.minimum_rate).toFixed(2)
         if((Number(capacity) <= Number(max)) && (Number(capacity) >= Number(min))){
@@ -443,7 +443,7 @@ const MixPage = (props) => {
         // }else if(Number(maxArea) > (parseFloat(item.spray_area) + totalArea)){
           if(appRateSwitch){
             setTotalArea(totalArea + parseFloat(item.spray_area))
-            setAppliedRate(parseFloat(task.machine.capacity / (totalArea + parseFloat(item.spray_area))).toFixed(2))
+            setAppliedRate(Math.round(parseFloat(task.machine.capacity / (totalArea + parseFloat(item.spray_area))).toFixed(2)))
             item.partial_flag = false;
             setTimeout(() => {
               setSelectedPaddock([...selectedPaddock, ...[item]])
@@ -804,7 +804,7 @@ const MixPage = (props) => {
                         editable={false}
                         placeholderTextColor='grey'
                         paddingLeft={12}
-                        placeholder={test.toString()}>
+                        placeholder={appliedRate.toString()}>
                         {/* placeholder={appliedRate.toString()}> */}
                       </TextInput>
                       <TouchableOpacity
@@ -835,7 +835,7 @@ const MixPage = (props) => {
                 { (task && task.spray_mix && !appRateSwitch) && (
                     <Text style={[Style.textBold, {
                       fontSize: BasicStyles.standardFontSize
-                    }]}>{task.spray_mix.application_rate} L</Text>
+                    }]}>{Math.round(task.spray_mix.application_rate)} L</Text>
                   )
                 }
               </View>
