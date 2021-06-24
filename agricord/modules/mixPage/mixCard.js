@@ -205,7 +205,6 @@ class MixCard extends Component {
                     </View>
                   )
                 }
-
               </View>
           </TouchableOpacity>
     );
