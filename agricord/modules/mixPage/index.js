@@ -292,10 +292,11 @@ const MixPage = (props) => {
           let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
           setTotalArea(Number(diff))
           setAppliedRate(item.application_rate)
-          if(diff > maxArea){
+          if(Number(parseFloat(totalArea - item.remaining_spray_area).toFixed(2)) > maxArea){
             setTotalHigher(true)
           }else{
             setAppRateSwitch(false)
+            setMaxArea(parseFloat(task.machine.capacity / task.spray_mix.application_rate).toFixed(2))
           }
         }else if(el.partial == false && item.partial == false){
           let diff = parseFloat(totalArea - item.remaining_spray_area).toFixed(2)
@@ -1103,7 +1104,7 @@ const MixPage = (props) => {
       {
         checkMard == true ?
         ( appRateSwitch == true ?
-          ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0) && onLastLoad) && (
+          ((Number(totalArea) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0) && onLastLoad) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
@@ -1114,7 +1115,7 @@ const MixPage = (props) => {
           />
         )
         :
-        ((totalArea <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+        ((Number(totalArea) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
@@ -1125,7 +1126,7 @@ const MixPage = (props) => {
           />
         ))
         :
-        ((partialVal <= maxArea) && (selectedFlag && selectedPaddock.length > 0)) && (
+        ((Number(partialVal) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0)) && (
           <SlidingButton
             title={'Create Batch'}
             label={'Swipe Right'}
