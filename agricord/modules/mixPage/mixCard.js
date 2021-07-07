@@ -141,7 +141,7 @@ class MixCard extends Component {
                       {this.props.from == 'selected' ? 'Remaining Spray Area' : 'Spray Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.remaining_spray_area + ' ' + data?.item?.units} 
+                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.spray_area + ' ' + data?.item?.units} 
                     </Text>
                   </View>
                 </View>
@@ -198,7 +198,7 @@ class MixCard extends Component {
                           {this.props.from == 'selected' ? 'APPLIED AREA' : 'REMAINING SPRAY AREA'}
                         </Text>
                         <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
-                          {parseFloat(data?.item?.spray_area).toFixed(2) + ' ' + 'Ha'}
+                          {parseFloat(data?.item?.remaining_spray_area).toFixed(2) + ' ' + 'Ha'}
                           {/* {parseFloat(data?.item?.remaining_spray_area).toFixed(2) + ' ' + 'Ha'} */}
                         </Text>
                       </View>
