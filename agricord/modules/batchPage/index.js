@@ -482,6 +482,7 @@ class paddockPage extends Component {
     } else {
       route = Routes.productTraceRetrieve
     }
+    console.log('->>>>>>>>>>>>>', parameter);
     Api.request(route, parameter, response => {
       this.setState({ isLoading: false });
       if (response.data != null && response.data.length > 0) {
