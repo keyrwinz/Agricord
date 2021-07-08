@@ -19,7 +19,7 @@ class MixConfirmation extends Component {
     const { data, value, applied } = this.props;
     data.filter(e => {
       if(e.partial === true){
-        return e.spray_area = value
+        return e.spray_areas = value
       }else{
         return e
       }
@@ -110,7 +110,7 @@ class MixConfirmation extends Component {
                     }]}>
                       <Text style={styles.DetailDetailTextStyle}>
                         {
-                          item.spray_area + ' ha'
+                          item.remaining_spray_area + ' ha'
                           // item.spray_area + ' ha'
                         }
                       </Text>
