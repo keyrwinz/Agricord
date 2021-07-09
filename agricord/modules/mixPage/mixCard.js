@@ -19,7 +19,9 @@ class MixCard extends Component {
     super(props);
     this.state = {
       message : false,
-      text: 0
+      text: 0,
+      origPartial: 0,
+      remainCalc: 0
     }
   }
 
@@ -43,8 +45,17 @@ class MixCard extends Component {
 
   render = () => {
     const { data, hasCheck, totalRate, partialss, maxRate } = this.props;
-    const origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
-    const remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+    var origPartial = 0
+    var remainCalc = 0
+    if(this.props.confirmationModal === false){
+      data.item.remaining_spray_area = data.item.spray_areas
+      origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+      remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+    }else{
+      data.item.remaining_spray_area = data.item.spray_areas
+      origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+      remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+    }
     let borderColor = ''
     if (data != null) {
       const color_idx = (+data.index % COLORS.length)
@@ -67,7 +78,7 @@ class MixCard extends Component {
                   <Text style={[Style.textBold, {
                     marginRight: 5,
                     fontSize: BasicStyles.standardTitleFontSize
-                   }]}>
+                  }]}>
                     {data?.item?.name}
                   </Text>
                   {
