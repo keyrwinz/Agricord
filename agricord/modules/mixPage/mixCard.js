@@ -175,7 +175,7 @@ class MixCard extends Component {
                             {/* <Text style={{ fontWeight: 'bold', fontSize: BasicStyles.standardTitleFontSize}}>
                               {data?.item?.units}
                             </Text> */}
-                          <View>
+                          {/* <View>
                             { 
                               (this.state.message === true || origPartial < 0) ?
                                 <Message
@@ -185,7 +185,7 @@ class MixCard extends Component {
                                   onClose={() => this.closeModal()}
                                 /> : null
                             }
-                          </View>
+                          </View> */}
                         </View>
                       </View>
                     )

@@ -328,7 +328,7 @@ const MixPage = (props) => {
           counter += 1
         }
       })
-      console.log('[COUNTER>>>]', counter)
+      console.log('[COUNTER>>>]', counter, mixCount)
       setSelectedPaddock(selectedPaddock.filter(el => {
         if(el.partial == false && item.partial == false && appRateSwitch == true){
           console.log('a')
@@ -356,25 +356,28 @@ const MixPage = (props) => {
             }
           }
         }else if(mixCount > 0 && item.partial_flag === true){
+          console.log('[mixCOunt]', mixCount, selectedPaddock)
           setSelectedPaddock(selectedPaddock.filter(el => {
             if(counter > 0){
               item.partial_flag = false
               item.partial = false
               el.partial_flag = false,
               item.spray_areas = item.remaining_spray_area,
-              el.remaining_spray_area = el.spray_areas
+              // el.remaining_spray_area = el.spray_areas
               // item.remaining_spray_area = item.spray_area,
               // el.spray_area = el.remaining_spray_area
-              return selectedPaddock;
+              console.log('[ttttttttt]', el, item)
+              return el;
             }else{
               item.partial = false,
               item.partial_flag = false,
               el.partial_flag = false,
-              item.remaining_spray_area = item.spray_areas,
+              // item.remaining_spray_area = item.spray_areas,
               el.spray_areas = el.remaining_spray_area
+              console.log('[tttttttttaaa]', el, item)
               // item.spray_area = item.remaining_spray_area,
               // el.remaining_spray_area = el.spray_area
-              return selectedPaddock;
+              return el;
             }
           }))
           console.log('[>>>>>>>>>>>>>]', selectedPaddock)
@@ -1310,10 +1313,12 @@ const MixPage = (props) => {
           onClose={() => {
             setMixConfirmation(false)
             setMixCount(1)
+            console.log('[closed]')
           }}
           onSuccess={() => {
             setMixConfirmation(false)
             setMixCount(1)
+            console.log('[closeddx]', selectedPaddock)
             props.navigation.navigate('batchStack', {total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
           }}
@@ -1328,10 +1333,12 @@ const MixPage = (props) => {
             onClose={() => {
               setMixConfirmation(false)
               setMixCount(1)
+              console.log('[sample]')
             }}
             onSuccess={() => {
               setMixConfirmation(false)
               setMixCount(1)
+              console.log('[samplesadrs]', selectedPaddock)
               props.navigation.navigate('batchStack', {total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
               // props.navigation.navigate('batchStack', {total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate})
             }}
