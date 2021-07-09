@@ -50,7 +50,6 @@ class MixCard extends Component {
       const color_idx = (+data.index % COLORS.length)
       borderColor = COLORS[color_idx]
     }
-
     return (
           <TouchableOpacity
             style={[Style.mixCardContainer, {
@@ -141,7 +140,8 @@ class MixCard extends Component {
                       {this.props.from == 'selected' ? 'Remaining Spray Area' : 'Spray Area'}
                     </Text>
                     <Text style={{ fontSize: BasicStyles.standardFontSize }}>
-                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.spray_area + ' ' + data?.item?.units} 
+                    {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : (this.props.from == 'selected' ? data?.item?.spray_areas + ' ' + data?.item?.units : data?.item?.spray_area + ' ' + data?.item?.units)}
+                    {/* {data.item.partial == true ? remainCalc  + ' ' + data?.item?.units : data?.item?.spray_area + ' ' + data?.item?.units} */}
                     </Text>
                   </View>
                 </View>
