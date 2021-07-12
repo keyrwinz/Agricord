@@ -39,14 +39,10 @@ class paddockPage extends Component{
     // const {data}=this.props.navigation.state.params.data
     // console.log(data)
     this.retrieveData()
-    console.log("[PADDOCK]", this.props.state);
-
   }
 
   retrieveData = () => {
     const { paddock, user } = this.props.state;
-    console.log("[PADDOCKS]", paddock);
-
     if(paddock == null || user == null){
       return
     }
@@ -56,8 +52,11 @@ class paddockPage extends Component{
     })
 
     const parameter={
-      id: paddock.id,
+      id: paddock.paddock.id,
     }
+    console.log({
+      paddock
+    })
     console.log("[Paddock Page] parameter", parameter)
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
       this.setState({
@@ -79,7 +78,6 @@ class paddockPage extends Component{
   renderTopCard=()=>{
     const { paddock } = this.props.state;
     const { data } = this.state;
-    console.log('data', data)
     return(
       <View style={Style.container}>
         {
@@ -225,7 +223,6 @@ class paddockPage extends Component{
 
   renderMixCards = (item) => {
     const { paddock } = this.props.state;
-    console.log("[ITEM]", item);
     return item.spray_mix != null ?(
       <TouchableOpacity
       onPress={()=>{
