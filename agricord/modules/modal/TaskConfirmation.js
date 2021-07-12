@@ -46,7 +46,7 @@ class TaskConfirmation extends Component {
                 textAlign: 'center',
                 paddingBottom: 25,
                 paddingTop: 50
-              }]}>BATCH CONFIRMATION IN PROGRESS</Text>
+              }]}>BATCH APPLICATION IN PROGRESS</Text>
             </View>
 
             <View style={{marginBottom: 100}}>
