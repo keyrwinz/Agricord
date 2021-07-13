@@ -97,7 +97,7 @@ class paddockPage extends Component {
         product: {
           ...item.product,
           remaining: parseFloat(item.rate) * this.state.totalPaddockArea,
-          rate: parseFloat(item.rate) * this.state.totalPaddockArea
+          rate: item.rate
         }
       }
     })
