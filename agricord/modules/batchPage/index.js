@@ -55,7 +55,8 @@ class paddockPage extends Component {
       totalVolume: 0,
       scannedTraces: [],
       scannedTraceIds: [],
-      completeFlag: false
+      completeFlag: false,
+      showRemaining: false
     }
   }
 
@@ -91,9 +92,11 @@ class paddockPage extends Component {
     let currentData = data.map(item => {
       return {
         ...item,
-        rate: parseFloat(item.rate) * this.state.totalPaddockArea,
+        remaining: parseFloat(item.rate) * parseFloat(this.state.totalPaddockArea),
+        rate: item.rate,
         product: {
           ...item.product,
+          remaining: parseFloat(item.rate) * this.state.totalPaddockArea,
           rate: parseFloat(item.rate) * this.state.totalPaddockArea
         }
       }
@@ -306,7 +309,8 @@ class paddockPage extends Component {
         }
         if (length == i && item.rate <= 0) {
           this.setState({
-            completeFlag: true
+            completeFlag: true,
+            showRemaining: true
           })
         }
       }
@@ -688,6 +692,8 @@ class paddockPage extends Component {
                       ...dataItem.product,
                       from: 'paddockPage'
                     }}
+                    showRemaining={this.state.showRemaining}
+                    remaining={true}
                     key={dataItem.id}
                     navigation={this.props.navigation}
                     theme={'v2'}
@@ -757,6 +763,7 @@ class paddockPage extends Component {
               onClose={() => this.setState({
                 productConfirmation: false
               })}
+              warning={'Always confirm the physical volume of product remaining before adding to tank.'}
               data={newlyScanned}
               onSuccess={(param) => this.addProductToBatch(param)}
               changeText={this.quantityHandler}
