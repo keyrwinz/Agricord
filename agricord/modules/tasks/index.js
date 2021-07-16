@@ -81,7 +81,6 @@ class TasksPage extends Component {
     this.setState({
       isLoading: true,
     });
-    console.log("=====================active", activeIndex);
     const parameter = {
       condition: [{
         value: user.sub_account.merchant.id,
@@ -104,8 +103,7 @@ class TasksPage extends Component {
           this.setState({
             isLoading: false
           });
-          console.log('response', response)
-          if(response.data.length > 0){
+          if(response.data && response.data.length > 0){
             this.setState({
               data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
               numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
@@ -125,12 +123,10 @@ class TasksPage extends Component {
       );
     }else{
     Api.request(Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
-      console.log('parameter', response)
         this.setState({
           isLoading: false
         });
-        console.log('response', response)
-        if(response.data.length > 0){
+        if(response.data && response.data.length > 0){
           this.setState({
             data: flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
             numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),

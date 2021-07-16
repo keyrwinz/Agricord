@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity, Platform, ScrollView} from 'react-native';
-import {BasicStyles} from 'common';
-import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
-import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
+import React, { Component } from 'react';
+import { View, Text, Modal, TouchableOpacity, Platform, ScrollView } from 'react-native';
+import { BasicStyles } from 'common';
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
+import { faHistory, faFlask, faPlus } from '@fortawesome/free-solid-svg-icons';
 import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 import { connect } from 'react-redux';
 import styles from './Styles.js'
@@ -15,7 +15,7 @@ class ProductConfirmation extends Component {
     super(props);
   }
 
-  redirect(){
+  redirect() {
 
   }
 
@@ -33,7 +33,7 @@ class ProductConfirmation extends Component {
         <View style={styles.ModalContainer}>
           <View
             style={styles.ContentContainer}
-            >
+          >
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
@@ -102,7 +102,19 @@ class ProductConfirmation extends Component {
               onComplete={() => this.props.onSuccess(data)}
               widthLeft={'30%'}
               widthRight={'70%'}
-              />
+            />
+
+            {this.props.warning && <View style={{
+              padding: 20,
+              flexDirection: 'row',
+              flexWrap: 'wrap'
+            }}>
+              <Text style={styles.DetailTitleTextStyle}>
+                WARNING:  <Text style={[styles.DetailTitleTextStyle, { fontWeight: 'normal' }]}>
+                  {this.props.warning}
+                </Text>
+              </Text>
+            </View>}
           </View>
         </View>
       </Modal>
@@ -111,9 +123,9 @@ class ProductConfirmation extends Component {
 }
 
 
-const mapStateToProps = state => ({state: state});
+const mapStateToProps = state => ({ state: state });
 const mapDispatchToProps = dispatch => {
-  const {actions} = require('@redux');
+  const { actions } = require('@redux');
   return {};
 };
 

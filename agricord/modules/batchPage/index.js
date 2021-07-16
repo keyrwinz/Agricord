@@ -55,7 +55,8 @@ class paddockPage extends Component {
       totalVolume: 0,
       scannedTraces: [],
       scannedTraceIds: [],
-      completeFlag: false
+      completeFlag: false,
+      showRemaining: false
     }
   }
 
@@ -91,10 +92,9 @@ class paddockPage extends Component {
     let currentData = data.map(item => {
       return {
         ...item,
-        rate: parseFloat(item.rate) * this.state.totalPaddockArea,
+        remaining: 0,
         product: {
-          ...item.product,
-          rate: parseFloat(item.rate) * this.state.totalPaddockArea
+          ...item.product
         }
       }
     })
@@ -283,11 +283,11 @@ class paddockPage extends Component {
           batch.push(trace.batch_number)
           return {
             ...item,
-            rate: rate,
+            remaining: rate,
             product: {
               ...item.product,
-              rate: rate,
-              batch_number: batch
+              batch_number: batch,
+              remaining: rate,
             }
           }
         }
@@ -295,16 +295,17 @@ class paddockPage extends Component {
       })
       this.setState({
         data: updated,
-        productConfirmation: false
+        productConfirmation: false,
+        showRemaining: true
       })
       let flag = true
       for (var i = 0; i < updated.length; i++) {
         let item = updated[i]
         let length = updated.length - 1
-        if (item.rate > 0) {
+        if (item.remaining > 0) {
           break
         }
-        if (length == i && item.rate <= 0) {
+        if (length == i && item.remaining <= 0) {
           this.setState({
             completeFlag: true
           })
@@ -688,6 +689,8 @@ class paddockPage extends Component {
                       ...dataItem.product,
                       from: 'paddockPage'
                     }}
+                    showRemaining={this.state.showRemaining}
+                    remaining={true}
                     key={dataItem.id}
                     navigation={this.props.navigation}
                     theme={'v2'}
@@ -757,6 +760,7 @@ class paddockPage extends Component {
               onClose={() => this.setState({
                 productConfirmation: false
               })}
+              warning={'Always confirm the physical volume of product remaining before adding to tank.'}
               data={newlyScanned}
               onSuccess={(param) => this.addProductToBatch(param)}
               changeText={this.quantityHandler}
