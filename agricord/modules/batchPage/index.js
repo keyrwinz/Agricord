@@ -92,10 +92,11 @@ class paddockPage extends Component {
     let currentData = data.map(item => {
       return {
         ...item,
-        remaining: 0,
         rate: parseFloat(item.rate) * this.state.totalPaddockArea,
+        remaining: 0,
         product: {
-          ...item.product
+          ...item.product,
+          rate: parseFloat(item.rate) * this.state.totalPaddockArea
         }
       }
     })
@@ -108,7 +109,7 @@ class paddockPage extends Component {
     if (this.props.navigation.state.params?.selected_paddock) {
       let total = 0;
       this.props.navigation.state.params.selected_paddock.map((item) => {
-        total += parseFloat(item.spray_area);
+        total += parseFloat(item.remaining_spray_area);
       })
       this.setState({ totalPaddockArea: total });
     }
