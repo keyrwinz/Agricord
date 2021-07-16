@@ -48,11 +48,27 @@ class MixCard extends Component {
     var origPartial = 0
     var remainCalc = 0
     if(this.props.confirmationModal === false){
-      data.item.remaining_spray_area = data.item.spray_areas
-      origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
-      remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+      console.log('[mixCard]', this.props.count, '[total]', totalRate, '[sadfasdf]', maxRate);
+      if(data.item.partial === true && data.item.remaining_spray_area >= (totalRate - maxRate)){
+        data.item.spray_areas = data.item.remaining_spray_area
+        // data.item.remaining_spray_area = data.item.spray_areas 
+        origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+        remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+        console.log('[dfadf]', origPartial, remainCalc);
+      }else if(data.item.partial === true && data.item.remaining_spray_area < (totalRate - maxRate)){
+        data.item.remaining_spray_area = data.item.spray_areas
+        origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+        remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+        data.item.partial = false
+      }else {
+        // data.item.spray_areas = data.item.remaining_spray_area
+        // data.item.remaining_spray_area = data.item.spray_areas
+        origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
+        remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
+      }
     }else{
-      data.item.remaining_spray_area = data.item.spray_areas
+      // data.item.remaining_spray_area = data.item.spray_areas
+      data.item.spray_areas = data.item.remaining_spray_area
       origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
       remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
     }
