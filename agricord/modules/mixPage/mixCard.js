@@ -63,6 +63,7 @@ class MixCard extends Component {
       }else {
         // data.item.spray_areas = data.item.remaining_spray_area
         // data.item.remaining_spray_area = data.item.spray_areas
+        // data.item.remaining_spray_area = data.item.spray_areas
         origPartial = parseFloat(data.item.remaining_spray_area - (totalRate - maxRate)).toFixed(2)
         remainCalc = parseFloat(data.item.remaining_spray_area - origPartial).toFixed(2)
       }
