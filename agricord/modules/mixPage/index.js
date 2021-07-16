@@ -684,7 +684,7 @@ const MixPage = (props) => {
       if(el.partial === true){
         console.log('a', item.remaining_spray_area, totalArea, maxArea, totalArea - maxArea, item.remaining_spray_area >= (totalArea - maxArea))
         if(item.remaining_spray_area >= (totalArea - maxArea)){
-          console.log('b')
+          console.log('b', parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2), '[sadfas', parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2), '[', )
           item.remaining_spray_area = parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2)
           // item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
           setAppliedArea(parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2))
@@ -695,7 +695,8 @@ const MixPage = (props) => {
           })
           setPartialVal(partVal)
           setSelectedPaddock(selectedPaddock.filter(ndx => {
-            ndx.spray_areas = ndx.remaining_spray_area - ndx.spray_areas;
+            console.log('[selected]', ndx.spray_areas - ndx.remaining_spray_area, el.spray_areas - el.remaining_spray_area);
+            ndx.spray_areas = ndx.spray_areas - ndx.remaining_spray_area;
             // el.remaining_spray_area = el.remaining_spray_area - el.spray_area;
             return ndx;
           }))
@@ -714,10 +715,11 @@ const MixPage = (props) => {
             return ndy;
           }))
         }else if(item.partial_flag === true && item.partial === false && counter >= 1){
-          el.partial = false,
-          item.partial = false,
-          el.spray_areas = el.remaining_spray_area
           console.log('f', el)
+          el.partial = false,
+          item.partial = false
+          // el.spray_areas = el.remaining_spray_area
+          // el.spray_areas = el.remaining_spray_area
           return el
         }else{
           console.log('asdfasdf')
@@ -984,7 +986,7 @@ const MixPage = (props) => {
                     <Text style={{
                       color: '#5A84EE', 
                       fontSize: BasicStyles.standardFontSize
-                    }}>{partialVal} Ha</Text>
+                    }}>{Number(parseFloat(partialVal).toFixed(2))} Ha</Text>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       TOTAL AREA
                     </Text>
@@ -994,7 +996,7 @@ const MixPage = (props) => {
                     <Text style={{
                       color: '#5A84EE', 
                       fontSize: BasicStyles.standardFontSize
-                    }}>{totalArea} Ha</Text>
+                    }}>{Number(parseFloat(totalArea).toFixed(2))} Ha</Text>
                     <Text style={{ color: '#5A84EE', fontWeight: 'bold', fontSize: BasicStyles.standardFontSize }}>
                       TOTAL AREA
                     </Text>
