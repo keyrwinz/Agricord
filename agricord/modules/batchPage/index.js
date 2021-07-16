@@ -90,6 +90,7 @@ class paddockPage extends Component {
 
   manageProductRate = (data) => {
     let currentData = data.map(item => {
+      console.log(parseFloat(item.rate) * this.state.totalPaddockArea, item.rate, this.state.totalPaddockArea, '-----------');
       return {
         ...item,
         rate: parseFloat(item.rate) * this.state.totalPaddockArea,
@@ -106,13 +107,7 @@ class paddockPage extends Component {
   }
 
   componentDidMount() {
-    if (this.props.navigation.state.params?.selected_paddock) {
-      let total = 0;
-      this.props.navigation.state.params.selected_paddock.map((item) => {
-        total += parseFloat(item.remaining_spray_area);
-      })
-      this.setState({ totalPaddockArea: total });
-    }
+    this.setState({ totalPaddockArea: this.props.navigation.state.params?.appliedArea });
     if (this.props.state.dedicatedNfc === true) {
       this.startScanning();
     }
