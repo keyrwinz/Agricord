@@ -302,10 +302,10 @@ class paddockPage extends Component {
       for (var i = 0; i < updated.length; i++) {
         let item = updated[i]
         let length = updated.length - 1
-        if (item.rate > 0) {
+        if (item.remaining > 0) {
           break
         }
-        if (length == i && item.rate <= 0) {
+        if (length == i && item.remaining <= 0) {
           this.setState({
             completeFlag: true
           })
