@@ -637,6 +637,7 @@ const MixPage = (props) => {
   const partialChange = (item) => {
     setCheckMark(item.partial)
     if(item.partial == false){
+      console.log('hererererererer', item)
       let partVal = _.sumBy(selectedPaddock, function(e){
         return Number(e.remaining_spray_area)
         // return Number(e.spray_area)
@@ -647,9 +648,11 @@ const MixPage = (props) => {
         // el.remaining_spray_area = el.spray_area;
         return el;
       }))
+      console.log('[fits]', selectedPaddock)
     }
     const newSelectedPaddock = selectedPaddock.map((paddock, index) => {
       if(paddock.id == item.id){
+        console.log(paddock, '[itema]', item)
         return {
           ...paddock,
           partial: !paddock.partial,
@@ -658,6 +661,7 @@ const MixPage = (props) => {
         }
       }else{
         if(paddock.partial === true){
+          console.log('[asdfasdf]f', paddock, '[itemb]', item)
           return {
             ...paddock,
             partial: false,
@@ -666,17 +670,21 @@ const MixPage = (props) => {
             spray_areas: paddock.remaining_spray_area
           }
         }else {
+          console.log('[paddock[', paddock)
           return paddock;
         }
       }
     })
     var counter = 0
     newSelectedPaddock.forEach(el => {
+      console.log('[itemc]', item)
       if(el.partial === true){
         counter += 1
       }
       if(el.partial === true){
+        console.log('a', item.remaining_spray_area, totalArea, maxArea, totalArea - maxArea, item.remaining_spray_area >= (totalArea - maxArea))
         if(item.remaining_spray_area >= (totalArea - maxArea)){
+          console.log('b')
           item.remaining_spray_area = parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2)
           // item.spray_area = parseFloat(item.remaining_spray_area - (totalArea - maxArea)).toFixed(2)
           setAppliedArea(parseFloat(item.spray_areas - (totalArea - maxArea)).toFixed(2))
@@ -692,23 +700,27 @@ const MixPage = (props) => {
             return ndx;
           }))
         }else{
+          console.log('c')
           setPartialVal(totalArea)
+          setTotalHigher(true)
           return
         }
       }else{
+        console.log('d', item, el)
         if(item.partial_flag === true && item.partial === false && counter === 0){
+          console.log('e')
           setSelectedPaddock(selectedPaddock.filter(ndy => {
             ndy.spray_areas = ndy.remaining_spray_area;
             return ndy;
           }))
         }else if(item.partial_flag === true && item.partial === false && counter >= 1){
-          // setSelectedPaddock(selectedPaddock.filter(ndy => {
-          //   console.log('[>>>>>>>>>ITEM]ssss', el.spray_areas, ndy.remaining_spray_area)
-          //   ndy.spray_areas = ndy.remaining_spray_area - ndy.spray_areas;
-          //   return ndy;
-          // }))
-          return
+          el.partial = false,
+          item.partial = false,
+          el.spray_areas = el.remaining_spray_area
+          console.log('f', el)
+          return el
         }else{
+          console.log('asdfasdf')
           setSelectedPaddock(selectedPaddock.filter(ndz => {
             ndz.spray_areas = ndz.remaining_spray_area;
             // el.remaining_spray_area = el.spray_area;
@@ -717,6 +729,7 @@ const MixPage = (props) => {
         }
       }
     })
+    console.log('[sadfasdf]', newSelectedPaddock)
     return setSelectedPaddock(newSelectedPaddock)
   }
   
@@ -743,6 +756,7 @@ const MixPage = (props) => {
               maxRate={maxPartial}
               hasCheck={true}
               confirmationModal={mixConfirmation}
+              count={mixCount}
               partialss={partialss}
               addToSelected={() => {}}
               removePaddock={(from, item) => removePaddock(from, item)}
