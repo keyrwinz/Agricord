@@ -92,12 +92,9 @@ class paddockPage extends Component {
     let currentData = data.map(item => {
       return {
         ...item,
-        remaining: parseFloat(item.rate) * parseFloat(this.state.totalPaddockArea),
-        rate: item.rate,
+        remaining: 0,
         product: {
-          ...item.product,
-          remaining: parseFloat(item.rate) * this.state.totalPaddockArea,
-          rate: item.rate
+          ...item.product
         }
       }
     })
@@ -286,11 +283,11 @@ class paddockPage extends Component {
           batch.push(trace.batch_number)
           return {
             ...item,
-            rate: rate,
+            remaining: rate,
             product: {
               ...item.product,
-              rate: rate,
-              batch_number: batch
+              batch_number: batch,
+              remaining: rate,
             }
           }
         }
@@ -298,19 +295,19 @@ class paddockPage extends Component {
       })
       this.setState({
         data: updated,
-        productConfirmation: false
+        productConfirmation: false,
+        showRemaining: true
       })
       let flag = true
       for (var i = 0; i < updated.length; i++) {
         let item = updated[i]
         let length = updated.length - 1
-        if (item.rate > 0) {
+        if (item.remaining > 0) {
           break
         }
-        if (length == i && item.rate <= 0) {
+        if (length == i && item.remaining <= 0) {
           this.setState({
-            completeFlag: true,
-            showRemaining: true
+            completeFlag: true
           })
         }
       }

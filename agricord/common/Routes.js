@@ -90,6 +90,7 @@ export default {
 
   //tasks
   paddockPlanTasksRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params',
+  paddockDueTaskRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_due_task',
   paddockPlanTasksUpdate: apiUrl + 'paddock_plan_tasks/update',
   paddockPlanTasksRetrieveEndUser: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params_end_user',
   paddockPlanTasksRetrieveAvailablePaddocks: apiUrl + 'paddock_plan_tasks/retrieve_available_paddocks',
