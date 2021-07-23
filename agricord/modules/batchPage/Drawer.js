@@ -1,31 +1,40 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Alert } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import BatchPage from 'modules/batchPage';
 import { Color, BasicStyles } from 'common';
 import { connect } from 'react-redux';
+import { NavigationActions, StackActions } from 'react-navigation';
 
 class HeaderOptions extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
-  
+
   back = () => {
-    this.props.navigationProps.pop();
+    Alert.alert(
+      "Note",
+      "Data from previous page will be reset once you click 'Okay'",
+      [
+        { text: "Okay", onPress: () => { this.props.navigationProps.navigate('mixPageStack') } }
+      ],
+      { cancelable: false }
+    );
   };
 
-  render() {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <TouchableOpacity onPress={this.back.bind(this)}>
-          {/*Donute Button Image */}
-          <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color: "#BABABA"}]}/>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+
+render() {
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <TouchableOpacity onPress={this.back.bind(this)}>
+        {/*Donute Button Image */}
+        <FontAwesomeIcon icon={faChevronLeft} size={BasicStyles.iconSize} style={[BasicStyles.iconStyle, { color: "#BABABA" }]} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 }
 
 const mapDispatchToProps = dispatch => {

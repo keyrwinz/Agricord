@@ -57,7 +57,8 @@ class paddockPage extends Component {
       scannedTraceIds: [],
       completeFlag: false,
       showRemaining: false,
-      remaining_rate: 0
+      remaining_rate: 0,
+      scans: []
     }
   }
 
@@ -108,6 +109,7 @@ class paddockPage extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.navigation.state.params.selected_paddock, '----------');
     this.setState({ totalPaddockArea: this.props.navigation.state.params?.appliedArea });
     if (this.props.state.dedicatedNfc === true) {
       this.startScanning();
@@ -277,7 +279,7 @@ class paddockPage extends Component {
   }
 
   addProductToBatch(trace) {
-    const { data, scannedTraces, scannedTraceIds } = this.state;
+    const { data, scannedTraces, scannedTraceIds, scans } = this.state;
     this.setState({
       completeFlag: false
     })
@@ -286,6 +288,9 @@ class paddockPage extends Component {
         if (item.product_id == trace.product_id) {
           let rate = parseFloat(item.rate) - parseFloat(trace.rate)
           scannedTraces.push(trace)
+          if(scans.includes(trace.product_id) === false) {
+            scans.push(trace.product_id);
+          }
           scannedTraceIds.push(trace.id)
           let batch = item.product.batch_number
           batch.push(trace.batch_number)
@@ -314,7 +319,7 @@ class paddockPage extends Component {
         if (item.remaining > 0) {
           break
         }
-        if (length == i && item.remaining <= 0) {
+        if (length == i && item.remaining <= 0 && scans.length === data.length) {
           this.setState({
             completeFlag: true
           })
@@ -649,7 +654,7 @@ class paddockPage extends Component {
 
   render() {
     const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask, newlyScanned } = this.state;
-    const { completeFlag, remaining_rate } = this.state;
+    const { completeFlag, remaining_rate, scans } = this.state;
     const { task } = this.props.state;
     return (
       <SafeAreaView>
