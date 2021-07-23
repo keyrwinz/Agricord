@@ -218,6 +218,16 @@ class paddockPage extends Component {
       if (response.data !== null) {
         this.setState({ createdBatch: response.data.batch[0], taskConfirmation: true });
       }
+      if(response.error !== null) {
+        Alert.alert(
+          "Error Message",
+          response.error,
+          [
+            { text: "OK" }
+          ],
+          { cancelable: false }
+        );
+      }
     },
       error => {
         this.setState({
