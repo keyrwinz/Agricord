@@ -56,7 +56,8 @@ class paddockPage extends Component {
       scannedTraces: [],
       scannedTraceIds: [],
       completeFlag: false,
-      showRemaining: false
+      showRemaining: false,
+      remaining_rate: 0
     }
   }
 
@@ -278,6 +279,7 @@ class paddockPage extends Component {
           scannedTraceIds.push(trace.id)
           let batch = item.product.batch_number
           batch.push(trace.batch_number)
+          this.setState({remaining_rate: rate});
           return {
             ...item,
             remaining: rate,
@@ -637,7 +639,7 @@ class paddockPage extends Component {
 
   render() {
     const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask, newlyScanned } = this.state;
-    const { completeFlag } = this.state;
+    const { completeFlag, remaining_rate } = this.state;
     const { task } = this.props.state;
     return (
       <SafeAreaView>
@@ -759,6 +761,7 @@ class paddockPage extends Component {
               })}
               warning={'Always confirm the physical volume of product remaining before adding to tank.'}
               data={newlyScanned}
+              remaining={remaining_rate}
               onSuccess={(param) => this.addProductToBatch(param)}
               changeText={this.quantityHandler}
             />
