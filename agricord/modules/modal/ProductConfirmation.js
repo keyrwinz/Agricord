@@ -20,7 +20,7 @@ class ProductConfirmation extends Component {
   }
 
   render() {
-    const { data } = this.props;
+    const { data, remaining } = this.props;
     return (
       <Modal
         animationType='fade'
@@ -97,7 +97,7 @@ class ProductConfirmation extends Component {
 
             <SlidingButtonRelative
               icon={faPlus}
-              title={`ADD ${data.rate} ${Conversion.getUnitsAbbreviation(data.units)}`}
+              title={`ADD ${data.rate > remaining && remaining > 0 ? remaining?.toFixed(2) : data.rate?.toFixed(2)} ${Conversion.getUnitsAbbreviation(data.units)}`}
               label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess(data)}
               widthLeft={'30%'}

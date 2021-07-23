@@ -7,6 +7,7 @@ import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import Slider from 'modules/slider';
 import {Color, BasicStyles} from 'common';
 import Homepage from 'modules/homepage';
+import MixPage from 'modules/mixPage';
 import OptionRight from './OptionRight';
 import {connect} from 'react-redux';
 
@@ -64,6 +65,15 @@ let MenuDrawerStructure = connect(
 const Homepage_StackNavigator = createStackNavigator({
   Homepage: {
     screen: Homepage,
+    navigationOptions: ({navigation}) => {
+      console.log({navigation});
+      return {
+        headerShown: false,
+      };
+    },
+  },
+  MixPage: {
+    screen: MixPage,
     navigationOptions: ({navigation}) => {
       console.log({navigation});
       return {
@@ -161,6 +171,12 @@ const Homepage_StackNavigator = createStackNavigator({
 const Drawer = createDrawerNavigator(
   {
     Homepage: {
+      screen: Homepage_StackNavigator,
+      navigationOptions: {
+        drawerLabel: '',
+      },
+    },
+    MixPage: {
       screen: Homepage_StackNavigator,
       navigationOptions: {
         drawerLabel: '',
