@@ -94,6 +94,7 @@ export default {
   paddockPlanTasksUpdate: apiUrl + 'paddock_plan_tasks/update',
   paddockPlanTasksRetrieveEndUser: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params_end_user',
   paddockPlanTasksRetrieveAvailablePaddocks: apiUrl + 'paddock_plan_tasks/retrieve_available_paddocks',
+  paddockPlanTasksCheckIfAvailable: apiUrl + 'paddock_plan_tasks/check_if_available',
 
   // spray mix products
   sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params',
