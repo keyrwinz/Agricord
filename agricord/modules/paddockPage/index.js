@@ -52,13 +52,14 @@ class paddockPage extends Component{
     })
 
     const parameter={
-      id: paddock.paddock.id,
+      id: paddock.paddock_plan_task_id !== undefined ? paddock.paddock_plan_task_id : paddock.paddock.id,
     }
     console.log({
       paddock
     })
-    console.log("[Paddock Page] parameter", parameter)
+    console.log("[Paddock Page] parameter================",Routes.paddocksRetrieveWithSprayMix,  parameter)
     Api.request(Routes.paddocksRetrieveWithSprayMix, parameter, response => {
+      console.log('[RESPONSE]', response);
       this.setState({
         isLoading: false
       })
@@ -78,6 +79,7 @@ class paddockPage extends Component{
   renderTopCard=()=>{
     const { paddock } = this.props.state;
     const { data } = this.state;
+    console.log('[DATA]:', data);
     return(
       <View style={Style.container}>
         {

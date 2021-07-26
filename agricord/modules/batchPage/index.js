@@ -106,6 +106,7 @@ class paddockPage extends Component {
   }
 
   componentDidMount() {
+    console.log('===============', this.props.navigation.state.params?.selected_paddock);
     if (this.props.navigation.state.params?.selected_paddock) {
       let total = 0;
       this.props.navigation.state.params.selected_paddock.map((item) => {

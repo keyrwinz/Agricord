@@ -122,6 +122,7 @@ class TasksPage extends Component {
         },
       );
     }else{
+      console.log('PARAMETER:', parameter);
     Api.request(Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
         this.setState({
           isLoading: false
