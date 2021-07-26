@@ -17,7 +17,6 @@ class MixConfirmation extends Component {
   render() {
     const { task } = this.props.state;
     const { data, value, applied } = this.props;
-    console.log('[data]', data, value, this.props.applied)
     data.filter(e => {
       if(e.partial === true){
         return e.remaining_spray_area = value
