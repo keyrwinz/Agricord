@@ -109,7 +109,6 @@ class paddockPage extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation.state.params.selected_paddock, '----------');
     this.setState({ totalPaddockArea: this.props.navigation.state.params?.appliedArea });
     if (this.props.state.dedicatedNfc === true) {
       this.startScanning();
@@ -286,7 +285,7 @@ class paddockPage extends Component {
     if (scannedTraceIds.indexOf(trace.id) < 0) {
       let updated = data.map((item, index) => {
         if (item.product_id == trace.product_id) {
-          let rate = parseFloat(item.rate) - parseFloat(trace.rate)
+          let rate = parseFloat(trace.rate) > parseFloat(item.remaining) && parseFloat(item.remaining) > 0 ? parseFloat(item.remaining) - parseFloat(item.remaining) : (parseFloat(item.rate) - parseFloat(trace.rate))
           scannedTraces.push(trace)
           if(scans.includes(trace.product_id) === false) {
             scans.push(trace.product_id);
