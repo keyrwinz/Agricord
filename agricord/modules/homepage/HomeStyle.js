@@ -143,7 +143,7 @@ export default {
     color: Color.gray,
   },
   overFlowText: {
-    width: 20
+    width: 100
   },
 
   eventPayloadText: {
