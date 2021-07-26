@@ -289,6 +289,7 @@ const MixPage = (props) => {
     setSelectedPaddock([]);
     setPaddocks([])
     setAvail([])
+    setOnLastLoad(false)
     setTotalArea(0)
     const { task, user } = props.state;
     if (user == null || task == null || (task && task.spray_mix == null)) {
