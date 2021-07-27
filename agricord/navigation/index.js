@@ -22,6 +22,7 @@ import SettingsPageStack from 'modules/settingsPage/SettingsPageDrawer.js';
 import ProductDetails from 'modules/product/ProductDetailsDrawer.js';
 import HomeDrawerStack from 'modules/homepage/HomeStack.js';
 import ProductDetailsOfflineDrawer from 'modules/product/ProductDetailsOfflineDrawer.js';
+import DetailsStack from 'modules/paddockPage/DetailsDrawer.js'
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -73,7 +74,8 @@ const PrimaryNav = createStackNavigator(
     settingsPageStack: {screen: SettingsPageStack},
     productDetailsStack: {screen: ProductDetails},
     HomeDrawerStack: {screen: HomeDrawerStack},
-    productDetailsOfflineStack: { screen: ProductDetailsOfflineDrawer}
+    productDetailsOfflineStack: { screen: ProductDetailsOfflineDrawer},
+    detailsStack: { screen: DetailsStack},
   },
   {
     // Default config for all screens
