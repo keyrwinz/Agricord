@@ -23,11 +23,9 @@ import {Divider} from 'react-native-elements';
 import _, {isError} from 'lodash';
 import {faEdit} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import TaskFocusIcon from 'assets/homescreen/focus_task.svg';
-import InProgressIcon from 'assets/homescreen/in_progress_icon.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
 
-class paddockPage extends Component {
+class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,112 +91,12 @@ class paddockPage extends Component {
   renderTopCard = () => {
     const {paddock} = this.props.state;
     const {data} = this.state;
-    console.log('[DATAS]:', data);
-    console.log('[PADDOCK]:', paddock);
+    const {actuals} = this.props.navigation.state.params;
+    console.log('[DATA]:', data);
+    console.log('[ACTUALS]:', actuals);
     return (
       <View style={Style.container}>
         {paddock && data && (
-          <React.Fragment>
-            <View style={Style.imageContainer}>
-              {data.crop_name != null ? (
-                <Image
-                  style={Style.image}
-                  source={
-                    data.crop_name.toLowerCase() == 'field pea'
-                      ? require('assets/FieldPea.png')
-                      : data.crop_name.toLowerCase() == 'canola'
-                      ? require('assets/Canola.png')
-                      : data.crop_name.toLowerCase() == 'wheat'
-                      ? require('assets/Wheat.png')
-                      : data.crop_name.toLowerCase() == 'fallow'
-                      ? require('assets/Fallow.png')
-                      : require('assets/Canola.png')
-                  }
-                />
-              ) : (
-                <View />
-              )}
-            </View>
-            <View style={Style.textContainer}>
-              {/* <Text style={Style.text}>Field Pea</Text> */}
-              <Text style={Style.text}>{data.crop_name}</Text>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontSize: BasicStyles.standardFontSize,
-                  color: Color.gray,
-                }}>
-                CROP
-              </Text>
-            </View>
-            <Divider
-              style={{
-                width: '90%',
-              }}
-            />
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}>
-              <View style={Style.label}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    color: Color.blue,
-                  }}>
-                  Status
-                </Text>
-                <Text>{paddock.status === 'DUE DATE' ? 'Partially Completed' : paddock.status === 'DUE' ? 'Pending' : 'Completed'}</Text>
-              </View>
-              <View>
-                <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
-                  Due Date
-                </Text>
-                <Text>{data.due_date}</Text>
-              </View>
-            </View>
-            <Divider
-              style={[BasicStyles.starndardDivider, {marginBottom: 10}]}
-            />
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}>
-              <View style={Style.label}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    color: Color.blue,
-                  }}>
-                  Task area
-                </Text>
-                <Text>
-                  {data.spray_area}
-                  {data.units}
-                </Text>
-              </View>
-              <View>
-                <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
-                  Paddock plan
-                </Text>
-                <Text>{paddock.from == 'history' ? data.end_date : data.due_date}</Text>
-              </View>
-            </View>
-            <Divider
-              style={[BasicStyles.starndardDivider, {marginBottom: 10}]}
-            />
-          </React.Fragment>
-        )}
-
-        {/* {paddock && paddock.from != 'due' && data && (
           <React.Fragment>
             {data.crop_name && (
               <View style={Style.cardInfo}>
@@ -239,6 +137,9 @@ class paddockPage extends Component {
                 <Text style={Style.label}>{data.end_date}</Text>
               </View>
             )}
+            {data.end_date && paddock.from == 'history' && (
+              <Divider style={BasicStyles.starndardDivider} />
+            )}
 
             {data.started && paddock.from == 'inprogress' && (
               <View style={Style.cardInfo}>
@@ -246,12 +147,35 @@ class paddockPage extends Component {
                 <Text style={Style.label}>{data.started}</Text>
               </View>
             )}
+            {data.started && paddock.from == 'inprogress' && (
+              <Divider style={BasicStyles.starndardDivider} />
+            )}
 
-            <Divider
-              style={[BasicStyles.starndardDivider, {marginBottom: 10}]}
-            />
+            {actuals.applied_rate && (
+              <View style={Style.cardInfo}>
+                <Text style={Style.labelTitle}>Session area</Text>
+                <Text style={Style.label}>{actuals.applied_rate}</Text>
+              </View>
+            )}
+            {actuals.applied_rate && (
+              <Divider style={BasicStyles.starndardDivider} />
+            )}
+
+            <View style={Style.cardInfo}>
+            <Text style={Style.labelTitle}>Remaining area</Text>
+            <Text style={Style.label}>{actuals.remaining_spray_area}</Text>
+            </View>
+            <Divider style={BasicStyles.starndardDivider} />
+ 
+            {actuals.notes && (
+              <View style={Style.cardInfo}>
+                <Text style={Style.labelTitle}>Notes</Text>
+                <Text style={[Style.label, {width: 150}]}>{actuals.notes}</Text>
+              </View>
+            )}
+            {actuals.notes && <Divider style={BasicStyles.starndardDivider} />}
           </React.Fragment>
-        )} */}
+        )}
       </View>
     );
   };
@@ -259,14 +183,13 @@ class paddockPage extends Component {
   renderMixCards = item => {
     const {paddock} = this.props.state;
     return item.spray_mix != null ? (
-      // <TouchableOpacity
-      //   onPress={() => {
-      //     this.props.navigation.navigate('mixNameStack', {
-      //       data: item,
-      //     });
-      //   }}
-      //   style={[Style.paddockContainer]}>
-      <View style={[Style.paddockContainer]}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate('mixNameStack', {
+            data: item,
+          });
+        }}
+        style={[Style.paddockContainer]}>
         <React.Fragment>
           <View
             style={[
@@ -294,7 +217,7 @@ class paddockPage extends Component {
                   fontWeight: 'bold',
                   fontSize: BasicStyles.standardTitleFontSize,
                 }}>
-                Planned Mix
+                Applied Mix
               </Text>
             </View>
           </View>
@@ -313,52 +236,12 @@ class paddockPage extends Component {
             </Text>
           </View>
         </React.Fragment>
-        </View>
-      // </TouchableOpacity>
+      </TouchableOpacity>
     ) : (
       <View>
         <Text>No Applied Mix Available</Text>
       </View>
     );
-  };
-
-  renderActualTask = item => {
-    const {paddock} = this.props.state;
-    return item.actual_tasks.length > 0  && item.actual_tasks.map(el => (
-      <TouchableOpacity
-        onPress={() => {
-          this.props.navigation.navigate('detailsStack', {
-            data: item,
-            actuals: el
-          });
-        }}
-        style={[Style.paddockContainer]}>
-        <React.Fragment>
-          <View style={[Style.focusTask]}>
-            <TaskFocusIcon />
-            <View style={[Style.focusTaskDetails, {width: '80%'}]}>
-              <View style={Style.flexRow}>
-                <Text style={[Style.eventText, {color: '#54BAEC'}]}>
-                  {el.status}
-                </Text>
-                <Text style={[Style.eventText]}>{el.date}</Text>
-                <Text
-                  style={[Style.eventText, {marginLeft: 30}]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail">
-                  Session: {el.session}
-                </Text>
-              </View>
-              <View style={Style.flexRow}>
-                <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
-                  {item.name}({el.applied_rate})
-                </Text>
-              </View>
-            </View>
-          </View>
-        </React.Fragment>
-      </TouchableOpacity>
-    ))
   };
 
   render() {
@@ -379,14 +262,6 @@ class paddockPage extends Component {
           }}>
           {data && this.renderTopCard()}
           {data && this.renderMixCards(data)}
-          {data && data.actual_tasks.length > 0 && (
-            <View style={{marginBottom: 10}}>
-              <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
-                TASK ACTUALS
-              </Text>
-            </View>
-          )}
-          {data && this.renderActualTask(data)}
         </View>
         <TaskButton navigation={this.props.navigation} />
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
@@ -407,4 +282,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(paddockPage);
+)(Details);
