@@ -185,17 +185,16 @@ class paddockPage extends Component {
     }
     let taskArray = [];
     this.props.navigation.state.params.selected_paddock.map((item) => {
-      taskArray.push(item.plan_task_id);
+      taskArray.push({task_id: item.plan_task_id, area: item.remaining_spray_area});
     })
-    let areas = [];
-    this.props.navigation.state.params.selected_paddock.map((item) => {
-      areas.push(item.remaining_spray_area);
-    })
+    // let areas = [];
+    // this.props.navigation.state.params.selected_paddock.map((item) => {
+    //   areas.push();
+    // })
     let tasks = {
       paddock_plan_task_id: taskArray,
       merchant_id: user.sub_account.merchant.id,
-      account_id: user.account_information.account_id,
-      area: areas
+      account_id: user.account_information.account_id
     }
     const { scannedTraces } = this.state;
     let batch_products = scannedTraces.map((item, index) => {
