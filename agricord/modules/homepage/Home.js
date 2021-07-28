@@ -101,6 +101,7 @@ const Home = props => {
       limit: limit,
       offset: flag == true && offset > 0 ? offset * limit : offset,
     };
+    console.log('[PARAMETER]', parameters);
     setLoading(false);
     Api.request(
       Routes.dashboardRetrieve,
@@ -350,6 +351,7 @@ const Home = props => {
                         {orders?.infocus?.length > 0 && (
                           <View>
                             {orders?.infocus.map((obj, idx) => {
+                               console.log('[OBJECT>>>>>>]', obj);
                               if (idx > 1 && !isExpanded) return;
                               const icon = getIcon('Task');
                               return (
