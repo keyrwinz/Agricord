@@ -181,7 +181,8 @@ class paddockPage extends Component {
       account_id: user.account_information.account_id,
       notes: this.state.notes,
       water: this.props.navigation.state?.params?.total_volume,
-      status: 'inprogress'
+      status: 'inprogress',
+      applied_rate: this.props.navigation.state?.params?.applied_rate
     }
     let taskArray = [];
     this.props.navigation.state.params.selected_paddock.map((item) => {
