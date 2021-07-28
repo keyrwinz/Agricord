@@ -152,7 +152,13 @@ class paddockPage extends Component {
                   }}>
                   Status
                 </Text>
-                <Text>{paddock.status === 'DUE DATE' ? 'Partially Completed' : paddock.status === 'DUE' ? 'Pending' : 'Completed'}</Text>
+                <Text>
+                  {paddock.status === 'DUE DATE'
+                    ? 'Partially Completed'
+                    : paddock.status === 'DUE'
+                    ? 'Pending'
+                    : 'Completed'}
+                </Text>
               </View>
               <View>
                 <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
@@ -189,7 +195,9 @@ class paddockPage extends Component {
                 <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
                   Paddock plan
                 </Text>
-                <Text>{paddock.from == 'history' ? data.end_date : data.due_date}</Text>
+                <Text>
+                  {paddock.from == 'history' ? data.end_date : data.due_date}
+                </Text>
               </View>
             </View>
             <Divider
@@ -259,14 +267,13 @@ class paddockPage extends Component {
   renderMixCards = item => {
     const {paddock} = this.props.state;
     return item.spray_mix != null ? (
-      // <TouchableOpacity
-      //   onPress={() => {
-      //     this.props.navigation.navigate('mixNameStack', {
-      //       data: item,
-      //     });
-      //   }}
-      //   style={[Style.paddockContainer]}>
-      <View style={[Style.paddockContainer]}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate('mixNameStack', {
+            data: item,
+          });
+        }}
+        style={[Style.paddockContainer]}>
         <React.Fragment>
           <View
             style={[
@@ -313,8 +320,7 @@ class paddockPage extends Component {
             </Text>
           </View>
         </React.Fragment>
-        </View>
-      // </TouchableOpacity>
+      </TouchableOpacity>
     ) : (
       <View>
         <Text>No Applied Mix Available</Text>
@@ -324,41 +330,44 @@ class paddockPage extends Component {
 
   renderActualTask = item => {
     const {paddock} = this.props.state;
-    return item.actual_tasks.length > 0  && item.actual_tasks.map(el => (
-      <TouchableOpacity
-        onPress={() => {
-          this.props.navigation.navigate('detailsStack', {
-            data: item,
-            actuals: el
-          });
-        }}
-        style={[Style.paddockContainer]}>
-        <React.Fragment>
-          <View style={[Style.focusTask]}>
-            <TaskFocusIcon />
-            <View style={[Style.focusTaskDetails, {width: '80%'}]}>
-              <View style={Style.flexRow}>
-                <Text style={[Style.eventText, {color: '#54BAEC'}]}>
-                  {el.status}
-                </Text>
-                <Text style={[Style.eventText]}>{el.date}</Text>
-                <Text
-                  style={[Style.eventText, {marginLeft: 30}]}
-                  numberOfLines={1}
-                  ellipsizeMode="tail">
-                  Session: {el.session}
-                </Text>
-              </View>
-              <View style={Style.flexRow}>
-                <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
-                  {item.name}({el.applied_rate})
-                </Text>
+    return (
+      item.actual_tasks.length > 0 &&
+      item.actual_tasks.map(el => (
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('detailsStack', {
+              data: item,
+              actuals: el,
+            });
+          }}
+          style={[Style.paddockContainer]}>
+          <React.Fragment>
+            <View style={[Style.focusTask]}>
+              <TaskFocusIcon />
+              <View style={[Style.focusTaskDetails, {width: '80%'}]}>
+                <View style={Style.flexRow}>
+                  <Text style={[Style.eventText, {color: '#54BAEC'}]}>
+                    {el.status}
+                  </Text>
+                  <Text style={[Style.eventText]}>{el.date}</Text>
+                  <Text
+                    style={[Style.eventText, {marginLeft: 30}]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    Session: {el.session}
+                  </Text>
+                </View>
+                <View style={Style.flexRow}>
+                  <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
+                    {item.name}({el.applied_rate})
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-        </React.Fragment>
-      </TouchableOpacity>
-    ))
+          </React.Fragment>
+        </TouchableOpacity>
+      ))
+    );
   };
 
   render() {
