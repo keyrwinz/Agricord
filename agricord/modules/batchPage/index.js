@@ -182,7 +182,7 @@ class paddockPage extends Component {
       notes: this.state.notes,
       water: this.props.navigation.state?.params?.total_volume,
       status: 'inprogress',
-      applied_rate: this.props.navigation.state?.params?.applied_rate
+      application_rate: this.props.navigation.state?.params?.application_rate
     }
     let taskArray = [];
     this.props.navigation.state.params.selected_paddock.map((item) => {
