@@ -1,6 +1,6 @@
 let LIVE_BACKEND_URL = 'https://api.traceag.com.au/api/public/increment/v1';
 let DEV_BACKEND_URL = 'http://192.168.8.45/trackr/api/server.php/increment/v1';
-let isDev = false;
+let isDev = true;
 let BACKEND_URL = isDev ? DEV_BACKEND_URL : LIVE_BACKEND_URL;
 export default {
   IS_DEV: BACKEND_URL,

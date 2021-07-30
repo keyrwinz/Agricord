@@ -151,29 +151,16 @@ class Details extends Component {
               <Divider style={BasicStyles.starndardDivider} />
             )}
 
-            {actuals.applied_rate && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Session area</Text>
-                <Text style={Style.label}>{actuals.applied_rate}</Text>
-              </View>
-            )}
-            {actuals.applied_rate && (
-              <Divider style={BasicStyles.starndardDivider} />
-            )}
-
             <View style={Style.cardInfo}>
-            <Text style={Style.labelTitle}>Remaining area</Text>
-            <Text style={Style.label}>{actuals.remaining_spray_area}</Text>
+              <Text style={Style.labelTitle}>Session area</Text>
+              <Text style={Style.label}>{actuals.applied_rate !== null ? actuals.applied_rate : '0ha'}</Text>
             </View>
             <Divider style={BasicStyles.starndardDivider} />
- 
-            {actuals.notes && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Notes</Text>
-                <Text style={[Style.label, {width: 150}]}>{actuals.notes}</Text>
-              </View>
-            )}
-            {actuals.notes && <Divider style={BasicStyles.starndardDivider} />}
+
+            <View style={Style.cardInfo}>
+              <Text style={Style.labelTitle}>Notes</Text>
+              <Text style={[Style.label, {width: 150}]}>{actuals.notes !== null ? actuals.notes : 'No notes'}</Text>
+            </View>
           </React.Fragment>
         )}
       </View>

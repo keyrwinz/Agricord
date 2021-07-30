@@ -196,7 +196,7 @@ class paddockPage extends Component {
                   Paddock plan
                 </Text>
                 <Text>
-                  {paddock.from == 'history' ? data.end_date : data.due_date}
+                  Updated: {data.updated_date}
                 </Text>
               </View>
             </View>
@@ -351,7 +351,7 @@ class paddockPage extends Component {
                   </Text>
                   <Text style={[Style.eventText]}>{el.date}</Text>
                   <Text
-                    style={[Style.eventText, {marginLeft: 30}]}
+                    style={[Style.eventText, {marginLeft: 30, width: '50%'}]}
                     numberOfLines={1}
                     ellipsizeMode="tail">
                     Session: {el.session}
