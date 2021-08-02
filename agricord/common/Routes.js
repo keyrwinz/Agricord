@@ -76,6 +76,7 @@ export default {
   ordersRetrieveByParams: apiUrl + 'order_requests/retrieve_orders_by_params',
   sprayMixesRetrieve: apiUrl + 'spray_mixes/retrieve_details',
   sprayMixOneRetrieve: apiUrl + 'spray_mixes/retrieve',
+  sprayMixRetrieveByBatch: apiUrl + 'spray_mixes/retrieve_by_batch',
   orderRequest: apiUrl + 'order_request_items/retrieve',
   paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',
   paddocksRetrieveWithSprayMix: apiUrl + 'paddocks/retrieve_with_spray_mix',

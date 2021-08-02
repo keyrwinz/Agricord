@@ -94,6 +94,7 @@ class Details extends Component {
     const {actuals} = this.props.navigation.state.params;
     console.log('[DATA]:', data);
     console.log('[ACTUALS]:', actuals);
+    console.log('[PADDOCK]:', paddock);
     return (
       <View style={Style.container}>
         {paddock && data && (
@@ -109,7 +110,7 @@ class Details extends Component {
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Machine</Text>
               <Text style={Style.label}>
-                {paddock ? paddock.machine[0].name : null}
+                {paddock ? paddock.machine : null}
               </Text>
             </View>
 
@@ -153,7 +154,7 @@ class Details extends Component {
 
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Session area</Text>
-              <Text style={Style.label}>{actuals.applied_rate !== null ? actuals.applied_rate : '0ha'}</Text>
+              <Text style={Style.label}>{actuals.area !== null ? actuals.area + 'ha' : '0ha'}</Text>
             </View>
             <Divider style={BasicStyles.starndardDivider} />
 

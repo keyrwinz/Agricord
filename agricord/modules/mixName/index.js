@@ -104,21 +104,10 @@ class MixName extends Component {
   retrieveOneSpray = () => {
     const { paddock } = this.props.state;
     const parameter = {
-      condition: [{
-        value: '%%',
-        column: 'name',
-        clause: 'like'
-      }, {
-        value: paddock.spray_mix_id,
-        column: 'id',
-        clause: '='
-      }],
-      sort: {name: 'asc'},
-      limit: 1,
-      offset: 0
+      id: paddock.spray_mix_id
     }
     this.setState({isLoading: true})
-    Api.request(Routes.sprayMixOneRetrieve, parameter, response => {
+    Api.request(Routes.sprayMixRetrieveByBatch, parameter, response => {
         this.setState({sprayMix: response.data[0], isLoading: false});
       }
     );
@@ -171,7 +160,7 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                {this.state.sprayMix?.application_rate}L/Ha
+                {this.state.sprayMix?.applied_rate}L/Ha
                 </Text>
               </View>
             </View>
