@@ -195,9 +195,7 @@ class paddockPage extends Component {
                 <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
                   Paddock plan
                 </Text>
-                <Text>
-                  {paddock.from == 'history' ? data.end_date : data.due_date}
-                </Text>
+                <Text>Updated: {data.updated_date}</Text>
               </View>
             </View>
             <Divider
@@ -328,6 +326,55 @@ class paddockPage extends Component {
     );
   };
 
+  renderTaskData = item => {
+    const {paddock} = this.props.state;
+    return (
+      item && (
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate('detailsStack', {
+              data: item,
+            });
+          }}
+          style={[Style.paddockContainer]}>
+          <React.Fragment>
+            <View style={[Style.focusTask]}>
+              <TaskFocusIcon />
+              <View style={[Style.focusTaskDetails, {width: '80%'}]}>
+                <View style={Style.flexRow}>
+                  <Text style={([Style.eventText], {width: '25%'})}>Due</Text>
+                  <Text
+                    style={
+                      ([Style.eventText], {color: '#54BAEC', width: '25%'})
+                    }>
+                    {item.due_date_formatted}
+                  </Text>
+                  <Text
+                    style={[
+                      Style.eventText,
+                      {
+                        marginLeft: 20,
+                        width: '50%',
+                      },
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode="tail">
+                    {item.remaining_spray_area}
+                  </Text>
+                </View>
+                <View style={(Style.flexRow, {marginLeft: -5})}>
+                  <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
+                    {item?.nickname}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </React.Fragment>
+        </TouchableOpacity>
+      )
+    );
+  };
+
   renderActualTask = item => {
     const {paddock} = this.props.state;
     return (
@@ -344,14 +391,32 @@ class paddockPage extends Component {
           <React.Fragment>
             <View style={[Style.focusTask]}>
               <TaskFocusIcon />
-              <View style={[Style.focusTaskDetails, {width: '80%'}]}>
+              <View style={[Style.focusTaskDetails, {width: '85%'}]}>
                 <View style={Style.flexRow}>
-                  <Text style={[Style.eventText, {color: '#54BAEC'}]}>
-                    {el.status}
+                  <Text style={[Style.eventText]}>
+                    {el.status === 'partially_completed'
+                      ? 'Partially Complete'
+                      : el.status === 'completed'
+                      ? 'Completed'
+                      : el.status === 'inprogress'
+                      ? 'In Progress'
+                      : 'Pending'}
                   </Text>
-                  <Text style={[Style.eventText]}>{el.date}</Text>
                   <Text
-                    style={[Style.eventText, {marginLeft: 30}]}
+                    style={
+                      ([Style.eventText], {color: '#54BAEC', marginLeft: 5})
+                    }>
+                    {el.date}
+                  </Text>
+                  <Text
+                    style={[
+                      Style.eventText,
+                      {
+                        marginLeft: 20,
+                        width:
+                          el.status === 'partially_completed' ? '35%' : '50%',
+                      },
+                    ]}
                     numberOfLines={1}
                     ellipsizeMode="tail">
                     Session: {el.session}
@@ -359,7 +424,7 @@ class paddockPage extends Component {
                 </View>
                 <View style={Style.flexRow}>
                   <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
-                    {item.name}({el.applied_rate})
+                    {item.name}({el.area}ha)
                   </Text>
                 </View>
               </View>
@@ -376,27 +441,30 @@ class paddockPage extends Component {
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={Style.BackgroundContainer}>
-        <View
-          style={{
-            alignItems: 'center',
-            height: '100%',
-            width: '90%',
-            marginRight: '5%',
-            marginLeft: '5%',
-            marginBottom: 100,
-            marginTop: 15,
-          }}>
-          {data && this.renderTopCard()}
-          {data && this.renderMixCards(data)}
-          {data && data.actual_tasks.length > 0 && (
-            <View style={{marginBottom: 10}}>
-              <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
-                TASK ACTUALS
-              </Text>
-            </View>
-          )}
-          {data && this.renderActualTask(data)}
-        </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View
+            style={{
+              alignItems: 'center',
+              height: '100%',
+              width: '90%',
+              marginRight: '5%',
+              marginLeft: '5%',
+              marginBottom: 100,
+              marginTop: 15,
+            }}>
+            {data && this.renderTopCard()}
+            {data && this.renderMixCards(data)}
+            {data && this.renderTaskData(data)}
+            {data && data.actual_tasks.length > 0 && (
+              <View style={{marginBottom: 10}}>
+                <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
+                  TASK ACTUALS
+                </Text>
+              </View>
+            )}
+            {data && this.renderActualTask(data)}
+          </View>
+        </ScrollView>
         <TaskButton navigation={this.props.navigation} />
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>

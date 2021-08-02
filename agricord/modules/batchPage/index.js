@@ -109,6 +109,7 @@ class paddockPage extends Component {
   }
 
   componentDidMount() {
+    console.log('=========>>>>>>>[PARAMS]', this.props.navigation.state.params.selected_paddock);
     this.setState({ totalPaddockArea: this.props.navigation.state.params?.appliedArea });
     if (this.props.state.dedicatedNfc === true) {
       this.startScanning();
@@ -214,7 +215,7 @@ class paddockPage extends Component {
     }
     this.setState({ isLoading: true });
     console.log('[Batch Create] parameter', JSON.stringify(parameter))
-    Api.request(Routes.batchCreate, parameter, response => {
+    Api.request(Routes, parameter, response => {
       this.setState({ isLoading: false });
       if (response.data !== null) {
         this.setState({ createdBatch: response.data.batch[0], taskConfirmation: true });
