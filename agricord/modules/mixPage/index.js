@@ -131,7 +131,7 @@ const MixPage = (props) => {
     }, 100)
   }, [])
 
-  const checkIfExist = (data) => {
+  const checkIfExist = (data, applied) => {
     let parameter = {
       selectedPaddocks: data
     }
@@ -150,8 +150,17 @@ const MixPage = (props) => {
         return
       }else{
         if(mixConfirmation && checkMard == false){
+          console.log('[selectedPaddock]', selectedPaddock, applied);
+          setSelectedPaddock(selectedPaddock.filter(el => {
+            if(el.partial === true){
+              el.remaining_spray_area = Number(el.remaining_spray_area) - Number(applied)
+            }
+            return el;
+          }))
+          console.log('[padd]', selectedPaddock);
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: partialVal })
         }else if(mixConfirmation && checkMard == true){
+          console.log('[selectedPaddoc]', selectedPaddock);
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
         }
       }
@@ -1301,7 +1310,7 @@ const MixPage = (props) => {
             onSuccess={() => {
               setMixConfirmation(false)
               setMixCount(1)
-              checkIfExist(selectedPaddock)
+              checkIfExist(selectedPaddock, appliedArea)
             }}
             data={selectedPaddock}
             value={appliedArea}
