@@ -103,9 +103,12 @@ class MixName extends Component {
 
   retrieveOneSpray = () => {
     const { paddock } = this.props.state;
+    const {session} = this.props.navigation.state.params;
     const parameter = {
-      id: paddock.spray_mix_id
+      id: paddock.spray_mix_id,
+      session: session
     }
+    console.log('[ONE SPRAY::', parameter);
     this.setState({isLoading: true})
     Api.request(Routes.sprayMixRetrieveByBatch, parameter, response => {
         this.setState({sprayMix: response.data[0], isLoading: false});
