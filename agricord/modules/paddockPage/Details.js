@@ -110,7 +110,7 @@ class Details extends Component {
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Machine</Text>
               <Text style={Style.label}>
-                {paddock ? paddock.machine : null}
+                {paddock ? Array.isArray(paddock.machine) && paddock.machine.length > 0 ? paddock.machine[0].name : paddock.machine : null}
               </Text>
             </View>
 
