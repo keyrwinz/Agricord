@@ -153,11 +153,13 @@ class paddockPage extends Component {
                   Status
                 </Text>
                 <Text>
-                  {paddock.status === 'DUE DATE'
-                    ? 'Partially Completed'
-                    : paddock.status === 'DUE'
-                    ? 'Pending'
-                    : 'Completed'}
+                  {paddock.status === 'partially_completed'
+                    ? 'Partially Complete'
+                    : paddock.status === 'completed'
+                    ? 'Completed'
+                    : paddock.status === 'inprogress'
+                    ? 'In Progress'
+                    : 'Pending'}
                 </Text>
               </View>
               <View>
@@ -331,23 +333,24 @@ class paddockPage extends Component {
     return (
       item && (
         <TouchableOpacity
-          onPress={() => {
-            this.props.navigation.navigate('detailsStack', {
-              data: item,
-            });
-          }}
+          // onPress={() => {
+          //   this.props.navigation.navigate('detailsStack', {
+          //     data: item,
+          //   });
+          // }}
           style={[Style.paddockContainer]}>
           <React.Fragment>
             <View style={[Style.focusTask]}>
               {/* <TaskFocusIcon /> */}
-              <Image source={require('assets/focus_orange.png')} style={[Style.taskIcon]}></Image>
+              <Image
+                source={require('assets/focus_orange.png')}
+                style={[Style.taskIcon]}
+              />
               <View style={[Style.focusTaskDetails, {width: '80%'}]}>
                 <View style={[Style.flexRow]}>
-                  <Text style={([Style.eventText, {width: '20%'}])}>Due</Text>
+                  <Text style={[Style.eventText, {width: '20%'}]}>Due</Text>
                   <Text
-                    style={
-                      ([Style.eventText, {color: '#54BAEC', width: '25%'}])
-                    }>
+                    style={[Style.eventText, {color: '#54BAEC', width: '25%'}]}>
                     {item.due_date_formatted}
                   </Text>
                   <Text
@@ -391,7 +394,10 @@ class paddockPage extends Component {
           style={[Style.paddockContainer]}>
           <React.Fragment>
             <View style={[Style.focusTask]}>
-            <Image source={require('assets/focus_dark.png')} style={[Style.taskIcon]}></Image>
+              <Image
+                source={require('assets/focus_dark.png')}
+                style={[Style.taskIcon]}
+              />
               <View style={[Style.focusTaskDetails, {width: '85%'}]}>
                 <View style={Style.flexRow}>
                   <Text style={[Style.eventText]}>

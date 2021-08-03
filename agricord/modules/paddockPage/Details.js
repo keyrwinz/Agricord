@@ -123,26 +123,26 @@ class Details extends Component {
               </View>
             )}
             {data.operator && <Divider style={BasicStyles.starndardDivider} />}
-            {data.start_date && paddock.from == 'history' && (
+            {/* {data.start_date && paddock.from == 'history' && ( */}
               <View style={Style.cardInfo}>
                 <Text style={Style.labelTitle}>Start Time</Text>
                 <Text style={Style.label}>{data.start_date}</Text>
               </View>
-            )}
-            {data.start_date && paddock.from == 'history' && (
+            {/* )} */}
+            {/* {data.start_date && paddock.from == 'history' && ( */}
               <Divider style={BasicStyles.starndardDivider} />
-            )}
-            {data.end_date && paddock.from == 'history' && (
+            {/* )} */}
+            {/* {data.end_date && paddock.from == 'history' && ( */}
               <View style={Style.cardInfo}>
                 <Text style={Style.labelTitle}>Finish Time</Text>
                 <Text style={Style.label}>{data.end_date}</Text>
               </View>
-            )}
-            {data.end_date && paddock.from == 'history' && (
+            {/* )} */}
+            {/* {data.end_date && paddock.from == 'history' && ( */}
               <Divider style={BasicStyles.starndardDivider} />
-            )}
+            {/* )} */}
 
-            {data.started && paddock.from == 'inprogress' && (
+            {/* {data.started && paddock.from == 'inprogress' && (
               <View style={Style.cardInfo}>
                 <Text style={Style.labelTitle}>Started</Text>
                 <Text style={Style.label}>{data.started}</Text>
@@ -150,7 +150,7 @@ class Details extends Component {
             )}
             {data.started && paddock.from == 'inprogress' && (
               <Divider style={BasicStyles.starndardDivider} />
-            )}
+            )} */}
 
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Session area</Text>
@@ -170,11 +170,13 @@ class Details extends Component {
 
   renderMixCards = item => {
     const {paddock} = this.props.state;
+    const {actuals} = this.props.navigation.state.params;
     return item.spray_mix != null ? (
       <TouchableOpacity
         onPress={() => {
           this.props.navigation.navigate('mixNameStack', {
             data: item,
+            session: actuals.session,
           });
         }}
         style={[Style.paddockContainer]}>
