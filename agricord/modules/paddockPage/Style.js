@@ -123,4 +123,10 @@ export default {
     fontSize: 16,
     fontWeight: 'bold'
   },
+
+  taskIcon: {
+    width: '14%',
+    height: 50,
+    resizeMode: 'stretch',
+  }
 };

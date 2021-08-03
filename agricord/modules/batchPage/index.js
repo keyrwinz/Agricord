@@ -215,7 +215,7 @@ class paddockPage extends Component {
     }
     this.setState({ isLoading: true });
     console.log('[Batch Create] parameter', JSON.stringify(parameter))
-    Api.request(Routes, parameter, response => {
+    Api.request(Routes.batchCreate, parameter, response => {
       this.setState({ isLoading: false });
       if (response.data !== null) {
         this.setState({ createdBatch: response.data.batch[0], taskConfirmation: true });
