@@ -150,17 +150,16 @@ const MixPage = (props) => {
         return
       }else{
         if(mixConfirmation && checkMard == false){
-          console.log('[selectedPaddock]', selectedPaddock, applied);
           setSelectedPaddock(selectedPaddock.filter(el => {
             if(el.partial === true){
               el.remaining_spray_area = Number(el.remaining_spray_area) - Number(applied)
+            }else{
+              el.remaining_spray_area = 0
             }
             return el;
           }))
-          console.log('[padd]', selectedPaddock);
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: partialVal })
         }else if(mixConfirmation && checkMard == true){
-          console.log('[selectedPaddoc]', selectedPaddock);
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
         }
       }
