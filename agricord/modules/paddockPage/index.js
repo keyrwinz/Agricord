@@ -339,13 +339,14 @@ class paddockPage extends Component {
           style={[Style.paddockContainer]}>
           <React.Fragment>
             <View style={[Style.focusTask]}>
-              <TaskFocusIcon />
+              {/* <TaskFocusIcon /> */}
+              <Image source={require('assets/focus_orange.png')} style={[Style.taskIcon]}></Image>
               <View style={[Style.focusTaskDetails, {width: '80%'}]}>
-                <View style={Style.flexRow}>
-                  <Text style={([Style.eventText], {width: '25%'})}>Due</Text>
+                <View style={[Style.flexRow]}>
+                  <Text style={([Style.eventText, {width: '20%'}])}>Due</Text>
                   <Text
                     style={
-                      ([Style.eventText], {color: '#54BAEC', width: '25%'})
+                      ([Style.eventText, {color: '#54BAEC', width: '25%'}])
                     }>
                     {item.due_date_formatted}
                   </Text>
@@ -359,10 +360,10 @@ class paddockPage extends Component {
                     ]}
                     numberOfLines={1}
                     ellipsizeMode="tail">
-                    {item.remaining_spray_area}
+                    {item.remaining_spray_area}ha
                   </Text>
                 </View>
-                <View style={(Style.flexRow, {marginLeft: -5})}>
+                <View style={(Style.flexRow, {marginLeft: 2})}>
                   <Text style={[Style.taskPayloadText, {fontSize: 15}]}>
                     {item?.nickname}
                   </Text>
@@ -390,7 +391,7 @@ class paddockPage extends Component {
           style={[Style.paddockContainer]}>
           <React.Fragment>
             <View style={[Style.focusTask]}>
-              <TaskFocusIcon />
+            <Image source={require('assets/focus_dark.png')} style={[Style.taskIcon]}></Image>
               <View style={[Style.focusTaskDetails, {width: '85%'}]}>
                 <View style={Style.flexRow}>
                   <Text style={[Style.eventText]}>
