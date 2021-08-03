@@ -110,7 +110,7 @@ class MixConfirmation extends Component {
                     }]}>
                       <Text style={styles.DetailDetailTextStyle}>
                         {
-                          item.remaining_spray_area + ' ha'
+                          parseFloat(Number(item.remaining_spray_area)).toFixed(2) + ' ha'
                           // item.spray_area + ' ha'
                         }
                       </Text>

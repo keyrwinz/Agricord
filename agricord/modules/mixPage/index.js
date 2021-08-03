@@ -150,15 +150,23 @@ const MixPage = (props) => {
         return
       }else{
         if(mixConfirmation && checkMard == false){
-          setSelectedPaddock(selectedPaddock.filter(el => {
-            if(el.partial === true){
-              el.remaining_spray_area = Number(el.remaining_spray_area) - Number(applied)
+          data.filter(e => {
+            if(e.partial === true){
+              return e.remaining_spray_area = applied
             }else{
-              el.remaining_spray_area = 0
+              return e
             }
-            return el;
-          }))
-          props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: partialVal })
+          })
+          // setSelectedPaddock(selectedPaddock.filter(el => {
+          //   if(el.partial === true){
+          //     el.remaining_spray_area = Number(el.remaining_spray_area) - Number(applied)
+          //   }else{
+          //     el.remaining_spray_area = 0
+          //   }
+          //   return el;
+          // }))
+          console.log('[selectedPaddock]', data)
+          props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: data, application_rate: appliedRate, appliedArea: partialVal })
         }else if(mixConfirmation && checkMard == true){
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
         }
