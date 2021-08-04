@@ -156,10 +156,10 @@ class paddockPage extends Component {
                   {paddock.status === 'partially_completed'
                     ? 'Partially Complete'
                     : paddock.status === 'completed'
-                    ? 'Completed'
+                    ? 'Complete'
                     : paddock.status === 'inprogress'
                     ? 'In Progress'
-                    : 'Pending'}
+                    : 'Approved'}
                 </Text>
               </View>
               <View>
@@ -403,11 +403,11 @@ class paddockPage extends Component {
                   <Text style={[Style.eventText]}>
                     {el.status === 'partially_completed'
                       ? 'Partially Complete'
-                      : el.status === 'completed'
+                      : el.status === 'complete'
                       ? 'Completed'
                       : el.status === 'inprogress'
                       ? 'In Progress'
-                      : 'Pending'}
+                      : 'Approved'}
                   </Text>
                   <Text
                     style={

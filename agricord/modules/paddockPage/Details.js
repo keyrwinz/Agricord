@@ -110,7 +110,7 @@ class Details extends Component {
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Machine</Text>
               <Text style={Style.label}>
-                {paddock ? Array.isArray(paddock.machine) && paddock.machine.length > 0 ? paddock.machine[0].name : paddock.machine : null}
+                {paddock ? Array.isArray(paddock.machine) && paddock.machine.length > 0 ? paddock.machine[0].name : actuals?.machine[0]?.name : null}
               </Text>
             </View>
 
@@ -153,7 +153,7 @@ class Details extends Component {
             )} */}
 
             <View style={Style.cardInfo}>
-              <Text style={Style.labelTitle}>Session area</Text>
+              <Text style={Style.labelTitle}>Tasks actual area</Text>
               <Text style={Style.label}>{actuals.area !== null ? actuals.area + 'ha' : '0ha'}</Text>
             </View>
             <Divider style={BasicStyles.starndardDivider} />
