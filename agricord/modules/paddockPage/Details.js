@@ -151,6 +151,11 @@ class Details extends Component {
             {data.started && paddock.from == 'inprogress' && (
               <Divider style={BasicStyles.starndardDivider} />
             )} */}
+            <View style={Style.cardInfo}>
+              <Text style={Style.labelTitle}>Tasks session area</Text>
+              <Text style={Style.label}>{actuals.total_batch_area !== null ? actuals.total_batch_area + 'ha' : '0ha'}</Text>
+            </View>
+            <Divider style={BasicStyles.starndardDivider} />
 
             <View style={Style.cardInfo}>
               <Text style={Style.labelTitle}>Tasks actual area</Text>
