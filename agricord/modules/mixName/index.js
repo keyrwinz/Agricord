@@ -105,7 +105,7 @@ class MixName extends Component {
     const { paddock } = this.props.state;
     const {session} = this.props.navigation.state.params;
     const parameter = {
-      id: paddock.spray_mix_id,
+      // id: paddock.spray_mix_id,
       session: session
     }
     console.log('[ONE SPRAY::', parameter);

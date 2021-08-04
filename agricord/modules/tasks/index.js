@@ -98,8 +98,8 @@ class TasksPage extends Component {
       }
     };
     if(activeIndex == 1){
+      console.log('parameter', parameter)
       Api.request(Routes.paddockDueTaskRetrieve, parameter, response => {
-        console.log('parameter', response)
           this.setState({
             isLoading: false
           });
