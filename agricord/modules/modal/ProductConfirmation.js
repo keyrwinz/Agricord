@@ -85,7 +85,7 @@ class ProductConfirmation extends Component {
                   </View>
                   <View style={styles.DetailDetailContainer}>
                     <Text style={styles.DetailDetailTextStyle}>
-                      {data.qty + ' ' + Conversion.getUnitsAbbreviation(data.units)}
+                      {data.qty?.toFixed(2) + ' ' + Conversion.getUnitsAbbreviation(data.units)}
                     </Text>
                   </View>
                 </View>
