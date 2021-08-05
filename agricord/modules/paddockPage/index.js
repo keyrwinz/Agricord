@@ -153,13 +153,11 @@ class paddockPage extends Component {
                   Status
                 </Text>
                 <Text>
-                  {paddock.status === 'partially_completed'
+                  {paddock.origStatus === 'partially_completed'
                     ? 'Partially Complete'
-                    : paddock.status === 'completed'
+                    : paddock.origStatus === 'completed'
                     ? 'Complete'
-                    : paddock.status === 'inprogress'
-                    ? 'In Progress'
-                    : 'Approved'}
+                    : 'Pending'}
                 </Text>
               </View>
               <View>
@@ -197,7 +195,7 @@ class paddockPage extends Component {
                 <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
                   Paddock plan
                 </Text>
-                <Text>Updated: {data.updated_date}</Text>
+                <Text>Updated: {data.updated_date !== null ? data.updated_date : 'N/A'}</Text>
               </View>
             </View>
             <Divider
@@ -348,7 +346,13 @@ class paddockPage extends Component {
               />
               <View style={[Style.focusTaskDetails, {width: '80%'}]}>
                 <View style={[Style.flexRow]}>
-                  <Text style={[Style.eventText, {width: '20%'}]}>Due</Text>
+                  <Text style={[Style.eventText, {width: '25%'}]}>
+                    {item.status === 'partially_completed'
+                      ? 'Partially Complete'
+                      : item.status === 'completed'
+                      ? 'Complete'
+                      : 'Pending'}
+                  </Text>
                   <Text
                     style={[Style.eventText, {color: '#54BAEC', width: '25%'}]}>
                     {item.due_date_formatted}
@@ -402,12 +406,12 @@ class paddockPage extends Component {
                 <View style={Style.flexRow}>
                   <Text style={[Style.eventText]}>
                     {el.status === 'partially_completed'
-                      ? 'Partially Complete'
+                      ? 'In Progress'
                       : el.status === 'complete'
-                      ? 'Completed'
+                      ? 'Complete'
                       : el.status === 'inprogress'
                       ? 'In Progress'
-                      : 'Approved'}
+                      : 'Due'}
                   </Text>
                   <Text
                     style={
