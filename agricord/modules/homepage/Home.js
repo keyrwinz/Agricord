@@ -511,25 +511,6 @@ const Home = props => {
       </SafeAreaView>
     </ScrollView>
   );
-  // : (
-  //   <ImageBackground source={require('assets/HomePageBackground.png')} style={{ flex: 1, resizeMode: "cover", justifyContent: "center", borderRadius: 10, height: height}}>
-  //     <View style={Style.MainContainer}>
-  //     <View style={{marginTop:-300}}>
-  //       <Text style={[Style.username, Style.textWhite]}>
-  //         Hi {props?.state?.user?.account_information !== undefined ? props?.state?.user?.account_information?.first_name : props?.state?.user?.username}
-  //       </Text>
-  //       <Text style={Style.textWhite}>
-  //         Welcome to Your Dashboard
-  //       </Text>
-  //     </View>
-  //     </View>
-  //     <Spinner mode="overlay"/>
-  //   </ImageBackground>
-  // )
-
-  // return (
-  //   <Text></Text>
-  // )
 };
 
 
