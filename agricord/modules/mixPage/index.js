@@ -746,20 +746,10 @@ const MixPage = (props) => {
             return ndy;
           }))
         } else if (item.partial_flag === true && item.partial === false && counter >= 1) {
-          if(partialVal <= 0){
-            el.partial = false,
-            item.partial = false,
-            item.remaining_spray_area = item.spray_areas
-            el.partial = false,
-            item.partial = false
-            // el.spray_areas = el.remaining_spray_area
-            return el
-          }else{
-            el.partial = false,
-            item.partial = false
-            // el.spray_areas = el.remaining_spray_area
-            return el
-          }
+          el.partial = false,
+          item.partial = false
+          // el.spray_areas = el.remaining_spray_area
+          return el
         } else {
           setSelectedPaddock(selectedPaddock.filter(ndz => {
             ndz.spray_areas = ndz.remaining_spray_area;
