@@ -98,8 +98,9 @@ class TasksPage extends Component {
       }
     };
     if(activeIndex == 1){
-      console.log('parameter', parameter)
+      console.log('parameter', Routes.paddockDueTaskRetrieve, parameter)
       Api.request(Routes.paddockDueTaskRetrieve, parameter, response => {
+        console.log('--------------', parameter);
           this.setState({
             isLoading: false
           });
@@ -122,7 +123,7 @@ class TasksPage extends Component {
         },
       );
     }else{
-      console.log('PARAMETER:', parameter);
+      console.log('PARAMETER:',Routes.paddockPlanTasksRetrieveEndUser, parameter);
     Api.request(Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
         this.setState({
           isLoading: false

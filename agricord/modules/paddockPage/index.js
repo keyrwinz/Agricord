@@ -157,7 +157,7 @@ class paddockPage extends Component {
                     ? 'Partially Complete'
                     : paddock.origStatus === 'completed'
                     ? 'Complete'
-                    : 'Pending'}
+                    : paddock.origStatus === 'inprogress' ? 'In Progress' : 'Pending'}
                 </Text>
               </View>
               <View>
