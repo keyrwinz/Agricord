@@ -135,7 +135,6 @@ const MixPage = (props) => {
     let parameter = {
       selectedPaddocks: data
     }
-    console.log('>>>>>>>', parameter);
     setLoading(true)
     Api.request(Routes.paddockPlanTasksCheckIfAvailable, parameter, response => {
       setLoading(false)
@@ -166,7 +165,6 @@ const MixPage = (props) => {
           //   }
           //   return el;
           // }))
-          console.log('[selectedPaddock]', data)
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: data, application_rate: appliedRate, appliedArea: partialVal })
         }else if(mixConfirmation && checkMard == true){
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
@@ -732,11 +730,15 @@ const MixPage = (props) => {
             ndx.spray_areas = ndx.spray_areas - ndx.remaining_spray_area;
             return ndx;
           }))
-        } else {
-          setPartialVal(totalArea)
-          setTotalHigher(true)
-          return
         }
+        // } else {
+        //   console.log('[]b')
+        //   setPartialVal(totalArea)
+        //   setTotalHigher(true)
+        //   item.partial = false
+        //   item.spray_areas = item.remaining_spray_area
+        //   return
+        // }
       } else {
         if (item.partial_flag === true && item.partial === false && counter === 0) {
           setSelectedPaddock(selectedPaddock.filter(ndy => {
@@ -758,7 +760,7 @@ const MixPage = (props) => {
     })
     return setSelectedPaddock(newSelectedPaddock)
   }
-
+  
   const selectedPaddockView = () => {
     setTimeout(() => {
       const { task } = props.state;
