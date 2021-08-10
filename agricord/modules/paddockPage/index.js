@@ -157,7 +157,9 @@ class paddockPage extends Component {
                     ? 'Partially Complete'
                     : paddock.origStatus === 'completed'
                     ? 'Complete'
-                    : paddock.origStatus === 'inprogress' ? 'In Progress' : 'Pending'}
+                    : paddock.origStatus === 'inprogress'
+                    ? 'In Progress'
+                    : 'Pending'}
                 </Text>
               </View>
               <View>
@@ -195,7 +197,10 @@ class paddockPage extends Component {
                 <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
                   Paddock plan
                 </Text>
-                <Text>Updated: {data.updated_date !== null ? data.updated_date : 'N/A'}</Text>
+                <Text>
+                  Updated:{' '}
+                  {data.updated_date !== null ? data.updated_date : 'N/A'}
+                </Text>
               </View>
             </View>
             <Divider
@@ -346,13 +351,7 @@ class paddockPage extends Component {
               />
               <View style={[Style.focusTaskDetails, {width: '80%'}]}>
                 <View style={[Style.flexRow]}>
-                  <Text style={[Style.eventText, {width: '25%'}]}>
-                    {item.status === 'partially_completed'
-                      ? 'Partially Complete'
-                      : item.status === 'completed'
-                      ? 'Complete'
-                      : 'Pending'}
-                  </Text>
+                  <Text style={[Style.eventText, {width: '25%'}]}>Due</Text>
                   <Text
                     style={[Style.eventText, {color: '#54BAEC', width: '25%'}]}>
                     {item.due_date_formatted}
@@ -407,8 +406,8 @@ class paddockPage extends Component {
                   <Text style={[Style.eventText]}>
                     {el.status === 'partially_completed'
                       ? 'In Progress'
-                      : el.status === 'complete'
-                      ? 'Complete'
+                      : el.status === 'completed'
+                      ? 'Completed'
                       : el.status === 'inprogress'
                       ? 'In Progress'
                       : 'Due'}
@@ -465,7 +464,7 @@ class paddockPage extends Component {
             }}>
             {data && this.renderTopCard()}
             {data && this.renderMixCards(data)}
-            {data && this.renderTaskData(data)}
+            {data && (data.status !== 'inprogress' && data.status !== 'completed') && this.renderTaskData(data)}
             {data && data.actual_tasks.length > 0 && (
               <View style={{marginBottom: 10}}>
                 <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
