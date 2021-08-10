@@ -406,7 +406,7 @@ class paddockPage extends Component {
                   <Text style={[Style.eventText]}>
                     {el.status === 'partially_completed'
                       ? 'In Progress'
-                      : el.status === 'complete'
+                      : el.status === 'completed'
                       ? 'Complete'
                       : el.status === 'inprogress'
                       ? 'In Progress'
