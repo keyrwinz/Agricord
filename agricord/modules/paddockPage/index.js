@@ -407,7 +407,7 @@ class paddockPage extends Component {
                     {el.status === 'partially_completed'
                       ? 'In Progress'
                       : el.status === 'completed'
-                      ? 'Complete'
+                      ? 'Completed'
                       : el.status === 'inprogress'
                       ? 'In Progress'
                       : 'Due'}
@@ -464,7 +464,7 @@ class paddockPage extends Component {
             }}>
             {data && this.renderTopCard()}
             {data && this.renderMixCards(data)}
-            {data && data.status !== 'inprogress' && this.renderTaskData(data)}
+            {data && (data.status !== 'inprogress' && data.status !== 'completed') && this.renderTaskData(data)}
             {data && data.actual_tasks.length > 0 && (
               <View style={{marginBottom: 10}}>
                 <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
