@@ -105,8 +105,8 @@ class MixName extends Component {
     const { paddock } = this.props.state;
     const {session} = this.props.navigation.state.params;
     const parameter = {
-      // id: paddock.spray_mix_id,
-      session: session
+      id: paddock.spray_mix_id,
+      session: session !== undefined ? session : "undefined"
     }
     console.log('[ONE SPRAY::', parameter);
     this.setState({isLoading: true})
@@ -131,6 +131,7 @@ class MixName extends Component {
   render() {
     const { paddock } = this.props.state;
     const { isLoading, data } = this.state;
+    console.log('==========', this.state.sprayMix);
     return (
       <ImageBackground
         source={require('assets/backgroundlvl2.png')}
