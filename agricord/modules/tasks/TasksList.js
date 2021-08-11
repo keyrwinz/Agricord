@@ -99,7 +99,7 @@ class TasksList extends Component {
                   <PaddockCard item={{
                       ...item,
                       from: this.props.from,
-                      origStatus: item.status,
+                      origStatus: item.batch_status !== null ? item.batch_status : item.task_status,
                       status: this.getLabelByStatus(this.props.from)
                     }}
                     key={item.id}
