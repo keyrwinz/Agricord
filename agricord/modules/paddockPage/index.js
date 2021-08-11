@@ -407,7 +407,7 @@ class paddockPage extends Component {
                     {el.status === 'partially_completed'
                       ? 'In Progress'
                       : el.status === 'completed'
-                      ? 'Completed'
+                      ? 'Complete'
                       : el.status === 'inprogress'
                       ? 'In Progress'
                       : 'Due'}
