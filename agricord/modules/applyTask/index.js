@@ -68,8 +68,8 @@ class ApplyTask extends Component {
       merchant_id: user.sub_account.merchant.id,
       status: 'inprogress'
     }
-
     Api.request(Routes.batchesRetrieveUnApplyTask, parameter, response => {
+      console.log('------->>', response)
       if(response.data.length > 0){
         console.log("===============================", response.data);
         this.setState({createdBatch: response.data[0].id, confirmTask: true, taskConfirmation: true})

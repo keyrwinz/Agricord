@@ -1,34 +1,41 @@
-import React, { Component, useState } from 'react';
+import React, {Component, useState} from 'react';
 import Style from './Style.js';
-import { View, Image, Text, ScrollView, SafeAreaView, TouchableOpacity, Dimensions, Alert, TextInput } from 'react-native';
-import { Spinner, Empty } from 'components';
-import { connect } from 'react-redux';
-import { Color, Routes, BasicStyles } from 'common'
-import Api from 'services/api/index.js'
-import { Divider } from 'react-native-elements';
-import _, { isError } from 'lodash'
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import {
+  View,
+  Image,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+  TextInput,
+} from 'react-native';
+import {Spinner, Empty} from 'components';
+import {connect} from 'react-redux';
+import {Color, Routes, BasicStyles} from 'common';
+import Api from 'services/api/index.js';
+import {Divider} from 'react-native-elements';
+import _, {isError} from 'lodash';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 // import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
-import { faExclamationTriangle as faExclamationTriangle, faTint } from '@fortawesome/free-solid-svg-icons';
-import { NavigationActions, StackActions } from 'react-navigation';
-import { data } from './data-test.js';
+import {faExclamationTriangle, faTint} from '@fortawesome/free-solid-svg-icons';
+import {NavigationActions, StackActions} from 'react-navigation';
+import {data} from './data-test.js';
 import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import KeySvg from 'assets/settings/key.svg';
 import SlidingButton from 'modules/generic/SlidingButton';
 import ProductConfirmationModal from 'modules/modal/ProductConfirmation';
 import TaskConfirmationModal from 'modules/modal/TaskConfirmation';
 import config from 'src/config';
-import { Helper } from 'common';
-import NfcManager, { NfcEvents, Ndef } from 'react-native-nfc-manager/NfcManager';
+import {Helper} from 'common';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 import Conversion from 'services/Conversion';
-
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 
-
 class paddockPage extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -58,92 +65,107 @@ class paddockPage extends Component {
       completeFlag: false,
       showRemaining: false,
       remaining_rate: 0,
-      scans: []
-    }
+      scans: [],
+    };
   }
 
-  notesHandler = (value) => {
-    this.setState({ notes: value });
-  }
+  notesHandler = value => {
+    this.setState({notes: value});
+  };
 
-  quantityHandler = (value) => {
-    this.setState({ quantity: value })
-  }
+  quantityHandler = value => {
+    this.setState({quantity: value});
+  };
 
   redirect(route) {
-    this.props.navigation.navigate(route)
+    this.props.navigation.navigate(route);
   }
 
-  getTotalVolume = (data) => {
+  getTotalVolume = data => {
     let total = 0; // in Liters
     data.map(item => {
       if (item.units == 'Millilitres (ml)') {
-        let rate = Conversion.getLFromMl(item.rate)
-        total = rate * this.state.totalPaddockArea
+        let rate = Conversion.getLFromMl(item.rate);
+        total = rate * this.state.totalPaddockArea;
       } else {
         total += parseFloat(item.rate) * this.state.totalPaddockArea;
       }
-    })
-    console.log('totalVolume', total)
+    });
+    console.log('totalVolume', total);
     this.setState({
-      totalVolume: total
-    })
-  }
+      totalVolume: total,
+    });
+  };
 
-  manageProductRate = (data) => {
+  manageProductRate = data => {
     let currentData = data.map(item => {
-      console.log(parseFloat(item.rate) * this.state.totalPaddockArea, item.rate, this.state.totalPaddockArea, '-----------');
+      console.log(
+        parseFloat(item.rate) * this.state.totalPaddockArea,
+        item.rate,
+        this.state.totalPaddockArea,
+        '-----------',
+      );
       return {
         ...item,
         rate: parseFloat(item.rate) * this.state.totalPaddockArea,
         remaining: 0,
         product: {
           ...item.product,
-          rate: parseFloat(item.rate) * this.state.totalPaddockArea
-        }
-      }
-    })
+          rate: parseFloat(item.rate) * this.state.totalPaddockArea,
+        },
+      };
+    });
     this.setState({
-      data: currentData
-    })
-  }
+      data: currentData,
+    });
+  };
 
   componentDidMount() {
-    console.log('=========>>>>>>>[PARAMS]', this.props.navigation.state.params.selected_paddock);
-    this.setState({ totalPaddockArea: this.props.navigation.state.params?.appliedArea });
+    console.log(
+      '=========>>>>>>>[PARAMS]',
+      this.props.navigation.state.params.selected_paddock,
+    );
+    this.setState({
+      totalPaddockArea: this.props.navigation.state.params?.appliedArea,
+    });
     if (this.props.state.dedicatedNfc === true) {
       this.startScanning();
     }
-    const { task } = this.props.state;
+    const {task} = this.props.state;
     if (task == null && (task && task.spray_mix == null)) {
-      return
+      return;
     }
     const parameter = {
-      condition: [{
-        value: task.spray_mix.id,
-        column: 'spray_mix_id',
-        clause: '='
-      }],
+      condition: [
+        {
+          value: task.spray_mix.id,
+          column: 'spray_mix_id',
+          clause: '=',
+        },
+      ],
       sort: {
-        created_at: 'desc'
+        created_at: 'desc',
       },
       offset: 0,
-      limit: 10
+      limit: 10,
     };
     this.setState({
-      isLoading: true
-    })
-    Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
-      console.log('data', response.data)
-      this.getTotalVolume(response.data)
-      this.setState({ isLoading: false });
-      this.manageProductRate(response.data)
-    },
+      isLoading: true,
+    });
+    Api.request(
+      Routes.sprayMixProductsRetrieve,
+      parameter,
+      response => {
+        console.log('data', response.data);
+        this.getTotalVolume(response.data);
+        this.setState({isLoading: false});
+        this.manageProductRate(response.data);
+      },
       error => {
         this.setState({
-          isLoading: false
-        })
-        console.log({ error });
+          isLoading: false,
+        });
+        console.log({error});
       },
     );
   }
@@ -156,24 +178,25 @@ class paddockPage extends Component {
         key: null,
         actions: [
           NavigationActions.navigate({
-            routeName: 'Homepage', params: {
+            routeName: 'Homepage',
+            params: {
               initialRouteName: 'Home',
-              index: 0
-            }
+              index: 0,
+            },
           }),
-        ]
-      })
+        ],
+      }),
     });
 
     this.props.navigation.dispatch(navigateAction);
-  }
+  };
 
   setApplyTank() {
-    this.setState({ confirmTask: true, taskConfirmation: false })
-    const { task, paddock } = this.props.state;
-    const user = this.props.state.user
+    this.setState({confirmTask: true, taskConfirmation: false});
+    const {task, paddock} = this.props.state;
+    const user = this.props.state.user;
     if (user == null) {
-      return
+      return;
     }
     let batch = {
       spray_mix_id: task.spray_mix.id,
@@ -183,12 +206,15 @@ class paddockPage extends Component {
       notes: this.state.notes,
       water: this.props.navigation.state?.params?.total_volume,
       status: 'inprogress',
-      application_rate: this.props.navigation.state?.params?.application_rate
-    }
+      application_rate: this.props.navigation.state?.params?.application_rate,
+    };
     let taskArray = [];
-    this.props.navigation.state.params.selected_paddock.map((item) => {
-      taskArray.push({task_id: item.plan_task_id, area: item.remaining_spray_area});
-    })
+    this.props.navigation.state.params.selected_paddock.map(item => {
+      taskArray.push({
+        task_id: item.plan_task_id,
+        area: item.remaining_spray_area,
+      });
+    });
     // let areas = [];
     // this.props.navigation.state.params.selected_paddock.map((item) => {
     //   areas.push();
@@ -196,9 +222,9 @@ class paddockPage extends Component {
     let tasks = {
       paddock_plan_task_id: taskArray,
       merchant_id: user.sub_account.merchant.id,
-      account_id: user.account_information.account_id
-    }
-    const { scannedTraces } = this.state;
+      account_id: user.account_information.account_id,
+    };
+    const {scannedTraces} = this.state;
     let batch_products = scannedTraces.map((item, index) => {
       return {
         product_id: item.product_id,
@@ -206,49 +232,52 @@ class paddockPage extends Component {
         account_id: user.id,
         product_trace_id: item.id,
         applied_rate: item.rate,
-        product_attribute_id: item.product_attribute_id
-      }
-    })
+        product_attribute_id: item.product_attribute_id,
+      };
+    });
 
     let parameter = {
-      batch, tasks, batch_products
-    }
-    this.setState({ isLoading: true });
-    console.log('[Batch Create] parameter', JSON.stringify(parameter))
-    Api.request(Routes.batchCreate, parameter, response => {
-      this.setState({ isLoading: false });
-      if (response.data !== null) {
-        this.setState({ createdBatch: response.data.batch[0], taskConfirmation: true });
-      }
-      if(response.error !== null) {
-        Alert.alert(
-          "Error Message",
-          response.error,
-          [
-            { text: "OK" }
-          ],
-          { cancelable: false }
-        );
-      }
-    },
+      batch,
+      tasks,
+      batch_products,
+    };
+    this.setState({isLoading: true});
+    console.log('[Batch Create] parameter', JSON.stringify(parameter));
+    Api.request(
+      Routes.batchCreate,
+      parameter,
+      response => {
+        this.setState({isLoading: false});
+        if (response.data !== null) {
+          this.setState({
+            createdBatch: response.data.batch[0],
+            taskConfirmation: true,
+          });
+        }
+        if (response.error !== null && response.error.length > 0) {
+          Alert.alert('Error Message', response.error, [{text: 'OK'}], {
+            cancelable: false,
+          });
+        }
+      },
       error => {
         this.setState({
-          isLoading: false
-        })
-        console.log({ error });
+          isLoading: false,
+        });
+        console.log({error});
       },
     );
   }
 
   manageProductConfirmation(param) {
     const user = this.props.state.user;
-    const { application_rate } = this.props.navigation.state.params
-    const { matchedProduct, data, quantity, batchProducts } = this.state;
+    const {application_rate} = this.props.navigation.state.params;
+    const {matchedProduct, data, quantity, batchProducts} = this.state;
     if (this.state.scanned.includes(matchedProduct.batch_number) === false) {
-      this.state.scanned.push(matchedProduct.batch_number)
-      data.filter(function (item, index) {
+      this.state.scanned.push(matchedProduct.batch_number);
+      data.filter(function(item, index) {
         if (item.product.id === matchedProduct.product.id) {
-          data[index].product.batch_number.push(matchedProduct.batch_number)
+          data[index].product.batch_number.push(matchedProduct.batch_number);
           // rates.push(item.product.rate > matchedProduct.product.qty[0].total_remaining_product ? matchedProduct.product.qty[0].total_remaining_product : item.product.rate)
           data[index].product.qty += quantity;
           let product = {
@@ -256,44 +285,48 @@ class paddockPage extends Component {
             merchant_id: user.sub_account.merchant.id,
             account_id: user.account_information.account_id,
             product_trace_id: matchedProduct.id,
-            applied_rate: application_rate
-          }
+            applied_rate: application_rate,
+          };
           batchProducts.push(product);
         }
-      })
+      });
     } else {
       Alert.alert(
-        "Opps",
-        "You have already scanned this product trace!",
-        [
-          { text: "OK" }
-        ],
-        { cancelable: false }
+        'Opps',
+        'You have already scanned this product trace!',
+        [{text: 'OK'}],
+        {cancelable: false},
       );
     }
-    this.setState({ productConfirmation: false });
-    this.setState({ isAdded: true });
+    this.setState({productConfirmation: false});
+    this.setState({isAdded: true});
     if (this.props.state.dedicatedNfc === true) {
-      setTimeout(() => { this.startScanning(); }, 4000);
+      setTimeout(() => {
+        this.startScanning();
+      }, 4000);
     }
   }
 
   addProductToBatch(trace) {
-    const { data, scannedTraces, scannedTraceIds, scans } = this.state;
+    const {data, scannedTraces, scannedTraceIds, scans} = this.state;
     this.setState({
-      completeFlag: false
-    })
+      completeFlag: false,
+    });
     if (scannedTraceIds.indexOf(trace.id) < 0) {
       let updated = data.map((item, index) => {
         if (item.product_id == trace.product_id) {
-          let rate = parseFloat(trace.rate) > parseFloat(item.remaining) && parseFloat(item.remaining) > 0 ? parseFloat(item.remaining) - parseFloat(item.remaining) : (parseFloat(item.rate) - parseFloat(trace.rate))
-          scannedTraces.push(trace)
-          if(scans.includes(trace.product_id) === false) {
+          let rate =
+            parseFloat(trace.rate) > parseFloat(item.remaining) &&
+            parseFloat(item.remaining) > 0
+              ? parseFloat(item.remaining) - parseFloat(item.remaining)
+              : parseFloat(item.rate) - parseFloat(trace.rate);
+          scannedTraces.push(trace);
+          if (scans.includes(trace.product_id) === false) {
             scans.push(trace.product_id);
           }
-          scannedTraceIds.push(trace.id)
-          let batch = item.product.batch_number
-          batch.push(trace.batch_number)
+          scannedTraceIds.push(trace.id);
+          let batch = item.product.batch_number;
+          batch.push(trace.batch_number);
           this.setState({remaining_rate: rate});
           return {
             ...item,
@@ -302,148 +335,158 @@ class paddockPage extends Component {
               ...item.product,
               batch_number: batch,
               remaining: rate,
-            }
-          }
+            },
+          };
         }
-        return item
-      })
+        return item;
+      });
       this.setState({
         data: updated,
         productConfirmation: false,
-        showRemaining: true
-      })
-      let flag = true
+        showRemaining: true,
+      });
+      let flag = true;
       for (var i = 0; i < updated.length; i++) {
-        let item = updated[i]
-        let length = updated.length - 1
+        let item = updated[i];
+        let length = updated.length - 1;
         if (item.remaining > 0) {
-          break
+          break;
         }
-        if (length == i && item.remaining <= 0 && scans.length === data.length) {
+        if (
+          length == i &&
+          item.remaining <= 0 &&
+          scans.length === data.length
+        ) {
           this.setState({
-            completeFlag: true
-          })
+            completeFlag: true,
+          });
         }
       }
     } else {
       this.setState({
-        productConfirmation: false
-      })
+        productConfirmation: false,
+      });
       Alert.alert(
-        "Error Message",
-        "Product Trace already in the list",
-        [
-          { text: "OK" }
-        ],
-        { cancelable: false }
+        'Error Message',
+        'Product Trace already in the list',
+        [{text: 'OK'}],
+        {cancelable: false},
       );
     }
-
   }
 
   manageTaskConfirmation() {
-    const { createdBatch } = this.state;
-    this.setState({ confirmTask: true });
+    const {createdBatch} = this.state;
+    this.setState({confirmTask: true});
     let parameter = {
       id: createdBatch?.id,
-      status: 'completed'
-    }
-    this.setState({ isLoading: true });
-    Api.request(Routes.batchUpdateStatus, parameter, response => {
-      this.setState({ confirmTask: false, taskConfirmation: false, isLoading: false })
-      if (response.data !== null) {
-        this.props.navigation.state.params.selected_paddock.map((item) => {
-          let par = {
-            id: item.plan_task_id,
-            status: 'completed'
-          }
-          Api.request(Routes.paddockPlanTasksUpdate, par, response => {
-            console.log(response, 'hehehehe------------');
-          },
-            err => {
-              console.log({ err });
-            },
-          );
-        })
-
-      }
-      this.navigateToScreen()
-    },
+      status: 'completed',
+    };
+    this.setState({isLoading: true});
+    Api.request(
+      Routes.batchUpdateStatus,
+      parameter,
+      response => {
+        this.setState({
+          confirmTask: false,
+          taskConfirmation: false,
+          isLoading: false,
+        });
+        if (response.data !== null) {
+          this.props.navigation.state.params.selected_paddock.map(item => {
+            let par = {
+              id: item.plan_task_id,
+              status: 'completed',
+            };
+            Api.request(
+              Routes.paddockPlanTasksUpdate,
+              par,
+              response => {
+                console.log(response, 'hehehehe------------');
+              },
+              err => {
+                console.log({err});
+              },
+            );
+          });
+        }
+        this.navigateToScreen();
+      },
       error => {
         this.setState({
-          isLoading: false
-        })
-        console.log({ error });
+          isLoading: false,
+        });
+        console.log({error});
       },
     );
   }
 
   closeTaskConfirmation() {
     this.setState({
-      taskConfirmation: false
-    })
-    this.redirect('applyTaskStack')
+      taskConfirmation: false,
+    });
+    this.redirect('applyTaskStack');
   }
 
-  scan = (parameter) => {
+  scan = parameter => {
     if (config.NFC_TEST && parameter !== null) {
       this.retrieveProduct(parameter);
     }
-  }
+  };
 
   manageResponse(tag) {
-    console.log('tag', JSON.stringify(tag))
-    let parsed = null
+    console.log('tag', JSON.stringify(tag));
+    let parsed = null;
     if (tag.ndefMessage) {
       const ndefRecords = tag.ndefMessage;
 
       function decodeNdefRecord(record) {
         if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
-          return { 'text': Ndef.text.decodePayload(record.payload) };
+          return {text: Ndef.text.decodePayload(record.payload)};
         } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
-          return { 'uri': Ndef.uri.decodePayload(record.payload) };
+          return {uri: Ndef.uri.decodePayload(record.payload)};
         }
 
-        return { 'unknown': null }
+        return {unknown: null};
       }
 
       parsed = ndefRecords.map(decodeNdefRecord);
     }
-    this.manageNfcText(parsed, tag.id)
+    this.manageNfcText(parsed, tag.id);
   }
 
   _cancel = () => {
     this.setState({
-      isLoading: false
-    })
+      isLoading: false,
+    });
     NfcManager.unregisterTagEvent().catch(() => 0);
-  }
+  };
 
   startScanningNFC = async () => {
-    console.log('starting')
+    console.log('starting');
     this.setState({
-      isLoading: true
-    })
+      isLoading: true,
+    });
     try {
       await NfcManager.registerTagEvent();
     } catch (ex) {
       this.setState({
-        isLoading: false
-      })
+        isLoading: false,
+      });
       console.warn('ex', ex);
       NfcManager.unregisterTagEvent().catch(() => 0);
     }
-  }
+  };
 
   manageNfcText(data, id) {
     this.setState({
-      isLoading: false
-    })
+      isLoading: false,
+    });
     if (data) {
       data.map((item, index) => {
-        console.log('item', item.text)
+        console.log('item', item.text);
         if (index === 0 && item.text) {
-          let array = item.text.split(Helper.delimeter)
+          let array = item.text.split(Helper.delimeter);
           let parameter = {
             title: array[0],
             merchant: array[1],
@@ -452,11 +495,11 @@ class paddockPage extends Component {
             code: array[4],
             website: array[5],
             nfc: id,
-            link: false
-          }
-          this.scan(parameter)
+            link: false,
+          };
+          this.scan(parameter);
         }
-      })
+      });
     }
   }
 
@@ -464,126 +507,117 @@ class paddockPage extends Component {
     NfcManager.start();
     NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
       this.setState({
-        isLoading: false
-      })
-      this.manageResponse(tag)
+        isLoading: false,
+      });
+      this.manageResponse(tag);
       NfcManager.unregisterTagEvent().catch(() => 0);
     });
-    this.startScanningNFC()
-  }
+    this.startScanningNFC();
+  };
 
-  retrieveProduct = (params) => {
-    const user = this.props.state.user
+  retrieveProduct = params => {
+    const user = this.props.state.user;
     let parameter = {
-      condition: [{
-        value: params.code,
-        column: 'code',
-        clause: '='
-      }],
+      condition: [
+        {
+          value: params.code,
+          column: 'code',
+          clause: '=',
+        },
+      ],
       nfc: params.nfc,
-      // 3 
+      // 3
       merchant_id: user.sub_account.merchant.id,
-      account_type: user.account_type
-    }
+      account_type: user.account_type,
+    };
     this.manageRequest(parameter);
-  }
+  };
 
-  manageRequest = (parameter) => {
-    const user = this.props.state.user
-    this.setState({ isLoading: true });
+  manageRequest = parameter => {
+    const user = this.props.state.user;
+    this.setState({isLoading: true});
     let route = null;
     if (user.account_type === 'USER') {
-      route = Routes.productTraceRetrieveUser
+      route = Routes.productTraceRetrieveUser;
     } else {
-      route = Routes.productTraceRetrieve
+      route = Routes.productTraceRetrieve;
     }
     console.log('->>>>>>>>>>>>>', parameter);
     Api.request(route, parameter, response => {
-      this.setState({ isLoading: false });
+      this.setState({isLoading: false});
       if (response.data != null && response.data.length > 0) {
-        console.log('[NFC]', response.data)
-        this.checkProduct(response.data[0])
+        console.log('[NFC]', response.data);
+        this.checkProduct(response.data[0]);
       } else {
-        this.setState({ message: response.error })
+        this.setState({message: response.error});
         alert('Invalid NFC code.');
       }
-    }
-    );
-  }
+    });
+  };
 
   checkProduct(productTrace) {
-    const { scannedTraceIds, data } = this.state;
-    console.log('again')
+    const {scannedTraceIds, data} = this.state;
+    console.log('again');
 
     if (scannedTraceIds.indexOf(parseFloat(productTrace.id)) >= 0) {
       Alert.alert(
-        "Error Message",
-        "Product Trace already in the list",
-        [
-          { text: "OK" }
-        ],
-        { cancelable: false }
+        'Error Message',
+        'Product Trace already in the list',
+        [{text: 'OK'}],
+        {cancelable: false},
       );
-      return
+      return;
     }
-    console.log('again 1')
+    console.log('again 1');
     for (var i = 0; i < data.length; i++) {
-      let item = data[i]
-      let itemProductId = parseInt(item.product.id)
-      let traceProductId = parseInt(productTrace.product_id)
+      let item = data[i];
+      let itemProductId = parseInt(item.product.id);
+      let traceProductId = parseInt(productTrace.product_id);
       if (itemProductId == traceProductId) {
         let itemRate = item.product.rate;
-        let qty = productTrace.qty
-        this.setState({ matchedProduct: productTrace });
+        let qty = productTrace.qty;
+        this.setState({matchedProduct: productTrace});
         if (itemRate <= 0 || qty <= 0) {
           Alert.alert(
-            "Error Message",
-            "Remaining rate is 0. Not Allowed",
-            [
-              { text: "OK" }
-            ],
-            { cancelable: false }
+            'Error Message',
+            'Remaining rate is 0. Not Allowed',
+            [{text: 'OK'}],
+            {cancelable: false},
           );
-          return
+          return;
         }
         if (itemRate > 0 && qty > 0 && itemRate >= qty) {
           this.setState({
             newlyScanned: {
               ...productTrace,
-              rate: productTrace.qty
-            }
-          })
+              rate: productTrace.qty,
+            },
+          });
         }
         if (itemRate > 0 && qty > 0 && itemRate < qty) {
           this.setState({
             newlyScanned: {
               ...productTrace,
-              rate: itemRate
-            }
-          })
+              rate: itemRate,
+            },
+          });
         }
         setTimeout(() => {
           this.setState({
-            productConfirmation: true
-          })
-        }, 100)
+            productConfirmation: true,
+          });
+        }, 100);
       }
     }
   }
 
-  total = () => {
-  }
+  total = () => {};
 
   else() {
-    Alert.alert(
-      "Opps",
-      "Product not found!",
-      [
-        { text: "OK" }
-      ],
-      { cancelable: false }
-    );
-    this.setState({ productConfirmation: false });
+    Alert.alert('Opps', 'Product not found!', [{text: 'OK'}], {
+      cancelable: false,
+    });
+    this.setState({productConfirmation: false});
   }
 
   renderTopCard = () => {
@@ -596,223 +630,264 @@ class paddockPage extends Component {
             borderBottomLeftRadius: BasicStyles.standardBorderRadius,
             backgroundColor: '#ED1C24',
             justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <FontAwesomeIcon icon={faExclamationTriangle} size={60} color={Color.white} />
+            alignItems: 'center',
+          }}>
+          <FontAwesomeIcon
+            icon={faExclamationTriangle}
+            size={60}
+            color={Color.white}
+          />
         </View>
-        <View style={{
-          width: '70%',
-          paddingTop: 20,
-          paddingLeft: 10,
-          paddingRight: 10,
-          paddingBottom: 20
-        }}>
-          <Text style={{
-            fontWeight: 'bold',
-            color: '#ED1C24',
-            fontSize: BasicStyles.standardHeaderFontSize,
-          }}>Create Batch</Text>
+        <View
+          style={{
+            width: '70%',
+            paddingTop: 20,
+            paddingLeft: 10,
+            paddingRight: 10,
+            paddingBottom: 20,
+          }}>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: '#ED1C24',
+              fontSize: BasicStyles.standardHeaderFontSize,
+            }}>
+            Create Batch
+          </Text>
           <Text style={Style.text}>1. Confirm mixing order on label</Text>
-          <Text style={Style.text}>2. Scan the Agricord tag on each drum to record quantity added and details</Text>
-          <Divider style={BasicStyles.standardDivider}></Divider>
+          <Text style={Style.text}>
+            2. Scan the Agricord tag on each drum to record quantity added and
+            details
+          </Text>
+          <Divider style={BasicStyles.standardDivider} />
         </View>
       </View>
-    )
-  }
+    );
+  };
 
   renderNotesCard() {
     return (
-      <View style={{
-        width: '100%',
-        marginTop: 15,
-        backgroundColor: Color.white,
-        borderRadius: 22,
-        borderColor: '#FFFFFF',
-        ...BasicStyles.standardShadow,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        paddingRight: 15,
-        height: 110
-      }}>
-
-        <Text style={{
-          fontSize: BasicStyles.standardTitleFontSize,
-          fontWeight: 'bold'
-        }}>Notes: </Text>
+      <View
+        style={{
+          width: '100%',
+          marginTop: 15,
+          backgroundColor: Color.white,
+          borderRadius: 22,
+          borderColor: '#FFFFFF',
+          ...BasicStyles.standardShadow,
+          paddingTop: 15,
+          paddingBottom: 15,
+          paddingLeft: 15,
+          paddingRight: 15,
+          height: 110,
+        }}>
+        <Text
+          style={{
+            fontSize: BasicStyles.standardTitleFontSize,
+            fontWeight: 'bold',
+          }}>
+          Notes:{' '}
+        </Text>
         <TextInput
-          style={{ height: 40, borderColor: Color.gray }}
+          style={{height: 40, borderColor: Color.gray}}
           onChangeText={text => this.notesHandler(text)}
           value={this.state.notes}
-          placeholder='e.g. Application rate, nozzle type, weather conditions'
+          placeholder="e.g. Application rate, nozzle type, weather conditions"
         />
       </View>
-
-    )
+    );
   }
 
   render() {
-    const { applyTank, productConfirmation, taskConfirmation, data, isLoading, matchedProduct, isAdded, confirmTask, newlyScanned } = this.state;
-    const { completeFlag, remaining_rate, scans } = this.state;
-    const { task } = this.props.state;
+    const {
+      applyTank,
+      productConfirmation,
+      taskConfirmation,
+      data,
+      isLoading,
+      matchedProduct,
+      isAdded,
+      confirmTask,
+      newlyScanned,
+    } = this.state;
+    const {completeFlag, remaining_rate, scans} = this.state;
+    const {task} = this.props.state;
     return (
       <SafeAreaView>
-        <ScrollView showsVerticalScrollIndicator={false}
-
+        <ScrollView
+          showsVerticalScrollIndicator={false}
           style={{
-            backgroundColor: Color.containerBackground
+            backgroundColor: Color.containerBackground,
           }}>
-          <View style={{
-            alignItems: 'center',
-            height: height,
-            flex: 1,
-            marginBottom: height,
-            backgroundColor: Color.containerBackground
-          }}>
-            <View style={{
-              width: '90%',
-              backgroundColor: Color.containerBackground
+          <View
+            style={{
+              alignItems: 'center',
+              height: height,
+              flex: 1,
+              marginBottom: height,
+              backgroundColor: Color.containerBackground,
             }}>
-              {
-                this.renderTopCard()
-              }
-              {this.props.state.dedicatedNfc === false && completeFlag == false ?
+            <View
+              style={{
+                width: '90%',
+                backgroundColor: Color.containerBackground,
+              }}>
+              {this.renderTopCard()}
+              {this.props.state.dedicatedNfc === false &&
+              completeFlag == false ? (
                 <TouchableOpacity
-                  style={[
-                    BasicStyles.standardCardContainer
-                  ]}
-                  onPress={() => this.startScanning()}
-                >
-                  <View style={{
-                    width: '100%',
-                  }}>
-                    <Text style={{
-                      fontSize: BasicStyles.standardTitleFontSize,
-                      textAlign: 'center',
-                      fontWeight: 'bold'
-                    }}>SCAN NFC</Text>
+                  style={[BasicStyles.standardCardContainer]}
+                  onPress={() => this.startScanning()}>
+                  <View
+                    style={{
+                      width: '100%',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: BasicStyles.standardTitleFontSize,
+                        textAlign: 'center',
+                        fontWeight: 'bold',
+                      }}>
+                      SCAN NFC
+                    </Text>
                   </View>
                 </TouchableOpacity>
-                : null}
+              ) : null}
 
-              {
-                data.map(dataItem => (
-                  <ProductCard
-                    item={{
-                      ...dataItem.product,
-                      from: 'paddockPage'
-                    }}
-                    showRemaining={this.state.showRemaining}
-                    remaining={true}
-                    key={dataItem.id}
-                    navigation={this.props.navigation}
-                    theme={'v2'}
-                    batch={true}
-                  />
-                ))
-              }
-              {
-                data.length == 0 && (
-                  <Text style={{
+              {data.map(dataItem => (
+                <ProductCard
+                  item={{
+                    ...dataItem.product,
+                    from: 'paddockPage',
+                  }}
+                  showRemaining={this.state.showRemaining}
+                  remaining={true}
+                  key={dataItem.id}
+                  navigation={this.props.navigation}
+                  theme={'v2'}
+                  batch={true}
+                />
+              ))}
+              {data.length == 0 && (
+                <Text
+                  style={{
                     marginTop: 10,
-                    textAlign: 'center'
-                  }}>{isLoading ? '' : 'No products found'}</Text>
-                )
-              }
-              <View style={[
-                BasicStyles.standardCardContainer,
-                {
-                  backgroundColor: Color.blue,
-                  paddingRight: 10,
-                  borderColor: Color.blue
-                }
-              ]}
-              >
-                <View style={{
-                  width: '70%',
-                  flexDirection: 'row'
-                }}>
-                  <FontAwesomeIcon style={{ left: 15, top: 5 }} icon={faTint} size={15} color={Color.white} />
-                  <FontAwesomeIcon style={{ left: 10, bottom: 2 }} icon={faTint} size={12} color={Color.white} />
-                  <FontAwesomeIcon style={{ left: 6, bottom: -9 }} icon={faTint} size={9} color={Color.white} />
-                  <Text style={{
-                    color: Color.white,
-                    marginLeft: 15,
-                    fontSize: BasicStyles.standardTitleFontSize
-                  }}>Water</Text>
+                    textAlign: 'center',
+                  }}>
+                  {isLoading ? '' : 'No products found'}
+                </Text>
+              )}
+              <View
+                style={[
+                  BasicStyles.standardCardContainer,
+                  {
+                    backgroundColor: Color.blue,
+                    paddingRight: 10,
+                    borderColor: Color.blue,
+                  },
+                ]}>
+                <View
+                  style={{
+                    width: '70%',
+                    flexDirection: 'row',
+                  }}>
+                  <FontAwesomeIcon
+                    style={{left: 15, top: 5}}
+                    icon={faTint}
+                    size={15}
+                    color={Color.white}
+                  />
+                  <FontAwesomeIcon
+                    style={{left: 10, bottom: 2}}
+                    icon={faTint}
+                    size={12}
+                    color={Color.white}
+                  />
+                  <FontAwesomeIcon
+                    style={{left: 6, bottom: -9}}
+                    icon={faTint}
+                    size={9}
+                    color={Color.white}
+                  />
+                  <Text
+                    style={{
+                      color: Color.white,
+                      marginLeft: 15,
+                      fontSize: BasicStyles.standardTitleFontSize,
+                    }}>
+                    Water
+                  </Text>
                 </View>
 
-                <Text style={{
-                  color: Color.white,
-                  fontSize: BasicStyles.standardTitleFontSize,
-                  fontWeight: 'bold',
-                  textAlign: 'right',
-                  width: '30%'
-                }}>{this.props.navigation.state?.params?.total_volume}L</Text>
+                <Text
+                  style={{
+                    color: Color.white,
+                    fontSize: BasicStyles.standardTitleFontSize,
+                    fontWeight: 'bold',
+                    textAlign: 'right',
+                    width: '30%',
+                  }}>
+                  {this.props.navigation.state?.params?.total_volume}L
+                </Text>
               </View>
-              {
-                this.renderNotesCard()
-              }
+              {this.renderNotesCard()}
             </View>
           </View>
         </ScrollView>
         {
-          (completeFlag) && (
-            <SlidingButton
-              title={'Apply Tank'}
-              label={'Swipe Right to Complete'}
-              onSuccess={() => this.setApplyTank()}
-              position={taskConfirmation}
-            />
-          )
+          // (completeFlag) && (
+          <SlidingButton
+            title={'Apply Tank'}
+            label={'Swipe Right to Complete'}
+            onSuccess={() => this.setApplyTank()}
+            position={taskConfirmation}
+          />
+          // )
         }
-        {
-          (productConfirmation) && (
-            <ProductConfirmationModal
-              visible={productConfirmation}
-              onClose={() => this.setState({
-                productConfirmation: false
-              })}
-              warning={'Always confirm the physical volume of product remaining before adding to tank.'}
-              data={newlyScanned}
-              remaining={remaining_rate}
-              onSuccess={(param) => this.addProductToBatch(param)}
-              changeText={this.quantityHandler}
-            />
-          )
-        }
-        {
-          (taskConfirmation) && (
-            <TaskConfirmationModal
-              onSuccess={() => this.manageTaskConfirmation()}
-              taskConfirmation={confirmTask}
-              visible={confirmTask}
-              onClose={() => {
-                this.setState({
-                  taskConfirmation: false
-                })
-                this.navigateToScreen()
-              }}
-            />
-          )
-        }
+        {productConfirmation && (
+          <ProductConfirmationModal
+            visible={productConfirmation}
+            onClose={() =>
+              this.setState({
+                productConfirmation: false,
+              })
+            }
+            warning={
+              'Always confirm the physical volume of product remaining before adding to tank.'
+            }
+            data={newlyScanned}
+            remaining={remaining_rate}
+            onSuccess={param => this.addProductToBatch(param)}
+            changeText={this.quantityHandler}
+          />
+        )}
+        {taskConfirmation && (
+          <TaskConfirmationModal
+            onSuccess={() => this.manageTaskConfirmation()}
+            taskConfirmation={confirmTask}
+            visible={confirmTask}
+            onClose={() => {
+              this.setState({
+                taskConfirmation: false,
+              });
+              this.navigateToScreen();
+            }}
+          />
+        )}
 
         {isLoading ? <Spinner mode="overlay" /> : null}
       </SafeAreaView>
     );
   }
 }
-const mapStateToProps = state => ({ state: state });
+const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
-  const { actions } = require('@redux');
-  return {
-
-  };
+  const {actions} = require('@redux');
+  return {};
 };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(paddockPage);
