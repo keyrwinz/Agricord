@@ -465,14 +465,14 @@ class paddockPage extends Component {
             {data && this.renderTopCard()}
             {data && this.renderMixCards(data)}
             {data && (data.status !== 'approved' && data.status !== 'completed') && this.renderTaskData(data)}
-            {data && data.actual_tasks.length > 0 && (
+            {data && data.actual_tasks.length > 0 && (data.status !== 'pending' && data.status !== 'completed') && (
               <View style={{marginBottom: 10}}>
                 <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
                   TASK ACTUALS
                 </Text>
               </View>
             )}
-            {data && this.renderActualTask(data)}
+            {data && (data.status !== 'pending' && data.status !== 'completed') &&  this.renderActualTask(data)}
           </View>
         </ScrollView>
         <TaskButton navigation={this.props.navigation} />
