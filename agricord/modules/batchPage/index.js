@@ -835,14 +835,14 @@ class paddockPage extends Component {
           </View>
         </ScrollView>
         {
-          // (completeFlag) && (
+          (completeFlag) && (
           <SlidingButton
             title={'Apply Tank'}
             label={'Swipe Right to Complete'}
             onSuccess={() => this.setApplyTank()}
             position={taskConfirmation}
           />
-          // )
+          )
         }
         {productConfirmation && (
           <ProductConfirmationModal
