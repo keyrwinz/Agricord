@@ -545,7 +545,6 @@ class paddockPage extends Component {
     console.log('->>>>>>>>>>>>>', parameter);
     Api.request(route, parameter, response => {
       this.setState({isLoading: false});
-      console.log(response, '------');
       if (response.data != null && response.data.length > 0) {
         console.log('[NFC]', response.data);
         this.checkProduct(response.data[0]);
@@ -574,7 +573,6 @@ class paddockPage extends Component {
       let item = data[i];
       let itemProductId = parseInt(item.product.id);
       let traceProductId = parseInt(productTrace.product_id);
-      console.log(itemProductId, traceProductId, 'li');
       if (itemProductId == traceProductId) {
         let itemRate = item.product.rate;
         let qty = productTrace.qty;
