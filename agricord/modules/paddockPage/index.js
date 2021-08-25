@@ -447,6 +447,7 @@ class paddockPage extends Component {
 
   render() {
     const {isLoading, data} = this.state;
+    // console.log('======>>>', data?.actual_tasks[0]['status']);
     return (
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
@@ -464,7 +465,7 @@ class paddockPage extends Component {
             }}>
             {data && this.renderTopCard()}
             {data && this.renderMixCards(data)}
-            {data && (data.status !== 'approved' && data.origStatus !== 'completed') && this.renderTaskData(data)}
+            {data &&  data.actual_tasks.length > 0 && (data.actual_tasks[0]['status'] !== 'completed') && this.renderTaskData(data)}
             {data && data.actual_tasks.length > 0 && (data.status !== 'pending') && (
               <View style={{marginBottom: 10}}>
                 <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
