@@ -464,7 +464,7 @@ class paddockPage extends Component {
             }}>
             {data && this.renderTopCard()}
             {data && this.renderMixCards(data)}
-            {data && (data.status !== 'approved' && data.status !== 'completed') && this.renderTaskData(data)}
+            {data && (data.status !== 'approved' && data.origStatus !== 'completed') && this.renderTaskData(data)}
             {data && data.actual_tasks.length > 0 && (data.status !== 'pending') && (
               <View style={{marginBottom: 10}}>
                 <Text style={{fontWeight: 'bold', marginRight: '70%'}}>
