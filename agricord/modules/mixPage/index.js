@@ -320,9 +320,9 @@ const MixPage = (props) => {
     Api.request(Routes.paddockPlanTasksRetrieveAvailablePaddocks, parameter, response => {
       setLoading(false)
       if (Array.isArray(response) == true) {
-        setPaddocks(response)
+        setPaddocks( _.uniqBy([...paddocks, ...response], 'id'))
       } else {
-        setPaddocks(response.data)
+        setPaddocks( _.uniqBy([...paddocks, ...response.data], 'id'))
         setAvail(response.data)
       }
     },
