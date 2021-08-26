@@ -123,8 +123,8 @@ class TasksPage extends Component {
         },
       );
     }else{
-      console.log('PARAMETER:',Routes.paddockPlanTasksRetrieveEndUser, parameter);
-    Api.request(Routes.paddockPlanTasksRetrieveEndUser, parameter, response => {
+      console.log('PARAMETER:',Routes.paddockPlanTasksRetrieveFromBatch, parameter);
+    Api.request(Routes.paddockPlanTasksRetrieveFromBatch, parameter, response => {
         this.setState({
           isLoading: false
         });
