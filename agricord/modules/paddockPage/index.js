@@ -54,16 +54,13 @@ class paddockPage extends Component {
     });
 
     const parameter = {
-      id:
-        paddock.paddock_plan_task_id !== undefined
-          ? paddock.paddock_plan_task_id
-          : paddock.paddock.id,
+      id: paddock.paddock_plan_task_id
     };
     console.log({
       paddock,
     });
     console.log(
-      '[Paddock Page] parameter================',
+      '[Paddock Page] parameter>>>>>>>>',
       Routes.paddocksRetrieveWithSprayMix,
       parameter,
     );
@@ -153,11 +150,11 @@ class paddockPage extends Component {
                   Status
                 </Text>
                 <Text>
-                  {paddock.origStatus === 'partially_completed'
+                  {data.status === 'partially_completed'
                     ? 'Partially Complete'
-                    : paddock.origStatus === 'completed'
+                    : data.status === 'completed'
                     ? 'Complete'
-                    : paddock.origStatus === 'inprogress'
+                    : data.status === 'inprogress'
                     ? 'In Progress'
                     : 'Pending'}
                 </Text>
@@ -384,6 +381,7 @@ class paddockPage extends Component {
 
   renderActualTask = item => {
     const {paddock} = this.props.state;
+    console.log('=============', item.actual_tasks);
     return (
       item.actual_tasks.length > 0 &&
       item.actual_tasks.map(el => (
@@ -404,11 +402,9 @@ class paddockPage extends Component {
               <View style={[Style.focusTaskDetails, {width: '85%'}]}>
                 <View style={Style.flexRow}>
                   <Text style={[Style.eventText]}>
-                    {item.status === 'partially_completed'
-                      ? 'In Progress'
-                      : item.status === 'completed'
+                    {el.status === 'completed'
                       ? 'Complete'
-                      : item.status === 'inprogress'
+                      : el.status === 'inprogress'
                       ? 'In Progress'
                       : 'Due'}
                   </Text>
