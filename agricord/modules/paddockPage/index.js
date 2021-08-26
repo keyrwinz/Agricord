@@ -404,11 +404,11 @@ class paddockPage extends Component {
               <View style={[Style.focusTaskDetails, {width: '85%'}]}>
                 <View style={Style.flexRow}>
                   <Text style={[Style.eventText]}>
-                    {el.status === 'partially_completed'
+                    {item.status === 'partially_completed'
                       ? 'In Progress'
-                      : el.status === 'completed'
+                      : item.status === 'completed'
                       ? 'Complete'
-                      : el.status === 'inprogress'
+                      : item.status === 'inprogress'
                       ? 'In Progress'
                       : 'Due'}
                   </Text>
