@@ -133,7 +133,67 @@ class paddockPage extends Component {
                 width: '90%',
               }}
             />
-            <View
+            <View style={{
+                width: '100%',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center',
+                // justifyContent: 'space-between',
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}>
+                <View style={{flexDirection: 'column', marginRight: '10%'}}>
+                  <View style={[Style.label, {marginBottom: '10%'}]}>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        color: Color.blue,
+                      }}>
+                      Status
+                    </Text>
+                    <Text>
+                      {data.status === 'partially_completed'
+                        ? 'Partially Complete'
+                        : data.status === 'completed'
+                        ? 'Complete'
+                        : data.status === 'inprogress'
+                        ? 'In Progress'
+                        : 'Pending'}
+                    </Text>
+                  </View>
+                  <View style={Style.label}>
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        color: Color.blue,
+                      }}>
+                      Task area
+                    </Text>
+                    <Text>
+                      {data.spray_area}
+                      {data.units}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{flexDirection: 'column'}}>
+                  <View style={{marginBottom: '10%'}}>
+                    <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
+                      Due Date
+                    </Text>
+                    <Text>{data.due_date}</Text>
+                  </View>
+                  <View>
+                    <Text style={{fontWeight: 'bold', color: '#5A84EE'}}>
+                      Paddock plan
+                    </Text>
+                    <Text>
+                      Updated:{' '}
+                      {data.updated_date !== null ? data.updated_date : 'N/A'}
+                    </Text>
+                  </View>
+                </View>
+            </View>
+            {/* <View
               style={{
                 width: '100%',
                 flexDirection: 'row',
@@ -202,64 +262,9 @@ class paddockPage extends Component {
             </View>
             <Divider
               style={[BasicStyles.starndardDivider, {marginBottom: 10}]}
-            />
+            /> */}
           </React.Fragment>
         )}
-
-        {/* {paddock && paddock.from != 'due' && data && (
-          <React.Fragment>
-            {data.crop_name && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Crop</Text>
-                <Text style={Style.label}>{data.crop_name}</Text>
-              </View>
-            )}
-            {data.crop_name && <Divider style={BasicStyles.starndardDivider} />}
-
-            <View style={Style.cardInfo}>
-              <Text style={Style.labelTitle}>Machine</Text>
-              <Text style={Style.label}>
-                {paddock ? paddock.machine[0].name : null}
-              </Text>
-            </View>
-
-            <Divider style={BasicStyles.starndardDivider} />
-
-            {data.operator && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Operator</Text>
-                <Text style={Style.label}>{data.operator}</Text>
-              </View>
-            )}
-            {data.operator && <Divider style={BasicStyles.starndardDivider} />}
-            {data.start_date && paddock.from == 'history' && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Start Time</Text>
-                <Text style={Style.label}>{data.start_date}</Text>
-              </View>
-            )}
-            {data.start_date && paddock.from == 'history' && (
-              <Divider style={BasicStyles.starndardDivider} />
-            )}
-            {data.end_date && paddock.from == 'history' && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Finish Time</Text>
-                <Text style={Style.label}>{data.end_date}</Text>
-              </View>
-            )}
-
-            {data.started && paddock.from == 'inprogress' && (
-              <View style={Style.cardInfo}>
-                <Text style={Style.labelTitle}>Started</Text>
-                <Text style={Style.label}>{data.started}</Text>
-              </View>
-            )}
-
-            <Divider
-              style={[BasicStyles.starndardDivider, {marginBottom: 10}]}
-            />
-          </React.Fragment>
-        )} */}
       </View>
     );
   };
