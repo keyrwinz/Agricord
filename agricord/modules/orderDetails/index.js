@@ -145,32 +145,32 @@ class OrderDetails extends Component {
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>
                     <Text style={styles.DetailsTextStyle}>
-                      {selectedOrder.status === 'pending'
-                        ? 'Delivery Due'
-                        : 'Delivered By'}
+                      {selectedOrder.status === 'completed'
+                        ? 'Allocated To'
+                        : 'Delivered Due'}
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                      {selectedOrder.status === 'pending'
-                        ? selectedOrder.date_of_delivery
-                        : selectedOrder.delivered_by}
+                      {selectedOrder.status === 'completed'
+                        ? selectedOrder.delivered_by
+                        : selectedOrder.date_of_delivery}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>
                     <Text style={styles.DetailsTextStyle}>
-                      {selectedOrder.status === 'pending'
-                        ? 'Order'
-                        : 'Delivery Date'}
+                      {selectedOrder.status === 'completed'
+                        ? 'Delivery Date'
+                        : 'Order'}
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                      {selectedOrder.status === 'pending'
-                        ? selectedOrder.order_number
-                        : selectedOrder.date_of_delivery}
+                      {selectedOrder.status === 'completed'
+                        ? selectedOrder.delivered_date
+                        : selectedOrder.order_number}
                     </Text>
                   </View>
                 </View>
@@ -178,13 +178,13 @@ class OrderDetails extends Component {
                   <View style={styles.Details}>
                     <View style={styles.DetailsTitleContainer}>
                       <Text style={styles.DetailsTextStyle}>
-                        Product Scanned
+                        Status
                       </Text>
                     </View>
                     <View style={styles.DetailsTextContainer}>
                       <Text
                         style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                        {this.state.scannedProducts}
+                        {selectedOrder.status}
                       </Text>
                     </View>
                   </View>
