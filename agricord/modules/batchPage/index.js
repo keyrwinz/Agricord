@@ -204,7 +204,7 @@ class paddockPage extends Component {
       merchant_id: user.sub_account.merchant.id,
       account_id: user.account_information.account_id,
       notes: this.state.notes,
-      water: this.props.navigation.state?.params?.total_volume,
+      water: this.props.navigation.state?.params?.total_volume - this.state.totalVolume,
       status: 'inprogress',
       application_rate: this.props.navigation.state?.params?.application_rate,
     };
@@ -827,7 +827,7 @@ class paddockPage extends Component {
                     textAlign: 'right',
                     width: '30%',
                   }}>
-                  {this.props.navigation.state?.params?.total_volume}L
+                  {this.props.navigation.state?.params?.total_volume - this.state.totalVolume}L
                 </Text>
               </View>
               {this.renderNotesCard()}
