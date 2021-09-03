@@ -166,6 +166,7 @@ const MixPage = (props) => {
           //   return el;
           // }))
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: data, application_rate: appliedRate, appliedArea: partialVal })
+          console.log('[total volume]', parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2))
         }else if(mixConfirmation && checkMard == true){
           props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
         }
@@ -1324,7 +1325,7 @@ const MixPage = (props) => {
             }}
             data={selectedPaddock}
             value={appliedArea}
-            volume={'BATCH ' + partialVal + 'HA ' + Math.round(appliedRate * partialVal) + ' L'}
+            volume={'BATCH ' + parseFloat(partialVal).toFixed(2) + 'HA ' + Math.round(appliedRate * partialVal) + ' L'}
             />
             ) :
             (mixConfirmation) && (checkMard == true) && (
