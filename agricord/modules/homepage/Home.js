@@ -314,7 +314,7 @@ const Home = props => {
                                             Style.eventText,
                                             {color: '#54BAEC'},
                                           ]}>
-                                          {obj.date_of_delivery}
+                                          {obj.date_of_delivery_formatted}
                                         </Text>
                                         <Text
                                           style={[
@@ -323,7 +323,7 @@ const Home = props => {
                                           ]}
                                           numberOfLines={1}
                                           ellipsizeMode="tail">
-                                          {obj.merchant.name}
+                                          {obj.merchant_from.name}
                                         </Text>
                                       </View>
                                       <View style={Style.flexRow}>
