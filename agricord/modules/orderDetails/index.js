@@ -145,16 +145,12 @@ class OrderDetails extends Component {
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>
                     <Text style={styles.DetailsTextStyle}>
-                      {selectedOrder.status === 'completed'
-                        ? 'Allocated To'
-                        : 'Delivered Due'}
+                      {'Allocated To'}
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                      {selectedOrder.status === 'completed'
-                        ? selectedOrder.delivered_by
-                        : selectedOrder.date_of_delivery}
+                      {selectedOrder.merchant.name}
                     </Text>
                   </View>
                 </View>
@@ -163,14 +159,14 @@ class OrderDetails extends Component {
                     <Text style={styles.DetailsTextStyle}>
                       {selectedOrder.status === 'completed'
                         ? 'Delivery Date'
-                        : 'Order'}
+                        : 'Delivered Due'}
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                       {selectedOrder.status === 'completed'
                         ? selectedOrder.delivered_date
-                        : selectedOrder.order_number}
+                        : selectedOrder.date_of_delivery}
                     </Text>
                   </View>
                 </View>
