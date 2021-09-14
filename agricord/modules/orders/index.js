@@ -78,7 +78,7 @@ class OrdersPage extends Component {
       limit: this.state.limit,
       offset: this.state.offset,
     };
-
+    console.log('[ORDER_PARAMS]', parameters);
     Api.request(Routes.ordersRetrieveByParams, parameters, response => {
       this.setState({
         isLoading: false
