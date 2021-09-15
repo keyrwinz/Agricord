@@ -159,7 +159,7 @@ class OrderDetails extends Component {
                     <Text style={styles.DetailsTextStyle}>
                       {selectedOrder.status === 'completed'
                         ? 'Delivery Date'
-                        : 'Delivered Due'}
+                        : 'Delivery Due'}
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
