@@ -162,23 +162,13 @@ const Inventory = (props) => {
         offset: offset,
       }
     }
-    console.log('========',route, parameter)
+    console.log('========',route, parameter, flag)
     Api.request(route, parameter, response => {
       setLoading(false)
       if (response.data.length > 0) {
-        // console.log("[DAAT]", response.data);
         // let tempData = flag == false ? response.data : _.uniqBy([...data, ...response.data], 'code')
         setData([...data, ...response.data])
-        setOffset(flag == false ? 1 : offset + limit);
-        // setHerbicideData(response.data)
-        // setFungicideData(response.data)
-        // setInsecticideData(response.data)
-        // setOtherData(response.data)
-
-        // setFilteredHerbicideData(response.data)
-        // setFilteredFungicideData(response.data)
-        // setFilteredInsecticideData(response.data)
-        // setFilteredOtherData(response.data)
+        setOffset(flag == false ? 0 : offset + 1);
       } else {
         setData(flag == false ? [] : data)
          setOffset(flag == false ? 0 : offset);
