@@ -98,10 +98,10 @@ class OrderCard extends Component {
               }
               {
                 item.from == 'pending' || item.from == 'in_progress' ? (
-                  <Text style={Style.label} numberOfLines={1}>{item.date_of_delivery}</Text>
+                  <Text style={Style.label} numberOfLines={1}>{item.date_of_delivery_formatted}</Text>
                 ) : (
                   <Text style={Style.label} numberOfLines={1}>
-                    {item.delivered_date}
+                    {item.delivered_date_formatted}
                   </Text>
                 )
               }
