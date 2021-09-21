@@ -295,7 +295,7 @@ const Home = props => {
                         {orders?.orders?.length > 0 && (
                           <View>
                             {orders?.orders.map((obj, idx) => {
-                              if (idx > 2 && !isExpanded) return;
+                              if ((orders?.orders?.length - 1) > 4 && !isExpanded) return;
                               const icon = getIcon('Order');
                               return (
                                 <TouchableOpacity
@@ -351,7 +351,7 @@ const Home = props => {
                         {orders?.infocus?.length > 0 && (
                           <View>
                             {orders?.infocus.map((obj, idx) => {
-                              if (idx > 2 && !isExpanded) return;
+                              if (orders?.orders?.length >= 4 && !isExpanded) return;
                               const icon = getIcon('Task');
                               return (
                                 <TouchableOpacity
