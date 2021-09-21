@@ -164,7 +164,7 @@ const Home = props => {
     );
   };
 
-  console.log('[INFOCUS]', orders?.infocus);
+  console.log('[INFOCUS]', orders?.infocus?.length, orders?.orders?.length);
   return (
     <ScrollView
       style={Style.ScrollView}
@@ -295,7 +295,7 @@ const Home = props => {
                         {orders?.orders?.length > 0 && (
                           <View>
                             {orders?.orders.map((obj, idx) => {
-                              if (idx > 1 && !isExpanded) return;
+                              if (idx > 2 && !isExpanded) return;
                               const icon = getIcon('Order');
                               return (
                                 <TouchableOpacity
@@ -351,8 +351,7 @@ const Home = props => {
                         {orders?.infocus?.length > 0 && (
                           <View>
                             {orders?.infocus.map((obj, idx) => {
-                               console.log('[OBJECT>>>>>>]', obj);
-                              if (idx > 1 && !isExpanded) return;
+                              if (idx > 2 && !isExpanded) return;
                               const icon = getIcon('Task');
                               return (
                                 <TouchableOpacity
