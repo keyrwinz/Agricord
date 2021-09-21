@@ -295,7 +295,7 @@ const Home = props => {
                         {orders?.orders?.length > 0 && (
                           <View>
                             {orders?.orders.map((obj, idx) => {
-                              if ((orders?.orders?.length - 1) > 4 && !isExpanded) return;
+                              if ((orders?.orders?.length) > 4 && !isExpanded) return;
                               const icon = getIcon('Order');
                               return (
                                 <TouchableOpacity
