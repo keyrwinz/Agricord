@@ -1234,7 +1234,6 @@ const MixPage = (props) => {
     )
   }
 
-
   return (
     <SafeAreaView style={{ flex: 1, position: 'relative', backgroundColor: Color.containerBackground }}>
       <ScrollView showsVerticalScrollIndicator={false} style={Style.ScrollView}>
@@ -1284,7 +1283,8 @@ const MixPage = (props) => {
               />
             ))
           :
-          ((Number(partialVal) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0)) && (
+          ((Number(parseFloat(partialVal).toFixed(2)) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0)) && (
+          // ((Number(partialVal) <= Number(maxArea)) && (selectedFlag && selectedPaddock.length > 0)) && (
             <SlidingButton
               title={'Create Batch'}
               label={'Swipe Right'}
