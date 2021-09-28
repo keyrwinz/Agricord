@@ -188,7 +188,7 @@ class paddockPage extends Component {
                     </Text>
                     <Text>
                       Updated:{' '}
-                      {data.updated_date !== null ? data.updated_date : 'N/A'}
+                      {data.last_updated !== null ? data.last_updated : 'N/A'}
                     </Text>
                   </View>
                 </View>
