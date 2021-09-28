@@ -150,7 +150,7 @@ class OrderDetails extends Component {
                   </View>
                   <View style={styles.DetailsTextContainer}>
                     <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
-                      {selectedOrder.merchant.name}
+                      {selectedOrder.name}
                     </Text>
                   </View>
                 </View>

@@ -472,7 +472,7 @@ const Home = props => {
                                             {color: '#54BAEC'},
                                           ]}>
                                           {obj?.order_number
-                                            ? obj.delivered_date
+                                            ? obj.delivered_date_formatted
                                             : obj.date_completed}
                                         </Text>
                                         <Text style={Style.eventText}>

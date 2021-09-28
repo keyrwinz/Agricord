@@ -166,8 +166,8 @@ const Inventory = (props) => {
     Api.request(route, parameter, response => {
       setLoading(false)
       if (response.data.length > 0) {
-        // let tempData = flag == false ? response.data : _.uniqBy([...data, ...response.data], 'code')
-        setData([...data, ...response.data])
+        let tempData = flag == false ? response.data : _.uniqBy([...data, ...response.data], 'product_attribute_id')
+        setData(tempData)
         setOffset(flag == false ? 0 : offset + 1);
       } else {
         setData(flag == false ? [] : data)
