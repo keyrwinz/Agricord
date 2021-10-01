@@ -5,7 +5,7 @@ import {faBars, faChevronLeft} from '@fortawesome/free-solid-svg-icons';
 import {createStackNavigator} from '@react-navigation/stack';
 import User from 'components/User/Image'
 import {BasicStyles, Color} from 'common';
-import Homepage from './Home';
+import Homepage from './Home2';
 import {connect} from 'react-redux';
 import Style from './HomeStyle'
 import StackHeaderTitle from 'modules/generic/StackHeaderTitle';

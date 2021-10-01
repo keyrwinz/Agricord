@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Component} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -36,58 +36,62 @@ import {VictoryPie, VictoryTheme} from 'victory-native';
 import Config from 'src/config.js';
 import _ from 'lodash';
 import {Dimensions} from 'react-native';
-// const width = Math.round(Dimensions.get('window').width);
-// const height = Math.round(Dimensions.get('window').height);
 const height = Math.round(Dimensions.get('window').height);
 
-const getIcon = type => {
-  switch (type) {
-    case 'Task':
-      return <TaskFocusIcon/>;
-    case 'Order':
-      return <OrderFocusIcon />;
+class HomePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isExpanded: false,
+      data: [],
+      orders: null,
+      totalRecentData: 0,
+      totalTasksData: 0,
+      totalOrderData: 0,
+      totalActivities: 0,
+      offset: 0,
+      limit: 5,
+      loading: false,
+      recenData: []
+    };
   }
-};
 
-const redirectToOrder = (obj, props) => {
-  props.parentNav.navigate('orderDetailsStack', {data: obj});
-  const {setSelectedOrder} = props;
-  let selectedOrder = obj;
-  setSelectedOrder(selectedOrder);
-};
+  getIcon = type => {
+    switch (type) {
+      case 'Task':
+        return <TaskFocusIcon/>;
+      case 'Order':
+        return <OrderFocusIcon />;
+    }
+  };
 
-const redirectToTask = (obj, props) => {
-  const {setPaddock} = props;
-  props.parentNav.navigate('paddockStack', {data: obj});
-  setPaddock({...obj});
-};
+  redirectToOrder = (obj, props) => {
+    this.props.parentNav.navigate('orderDetailsStack', {data: obj});
+    const {setSelectedOrder} = this.props;
+    let selectedOrder = obj;
+    setSelectedOrder(selectedOrder);
+  };
+  
+  redirectToTask = (obj, props) => {
+    const {setPaddock} = this.props;
+    this.props.parentNav.navigate('paddockStack', {data: obj});
+    setPaddock({...obj});
+  }
 
-const Home = props => {
-  const [isExpanded, setExpand] = useState(false);
-  const [data, setData] = useState([]);
-  const [orders, setOrders] = useState();
-  const [totalRecentData, setTotalRecentData] = useState(0);
-  const [totalTasksData, setTotalTasksData] = useState(0);
-  const [totalOrderData, setTotalOrderData] = useState(0);
-  const [totalActivities, setTotalActivities] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [allData, setAllData] = useState();
-  const [arrayData, setArrayData] = useState([]);
-  const [recentCount, setRecentCount] = useState(0);
-  const [tempData, setTempData] = useState([]);
-  const [taskCount, setTaskCount] = useState();
-  var offset = 0;
-  var limit = 5;
-  // const totalRecentData = null
+  componentDidMount = () => {
+    this.focusListener = this.props.navigation.addListener('didFocus', () => {
+      this.retrieve(false);
+    });
+    this.retrieve(false);
+  }
 
-  const retrieve = flag => {
-    const {user} = props.state;
-    console.log('==================', user.sub_account.merchant.id);
+  retrieve = flag => {
+    const {user} = this.props.state;
     let parameters = {
       condition: [
         {
           column: user.account_type === 'USER' ? 'merchant_to' : 'merchant_id',
-          value: user.sub_account.merchant.id, //temporarily used id of 1 because the current user.sub_account.merchant.id (4) causes API to returns null data
+          value: user.sub_account.merchant.id,
           clause: '=',
         },
         {
@@ -99,82 +103,50 @@ const Home = props => {
       sort: {
         created_at: 'desc',
       },
-      limit: limit,
-      offset: flag == true && offset > 0 ? offset * limit : offset,
+      limit: this.state.limit,
+      offset: flag == true && this.state.offset > 0 ? this.state.offset * this.state.limit : this.state.offset,
     };
-    console.log('[PARAMETER]', parameters);
-    setLoading(false);
-    Api.request(
-      Routes.dashboardRetrieve,
-      parameters,
-      response => {
-        setLoading(false);
-        setOrders();
-        if (response.data != null || response.data != undefined) {
-          setOrders(
-            response.data,
-          );
-          if('//////////////', response?.data?.recent?.length){
-            console.log(response.data.recent.length > 0);
-            for (let index = 0; index <= response?.data?.recent?.length; index++) {
-              const element = array[index];
-              console.log('>>>>>>>>>>>', element);
-            }
+    this.setState({loading: true})
+    console.log('[PARAMETERS]', parameters);
+    Api.request(Routes.dashboardRetrieve, parameters, response => {
+      console.log('[RESPONSE]', response, response.data.totalOrders, response.data.totalRecent, response.data.totalInfocus);
+      if(response.data !== null || response.data !== undefined) {
+        response.data.recent = response.data.recent.length > 0 ? _.orderBy(response.data.recent, ['date_completed'], ['asc']) : []
+        let temp  = []
+        this.setState({
+          loading: false,
+          orders: response.data,
+          totalOrderData: response.data.totalOrders,
+          totalRecentData:  response.data.totalRecent,
+          totalTasksData: response.data.totalInfocus,
+          totalActivities: response.data.totalOrders + response.data.totalRecent + response.data.totalInfocus
+        })
+        temp.push(response.data.totalOrders)
+        temp.push(response.data.totalRecent)
+        temp.push(response.data.totalInfocus)
+        this.setState({data: temp})
+        if(response.data.recent.length > 0){
+          for (let index = 0; index <= response.data.recent.length-1; index++) {
+            const element = response.data.recent[index];
+            console.log('[ELEMENTS-----------]', element);
           }
-          setTotalOrderData({orders: response.data.totalOrders});
-          setTotalRecentData({recent: response.data.totalRecent});
-          setTotalTasksData({tasks: response.data.totalInfocus});
-          setData([
-              response.data.totalOrders != undefined
-                ? response.data.totalOrders
-                : 0,
-              response.data.totalRecent != undefined
-                ? response.data.totalRecent
-                : 0,
-              response.data.totalInfocus != undefined
-                ? response.data.totalInfocus
-                : 0,
-          ]);
-          setTotalActivities(
-            response.data.totalInfocus +
-              response.data.totalRecent +
-              response.data.totalOrders,
-          );
-        } else {
-          setOrders(!flag ? null : orders);
         }
-      },
-      error => {
-        setLoading(false);
-      },
-    );
+      }else{
+        this.setState({orders: !flag ? null : this.state.orders})
+      }
+    })
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      retrieve(false);
-    }, 1000);
-    props.navigation.addListener('didfocus', () => {
-      this.retrieve();
-    });
-  }, []);
-
-  const handleScroll = e => {
-    if (e.nativeEvent.contentOffset.y === 0) {
-      retrieve(false);
-    }
+  render(){
+    const {user} = this.props.state
+    const {totalOrderData, orders, totalRecentData, totalTasksData, totalActivities, loading, data} = this.state
     return (
-      <View>
-        <Spinner mode="overlay" />
-      </View>
-    );
-  };
-
-  console.log('[INFOCUS]', orders?.infocus?.length, orders?.orders?.length);
-  return (
-    <ScrollView
+      <ScrollView
       style={Style.ScrollView}
-      onScroll={handleScroll}
+      onScroll={(e) => {
+        if(e.nativeEvent.contentOffset.y === 0){
+          retrieve(false);
+        }
+      }}
       showsVerticalScrollIndicator={false}>
       <Spinner mode="overlay" />
       <SafeAreaView>
@@ -195,9 +167,9 @@ const Home = props => {
               <View>
                 <Text style={[Style.username, Style.textWhite]}>
                   Hi{' '}
-                  {props?.state?.user?.account_information !== undefined
-                    ? props?.state?.user?.account_information?.first_name
-                    : props?.state?.user?.username}
+                  {user?.account_information !== undefined
+                    ? user?.account_information?.first_name
+                    : user?.username}
                 </Text>
                 <Text style={Style.textWhite}>Welcome to Your Dashboard</Text>
               </View>
@@ -260,7 +232,7 @@ const Home = props => {
               </View>
             </View>
 
-            {orders ? (
+            {!loading && orders !== null ? (
               <View>
                 {(orders?.orders?.length <= 0 &&
                   orders?.infocus?.length <= 0 &&
@@ -302,7 +274,7 @@ const Home = props => {
                           <View>
                             {orders?.orders.map((obj, idx) => {
                               if ((orders?.orders?.length) > 4 && !isExpanded) return;
-                              const icon = getIcon('Order');
+                              const icon = this.getIcon('Order');
                               return (
                                 <TouchableOpacity
                                   key={idx}
@@ -358,7 +330,7 @@ const Home = props => {
                           <View>
                             {orders?.infocus.map((obj, idx) => {
                               if (orders?.orders?.length >= 4 && !isExpanded) return;
-                              const icon = getIcon('Task');
+                              const icon = this.getIcon('Task');
                               return (
                                 <TouchableOpacity
                                   key={idx}
@@ -478,7 +450,7 @@ const Home = props => {
                                             {color: '#54BAEC'},
                                           ]}>
                                           {obj?.order_number
-                                            ? obj.delivered_date_formatted
+                                            ? obj.date_completed
                                             : obj.date_completed}
                                         </Text>
                                         <Text style={Style.eventText}>
@@ -515,23 +487,17 @@ const Home = props => {
         </ImageBackground>
       </SafeAreaView>
     </ScrollView>
-  );
-};
-
+    )
+  }
+}
 
 const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {
-    setSelectedOrder: selectedOrder => {
-      dispatch(actions.setSelectedOrder(selectedOrder));
-    },
-    setPaddock: product => dispatch(actions.setPaddock(product)),
-  };
+  return {};
 };
-
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Home);
+)(HomePage);
