@@ -278,7 +278,7 @@ class HomePage extends Component {
                               return (
                                 <TouchableOpacity
                                   key={idx}
-                                  onPress={() => redirectToOrder(obj, props)}>
+                                  onPress={() => this.redirectToOrder(obj, props)}>
                                   <View style={[Style.focusTask]}>
                                     {icon}
                                     <View style={[Style.focusTaskDetails, {width: '73%'}]}>
@@ -334,7 +334,7 @@ class HomePage extends Component {
                               return (
                                 <TouchableOpacity
                                   key={idx}
-                                  onPress={() => redirectToTask(obj, props)}>
+                                  onPress={() => this.redirectToTask(obj, props)}>
                                   <View style={Style.focusTask}>
                                     {icon}
                                     <View style={[Style.focusTaskDetails, {width: 220}]}>
@@ -420,8 +420,8 @@ class HomePage extends Component {
                                   key={idx}
                                   onPress={() =>
                                     obj?.order_number
-                                      ? redirectToOrder(obj, props)
-                                      : redirectToTask(obj, props)
+                                      ? this.redirectToOrder(obj, props)
+                                      : this.redirectToTask(obj, props)
                                   }>
                                   <View
                                     key={idx}
