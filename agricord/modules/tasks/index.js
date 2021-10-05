@@ -106,7 +106,7 @@ class TasksPage extends Component {
           });
           if(response.data && response.data.length > 0){
             this.setState({
-              data:  response.data,
+              data:   flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
               numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
               offset: flag == false ? 1 : (this.state.offset + 1)
             })

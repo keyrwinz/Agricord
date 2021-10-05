@@ -56,7 +56,7 @@ class TasksList extends Component {
   }
   render() {
     const { data, loading } = this.props;
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>||||||", data);
+    // console.log(">>>>>>>>>>>>>>>>>>>>>>>>||||||", data);
     return (
       <SafeAreaView>
         <ScrollView
