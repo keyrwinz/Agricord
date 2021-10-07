@@ -829,7 +829,7 @@ class paddockPage extends Component {
                     textAlign: 'right',
                     width: '30%',
                   }}>
-                  {this.props.navigation.state?.params?.total_volume - this.state.totalVolume}L
+                  {(this.props.navigation.state?.params?.total_volume - this.state.totalVolume).toFixed(3)}L
                 </Text>
               </View>
               {this.renderNotesCard()}
