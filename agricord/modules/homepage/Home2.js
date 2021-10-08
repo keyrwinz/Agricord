@@ -111,7 +111,6 @@ class HomePage extends Component {
     Api.request(Routes.dashboardRetrieve, parameters, response => {
       console.log('[RESPONSE]', response, response.data.totalOrders, response.data.totalRecent, response.data.totalInfocus);
       if(response.data !== null || response.data !== undefined) {
-        response.data.recent = response.data.recent.length > 0 ? _.orderBy(response.data.recent, ['date_completed'], ['asc']) : []
         let temp  = []
         this.setState({
           loading: false,

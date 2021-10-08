@@ -168,7 +168,7 @@ const Inventory = (props) => {
       if (response.data.length > 0) {
         let tempData = flag == false ? response.data : _.uniqBy([...data, ...response.data], 'product_attribute_id')
         setData(tempData)
-        setOffset(flag == false ? 0 : offset + 1);
+        setOffset(flag == false ? 0 : offset + 1);  
       } else {
         setData(flag == false ? [] : data)
          setOffset(flag == false ? 0 : offset);
