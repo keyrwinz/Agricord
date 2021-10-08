@@ -135,7 +135,7 @@ class Details extends Component {
             {/* {data.end_date && paddock.from == 'history' && ( */}
               <View style={Style.cardInfo}>
                 <Text style={Style.labelTitle}>Finish Time</Text>
-                <Text style={Style.label}>{data.end_date}</Text>
+                <Text style={Style.label}>{data.status !== 'inprogress' ? data.end_date : 'Not yet finish'}</Text>
               </View>
             {/* )} */}
             {/* {data.end_date && paddock.from == 'history' && ( */}
