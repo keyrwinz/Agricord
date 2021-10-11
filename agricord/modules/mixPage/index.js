@@ -742,6 +742,7 @@ const MixPage = (props) => {
         // }
       } else {
         if (item.partial_flag === true && item.partial === false && counter === 0) {
+          setCheckMark(true)
           setSelectedPaddock(selectedPaddock.filter(ndy => {
             ndy.spray_areas = ndy.remaining_spray_area;
             return ndy;
@@ -749,6 +750,7 @@ const MixPage = (props) => {
         } else if (item.partial_flag === true && item.partial === false && counter >= 1) {
           el.partial = false,
           item.partial = false
+          setCheckMark(true)
           // el.spray_areas = el.remaining_spray_area
           return el
         } else {
@@ -829,6 +831,7 @@ const MixPage = (props) => {
 
   const applicationRate = () => {
     const { task } = props.state;
+    console.log('[checkmard>>>>>>>>>>>>>>>]', checkMard)
     return (
       <View style={[
         Style.mixCardContainer,
