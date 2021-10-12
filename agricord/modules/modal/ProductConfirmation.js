@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableOpacity, Platform, ScrollView } from 'react-native';
-import { BasicStyles } from 'common';
+import { View, Text, Modal, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { Color } from 'common';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { RNSlidingButton, SlideDirection } from 'rn-sliding-button';
@@ -9,6 +9,7 @@ import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 import { connect } from 'react-redux';
 import styles from './Styles.js'
 import Conversion from 'services/Conversion';
+import { color } from 'react-native-reanimated';
 class ProductConfirmation extends Component {
 
   constructor(props) {
@@ -89,15 +90,68 @@ class ProductConfirmation extends Component {
                     </Text>
                   </View>
                 </View>
-
               </View>
+              { this.props.input &&
+                <View>
+                  <View style={{
+                    paddingLeft: 20,
+                    paddingRight: 20,
+                    paddingBottom: 20,
+                    width: '100%',
+                    height: 70,
+                    backgroundColor: '#f0f0f0',
+                    flexDirection: 'row'
+                  }}>
+                    <View style={styles.DetailTitleContainer}>
+                      <Text style={[styles.DetailTitleTextStyle, {
+                        fontWeight: 'bold'
+                      }]}>
+                        Applied Amount
+                      </Text>
+                    </View>
+                    <View style={{
+                      paddingTop: 20,
+                      width: '50%'
+                    }}>
+                      <TextInput style={{
+                        position: 'absolute',
+                        right: 10,
+                        top: 20,
+                        width: '50%',
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        borderWidth: .5,
+                        borderColor: '#5A84EE',
+                        borderRadius: 5
+                      }}
+                        keyboardType={'numeric'}
+                        value={this.props.appliedAmount}
+                        onChangeText={(text) => { this.props.appliedAmountHandler(text) }}
+                      />
+                    </View>
+                  </View>
+                  <View style={{
+                    padding: 10,
+                    paddingLeft: 20,
+                    width: '100%',
+                  }}>
+                    <Text style={[styles.DetailDetailTextStyle], {
+                      fontWeight: 'bold'
+                    }}>
+                      Add to Batch
+                    </Text>
+                  </View>
+                </View>
+              }
             </ScrollView>
 
 
 
             <SlidingButtonRelative
               icon={faPlus}
-              title={`ADD ${data.rate > remaining && remaining > 0 ? remaining?.toFixed(2) : data.rate?.toFixed(2)} ${Conversion.getUnitsAbbreviation(data.units)}`}
+              title={this.props.input ? (`ADD ${this.props.appliedAmount} ${Conversion.getUnitsAbbreviation(data.units)}`) : (`ADD ${data.rate > remaining && remaining > 0 ? remaining?.toFixed(2) : data.rate?.toFixed(2)} ${Conversion.getUnitsAbbreviation(data.units)}`)}
               label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess(data)}
               widthLeft={'30%'}
