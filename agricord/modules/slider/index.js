@@ -100,6 +100,11 @@ class Slider extends Component {
           route: 'TASKS',
           index: 2
         };
+      case 'UnallocatedBatch': 
+        return {
+          route: 'unallocatedBatch',
+          index: 2
+        };
     }
   }
 
@@ -156,6 +161,7 @@ class Slider extends Component {
   }
 
   footerAction(route){
+    console.log('[asdfasdf]', route)
     switch(route){
       case 'Logout': 
         this.logoutAction();
@@ -163,6 +169,9 @@ class Slider extends Component {
         break;
       case 'TasksHistory':
         this.navigateToScreen(route);
+        break;
+      case 'UnallocatedBatch':
+        this.props.navigation.navigate('unallocatedBatchStack');
         break;
     }
   }
@@ -375,7 +384,7 @@ class Slider extends Component {
                               top: 0,
                               left: 0,
                               height: '100%',
-                              width: 15,
+                              width: 15
                             }}
                           >
                           </LinearGradient>

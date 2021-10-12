@@ -17,6 +17,7 @@ const height = Math.round(Dimensions.get('window').height);
 class TaskButton extends Component{
   constructor(props){
     super(props);
+
   }
   render(){
     return (
