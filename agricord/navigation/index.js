@@ -23,6 +23,9 @@ import ProductDetails from 'modules/product/ProductDetailsDrawer.js';
 import HomeDrawerStack from 'modules/homepage/HomeStack.js';
 import ProductDetailsOfflineDrawer from 'modules/product/ProductDetailsOfflineDrawer.js';
 import DetailsStack from 'modules/paddockPage/DetailsDrawer.js'
+import UnallocatedBatchStack from 'modules/unallocatedBatch/Drawer.js'
+import SessionStack from 'modules/sessionPage/DetailsDrawer.js'
+import MixNameUnallocatedStack from 'modules/mixNameUnallocated/Drawer.js';
 // login stack
 const LoginStack = createStackNavigator(
   {
@@ -76,6 +79,9 @@ const PrimaryNav = createStackNavigator(
     HomeDrawerStack: {screen: HomeDrawerStack},
     productDetailsOfflineStack: { screen: ProductDetailsOfflineDrawer},
     detailsStack: { screen: DetailsStack},
+    unallocatedBatchStack: { screen: UnallocatedBatchStack},
+    sessionStack: { screen: SessionStack},
+    mixNameUnallocatedStack: {screen: MixNameUnallocatedStack},
   },
   {
     // Default config for all screens

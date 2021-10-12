@@ -165,6 +165,10 @@ export default {
     //   route: 'PrivacyPolicy',
     // },
     {
+      title: 'Unallocated batches',
+      route: 'UnallocatedBatch',
+      defaultIcon: <CompleteTaskIcon />,
+    }, {
       title: 'Complete spray task',
       route: 'TasksHistory',
       defaultIcon: <CompleteTaskIcon />,
