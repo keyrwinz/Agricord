@@ -26,7 +26,6 @@ import DetailsStack from 'modules/paddockPage/DetailsDrawer.js'
 import UnallocatedBatchStack from 'modules/unallocatedBatch/Drawer.js'
 import SessionStack from 'modules/sessionPage/DetailsDrawer.js'
 import MixNameUnallocatedStack from 'modules/mixNameUnallocated/Drawer.js';
-import DetailsStack from 'modules/paddockPage/DetailsDrawer.js';
 import ManualBatchPage from 'modules/manualBatchPage/Drawer.js';
 // login stack
 const LoginStack = createStackNavigator(
