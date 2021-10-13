@@ -52,7 +52,8 @@ class ManualBatchPage extends Component {
       remaining_rate: 0,
       scans: [],
       appliedAmount: 0,
-      rate: 0
+      rate: 0,
+      session: null
     };
   }
 
@@ -156,6 +157,7 @@ class ManualBatchPage extends Component {
           this.setState({
             createdBatch: response.data.batch[0],
             taskConfirmation: true,
+            session: response.data.batch[0].session
           });
         }
         if (response.error !== null && response.error.length > 0) {
@@ -592,7 +594,7 @@ class ManualBatchPage extends Component {
   }
 
   render() {
-    const { productConfirmation, taskConfirmation, data, isLoading, confirmTask, newlyScanned, remaining_rate, appliedAmount } = this.state;
+    const { productConfirmation, taskConfirmation, data, isLoading, confirmTask, newlyScanned, remaining_rate, appliedAmount, session } = this.state;
     return (
       <SafeAreaView>
         <ScrollView
@@ -690,6 +692,7 @@ class ManualBatchPage extends Component {
             exit={() => { this.navigateToScreen() }}
             taskConfirmation={confirmTask}
             visible={confirmTask}
+            session={session}
           />
         )}
 

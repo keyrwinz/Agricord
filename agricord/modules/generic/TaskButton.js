@@ -29,7 +29,7 @@ class TaskButton extends Component{
           }}
         >
           <TouchableOpacity onPress={() => {
-            this.props.navigation.navigate('applyTaskStack')
+            this.props.navigation.navigate('manualBatchPage')
           }}>
             <Image
               style={{
