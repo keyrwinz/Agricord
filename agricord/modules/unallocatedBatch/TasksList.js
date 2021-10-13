@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Style from './Style.js';
-import PaddockCard from 'components/Products/thumbnail/SessionCard.js';
+import SessionCard from 'components/Products/thumbnail/SessionCard.js';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -49,7 +49,7 @@ class TasksList extends Component {
             {
               data != null && data.length ? data.map((item, idx) => {
                 return (
-                  <PaddockCard item={{
+                  <SessionCard item={{
                       ...item,
                       from: this.props.from,
                       origStatus: item.batch_status !== null ? item.batch_status : item.task_status

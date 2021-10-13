@@ -37,24 +37,27 @@ export default {
     borderRadius: 12,
     borderColor: Color.gray,
     borderWidth: 1,
-    backgroundColor: Color.white,
+    backgroundColor: Color.white, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 9
+    // textAlign: 'center'
   },
   searchbarContainer: {
     backgroundColor: 'transparent',
     width: '100%',
     height: 60,
-    paddingTop: 0,
-    marginTop: 5,
+    // marginTop: 5,
     justifyContent: 'center',
-    // borderBottomWidth: 1,
+    borderBottomWidth: 1,
     borderBottomColor: 'transparent',
     shadowColor: 'transparent',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 15,
-    // },
-    // shadowOpacity: 0.22,
-    // shadowRadius: 2.22,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
     elevation: 0
   },
   ScrollView: {

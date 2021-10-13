@@ -33,7 +33,8 @@ class TasksPage extends Component {
       label: 'inprogress',
       limit: 5,
       offset: 0,
-      numberOfPages: null
+      numberOfPages: null,
+      showOverlay: false
     };   
   }
   
@@ -215,7 +216,21 @@ class TasksPage extends Component {
             </View>
           </Pager>
         </PagerProvider>
-        <TaskButton navigation={this.props.parentNav}/>
+        <TaskButton navigation={this.props.parentNav} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+               flex: 1,
+               position: 'absolute',
+               left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
         {isLoading ? <Spinner mode="overlay" /> : null}
       </View>
     );

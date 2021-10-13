@@ -161,7 +161,6 @@ class Slider extends Component {
   }
 
   footerAction(route){
-    console.log('[asdfasdf]', route)
     switch(route){
       case 'Logout': 
         this.logoutAction();
