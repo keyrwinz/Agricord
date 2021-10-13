@@ -36,6 +36,7 @@ class TaskButton extends Component {
           {this.state.showSubs && (
             <View>
               <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('manualBatchPage')}
                 style={{
                   flexDirection: 'row',
                   marginRight: 10,
