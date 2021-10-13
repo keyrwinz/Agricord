@@ -37,7 +37,7 @@ const UnallocatedBatchStack = createStackNavigator({
   UnallocatedBatchScreen: {
     screen: UnallocatedBatch, 
     navigationOptions: ({navigation}) => ({
-      title: 'Manual Batch',
+      title: 'MANUAL BATCH',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
       ...BasicStyles.headerDrawerStyle
     }),
