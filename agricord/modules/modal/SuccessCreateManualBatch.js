@@ -56,12 +56,12 @@ class SuccessCreateManualBatch extends Component {
                 <Text style={{
                   borderBottomColor: Color.gray,
                   fontSize: 15,
-                }}>Manual Batch recorded as {this.props.session}</Text>
+                }}>Manual Batch recorded as {this.props.session?.session}</Text>
                 <Text style={{
                   borderBottomColor: Color.gray,
                   fontSize: 15,
                   marginBottom: 14
-                }}>Completed: {moment(new Date()).format('DD/MM/YYYY h:s')}</Text>
+                }}>Completed: {this.props.session?.time}</Text>
               </View>
             </View>
             <View style={{

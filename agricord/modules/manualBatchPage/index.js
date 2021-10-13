@@ -157,7 +157,10 @@ class ManualBatchPage extends Component {
           this.setState({
             createdBatch: response.data.batch[0],
             taskConfirmation: true,
-            session: response.data.batch[0].session
+            session: {
+              session: response.data.batch[0].session,
+              time: response.data.batch[0].created_at
+            }
           });
         }
         if (response.error !== null && response.error.length > 0) {
@@ -207,6 +210,14 @@ class ManualBatchPage extends Component {
 
   addProductToBatch(trace) {
     const { data, scannedTraces, scannedTraceIds, scans, appliedAmount, rate } = this.state;
+    if (appliedAmount <= 0) {
+      Alert.alert('Error Message', 'Applied amount should be greater than 0.');
+      return;
+    }
+    if (appliedAmount > trace.qty) {
+      Alert.alert('Error Message', 'Applied amount should be less than remaining volume.');
+      return;
+    }
     if (scannedTraceIds.indexOf(trace.id) < 0) {
       if (data.length > 0) {
         if (scans.includes(trace.product_id)) {
@@ -214,41 +225,25 @@ class ManualBatchPage extends Component {
             if (item.product_id == trace.product_id) {
               let batch = item.product.batch_number;
               batch.push(trace.batch_number);
-              if (appliedAmount > item.qty) {
-                Alert.alert(
-                  'Error Message',
-                  'Applied amount should be less than remaining volume.',
-                  [{ text: 'OK' }],
-                  { cancelable: false },
-                );
-                return;
-              }
               return {
                 ...item,
                 product: {
                   ...item.product,
-                  rate: parseFloat(appliedAmount) + parseFloat(item.qty),
-                  units: item.units
+                  rate: parseFloat(appliedAmount) + parseFloat(item?.product?.qty),
+                  units: item.units,
+                  qty: parseFloat(appliedAmount) + parseFloat(item?.product?.qty)
                 }
               };
             } else {
               let batch = item.product.batch_number;
               batch.push(trace.batch_number);
-              if (appliedAmount > item.qty) {
-                Alert.alert(
-                  'Error Message',
-                  'Applied amount should be less than remaining volume.',
-                  [{ text: 'OK' }],
-                  { cancelable: false },
-                );
-                return;
-              }
               return {
                 ...item,
                 product: {
                   ...item.product,
                   rate: parseFloat(appliedAmount),
-                  units: item.units
+                  units: item.units,
+                  qty: parseFloat(appliedAmount),
                 }
               };
             }
@@ -257,42 +252,26 @@ class ManualBatchPage extends Component {
         } else {
           let batch = trace.product;
           batch['batch_number'] = [trace.batch_number];
-          if (appliedAmount > trace.qty) {
-            Alert.alert(
-              'Error Message',
-              'Applied amount should be less than remaining volume.',
-              [{ text: 'OK' }],
-              { cancelable: false },
-            );
-            return;
-          }
           data.push({
             ...trace,
             product: {
               ...trace.product,
               rate: appliedAmount,
-              units: trace.units
+              units: trace.units,
+              qty: appliedAmount
             }
           })
         }
       } else {
         let batch = trace.product;
         batch['batch_number'] = [trace.batch_number];
-        if (appliedAmount > trace.qty) {
-          Alert.alert(
-            'Error Message',
-            'Applied amount should be less than remaining volume.',
-            [{ text: 'OK' }],
-            { cancelable: false },
-          );
-          return;
-        }
         data.push({
           ...trace,
           product: {
             ...trace.product,
             rate: appliedAmount,
-            units: trace.units
+            units: trace.units,
+            qty: parseFloat(appliedAmount),
           }
         })
       }
