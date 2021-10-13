@@ -32,34 +32,32 @@ class TaskButton extends Component {
             bottom: 10,
             right: 10,
             alignSelf: 'flex-end',
-            zIndex: 9999,
           }}>
           {this.state.showSubs && (
             <View>
-              <TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginRight: 10,
-                    position: 'absolute',
-                    bottom: 10,
-                    right: '100%',
-                    width: 100,
-                  }}>
-                  <View style={[Style.cardWithShadow, {marginRight: 30}]}>
-                    <Text>Manual Batch</Text>
-                  </View>
-                  <Image
-                    style={{
-                      // flex: 1,
-                      width: 25,
-                      height: '1%',
-                      aspectRatio: 1,
-                      resizeMode: 'stretch',
-                    }}
-                    source={require('assets/taskIcon.png')}
-                  />
+              <TouchableOpacity
+                style={{
+                  flexDirection: 'row',
+                  marginRight: 10,
+                  position: 'absolute',
+                  bottom: 10,
+                  right: '100%',
+                  width: 100,
+                  zIndex: 9000,
+                }}>
+                <View style={[Style.cardWithShadow, {marginRight: 30}]}>
+                  <Text>Manual Batch</Text>
                 </View>
+                <Image
+                  style={{
+                    // flex: 1,
+                    width: 25,
+                    height: '1%',
+                    aspectRatio: 1,
+                    resizeMode: 'stretch',
+                  }}
+                  source={require('assets/taskIcon.png')}
+                />
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('applyTaskStack')}
@@ -70,6 +68,7 @@ class TaskButton extends Component {
                   bottom: 60,
                   right: '100%',
                   width: 100,
+                  zIndex: 9000,
                 }}>
                 <View style={[Style.cardWithShadow, {marginRight: 30}]}>
                   <Text>Planned Task</Text>
@@ -90,8 +89,9 @@ class TaskButton extends Component {
           <TouchableOpacity
             onPress={() => {
               this.setState({showSubs: !this.state.showSubs});
-              this.props.showOverlay(!this.state.showSubs)
-            }}>
+              this.props.showOverlay(!this.state.showSubs);
+            }}
+            style={{zIndex: 9000}}>
             <Image
               style={{
                 padding: 30,
