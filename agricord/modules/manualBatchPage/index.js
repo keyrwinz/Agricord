@@ -136,7 +136,7 @@ class ManualBatchPage extends Component {
         merchant_id: user.sub_account.merchant.id,
         account_id: user.id,
         product_trace_id: item.id,
-        applied_rate: item.rate,
+        applied_rate: item.qty,
         product_attribute_id: item.product_attribute_id,
       };
     });
@@ -147,7 +147,6 @@ class ManualBatchPage extends Component {
       batch_products,
     };
     this.setState({ isLoading: true });
-    console.log(Routes.batchCreate, parameter);
     Api.request(
       Routes.batchCreate,
       parameter,
@@ -283,6 +282,7 @@ class ManualBatchPage extends Component {
         { cancelable: false },
       );
     }
+    trace['qty'] = parseFloat(appliedAmount);
     scannedTraces.push(trace);
     if (scans.includes(trace.product_id) === false) {
       scans.push(trace.product_id);
