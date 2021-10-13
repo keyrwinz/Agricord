@@ -56,7 +56,7 @@ class SuccessCreateManualBatch extends Component {
                 <Text style={{
                   borderBottomColor: Color.gray,
                   fontSize: 15,
-                }}>Manual Batch recorded as {'Test'}</Text>
+                }}>Manual Batch recorded as {this.props.session}</Text>
                 <Text style={{
                   borderBottomColor: Color.gray,
                   fontSize: 15,
