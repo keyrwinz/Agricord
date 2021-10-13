@@ -13,14 +13,7 @@ class HeaderOptions extends Component {
   }
 
   back = () => {
-    Alert.alert(
-      "Note",
-      "Data from previous page will be reset once you click 'Okay'",
-      [
-        { text: "Okay", onPress: () => { this.props.navigationProps.navigate('mixPageStack') } }
-      ],
-      { cancelable: false }
-    );
+    this.props.navigationProps.pop();
   };
 
 
