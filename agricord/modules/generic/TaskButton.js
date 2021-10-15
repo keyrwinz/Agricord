@@ -1,16 +1,10 @@
-import {faUsers} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React, {Component} from 'react';
 import {
   View,
   Image,
   Text,
-  ScrollView,
   Dimensions,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-  Alert,
+  TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import Style from './Style.js';

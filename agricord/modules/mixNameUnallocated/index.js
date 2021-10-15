@@ -8,12 +8,11 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import Style from './Style.js';
-import Api from 'services/api/index.js';
-import {Routes, BasicStyles} from 'common';
 import {Spinner} from 'components';
 import ProductCardUnallocated from 'components/Products/thumbnail/ProductUnallocated.js';
 import TaskButton from 'modules/generic/TaskButton.js';
-import SlidingButton from 'modules/generic/SlidingButton';
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 class MixName extends Component {
   constructor(props) {
@@ -23,7 +22,8 @@ class MixName extends Component {
       data: [],
       isLoading: false,
       spray_mix: null,
-      sprayMix: null
+      sprayMix: null,
+      showOverlay: false
     };
   }
   render() {
@@ -67,8 +67,21 @@ class MixName extends Component {
             }
           </View>
         </ScrollView>
-        <TaskButton navigation={this.props.navigation}/>
-
+        <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+               flex: 1,
+               position: 'absolute',
+               left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
 
         {isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>

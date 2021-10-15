@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
+  Dimensions
 } from 'react-native';
 import {Spinner} from 'components';
 import {connect} from 'react-redux';
@@ -12,7 +13,8 @@ import {Color, Routes, BasicStyles} from 'common';
 import Api from 'services/api/index.js';
 import {Divider} from 'react-native-elements';
 import TaskButton from 'modules/generic/TaskButton.js';
-import { intersection } from 'lodash-es';
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 class Details extends Component {
   constructor(props) {
@@ -21,6 +23,7 @@ class Details extends Component {
       pressed: false,
       isLoading: false,
       data: null,
+      showOverlay: false
     };
   }
 
@@ -157,7 +160,7 @@ class Details extends Component {
         <View
           style={{
             alignItems: 'center',
-            height: '100%',
+            height: '75%',
             width: '90%',
             marginRight: '5%',
             marginLeft: '5%',
@@ -167,7 +170,21 @@ class Details extends Component {
           {data && this.renderTopCard()}
           {data && this.renderMixCards(data)}
         </View>
-        <TaskButton navigation={this.props.navigation} />
+        <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+               flex: 1,
+               position: 'absolute',
+               left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );

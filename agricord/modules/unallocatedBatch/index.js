@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
 import Style from './Style.js';
 import Api from 'services/api/index.js'
-import { Routes, Color, Helper, BasicStyles } from 'common';
+import { Routes, Color } from 'common';
 import { Spinner } from 'components';
 import TasksList from './TasksList.js'
 import TaskButton from 'modules/generic/TaskButton.js';
 import SearchIcon from 'assets/inventory/search_icon.svg';
 import _ from 'lodash';
+
+
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 
 export const products = [{}];
@@ -22,7 +26,8 @@ class TasksPage extends Component {
       limit: 5,
       offset: 0,
       numberOfPages: null,
-      searchString: ''
+      searchString: '',
+      showOverlay: false
     };   
   }
   
@@ -118,10 +123,22 @@ class TasksPage extends Component {
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>
         </View>
-        <View style={{marginLeft: '5%', marginRight: '5%'}}>
-          <TasksList navigation={this.props.navigation} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
-        </View>
-        <TaskButton navigation={this.props.navigation}/>
+        <TasksList navigation={this.props.navigation} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
+        <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+              flex: 1,
+              position: 'absolute',
+              left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
         {isLoading ? <Spinner mode="overlay" /> : null}
       </View>
     );
