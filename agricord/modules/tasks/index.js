@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
-import {View, Image,TouchableHighlight,Text,ScrollView,FlatList, Dimensions,TouchableOpacity,TextInput} from 'react-native';
-import { NavigationActions } from 'react-navigation';
-import { Thumbnail, List, ListItem, Separator } from 'native-base';
+import {View, Dimensions} from 'react-native';
 import { connect } from 'react-redux';
-import {faUserCircle,faMapMarker, faUniversity,faKaaba,faFilter} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import Style from './Style.js';
 import Api from 'services/api/index.js'
-import { Routes, Color, Helper, BasicStyles } from 'common';
+import { Routes, Color, BasicStyles } from 'common';
 import { Spinner } from 'components';
-import { Divider } from 'react-native-elements';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination/GradientBorder';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import TasksList from './TasksList.js'
-import {products} from './data-test.js';
-import TitleLogo from 'assets/inventory/title_logo.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
 import _ from 'lodash';
 
