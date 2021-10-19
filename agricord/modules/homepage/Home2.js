@@ -143,7 +143,7 @@ class HomePage extends Component {
       style={Style.ScrollView}
       onScroll={(e) => {
         if(e.nativeEvent.contentOffset.y === 0){
-          retrieve(false);
+          this.retrieve(false);
         }
       }}
       showsVerticalScrollIndicator={false}>
