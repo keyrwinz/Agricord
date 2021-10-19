@@ -23,6 +23,7 @@ import InventoryActive from 'assets/drawer/inventory_active.svg';
 import OrdersActive from 'assets/drawer/orders_active.svg';
 import SettingsActive from 'assets/drawer/settings_active.svg';
 import CompleteTaskIcon from 'assets/drawer/complete_task_icon.svg';
+import HammerIcon from 'assets/drawer/hammer_solid.svg';
 import LogoutIcon from 'assets/drawer/logout_icon.svg';
 
 export default {
@@ -167,7 +168,7 @@ export default {
     {
       title: 'Unallocated batches',
       route: 'UnallocatedBatch',
-      defaultIcon: <CompleteTaskIcon />,
+      defaultIcon: <HammerIcon />,
     }, {
       title: 'Complete spray task',
       route: 'TasksHistory',

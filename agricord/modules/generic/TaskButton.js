@@ -1,20 +1,15 @@
-import {faUsers} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import React, {Component} from 'react';
 import {
   View,
   Image,
   Text,
-  ScrollView,
   Dimensions,
-  TouchableOpacity,
-  TextInput,
-  SafeAreaView,
-  Alert,
+  TouchableOpacity
 } from 'react-native';
 import {connect} from 'react-redux';
 import Style from './Style.js';
 const height = Math.round(Dimensions.get('window').height);
+import Manual_Batch from 'assets/Manual_Batch.svg';
 
 class TaskButton extends Component {
   constructor(props) {
@@ -49,7 +44,8 @@ class TaskButton extends Component {
                 <View style={[Style.cardWithShadow, {marginRight: 30}]}>
                   <Text>Manual Batch</Text>
                 </View>
-                <Image
+                <Manual_Batch width="25" height="25" />
+                {/* <Image
                   style={{
                     // flex: 1,
                     width: 25,
@@ -58,7 +54,7 @@ class TaskButton extends Component {
                     resizeMode: 'stretch',
                   }}
                   source={require('assets/taskIcon.png')}
-                />
+                /> */}
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('applyTaskStack')}
