@@ -1,19 +1,18 @@
 import {Color, BasicStyles} from 'common';
-import {Dimensions} from 'react-native';
 export default{
   cardWithShadow:{
-    minHeight: 10,
-    width: '100%',
-    // marginVertical: 10,
-    // box-shadow
     backgroundColor: Color.white,
     borderRadius: 8,
     borderColor: '#FFFFFF',
-    borderWidth: 1,
-    ...BasicStyles.standardShadow,
-    // alignItems: 'center',
-    // flexDirection: 'row',
-    paddingLeft: 10,
-    paddingRight: 1,
+    borderWidth: 2,
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: .5,
+    },
+    padding: 5,
+    shadowOpacity: 0.23, // 0.23
+    shadowRadius: 2.62, // 2.62
+    elevation: 2
   }
 }

@@ -91,7 +91,7 @@ class ProductConfirmation extends Component {
                   </View>
                 </View>
               </View>
-              { this.props.input &&
+              {this.props.input &&
                 <View>
                   <View style={{
                     paddingLeft: 20,
@@ -113,23 +113,36 @@ class ProductConfirmation extends Component {
                       paddingTop: 20,
                       width: '50%'
                     }}>
-                      <TextInput style={{
+                      <View style={{
                         position: 'absolute',
                         right: 10,
                         top: 20,
                         width: '50%',
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        paddingLeft: 10,
-                        paddingRight: 10,
                         borderWidth: .5,
                         borderColor: '#5A84EE',
                         borderRadius: 5
                       }}
-                        keyboardType={'numeric'}
-                        value={this.props.appliedAmount}
-                        onChangeText={(text) => { this.props.appliedAmountHandler(text) }}
-                      />
+                      >
+                        <TextInput
+                          style={{
+                            paddingTop: 0,
+                            paddingBottom: 0,
+                            paddingLeft: 10,
+                            paddingRight: 10,
+                            width: '90%'
+                          }}
+                          keyboardType={'numeric'}
+                          value={this.props.appliedAmount}
+                          onChangeText={(text) => { this.props.appliedAmountHandler(text) }}
+                        />
+                        <Text style={{
+                          position: 'absolute',
+                          right: 10,
+                          top: 3
+                        }}>
+                          {Conversion.getUnitsAbbreviation(data.units)}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                   <View style={{

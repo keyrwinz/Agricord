@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Color, BasicStyles} from 'common';
 import {
   View,
   Image,
@@ -30,57 +31,58 @@ class TaskButton extends Component {
           }}>
           {this.state.showSubs && (
             <View>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('manualBatchPage')}
+              <View
                 style={{
                   flexDirection: 'row',
-                  marginRight: 10,
+                  marginRight: 0,
                   position: 'absolute',
-                  bottom: 10,
-                  right: '100%',
-                  width: 100,
-                  zIndex: 9000,
+                  bottom: 20,
+                  right: '30%',
+                  width: 180,
+                  zIndex: 9000
                 }}>
-                <View style={[Style.cardWithShadow, {marginRight: 30}]}>
-                  <Text>Manual Batch</Text>
-                </View>
-                <Manual_Batch width="25" height="25" />
-                {/* <Image
-                  style={{
-                    // flex: 1,
-                    width: 25,
-                    height: '1%',
-                    aspectRatio: 1,
-                    resizeMode: 'stretch',
-                  }}
-                  source={require('assets/taskIcon.png')}
-                /> */}
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('applyTaskStack')}
+                <TouchableOpacity
+                  onPress={() => this.props.navigation.navigate('manualBatchPage')}
+                  style={{marginRight: 20}}>
+                  <View style={[Style.cardWithShadow ,{
+                    marginLeft: 30}]}>
+                    <Text>Manual Batch</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('manualBatchPage')}>
+                  <Manual_Batch width="40" height="40" />
+                </TouchableOpacity>
+              </View>
+              <View
                 style={{
                   flexDirection: 'row',
-                  marginRight: 10,
+                  marginRight: 0,
                   position: 'absolute',
-                  bottom: 60,
-                  right: '100%',
-                  width: 100,
-                  zIndex: 9000,
+                  bottom: 80,
+                  right: '30%',
+                  width: 180,
+                  zIndex: 9000
                 }}>
-                <View style={[Style.cardWithShadow, {marginRight: 30}]}>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('applyTaskStack')} style={{marginRight: 20}}>
+                  <View style={[Style.cardWithShadow ,{
+                    marginLeft: 31}]}>
                   <Text>Planned Task</Text>
-                </View>
-                <Image
-                  style={{
-                    // flex: 1,
-                    width: 25,
-                    height: '1%',
-                    aspectRatio: 1,
-                    resizeMode: 'stretch',
-                  }}
-                  source={require('assets/taskIcon.png')}
-                />
-              </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('applyTaskStack')}>
+                  <Image
+                    style={{
+                      flex: 1,
+                      width: 39,
+                      height: '1%',
+                      aspectRatio: 1,
+                      resizeMode: 'stretch',
+                    }}
+                    source={require('assets/taskIcon.png')}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           )}
           <TouchableOpacity
