@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     width: '100%',
     elevation: 2,
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: Color.containerBackground
   },
   OrderDetailsContainer: {
