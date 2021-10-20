@@ -26,7 +26,7 @@ class TaskButton extends Component {
           style={{
             position: 'absolute',
             bottom: 10,
-            right: 10,
+            right: 20,
             alignSelf: 'flex-end',
           }}>
           {this.state.showSubs && (
