@@ -51,7 +51,7 @@ class TasksPage extends Component {
       parameter = {
         condition: [{
           column: 'session',
-          value: '%' + searchString.toLowerCase() + '%',
+          value: searchString,
           clause: 'like'
         }],
         limit: this.state.limit,
