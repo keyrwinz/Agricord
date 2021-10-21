@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {Color, BasicStyles} from 'common';
 import {
   View,
   Image,
