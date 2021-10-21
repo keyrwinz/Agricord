@@ -142,7 +142,7 @@ class OrdersPage extends Component {
             </View>
           </Pager>
         </PagerProvider>
-        <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        <TaskButton navigation={this.props.parentNav} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
         {
           this.state.showOverlay && (
             <View style={{
