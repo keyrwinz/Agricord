@@ -53,7 +53,7 @@ class TasksPage extends Component {
         clause: 'like'
       }],
       limit: this.state.limit,
-      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
+      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : flag == false && searchString !== '' ? 0 : this.state.offset,
       merchant_id: user.sub_account.merchant.id
     };
     console.log('parameter', Routes.batchesRetrieveSession, parameter)
