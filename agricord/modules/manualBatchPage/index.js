@@ -161,6 +161,7 @@ class ManualBatchPage extends Component {
               time: response.data.batch[0].created_at
             }
           });
+          console.log(response.data.batch[0], '---------------------------------response upon create');
         }
         if (response.error !== null && response.error.length > 0) {
           Alert.alert('Error Message', response.error, [{ text: 'OK' }], {
@@ -209,6 +210,10 @@ class ManualBatchPage extends Component {
 
   addProductToBatch(trace) {
     const { data, scannedTraces, scannedTraceIds, scans, appliedAmount, rate } = this.state;
+    if(isNaN(appliedAmount)) {
+      Alert.alert('Error Message', 'Invalid number.');
+      return
+    }
     if (appliedAmount <= 0) {
       Alert.alert('Error Message', 'Applied amount should be greater than 0.');
       return;
@@ -436,58 +441,19 @@ class ManualBatchPage extends Component {
       );
       return;
     }
-    if (data.length > 0) {
-      for (var i = 0; i < data.length; i++) {
-        let item = data[i];
-        let itemRate = item.product.rate;
-        let qty = productTrace.qty;
-        this.setState({ matchedProduct: productTrace });
-        // if (itemRate <= 0 || qty <= 0) {
-        //   Alert.alert(
-        //     'Error Message',
-        //     'Remaining rate is 0. Not Allowed',
-        //     [{ text: 'OK' }],
-        //     { cancelable: false },
-        //   );
-        //   return;
-        // }
-        if (itemRate > 0 && qty > 0 && itemRate >= qty) {
-          this.setState({
-            newlyScanned: {
-              ...productTrace,
-              rate: productTrace.qty,
-            },
-          });
-        }
-        if (itemRate > 0 && qty > 0 && itemRate < qty) {
-          this.setState({
-            newlyScanned: {
-              ...productTrace,
-              rate: itemRate,
-            },
-          });
-        }
-        setTimeout(() => {
-          this.setState({
-            productConfirmation: true,
-          });
-        }, 100);
+    let qty = productTrace.qty;
+    this.setState({
+      matchedProduct: productTrace,
+      newlyScanned: {
+        ...productTrace,
+        rate: qty
       }
-    } else {
-      let qty = productTrace.qty;
+    });
+    setTimeout(() => {
       this.setState({
-        matchedProduct: productTrace,
-        newlyScanned: {
-          ...productTrace,
-          rate: qty
-        }
+        productConfirmation: true,
       });
-      setTimeout(() => {
-        this.setState({
-          productConfirmation: true,
-        });
-      }, 100);
-    }
+    }, 100);
   }
 
   total = () => { };
