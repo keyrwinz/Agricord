@@ -114,7 +114,9 @@ class ApplyTask extends Component {
       merchant_id: user.sub_account.merchant.id
     };
     this.setState({isLoading: true});
+    console.log('==========', parameter);
     Api.request(Routes.batchesRetrieveApplyTasks, parameter, response => {
+        console.log('============', response);
         this.setState({isLoading: false});
         this.setState({data: response.data});
         if(this.props.state.task) {
@@ -218,6 +220,7 @@ class ApplyTask extends Component {
   render() {
     const { data, selectedMix, selectedMachine, taskConfirmation, confirmTask } = this.state;
     const { task } = this.props.state;
+    console.log("[DATA]", data);
     return (
       <View style={styles.MainContainer}>
         <View style={styles.Contain}></View>
@@ -226,8 +229,8 @@ class ApplyTask extends Component {
             {
               data && (
                 <Task title="Recent" icon={faHistory} height={240} key={1}>
-                  {data.recent_machines && data.recent_machines.length > 0 && (<RecentTasks
-                    data={data.recent_machines}
+                  {(data.recent_machines && data.recent_machines.length > 0) || (data.machines && data.machines.length > 0) && (<RecentTasks
+                    data={data.recent_machines.length > 0 ? data.recent_machines : data.machines}
                     type="Machine"
                     title="Machines"
                     key={1}
@@ -235,9 +238,9 @@ class ApplyTask extends Component {
                     handleSelect={this.recentMachineHandler}
                     handleRemoveItem={() => this.recentMachineHandler(null)}
                   />)}
-                  {data.recent_spray_mixes && data.recent_spray_mixes.length > 0 && (<RecentTasks
+                  {(data.recent_spray_mixes && data.recent_spray_mixes.length > 0) || (data.spray_mixes && data.spray_mixes.length > 0) && (<RecentTasks
                     type="Mix"
-                    data={data.recent_spray_mixes}
+                    data={data.recent_spray_mixes.length > 0 ? data.recent_spray_mixes: data.spray_mixes}
                     title="Spray Mixes"
                     key={2}
                     selected={selectedMix}
@@ -276,7 +279,7 @@ class ApplyTask extends Component {
                   <View style={[styles.ChildrenContainer, {
                     zIndex: 10
                   }]}>
-                      {data.recent_machines && data.recent_machines.length > 0 && (<CustomPicker
+                      {(data.recent_machines && data.recent_machines.length > 0) || (data.machines && data.machines.length > 0) && (<CustomPicker
                         type="Machine"
                         data={data.machines}
                         key={1}
@@ -289,7 +292,7 @@ class ApplyTask extends Component {
                         handleRemoveItem={() => this.pickerMachineHandler(null)}
                         zIndex={30}
                       />)}
-                      { data.recent_spray_mixes && data.recent_spray_mixes.length > 0 && (this.state.selectedPicker === 0 ||  this.state.selectedPicker === 2 || this.state.isPressed === false)
+                      { (data.recent_spray_mixes && data.recent_spray_mixes.length > 0) || (data.spray_mixes && data.spray_mixes.length > 0) && (this.state.selectedPicker === 0 ||  this.state.selectedPicker === 2 || this.state.isPressed === false)
                            && (
                           <CustomPicker
                             type="Mix"
