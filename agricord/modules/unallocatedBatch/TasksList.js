@@ -21,49 +21,48 @@ class TasksList extends Component {
   render() {
     const { data, loading } = this.props;
     return (
-      <SafeAreaView style={{marginLeft: '5%', marginRight: '5%'}}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          onScroll={(event) => {
-            let scrollingHeight = event.nativeEvent.layoutMeasurement.height + event.nativeEvent.contentOffset.y
-            let totalHeight = event.nativeEvent.contentSize.height
-            if(event.nativeEvent.contentOffset.y <= 0) {
-              if(loading == false){
-                // this.retrieve(false)
-              }
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        onScroll={(event) => {
+          let scrollingHeight = event.nativeEvent.layoutMeasurement.height + event.nativeEvent.contentOffset.y
+          let totalHeight = event.nativeEvent.contentSize.height - 1
+          if(event.nativeEvent.contentOffset.y <= 0) {
+            if(loading == false){
+              // this.retrieve(false)
             }
-            if(scrollingHeight >= (totalHeight)) {
-              if(loading == false){
-                this.props.retrieve(true)
-              }
+          }
+          if(scrollingHeight >= (totalHeight)) {
+            if(loading == false){
+              this.props.retrieve(true)
             }
-          }}
-          >
-          <View style={[
-            Style.MainContainer,
-            { 
-              // minHeight: height,
-              marginBottom: 100
-            }]}>
-            
-            {
-              data != null && data.length ? data.map((item, idx) => {
-                return (
-                  <SessionCard item={{
-                      ...item,
-                      from: this.props.from,
-                      origStatus: item.batch_status !== null ? item.batch_status : item.task_status
-                    }}
-                    key={item.id}
-                    navigation={this.props.navigation}
-                  />
-                )}) : (
-                  <Text style={{ marginTop: 10 }}>{ loading ? '' : 'No unallocated batches found'}</Text>
-                )
-            }
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+          }
+        }}
+        style={{marginLeft: '5%', marginRight: '5%'}}
+        >
+        <View style={[
+          Style.MainContainer,
+          { 
+            minHeight: height,
+            marginBottom: 100
+          }]}>
+          
+          {
+            data != null && data.length ? data.map((item, idx) => {
+              return (
+                <SessionCard item={{
+                    ...item,
+                    from: this.props.from,
+                    origStatus: item.batch_status !== null ? item.batch_status : item.task_status
+                  }}
+                  key={item.id}
+                  navigation={this.props.navigation}
+                />
+              )}) : (
+                <Text style={{ marginTop: 10 }}>{ loading ? '' : 'No unallocated batches found'}</Text>
+              )
+          }
+        </View>
+      </ScrollView>
     );
   }
 }

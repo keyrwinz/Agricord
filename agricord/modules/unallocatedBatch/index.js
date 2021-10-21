@@ -46,30 +46,16 @@ class TasksPage extends Component {
     this.setState({
       isLoading: true
     });
-    var parameter = {}
-    if(searchString != ''){
-      parameter = {
-        condition: [{
-          column: 'session',
-          value: '%' + searchString.toLowerCase() + '%',
-          clause: 'like'
-        }],
-        limit: this.state.limit,
-        offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
-        merchant_id: user.sub_account.merchant.id
-      };
-    }else{
-      parameter = {
-        condition: [{
-          column: '',
-          value: null,
-          clause: ''
-        }],
-        limit: this.state.limit,
-        offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : this.state.offset,
-        merchant_id: user.sub_account.merchant.id
-      };
-    }
+    let parameter = {
+      condition: [{
+        column: 'session',
+        value: '%' + searchString + '%',
+        clause: 'like'
+      }],
+      limit: this.state.limit,
+      offset: flag == true && this.state.offset > 0 ? (this.state.offset * this.state.limit) : flag == false && searchString !== '' ? 0 : this.state.offset,
+      merchant_id: user.sub_account.merchant.id
+    };
     console.log('parameter', Routes.batchesRetrieveSession, parameter)
     Api.request(Routes.batchesRetrieveSession, parameter, response => {
       console.log('[asdfasdf]', response)
