@@ -60,7 +60,8 @@ class MixName extends Component {
       data: [],
       isLoading: false,
       spray_mix: null,
-      sprayMix: null
+      sprayMix: null,
+      showOverlay: false
     };
   }
 
@@ -222,7 +223,21 @@ class MixName extends Component {
 
         {
           (paddock && paddock.from != 'due') && (
-            <TaskButton navigation={this.props.navigation}/>
+            <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+          )
+        }
+        {
+          this.state.showOverlay && (
+            <View style={{
+              flex: 1,
+              position: 'absolute',
+              left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
           )
         }
 

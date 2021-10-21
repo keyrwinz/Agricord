@@ -4,7 +4,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
@@ -31,6 +32,8 @@ import SearchIcon from 'assets/inventory/search_icon.svg';
 import NfcIcon from 'assets/inventory/nfc_icon.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
 import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 const InventoryStack = createStackNavigator()
 
@@ -60,6 +63,7 @@ const Inventory = (props) => {
   const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
   const [filteredOtherData, setFilteredOtherData] = useState([])
   const [offset, setOffset] = useState(0)
+  const [showOverlay, setShowOverlay] = useState(false)
 
   var limit = 5;
 
@@ -392,7 +396,21 @@ const Inventory = (props) => {
         </Pager>
       </PagerProvider>
 
-      <TaskButton navigation={props.parentNav}/>
+      <TaskButton navigation={props.parentNav} showOverlay={(bool) => setShowOverlay(bool)}/>
+      {
+        showOverlay && (
+          <View style={{
+            flex: 1,
+            position: 'absolute',
+            left: 0,
+              top: 0,
+              opacity: 0.7,
+              backgroundColor: 'white',
+              width: width,
+              height: height
+          }}></View>
+        )
+      }
       {loading ? <Spinner mode="overlay" /> : null}
     </View>
   );

@@ -7,24 +7,16 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  TextInput,
+  Dimensions,
   ImageBackground,
 } from 'react-native';
 import {Spinner} from 'components';
 import {connect} from 'react-redux';
-import {Dimensions} from 'react-native';
 import {Color, Routes, BasicStyles} from 'common';
 import Api from 'services/api/index.js';
-import {NavigationActions} from 'react-navigation';
-import MapView, {PROVIDER_GOOGLE, Marker, Callout} from 'react-native-maps';
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
 import {Divider} from 'react-native-elements';
-import _, {isError} from 'lodash';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import TaskFocusIcon from 'assets/homescreen/focus_task.svg';
-import InProgressIcon from 'assets/homescreen/in_progress_icon.svg';
 import TaskButton from 'modules/generic/TaskButton.js';
 
 class paddockPage extends Component {
@@ -34,6 +26,7 @@ class paddockPage extends Component {
       pressed: false,
       isLoading: false,
       data: null,
+      showOverlay: false
     };
   }
 
@@ -476,7 +469,21 @@ class paddockPage extends Component {
             {data && (data.status !== 'pending') &&  this.renderActualTask(data)}
           </View>
         </ScrollView>
-        <TaskButton navigation={this.props.navigation} />
+        <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+              flex: 1,
+              position: 'absolute',
+              left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
         {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );
