@@ -25,7 +25,7 @@ class TasksList extends Component {
         showsVerticalScrollIndicator={false}
         onScroll={(event) => {
           let scrollingHeight = event.nativeEvent.layoutMeasurement.height + event.nativeEvent.contentOffset.y
-          let totalHeight = event.nativeEvent.contentSize.height
+          let totalHeight = event.nativeEvent.contentSize.height - 1
           if(event.nativeEvent.contentOffset.y <= 0) {
             if(loading == false){
               // this.retrieve(false)
@@ -42,7 +42,7 @@ class TasksList extends Component {
         <View style={[
           Style.MainContainer,
           { 
-            // minHeight: height,
+            minHeight: height,
             marginBottom: 100
           }]}>
           
