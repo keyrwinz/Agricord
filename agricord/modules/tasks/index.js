@@ -23,7 +23,7 @@ class TasksPage extends Component {
       data: [],
       isLoading: false,
       label: 'inprogress',
-      limit: 5,
+      limit: 6,
       offset: 0,
       numberOfPages: null,
       showOverlay: false
