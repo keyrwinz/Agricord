@@ -50,7 +50,7 @@ class MixName extends Component {
                     ...item,
                     from: 'paddockPage'
                   }}
-                  keya={this.props.navigation.state.params.id}
+                  keya={this.props.navigation.state.params.data[0].batch_number}
                   navigation={this.props.navigation}
                   batch={false}
                 />
