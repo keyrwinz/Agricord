@@ -58,7 +58,7 @@ class TasksPage extends Component {
     };
     console.log('parameter', Routes.batchesRetrieveSession, parameter)
     Api.request(Routes.batchesRetrieveSession, parameter, response => {
-      console.log('[asdfasdf]', response)
+      console.log('[batchesRetrieveSession]', response)
         this.setState({
           isLoading: false
         });

@@ -41,6 +41,7 @@ class Details extends Component {
       session: this.props.navigation.state.params?.data.session
     };
     Api.request(Routes.batchesRetrieveBatchBySession, parameter, response => {
+      console.log('[batches By Session]', parameter, response)
       this.setState({isLoading: false});
       if (response.data != null) {
         this.setState({
@@ -164,7 +165,7 @@ class Details extends Component {
             width: '90%',
             marginRight: '5%',
             marginLeft: '5%',
-            marginBottom: 100,
+            marginBottom: 150,
             marginTop: 15,
           }}>
           {data && this.renderTopCard()}

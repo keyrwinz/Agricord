@@ -70,7 +70,7 @@ export default {
     alignItems: 'center',
     flexDirection: 'row',
     paddingLeft: 10,
-    paddingRight: 10,
+    paddingRight: 10
   },
 
   paddockInfo: {
