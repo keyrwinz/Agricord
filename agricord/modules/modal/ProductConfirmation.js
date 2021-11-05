@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, TextInput, ScrollView, Keyboard } from 'react-native';
 import { Color } from 'common';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -14,14 +14,39 @@ class ProductConfirmation extends Component {
 
   constructor(props) {
     super(props);
+    this.state={
+      keyboardState: 'closed'
+    }
   }
 
   redirect() {
+  }
 
+  componentWillMount () {
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = () => {
+    this.setState({
+        keyboardState: 'opened'
+    });
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({
+        keyboardState: 'closed'
+    });
   }
 
   render() {
     const { data, remaining } = this.props;
+    const { keyboardState } = this.state;
     return (
       <Modal
         animationType='fade'
@@ -162,14 +187,14 @@ class ProductConfirmation extends Component {
 
 
 
-            <SlidingButtonRelative
+            {keyboardState === 'closed' && <SlidingButtonRelative
               icon={faPlus}
               title={this.props.input ? (`ADD ${this.props.appliedAmount} ${Conversion.getUnitsAbbreviation(data.units)}`) : (`ADD ${data.rate > remaining && remaining > 0 ? remaining?.toFixed(2) : data.rate?.toFixed(2)} ${Conversion.getUnitsAbbreviation(data.units)}`)}
               label={'Swipe Right to Confirm'}
               onComplete={() => this.props.onSuccess(data)}
               widthLeft={'30%'}
               widthRight={'70%'}
-            />
+            />}
 
             {this.props.warning && <View style={{
               padding: 20,
