@@ -84,7 +84,7 @@ class paddockPage extends Component {
   getTotalVolume = data => {
     let total = 0; // in Liters
     data.map(item => {
-      if (item.units?.toLowerCase() !== 'l' || item.units?.toLowerCase() !== 'kg' || item.units?.toLowerCase() !== 'kilograms' || item.units?.toLowerCase() !== 'litres' || item.units?.toLowerCase() !== 'liters' || item.units?.toLowerCase() !== 'litres (l)' || item.units?.toLowerCase() !== 'kilograms (kg)') {
+      if (item.units?.toLowerCase() !== 'l' && item.units?.toLowerCase() !== 'kg' && item.units?.toLowerCase() !== 'kilograms' && item.units?.toLowerCase() !== 'litres' && item.units?.toLowerCase() !== 'liters' && item.units?.toLowerCase() !== 'litres (l)' && item.units?.toLowerCase() !== 'kilograms (kg)') {
         let rate = Conversion.getLFromMl(item.rate);
         total += parseFloat(rate) * this.state.totalPaddockArea;
       } else {
@@ -711,9 +711,14 @@ class paddockPage extends Component {
       isAdded,
       confirmTask,
       newlyScanned,
+      totalVolume
     } = this.state;
     const { completeFlag, remaining_rate, scans } = this.state;
     const { task } = this.props.state;
+    const { total_volume } = this.props.navigation.state?.params
+    let water = parseFloat(total_volume) - parseFloat(totalVolume)
+    console.log(parseFloat(total_volume) - parseFloat(totalVolume))
+    water = water
     return (
       <SafeAreaView>
         <ScrollView
@@ -829,7 +834,7 @@ class paddockPage extends Component {
                     textAlign: 'right',
                     width: '30%',
                   }}>
-                  {(this.props.navigation.state?.params?.total_volume - this.state.totalVolume).toFixed(3)}L
+                  {water.toFixed(3)}L
                 </Text>
               </View>
               {this.renderNotesCard()}

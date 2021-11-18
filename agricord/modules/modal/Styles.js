@@ -19,8 +19,6 @@ export default {
     flex: 1,
     backgroundColor: Color.white,
     elevation: 10,
-    marginTop: height / 5,
-    marginBottom: height / 5,
     borderRadius: BasicStyles.standardBorderRadius,
     width: '90%',
     marginLeft: '5%',

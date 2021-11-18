@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Modal, TouchableOpacity, TextInput, ScrollView, Keyboard } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, TextInput, ScrollView, Keyboard, Dimensions } from 'react-native';
 import { Color } from 'common';
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -10,11 +10,11 @@ import { connect } from 'react-redux';
 import styles from './Styles.js'
 import Conversion from 'services/Conversion';
 import { color } from 'react-native-reanimated';
+const height = Math.round(Dimensions.get('window').height);
 class ProductConfirmation extends Component {
-
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       keyboardState: 'closed'
     }
   }
@@ -22,31 +22,32 @@ class ProductConfirmation extends Component {
   redirect() {
   }
 
-  componentWillMount () {
+  componentWillMount() {
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
   }
 
   _keyboardDidShow = () => {
     this.setState({
-        keyboardState: 'opened'
+      keyboardState: 'opened'
     });
   }
 
   _keyboardDidHide = () => {
     this.setState({
-        keyboardState: 'closed'
+      keyboardState: 'closed'
     });
   }
 
   render() {
     const { data, remaining } = this.props;
     const { keyboardState } = this.state;
+    console.log(keyboardState, '-------------------')
     return (
       <Modal
         animationType='fade'
@@ -58,7 +59,10 @@ class ProductConfirmation extends Component {
         collapsable={true}>
         <View style={styles.ModalContainer}>
           <View
-            style={styles.ContentContainer}
+            style={[styles.ContentContainer, {
+              marginBottom: keyboardState === 'opened' ? 50 : height / 5,
+              marginTop: keyboardState === 'opened' ? 50 : height / 5,
+            }]}
           >
             <TouchableOpacity
               style={styles.IconContainer}
@@ -170,7 +174,18 @@ class ProductConfirmation extends Component {
                       </View>
                     </View>
                   </View>
-                  <View style={{
+                  {keyboardState === 'opened' && <View style={{
+                      padding: 20,
+                      flexDirection: 'row',
+                      flexWrap: 'wrap'
+                    }}>
+                      <Text style={styles.DetailTitleTextStyle}>
+                        WARNING:  <Text style={[styles.DetailTitleTextStyle, { fontWeight: 'normal' }]}>
+                          {this.props.warning}
+                        </Text>
+                      </Text>
+                    </View>}
+                  {keyboardState === 'closed' && <View style={{
                     padding: 10,
                     paddingLeft: 20,
                     width: '100%',
@@ -180,7 +195,7 @@ class ProductConfirmation extends Component {
                     }}>
                       Add to Batch
                     </Text>
-                  </View>
+                  </View>}
                 </View>
               }
             </ScrollView>
@@ -196,7 +211,7 @@ class ProductConfirmation extends Component {
               widthRight={'70%'}
             />}
 
-            {this.props.warning && <View style={{
+            {this.props.warning && keyboardState === 'closed' && <View style={{
               padding: 20,
               flexDirection: 'row',
               flexWrap: 'wrap'
