@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, Modal, TouchableOpacity, ScrollView} from 'react-native';
+import {View, Text, Modal, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
 import {BasicStyles} from 'common';
 import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -8,6 +8,7 @@ import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
 import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 import { connect } from 'react-redux';
 import styles from './Styles.js'
+const height = Math.round(Dimensions.get('window').height);
 class MixConfirmation extends Component {
 
   redirect(){
@@ -35,7 +36,10 @@ class MixConfirmation extends Component {
         collapsable={true}>
         <View style={styles.ModalContainer}>
           <View
-            style={styles.ContentContainer}>
+            style={[styles.ContentContainer, {
+              marginTop: height / 5,
+              marginBottom: height / 5
+            }]}>
             <TouchableOpacity
               style={styles.IconContainer}
               onPress={() => {
