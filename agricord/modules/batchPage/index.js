@@ -303,7 +303,7 @@ class paddockPage extends Component {
   }
 
   addProductToBatch(trace) {
-    const { data, scannedTraces, scannedTraceIds, scans } = this.state;
+    const { data, scannedTraces, scannedTraceIds, scans, remaining_rate } = this.state;
     this.setState({
       completeFlag: false,
     });
@@ -311,10 +311,10 @@ class paddockPage extends Component {
       let updated = data.map((item, index) => {
         if (item.product_id == trace.product_id) {
           let rate =
-            parseFloat(trace.rate) > parseFloat(item.remaining) &&
-              parseFloat(item.remaining) > 0
-              ? parseFloat(item.remaining) - parseFloat(item.remaining)
-              : parseFloat(item.rate) - parseFloat(trace.rate);
+              parseFloat(item.rate) > parseFloat(trace.rate) && remaining_rate > 0
+              ? parseFloat(remaining_rate) - parseFloat(trace.rate)
+              : parseFloat(item.rate) - parseFloat(trace.rate)
+              console.log(parseFloat(item.rate) > parseFloat(trace.rate) && remaining_rate > 0, remaining_rate, item.remaining, item.rate, trace.rate, '--')
           scannedTraces.push(trace);
           if (scans.includes(trace.product_id) === false) {
             scans.push(trace.product_id);
