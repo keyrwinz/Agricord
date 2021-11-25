@@ -650,17 +650,26 @@ const MixPage = (props) => {
               }, 100)
             }
           } else {
-            let remainingArea = maxArea - totalArea
-            let newItem = {
-              ...item,
-              remaining_spray_area: remainingArea,
-              partial_flag: true
+            if(Number(totalArea) + parseFloat(item.remaining_spray_area) === Number(maxArea)){
+              setTotalArea(Number(totalArea) + parseFloat(item.remaining_spray_area))
+              item.partial_flag = false;
+              setTimeout(() => {
+                setSelectedPaddock([...selectedPaddock, ...[item]])
+                removePaddock('available', item)
+              }, 100)
+            }else{
+              let remainingArea = maxArea - totalArea
+              let newItem = {
+                ...item,
+                remaining_spray_area: remainingArea,
+                partial_flag: true
+              }
+              setTotalArea(totalArea + remainingArea)
+              setTimeout(() => {
+                setSelectedPaddock([...selectedPaddock, ...[newItem]])
+                removePaddock('available', item)
+              }, 100)
             }
-            setTotalArea(totalArea + remainingArea)
-            setTimeout(() => {
-              setSelectedPaddock([...selectedPaddock, ...[newItem]])
-              removePaddock('available', item)
-            }, 100)
           }
         }
       } else {
