@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { Color, Routes, BasicStyles } from 'common';
 import Api from 'services/api/index.js';
 import { Divider } from 'react-native-elements';
-import _, { isError } from 'lodash';
+import _, { isError, rearg } from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 // import { faExclamationTriangle } from '@fortawesome/free-regular-svg-icons';
 import { faExclamationTriangle, faTint } from '@fortawesome/free-solid-svg-icons';
@@ -310,11 +310,13 @@ class paddockPage extends Component {
     if (scannedTraceIds.indexOf(trace.id) < 0) {
       let updated = data.map((item, index) => {
         if (item.product_id == trace.product_id) {
-          let rate =
-              parseFloat(item.rate) > parseFloat(trace.rate) && remaining_rate > 0
-              ? parseFloat(remaining_rate) - parseFloat(trace.rate)
-              : parseFloat(item.rate) - parseFloat(trace.rate)
-              console.log(parseFloat(item.rate) > parseFloat(trace.rate) && remaining_rate > 0, remaining_rate, item.remaining, item.rate, trace.rate, '--')
+          let rate = 0
+          if(parseFloat(item.rate) > parseFloat(trace.rate) && parseFloat(remaining_rate) === 0) {
+            rate = parseFloat(item.rate) - parseFloat(trace.rate)
+          } else if(parseFloat(remaining_rate) > 0 && parseFloat(trace.rate) > parseFloat(remaining_rate)) {
+            rate = parseFloat(remaining_rate) - parseFloat(remaining_rate)
+          }
+          console.log(item.rate, trace.rate,remaining_rate, rate)
           scannedTraces.push(trace);
           if (scans.includes(trace.product_id) === false) {
             scans.push(trace.product_id);
