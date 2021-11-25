@@ -16,34 +16,34 @@ export default {
     }
   },
   getConvertedUnit(payload, payloadValue){
-    if(parseFloat(payloadValue) % 1000 === 0){
-      let result = null
-      switch(payload){
-        case 'Liters (L)' || 'Liter (L)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' m3'
-        case 'Litres (L)' || 'Litre (L)': 
-          result = parseFloat(payloadValue) / 1000
-          return result + ' m3'
-        case 'Milliliters (ml)' || 'Milliliter (ml)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' L'
-        case 'Millilitres (ml)' || 'Millilitre (ml)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' L'
-        case 'Kilograms (kg)' || 'Kilogram (kg)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' tonne'
-        case 'Grams (g)' || 'Gram (g)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' kg'
-        case 'Milligrams (mg)' || 'Milligram (mg)':
-          result = parseFloat(payloadValue) / 1000
-          return result + ' mg'
-      }
-    }else{
+    // if(parseFloat(payloadValue) % 1000 === 0){
+    //   let result = null
+    //   switch(payload){
+    //     case 'Liters (L)' || 'Liter (L)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' m3'
+    //     case 'Litres (L)' || 'Litre (L)': 
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' m3'
+    //     case 'Milliliters (ml)' || 'Milliliter (ml)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' L'
+    //     case 'Millilitres (ml)' || 'Millilitre (ml)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' L'
+    //     case 'Kilograms (kg)' || 'Kilogram (kg)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' tonne'
+    //     case 'Grams (g)' || 'Gram (g)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' kg'
+    //     case 'Milligrams (mg)' || 'Milligram (mg)':
+    //       result = parseFloat(payloadValue) / 1000
+    //       return result + ' mg'
+    //   }
+    // }else{
       let unit = this.getUnitsAbbreviation(payload)
       return payloadValue + ' ' + unit
-    }
+    // }
   }
 }
