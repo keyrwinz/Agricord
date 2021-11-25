@@ -59,9 +59,7 @@ class TasksPage extends Component {
     console.log('parameter', Routes.batchesRetrieveSession, parameter)
     Api.request(Routes.batchesRetrieveSession, parameter, response => {
       console.log('[batchesRetrieveSession]', response)
-        this.setState({
-          isLoading: false
-        });
+        this.setState({ isLoading: false });
         if(response.data && response.data.length > 0){
           this.setState({
             data:   flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
