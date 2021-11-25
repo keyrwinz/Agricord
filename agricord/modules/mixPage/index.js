@@ -136,7 +136,9 @@ const MixPage = (props) => {
       selectedPaddocks: data
     }
     setLoading(true)
+    console.log('[response>>>>>>>>>>]', parameter)
     Api.request(Routes.paddockPlanTasksCheckIfAvailable, parameter, response => {
+      console.log('[response>>>>>>>>>>]', response)
       setLoading(false)
       if(response.data != 'Available'){
         Alert.alert(
@@ -165,10 +167,10 @@ const MixPage = (props) => {
           //   }
           //   return el;
           // }))
-          props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2), selected_paddock: data, application_rate: appliedRate, appliedArea: partialVal })
+          props.navigation.navigate('batchStack', { total_volume: parseFloat(appliedRate * partialVal).toFixed(2), selected_paddock: data, application_rate: appliedRate, appliedArea: partialVal })
           console.log('[total volume]', parseFloat((appliedRate * partialVal) - (totalRates * partialVal)).toFixed(2))
         }else if(mixConfirmation && checkMard == true){
-          props.navigation.navigate('batchStack', { total_volume: parseFloat((appliedRate * totalArea) - (totalRates * totalArea)).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
+          props.navigation.navigate('batchStack', { total_volume: parseFloat(appliedRate * totalArea).toFixed(2), selected_paddock: selectedPaddock, application_rate: appliedRate, appliedArea: totalArea })
         }
       }
     })
