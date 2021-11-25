@@ -681,7 +681,6 @@ class paddockPage extends Component {
           paddingBottom: 15,
           paddingLeft: 15,
           paddingRight: 15,
-          height: 110,
         }}>
         <Text
           style={{
@@ -691,7 +690,8 @@ class paddockPage extends Component {
           Notes:{' '}
         </Text>
         <TextInput
-          style={{ height: 40, borderColor: Color.gray }}
+          multiline
+          style={{ maxHeight: 200, borderColor: Color.gray }}
           onChangeText={text => this.notesHandler(text)}
           value={this.state.notes}
           placeholder="e.g. Application rate, nozzle type, weather conditions"
