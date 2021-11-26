@@ -58,7 +58,7 @@ class TasksList extends Component {
     const { data, loading } = this.props;
     // console.log(">>>>>>>>>>>>>>>>>>>>>>>>||||||", data);
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1, position: 'relative' }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           onScroll={(event) => {
@@ -79,8 +79,7 @@ class TasksList extends Component {
           <View style={[
             Style.MainContainer, 
             { 
-              minHeight: height,
-              marginBottom: 300
+              minHeight: height
             }]}>
             {
               !loading && (
