@@ -169,7 +169,7 @@ class OrderDetails extends Component {
                   <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
                     {selectedOrder.status === 'completed'
                       ? selectedOrder.delivered_date
-                      : selectedOrder.date_of_delivery}
+                      : selectedOrder.date_of_delivery_with_time}
                   </Text>
                 </View>
               </View>
