@@ -79,7 +79,8 @@ class TasksList extends Component {
           <View style={[
             Style.MainContainer, 
             { 
-              minHeight: height
+              minHeight: height,
+              marginBottom: 200
             }]}>
             {
               !loading && (
