@@ -94,13 +94,13 @@ class paddockPage extends Component {
                 <Image
                   style={Style.image}
                   source={
-                    data.crop_name.toLowerCase() == 'field pea'
+                    data.crop_name.toLowerCase() == 'field pea' || data.crop_name.toLowerCase() == 'chick pea' || data.crop_name.toLowerCase() == 'lentil' || data.crop_name.toLowerCase() == 'faba bean'
                       ? require('assets/FieldPea.png')
                       : data.crop_name.toLowerCase() == 'canola'
                       ? require('assets/Canola.png')
-                      : data.crop_name.toLowerCase() == 'wheat'
+                      : data.crop_name.toLowerCase() == 'wheat' || data.crop_name.toLowerCase() == 'barley' || data.crop_name.toLowerCase() == 'oat' || data.crop_name.toLowerCase() == 'triticale'
                       ? require('assets/Wheat.png')
-                      : data.crop_name.toLowerCase() == 'fallow'
+                      : data.crop_name.toLowerCase() == 'fallow' || data.crop_name.toLowerCase() == 'pasture'
                       ? require('assets/Fallow.png')
                       : require('assets/Canola.png')
                   }
