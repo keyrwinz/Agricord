@@ -262,6 +262,7 @@ const MixPage = (props) => {
 
   const closeModal = () => {
     const { task } = props.state;
+    setOnLastLoad(false)
     setCounts(0)
     setMessage(false)
     setPartial(partialss == false)
@@ -292,6 +293,7 @@ const MixPage = (props) => {
   }
 
   const closePar = () => {
+    setOnLastLoad(false)
     setCounts(0)
     setCheckMark(true)
     setMessage(false)
@@ -357,6 +359,7 @@ const MixPage = (props) => {
   const removePaddock = (from, item) => {
     const { task } = props.state;
     setCounts(0)
+    setOnLastLoad(false)
     setCheckMark(true)
     item.partial = false
     // setTotalArea(item.area + totalArea)
@@ -510,6 +513,7 @@ const MixPage = (props) => {
 
   const addToSelected = (item) => {
     const { task } = props.state;
+    setOnLastLoad(false)
     setCounts(0)
     if (item.remaining_spray_area <= 0) {
       Alert.alert(
@@ -687,6 +691,7 @@ const MixPage = (props) => {
   }
 
   const partialChange = (item) => {
+    setOnLastLoad(false)
     setCheckMark(item.partial)
     if (item.partial == false) {
       let partVal = _.sumBy(selectedPaddock, function (e) {
