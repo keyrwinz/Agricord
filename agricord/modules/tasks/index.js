@@ -8,6 +8,7 @@ import { Spinner } from 'components';
 import Pagination from 'components/Pagination/GradientBorder';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import TasksList from './TasksList.js'
+import Moment from 'moment';
 import TaskButton from 'modules/generic/TaskButton.js';
 import _ from 'lodash';
 
@@ -98,6 +99,9 @@ class TasksPage extends Component {
             isLoading: false
           });
           if(response.data && response.data.length > 0){
+            console.log('------------->>>>>>-', flag);
+            console.log('------------->>>>><-', new Date('01/09/2021'));
+            // let temp =  _.sortBy(this.state.data, (e) => Moment(e.due_date), ['asc'])
             this.setState({
               data:   flag == false ? response.data : _.uniqBy([...this.state.data, ...response.data], 'id'),
               numberOfPages: parseInt(response.size / this.state.limit) + (response.size % this.state.limit ? 1 : 0),
@@ -201,7 +205,7 @@ class TasksPage extends Component {
               <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
             <View style={Style.sliderContainer}>
-              <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
+              <TasksList navigation={this.props.parentNav} data={data.sort((a, b) => new Date(...a.due_date.split('/').reverse()) - new Date(...b.due_date.split('/').reverse()))} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>
             </View>
             <View style={Style.sliderContainer}>
               <TasksList navigation={this.props.parentNav} data={data} from={label} loading={isLoading} retrieve={(flag) => this.retrieve(flag)}/>

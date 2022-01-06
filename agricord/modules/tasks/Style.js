@@ -19,10 +19,11 @@ export default {
   },
   sliderContainer: {
     flex: 1,
-    minHeight: height,
-    width: '90%',
-    marginLeft: '5%',
-    marginRight: '5%'
+    height: '100%',
+    width: '100%',
+    paddingTop: 10,
+    paddingHorizontal: 20,
+    backgroundColor: '#F1F1F1'
   },
   ScrollView: {
     flex: 1
