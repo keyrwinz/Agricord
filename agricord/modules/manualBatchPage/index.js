@@ -218,7 +218,8 @@ class ManualBatchPage extends Component {
       Alert.alert('Error Message', 'Applied amount should be greater than 0.');
       return;
     }
-    if (appliedAmount > trace.qty) {
+    if (appliedAmount > trace.qty && appliedAmount != trace.qty?.toFixed(2)) {
+      console.log(appliedAmount, trace.qty)
       Alert.alert('Error Message', 'Applied amount should be less than remaining volume.');
       return;
     }
