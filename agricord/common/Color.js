@@ -4,10 +4,10 @@ let tertiary = '#5A84EE'
 export default {
   primaryDark: '#cae166',
   primary: primary,
-  danger: '#cae166',
+  danger: '#FF6262',
   warning: '#ffc107',
   secondary: secondary,
-  white: '#ffffff',
+  white: '#fff',
   gray: '#cccccc',
   lightGray: '#eeeeee',
   darkGray: '#2b2b2b',
@@ -16,6 +16,9 @@ export default {
   success: '#4BB543',
   goldenYellow: '#FFDF00',
   tertiary: tertiary,
+  blue: '#5A84EE',
+  containerBackground: '#F1F1F1',
+  appGray: '#969696',
   setPrimary(color){
     this.primary = color
   },

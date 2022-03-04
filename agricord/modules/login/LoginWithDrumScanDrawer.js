@@ -11,6 +11,7 @@ class HeaderOptions extends Component {
   constructor(props) {
     super(props);
   }
+
   back = () => {
     this.props.navigationProps.pop();
   };
@@ -48,6 +49,7 @@ const DrumScanLoginStack = createStackNavigator({
       headerStyle: {
         elevation: 0,
         paddingTop: 20,
+        marginLeft: -20,
         backgroundColor: '#FFFFFF',
       },
       headerTintColor: BasicStyles.headerTintColor,

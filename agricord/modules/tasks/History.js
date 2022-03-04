@@ -88,46 +88,32 @@ class History extends Component {
     const data = this.state.products.paddocks;
     return (
       <SafeAreaView
-        style={{marginBottom: 50, position: 'relative', height: '80%'}}>
+       style={{ flex: 1, position: 'relative' }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {console.log('check', data)}
-          <View style={(Style.MainContainer, {marginBottom: 15})}>
+          <View style={[
+            Style.MainContainer, 
+            { 
+              minHeight: height,
+              marginTop: 25,
+              marginBottom: 300
+            }]}>
             <Text style={{fontWeight: 'bold'}}>Paddocks History</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity
                 onPress={() => {
-                  const name = item.name.toUpperCase();
-                  this.props.parentNav.navigate('paddockStack', {
-                    name,
-                    data: item,
-                    dataFrom: 'history',
-                  });
+                  const { setPaddock } = this.props;
+                  setPaddock({
+                    ...item,
+                    from: 'inprogress'
+                  })
+                  this.props.parentNav.navigate('paddockStack');
                 }}>
                 <PaddockCard details={item} key={item.id} />
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 117,
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.parentNav.navigate('applyTaskStack');
-            }}>
-            <Image
-              style={{
-                padding: 30,
-                height: 50,
-                width: '100%',
-              }}
-              source={require('../../assets/taskIcon.png')}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     );
   }
@@ -136,7 +122,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setPaddock: (paddock) => dispatch(actions.setPaddock(paddock)),
+  };
 };
 
 export default connect(

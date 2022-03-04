@@ -52,7 +52,7 @@ export default {
   paddockDate: {
     width: '30%',
     minHeight: 40,
-    borderRadius: 12,
+    borderRadius: BasicStyles.standardBorderRadius,
     backgroundColor: Color.white,
     borderColor: '#C0C0C0',
     borderWidth: 1.5,
@@ -67,7 +67,7 @@ export default {
   imageContainer: {
     marginTop: 10,
     width: '50%',
-    borderRadius: 10,
+    borderRadius: BasicStyles.standardBorderRadius,
     marginBottom: 15,
     alignItems: 'center',
   },
@@ -75,7 +75,7 @@ export default {
     width: '100%',
     height: 100,
     padding: 50,
-    borderRadius: 5,
+    borderRadius: BasicStyles.standardBorderRadius,
     resizeMode: 'contain',
   },
 
@@ -96,14 +96,13 @@ export default {
 
   //======================PRODUCT INFO AND PDF==================//
   productInfoContainer: {
-    width: '95%',
+    width: '100%',
     minHeight: 240,
-    marginVertical: 10,
     // marginTop:60,
     // box-shadow
     backgroundColor: Color.white,
-    borderRadius: 12,
-    borderColor: '#FFFFFF',
+    borderRadius: BasicStyles.standardBorderRadius,
+    borderColor: Color.white,
     borderWidth: 1,
     shadowColor: '#000',
     shadowOffset: {
@@ -121,7 +120,7 @@ export default {
     marginVertical: 10,
     // box-shadow
     backgroundColor: Color.white,
-    borderRadius: 12,
+    borderRadius: BasicStyles.standardBorderRadius,
     borderColor: '#FFFFFF',
     borderWidth: 1,
     shadowColor: '#000',

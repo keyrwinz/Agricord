@@ -25,7 +25,12 @@ const types = {
   UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD: 'UPDATE_MESSAGES_ON_GROUP_BY_PAYLOAD',
   nav: null,
   SET_SELECTED_ORDER: 'SET_SELECTED_ORDER',
-  SET_MACHINE_AND_MIX: 'SET_MACHINE_AND_MIX',
+  SET_TASK: 'SET_TASK',
+  SET_MIX_NAME: 'SET_MIX_NAME',
+  SET_PADDOCK: 'SET_PADDOCK',
+  SET_PRODUCT: 'SET_PRODUCT',
+  SET_DEDICATED_NFC: 'SET_DEDICATED_NFC',
+  SET_STAY_LOGGED_IN: 'SET_STAY_LOGGED_IN'
 };
 
 export const actions = {
@@ -93,9 +98,24 @@ export const actions = {
   setSelectedOrder(selectedOrder) {
     return {type: types.SET_SELECTED_ORDER, selectedOrder};
   },
-  setMachineAndMix(task) {
-    return {type: types.SET_MACHINE_AND_MIX, task};
+  setTask(task) {
+    return {type: types.SET_TASK, task};
   },
+  setMixName(mix){
+    return { type: types.SET_MIX_NAME, mix };
+  },
+  setPaddock(paddock){
+    return { type: types.SET_PADDOCK, paddock };
+  },
+  setProduct(product){
+    return { type: types.SET_PRODUCT, product };
+  },
+  setDedicatedNfc(dedicatedNfc) {
+    return { type: types.SET_DEDICATED_NFC, dedicatedNfc };
+  },
+  setStayLoggedIn(stayLoggedIn) {
+    return { type: types.SET_STAY_LOGGED_IN, stayLoggedIn };
+  }
 };
 
 const initialState = {
@@ -117,6 +137,11 @@ const initialState = {
   productFilter: [],
   selectedOrder: null,
   task: null,
+  mix: null,
+  paddock: null,
+  product: null,
+  dedicatedNfc: false,
+  stayLoggedIn: false
 };
 
 storeData = async (key, value) => {
@@ -128,17 +153,19 @@ storeData = async (key, value) => {
 };
 
 const reducer = (state = initialState, action) => {
-  const {type, user, token} = action;
-  const {unread} = action;
-  const {notification} = action;
-  const {product} = action;
-  const {theme} = action;
-  const {productFilter} = action;
-  const {cartItems, location} = action;
-  const {messages, message} = action;
-  const {messengerGroup, messagesOnGroup} = action;
-  const {selectedOrder} = action;
-  const {task} = action;
+  const { type, user, token } = action;
+  const { unread } = action;
+  const { notification } = action;
+  const { theme } = action;
+  const { productFilter } = action;
+  const { cartItems, location } = action;
+  const { messages, message } = action;
+  const { messengerGroup, messagesOnGroup } = action;
+  const { selectedOrder } = action;
+  const { task, setting, paddock } = action;
+  const { product } = action;
+  const { dedicatedNfc, flag } = action;
+  const { stayLoggedIn } = action;
   switch (type) {
     case types.LOGOUT:
       AsyncStorage.clear();
@@ -401,11 +428,38 @@ const reducer = (state = initialState, action) => {
         selectedOrder,
       };
 
-    case types.SET_MACHINE_AND_MIX:
+    case types.SET_TASK:
       return {
         ...state,
         task,
       };
+    case types.SET_MIX_NAME:
+      return {
+        ...state,
+        mix
+      }
+    case types.SET_PADDOCK:
+      return {
+        ...state,
+        paddock
+      }
+    case types.SET_PRODUCT:
+      return {
+        ...state,
+        product
+      }
+    case types.SET_DEDICATED_NFC:
+      storeData('nfc', dedicatedNfc ? '1' : '0');
+      return {
+        ...state,
+        dedicatedNfc
+      }
+    case types.SET_STAY_LOGGED_IN:
+      storeData('logged_in', stayLoggedIn ? '1' : '0');
+      return {
+        ...state,
+        stayLoggedIn
+      }
     default:
       return {...state, nav: state.nav};
   }

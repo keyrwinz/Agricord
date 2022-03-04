@@ -20,7 +20,7 @@ class HeaderOptions extends Component {
       <View style={{ flexDirection: 'row' }}>
         <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
-          <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color:'black'}]}/>
+          <FontAwesomeIcon icon={ faChevronLeft } size={BasicStyles.iconSize} style={[BasicStyles.iconStyle,{color: "#BABABA"}]}/>
         </TouchableOpacity>
       </View>
     );
@@ -38,13 +38,10 @@ const MixPageStack = createStackNavigator({
   MixPageScreen: {
     screen: MixPage, 
     navigationOptions: ({ navigation }) => ({
-      title: "Mix C",
+      title: navigation.state.params.data
+      && navigation.state.params.data.spray_mix ? navigation.state.params.data.spray_mix.name : '',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      drawerLabel: 'MixPage',
-      headerStyle: {
-        backgroundColor: '#FFFFFF',
-      },
-      headerTintColor: 'black',
+      ...BasicStyles.headerDrawerStyle
     })
   }
 })

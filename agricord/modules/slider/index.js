@@ -14,11 +14,12 @@ import {
   Platform
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Helper, BasicStyles, Color } from 'common';
+import { Helper, BasicStyles, Color, Routes } from 'common';
 import Config from 'src/config.js';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faUserCircle, faChevronRight, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import LinearGradient from 'react-native-linear-gradient';
+import Api from 'services/api/index.js'
 import Pusher from 'services/Pusher.js';
 import HouseIcon from '../../assets/drawer/profile/houseIcon.svg';
 
@@ -29,6 +30,7 @@ class Slider extends Component {
     super(props);
     this.state = {
       collapsed: null,
+      isLoading: false,
     }
   }
 
@@ -41,15 +43,75 @@ class Slider extends Component {
     this.setState({ collapsed: route });
   };
 
-  navigateToScreen = (route) => {
+  getRouteName(route){
+    switch(route){
+      case 'AccountSettings':
+        return {
+          route: 'Settings',
+          index: 0
+        };
+      case 'AppSettings':
+        return {
+          route: 'Settings',
+          index: 1
+        };
+      case 'UpcomingOrders': 
+        return {
+          route: 'Orders',
+          index: 0
+        };
+      case 'HistoricalOrders': 
+        return {
+          route: 'Orders',
+          index: 1
+        };
+      case 'InventoryHerbicides':
+        return {
+          route: 'INVENTORY',
+          index: 0
+        };
+      case 'InventoryFungicides':
+        return {
+          route: 'INVENTORY',
+          index: 1
+        };
+      case 'InventoryInsecticides': 
+        return {
+          route: 'INVENTORY',
+          index: 2
+        };
+      case 'InventoryOther': 
+        return {
+          route: 'INVENTORY',
+          index: 3
+        };
+      case 'TasksInProgress':
+        return {
+          route: 'TASKS',
+          index: 0
+        };
+      case 'TasksDue': 
+        return {
+          route: 'TASKS',
+          index: 1
+        };
+      case 'TasksHistory': 
+        return {
+          route: 'TASKS',
+          index: 2
+        };
+      case 'UnallocatedBatch': 
+        return {
+          route: 'unallocatedBatch',
+          index: 2
+        };
+    }
+  }
+
+  navigateToScreen = (route, index) => {
     this.props.navigation.toggleDrawer();
 
-    // const navigateAction = NavigationActions.navigate({
-    //   routeName: route
-    // });
-    // this.props.navigation.dispatch(navigateAction);
-    // const { setActiveRoute } = this.props;
-    // setActiveRoute(null)
+    let selected = this.getRouteName(route)
 
     const navigateAction = NavigationActions.navigate({
       routeName: 'drawerStack',
@@ -57,7 +119,10 @@ class Slider extends Component {
         index: 0,
         key: null,
         actions: [
-            NavigationActions.navigate({routeName: route}),
+            NavigationActions.navigate({routeName: route, params: {
+              initialRouteName: selected ? selected.route : 'Home',
+              index: selected ? selected.index : 0
+            }}),
         ]
       })
     });
@@ -73,19 +138,41 @@ class Slider extends Component {
   }
 
   logoutAction(){
+    const { user } = this.props.state
     //clear storage
-    const { logout, setActiveRoute } = this.props;
+    this.setState({isLoading: true});
+    Api.request(Routes.updateLastLogin, {account_id: user?.id}, response => {
+      if(response.data != null){
+        this.setState({isLoading: false});
+        const { logout, setActiveRoute } = this.props;
+        this.props.navigation.navigate('loginStack');
+        // unsubscribe pusher
+        if (Pusher.pusher) {
+          Pusher.pusher.unsubscribe(Helper.pusher.channel);
+          Pusher.pusher = null
+          Pusher.channel = null
+        }
 
-    // unsubscribe pusher
-    if (Pusher.pusher) {
-      Pusher.pusher.unsubscribe(Helper.pusher.channel);
-      Pusher.pusher = null
-      Pusher.channel = null
-    }
-
-    logout();
+        logout();
+      }
+      this.setState({isLoading: false});
+    })
     // setActiveRoute(null)
-    this.props.navigation.navigate('loginStack');
+  }
+
+  footerAction(route){
+    switch(route){
+      case 'Logout': 
+        this.logoutAction();
+        console.log("logout");
+        break;
+      case 'TasksHistory':
+        this.navigateToScreen(route);
+        break;
+      case 'UnallocatedBatch':
+        this.props.navigation.navigate('unallocatedBatchStack');
+        break;
+    }
   }
 
   render () {
@@ -296,7 +383,7 @@ class Slider extends Component {
                               top: 0,
                               left: 0,
                               height: '100%',
-                              width: 15,
+                              width: 15
                             }}
                           >
                           </LinearGradient>
@@ -344,10 +431,10 @@ class Slider extends Component {
                           }
                           <View style={{ width: '50%', flexDirection: 'column' }}>
                             {
-                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
@@ -365,7 +452,7 @@ class Slider extends Component {
                               rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View
@@ -470,10 +557,10 @@ class Slider extends Component {
                           }
                           <View style={{ width: '50%', flexDirection: 'column' }}>
                             {
-                              leftSubRoutes.length > 0 ? leftSubRoutes.map(data => (
+                              leftSubRoutes.length > 0 ? leftSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View style={[styles.lineVerticalGraph, { height: Platform.OS === 'ios' ? '125%' : '118%' }]} />
@@ -491,7 +578,7 @@ class Slider extends Component {
                               rightSubRoutes.length > 0 ? rightSubRoutes.map((data, idx) => (
                                 <TouchableOpacity
                                   key={data.title}
-                                  onPress={() => this.navigateToScreen(data.route)}
+                                  onPress={() => this.navigateToScreen(data.route, idx)}
                                   style={styles.subRoutes}
                                 >
                                   <View
@@ -524,7 +611,7 @@ class Slider extends Component {
                         <View>{item.defaultIcon}</View>
                         <Text
                           style={styles.navItemStyle}
-                          onPress={() => Alert.alert(item.route)}
+                          onPress={() => this.footerAction(item.route)}
                           // onPress={() => this.navigateToScreen(item.route)}
                         >
                           {item.title}
@@ -559,7 +646,7 @@ const mapDispatchToProps = dispatch => {
   const { actions } = require('@redux');
   return {
     logout: () => dispatch(actions.logout()),
-    setActiveRoute: (route) => dispatch(actions.setActiveRoute(route))
+    setActiveRoute: (route) => dispatch(actions.setActiveRoute(route)),
   };
 };
 

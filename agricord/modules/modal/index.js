@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import {BasicStyles} from 'common';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
+import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {RNSlidingButton, SlideDirection} from 'rn-sliding-button';
 import {faHistory, faFlask, faPlus} from '@fortawesome/free-solid-svg-icons';
+import SlidingButtonRelative from 'modules/generic/SlidingButtonRelative.js';
 
 class BatchBuild extends Component {
   render() {
     return (
       <Modal
         transparent={true}
-        visible={this.props.isModalOn}
+        visible={this.props.visible}
         style={styles.ModalContainer}
         onRequestClose={() => {
           this.props.closeModal();
@@ -72,6 +73,14 @@ class BatchBuild extends Component {
           <View style={styles.AddToBatchContainer}>
             <Text style={styles.AddToBatchTextStyle}>Add to Batch</Text>
           </View>
+          {
+            <SlidingButtonRelative
+              icon={faCheck}
+              title={'ADD 76,8 L'}
+              label={'Swipe Right to Confirm'}
+              />
+          }
+          {/*
           <RNSlidingButton
             style={{
               marginTop: 60,
@@ -118,7 +127,7 @@ class BatchBuild extends Component {
           </RNSlidingButton>
           <View style={styles.SwipeTextContainer}>
             <Text style={styles.SwipeTextStyle}>Swipe Right to Confirm</Text>
-          </View>
+          </View>*/}
         </View>
       </Modal>
     );

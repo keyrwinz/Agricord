@@ -73,7 +73,6 @@ class InProgress extends Component {
       parameter,
       response => {
         this.setState({products: response.data.paddocks, isLoading: false});
-        console.log(response.data.paddocks);
       },
       error => {
         console.log('ERROR HAPPENS', error);
@@ -86,18 +85,26 @@ class InProgress extends Component {
     const {user} = this.props.state;
     const data = this.state.products.paddocks;
     return (
-      <SafeAreaView style={{position: 'relative', height: '80%'}}>
+      <SafeAreaView style={{position: 'relative'}}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={(Style.MainContainer, {marginBottom: 15})}>
+          <View style={[
+            Style.MainContainer, 
+            { 
+              minHeight: height,
+              marginTop: 25,
+              marginBottom: 300
+            }]}>
             <Text style={{fontWeight: 'bold'}}>Paddocks</Text>
             {this.state.products.map((item, index) => (
               <TouchableOpacity
                 onPress={() => {
-                  const name = item.name.toUpperCase();
+                  const { setPaddock } = this.props;
+                  setPaddock({
+                    ...item,
+                    from: 'inprogress'
+                  })
                   this.props.parentNav.navigate('paddockStack', {
-                    name,
-                    data: item,
-                    dataFrom: 'inprogress',
+                    paddock: item
                   });
                 }}>
                 <PaddockCard details={item} key={item.id} />
@@ -105,26 +112,6 @@ class InProgress extends Component {
             ))}
           </View>
         </ScrollView>
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 117,
-            alignSelf: 'flex-end',
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.parentNav.navigate('applyTaskStack');
-            }}>
-            <Image
-              style={{
-                padding: 30,
-                height: 50,
-                width: '100%',
-              }}
-              source={require('../../assets/taskIcon.png')}
-            />
-          </TouchableOpacity>
-        </View>
       </SafeAreaView>
     );
   }
@@ -133,7 +120,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setPaddock: (paddock) => dispatch(actions.setPaddock(paddock)),
+  };
 };
 
 export default connect(

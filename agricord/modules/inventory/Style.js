@@ -6,7 +6,7 @@ export default {
   },
   MainContainer: {
     flex: 1,
-    backgroundColor: Color.white
+    backgroundColor: Color.containerBackground
   },
   sliderContainer: {
     flex: 1,
@@ -35,15 +35,22 @@ export default {
     resizeMode:'contain'
   },
   searchbarContainer: {
-    position: 'relative',
     backgroundColor: Color.white,
     width: '100%',
     height: 60,
     paddingTop: 0,
-    marginTop: -10,
+    marginTop: 5,
     justifyContent: 'center',
     borderBottomWidth: 1,
     borderBottomColor: Color.gray,
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 15
   },
   searchbar: {
     width: '70%',
@@ -112,11 +119,11 @@ export default {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 10,
     },
-    shadowOpacity: 0.23,
+    shadowOpacity: 0.9,
     shadowRadius: 2.62,
-    elevation: 2,
+    elevation: 10,
     alignItems: 'center',
   },
   itemDescription: {

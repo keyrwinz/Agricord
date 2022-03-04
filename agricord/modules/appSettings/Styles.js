@@ -2,12 +2,11 @@ import {StyleSheet} from 'react-native';
 import {BasicStyles} from 'common';
 const styles = StyleSheet.create({
   AppSettings: {
-    backgroundColor: '#F1F1F1',
     height: '100%',
     alignItems: 'center',
   },
   SettingContainer: {
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingTop: '3%',
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
   },
   AppSettingTileTextContainer: {
     justifyContent: 'flex-start',
-    width: '70%',
+    width: '20%',
   },
   AppSettingTileTitleTextStyle: {
     fontWeight: 'bold',

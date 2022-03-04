@@ -16,7 +16,7 @@ class HeaderOptions extends Component {
   };
   render() {
     return (
-      <View style={{flexDirection: 'row', paddingLeft: 10}}>
+      <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={this.back.bind(this)}>
           {/*Donute Button Image */}
           <FontAwesomeIcon
@@ -45,25 +45,11 @@ const OrderDetailsStack = createStackNavigator({
     screen: OrderDetails,
     navigationOptions: ({navigation}) => ({
       title:
-        navigation.state.params.details.status === 'completed'
-          ? `ORDER NUMBER ${navigation.state.params.details.order_number}`
+        navigation.state.params.data.status === 'completed'
+          ? `ORDER ${navigation.state.params.data.order_number}`
           : 'ORDER DETAILS',
       headerLeft: <HeaderOptions navigationProps={navigation} />,
-      headerStyle: {
-        elevation: 10,
-        backgroundColor: '#FFFFFF',
-        height: 80,
-      },
-      headerTintColor: BasicStyles.headerTintColor,
-      headerTitleContainerStyle: {
-        backgroundColor: '#FFFFFF',
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingRight: '18%',
-      },
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+      ...BasicStyles.headerDrawerStyle
     }),
   },
 });

@@ -42,10 +42,12 @@ import {Divider} from 'react-native-elements';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Pagination from 'components/Pagination';
 import {Pager, PagerProvider} from '@crowdlinker/react-native-pager';
-import PaddockCard from 'components/Products/paddockCard.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SwipeButton from 'components/SwipeableButton';
-import arrowRight from 'assets/ArrowRight.png';
+import WifiSvg from 'assets/settings/wifi.svg';
+import TaskButton from 'modules/generic/TaskButton.js';
+import SlidingButton from 'modules/generic/SlidingButton';
 
 const width = Math.round(Dimensions.get('window').width);
 const height = Math.round(Dimensions.get('window').height);
@@ -55,49 +57,104 @@ class MixName extends Component {
     super(props);
     this.state = {
       activeIndex: 0,
-      products: [],
+      data: [],
+      isLoading: false,
+      spray_mix: null,
+      sprayMix: null,
+      showOverlay: false
     };
   }
 
   componentDidMount() {
-    const {user} = this.props.state;
-    if (user != null) {
+    const { paddock } = this.props.state;
+    if (paddock == null && (paddock && paddock.spray_mix_id == null)) {
+      return
     }
-    console.log(Routes.sprayMixesRetrieve);
-    console.log(this.props);
     const parameter = {
+      condition: [{
+        value: paddock.spray_mix_id,
+        column: 'spray_mix_id',
+        clause: '='
+      }],
+      sort: {
+        created_at: 'desc'
+      },
       offset: 0,
-      limit: 10,
-      merchant_id: 38,
+      limit: 10
     };
-    Api.request(
-      Routes.sprayMixesRetrieve,
-      parameter,
-      response => {
-        console.log(response.data);
-        this.setState({products: response.data});
+    this.setState({
+      isLoading: true
+    })
+    console.log('parameter', parameter)
+    Api.request(Routes.sprayMixProductsRetrieve, parameter, response => {
+        console.log('response', response)
+        this.retrieveOneSpray();
+        this.setState({data: response.data, isLoading: false, spray_mix: response.spray_mix});
       },
       error => {
+        this.setState({
+          isLoading: false,
+          spray_mix: null,
+          data: []
+        })
         console.log({error});
       },
     );
   }
 
+  retrieveOneSpray = () => {
+    const { paddock } = this.props.state;
+    const {session} = this.props.navigation.state.params;
+    const parameter = {
+      id: paddock.spray_mix_id,
+      session: session !== undefined ? session : "undefined"
+    }
+    console.log('[ONE SPRAY::', parameter);
+    this.setState({isLoading: true})
+    Api.request(Routes.sprayMixRetrieveByBatch, parameter, response => {
+        this.setState({sprayMix: response.data[0], isLoading: false});
+      }
+    );
+  }
+
+  redirect = () => {
+    const { setTask } = this.props;
+    let task = {
+      machine: null,
+      spray_mix: this.props.navigation.state.params.data ? this.props.navigation.state.params.data.spray_mix : null
+    };
+    setTask(task);
+    setTimeout(() => {
+      this.props.navigation.navigate('applyTaskStack', {fromMix: true});
+    }, 100)
+  };
+
   render() {
-    const {details} = this.props.route.params;
-    const {dataFrom} = this.props.route.params;
+    const { paddock } = this.props.state;
+    const { isLoading, data } = this.state;
+    console.log('==========', this.state.sprayMix);
     return (
       <ImageBackground
         source={require('assets/backgroundlvl2.png')}
         style={Style.BackgroundContainer}>
         <ScrollView>
           <View
-            style={{alignItems: 'center', margin: 10, height: '100%', flex: 1}}>
+            style={{
+              alignItems: 'center',
+              height: '100%',
+              width: '90%',
+              marginRight: '5%',
+              marginLeft: '5%',
+              marginBottom: 100,
+              marginTop: 15
+            }}>
             <View style={[Style.paddockContainer]}>
               <View style={Style.paddockInfo}>
                 <View style={{flexDirection: 'row'}}>
-                  <Text style={{fontWeight: 'bold', fontSize: 18}}>
-                    Applied Rate
+                  <Text style={{
+                    fontSize: BasicStyles.standardTitleFontSize
+                  }}>
+                    { (paddock && paddock.from == 'due') ? 'Application Volume' : 'Applied Volume' }
                   </Text>
                 </View>
               </View>
@@ -108,51 +165,84 @@ class MixName extends Component {
                   width: '25%',
                 }}>
                 <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                  {details.appliedRate}
+                {this.state.sprayMix?.applied_rate}L/Ha
                 </Text>
               </View>
-              <View
-                style={{
-                  backgroundColor: '#C4E392',
-                  height: 10,
-                  borderBottomEndRadius: 20,
-                  borderBottomStartRadius: 20,
-                  bottom: -1,
-                  width: '100%',
-                  position: 'absolute',
-                }}
-              />
             </View>
+            {
+              data.length > 0 && (
+                  <View style={{
+                    width: '100%',
+                  }}>
+                    <Text style={{
+                      textAlign: 'left',
+                      fontWeight: 'bold',
+                      marginTop: 10,
+                      fontSize: BasicStyles.standardTitleFontSize
+                    }}>PRODUCT RATE (PER HA)</Text>
+                  </View>
 
-            {this.state.products.map((item, index) => (
-              <PaddockCard
-                details={{
-                  item,
-                  dataFrom: 'paddockPage',
-                  status: details.status,
-                }}
-                key={item.id}
-              />
-            ))}
+              )
+            }
+            {
+              data && data.map((item, index) => (
+                      <ProductCard
+                        item={{
+                          ...item.product,
+                          from: 'paddockPage'
+                        }}
+                        key={item.id}
+                        navigation={this.props.navigation}
+                        theme={'v2'}
+                        batch={false}
+                      />
+                    ) 
+                  )
+            }
+            {
+              data.length == 0 && (
+                <View style={{
+                    width: '100%'
+                  }}>
+                  <Text style={{ marginTop: 10 }}>{ isLoading ? '' : 'No product found'}</Text>
+                </View>
+              )
+            }
           </View>
         </ScrollView>
 
-        {dataFrom == 'due' && (
-          <SwipeButton
-            thumbIconBackgroundColor="#5A84EE"
-            thumbIconBorderColor="#5A84EE"
-            thumbIconImageSource={arrowRight}
-            shouldResetAfterSuccess={true}
-            resetAfterSuccessAnimDelay={100}
-            title=""
-            height={55}
-            railStyles={{
-              backgroundColor: '#5A84EE',
-              borderColor: '#5A84EE',
-            }}
-            onSwipeSuccess={() => alert('Action Complete Here')}
-          />
+        {
+          (paddock && paddock.from == 'due') && (
+            <SlidingButton
+              title={'Apply Mix'}
+              label={'Swipe Right'}
+              onSuccess={() => this.redirect()}
+              />
+
         )}
+
+        {
+          (paddock && paddock.from != 'due') && (
+            <TaskButton navigation={this.props.navigation} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+          )
+        }
+        {
+          this.state.showOverlay && (
+            <View style={{
+              flex: 1,
+              position: 'absolute',
+              left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
+
+
+        {isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );
   }
@@ -161,7 +251,9 @@ const mapStateToProps = state => ({state: state});
 
 const mapDispatchToProps = dispatch => {
   const {actions} = require('@redux');
-  return {};
+  return {
+    setTask: task => dispatch(actions.setTask(task)),
+  };
 };
 
 export default connect(

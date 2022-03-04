@@ -37,8 +37,8 @@ export default {
   imageUpload: apiUrl + 'images/upload',
   imageRetrieve: apiUrl + 'images/retrieve',
 
-   // dashboard result
-   dashboardRetrieve: apiUrl + 'paddocks/dashboard_batches',
+  // dashboard result
+  dashboardRetrieve: apiUrl + 'order_requests/retrieve_orders_dashboard',
   // carts
   // cartsCreate: apiUrl + 'carts/create',
   // cartsRetrieve: apiUrl + 'carts/retrieve',
@@ -47,7 +47,8 @@ export default {
   // coupons
   // couponsRetrieve: apiUrl + 'coupons/retrieve',
   // products
-  // productsRetrieve: apiUrl + 'products/retrieve_basic',
+  productsRetrieve: apiUrl + 'products/retrieve_basic',
+  productsRetrieveWithOrderId: apiUrl + 'products/retrieve_with_order_number',
   // dashboard
   // dashboardRetrieveCategoryList: apiUrl + 'dashboard/categories',
   // dashboardRetrieveFeaturedProducts: apiUrl + 'dashboard/featured',
@@ -71,10 +72,41 @@ export default {
   //Agricord-Tasks
   tasksRetrieve: apiUrl + 'paddocks/retrieve_batches_and_paddocks',
   ordersRetrieve: apiUrl + 'order_requests/retrieve',
-  sprayMixesRetrieve:apiUrl + 'spray_mixes/retrieve_details',
+  ordersRetrieveMerchant: apiUrl + 'order_requests/retrieve_orders',
+  ordersRetrieveByParams: apiUrl + 'order_requests/retrieve_orders_by_params',
+  sprayMixesRetrieve: apiUrl + 'spray_mixes/retrieve_details',
+  sprayMixOneRetrieve: apiUrl + 'spray_mixes/retrieve',
+  sprayMixRetrieveByBatch: apiUrl + 'spray_mixes/retrieve_by_batch',
   orderRequest: apiUrl + 'order_request_items/retrieve',
-  paddockDetailsRetrieve : apiUrl + 'paddocks/retrieve',
-
+  paddockDetailsRetrieve: apiUrl + 'paddocks/retrieve',
+  paddocksRetrieveWithSprayMix: apiUrl + 'paddocks/retrieve_with_spray_mix',
   // Inventory
-  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level'
+  inventoryMerchant: apiUrl + 'products/retrieve_basic',
+  inventoryRetrieve: apiUrl + 'transfers/retrieve_products_first_level',
+  inventoryEndUser: apiUrl + 'transfers/retrieve_products_first_level_end_user',
+
+  // batches
+  batchesRetrieveApplyTasks: apiUrl + 'batches/retrieve_apply_tasks',
+  batchesRetrieveUnApplyTask: apiUrl + 'batches/retrieve_unapply_tasks',
+  batchesRetrieveSession: apiUrl + 'batches/retrieve_session',
+  batchesRetrieveBatchBySession: apiUrl + 'batches/retrieve_batch_by_session',
+
+  //tasks
+  paddockPlanTasksRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params',
+  paddockPlanTasksRetrieveFromBatch: apiUrl + 'paddock_plan_tasks/retrieve_from_batch',
+  paddockDueTaskRetrieve: apiUrl + 'paddock_plan_tasks/retrieve_mobile_due_task',
+  paddockPlanTasksUpdate: apiUrl + 'paddock_plan_tasks/update',
+  paddockPlanTasksRetrieveEndUser: apiUrl + 'paddock_plan_tasks/retrieve_mobile_by_params_end_user',
+  paddockPlanTasksRetrieveAvailablePaddocks: apiUrl + 'paddock_plan_tasks/retrieve_available_paddocks',
+  paddockPlanTasksCheckIfAvailable: apiUrl + 'paddock_plan_tasks/check_if_available',
+
+  // spray mix products
+  sprayMixProductsRetrieve: apiUrl + 'spray_mix_products/retrieve_by_params',
+  productTraceRetrieve: apiUrl + 'product_traces/retrieve_by_params',
+  batchCreate: apiUrl + 'batches/create',
+  batchUpdateStatus: apiUrl + 'batches/update',
+  batchRetrieve: apiUrl + 'batches/retrieve',
+
+  updateLastLogin: apiUrl + 'accounts/update_last_log_in',
+  productTraceRetrieveUser: apiUrl + 'product_traces/retrieve_by_params_end_user',
 };

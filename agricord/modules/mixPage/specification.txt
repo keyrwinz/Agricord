@@ -1,0 +1,21 @@
+if last load is ON
+- then the applied rate will be calculated
+  base on the machine capacity divided by
+  selected area(total area)
+- max area will be calculated by machine capacity divided  by the minimum rate of the spray mix
+
+if last load is off
+ - the applied rate will the application_rate on spray mix
+ - the max area will be machine capacity divided by the 
+    application rate of the spray mix
+
+if last load is either on or off
+ - selected area > maximum area then the user can't
+  proceed but enable the partial box to allow custom input but automatically deduct the remaining area. 
+ - the user can't apply the application below the minimum_rate or greater than the maximum
+
+
+ Hide pagination once the available paddocks is greater than 10.
+
+ Maximum of 50 paddocks
+ 

@@ -4,14 +4,15 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { connect } from 'react-redux';
 import { Pager, PagerProvider } from '@crowdlinker/react-native-pager';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBars, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import Pagination from 'components/Pagination';
+import Pagination from 'components/Pagination/GradientBorder';
 import InventoryItem from './InventoryItem';
 import InventoryList from './InventoryList';
 import { Color, BasicStyles, Routes } from 'common';
@@ -19,11 +20,20 @@ import Api from 'services/api/index.js'
 import { products } from './data-test.js';
 import Style from './Style.js';
 import ApplyTask from 'modules/applyTask';
+import { Spinner } from 'components';
+import _ from 'lodash';
+import config from 'src/config';
+import { Helper } from 'common';
+import NfcManager, {NfcEvents, Ndef} from 'react-native-nfc-manager/NfcManager';
 
 // assets
 import TitleLogo from 'assets/inventory/title_logo.svg';
 import SearchIcon from 'assets/inventory/search_icon.svg';
 import NfcIcon from 'assets/inventory/nfc_icon.svg';
+import TaskButton from 'modules/generic/TaskButton.js';
+import StackHeaderTitle from 'modules/generic/StackHeaderTitle';
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 const InventoryStack = createStackNavigator()
 
@@ -39,74 +49,271 @@ const paginationProps=[{
 
 const Inventory = (props) => {
   const [activeIndex, setActiveIndex] = useState(0)
+  const [activeTags, setActiveTags] = useState()
+  const [loading, setLoading] = useState(false)
   const [searchString, setSearchString] = useState('')
   const [HerbicideData, setHerbicideData] = useState([])
   const [FungicideData, setFungicideData] = useState([])
   const [InsecticideData, setInsecticideData] = useState([])
   const [OtherData, setOtherData] = useState([])
 
+  const [data, setData] = useState([])
   const [filteredHerbicideData, setFilteredHerbicideData] = useState([])
   const [filteredFungicideData, setFilteredFungicideData] = useState([])
   const [filteredInsecticideData, setFilteredInsecticideData] = useState([])
   const [filteredOtherData, setFilteredOtherData] = useState([])
+  const [offset, setOffset] = useState(0)
+  const [showOverlay, setShowOverlay] = useState(false)
+
+  var limit = 5;
 
   useEffect(() => {
-    const parameter = {
-      condition: {
-        column: 'title',
-        value: '%%'
-      },
+    retrieve(false, paginationProps[props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0].name)
+    setActiveIndex(props.parentNav.state && props.parentNav.state.params ? props.parentNav.state.params.index : 0);
+  }, [])
+
+  const retrieve = (flag, tag) => {
+    const { user } = props.state;
+    if(user == null){
+      return
+    }
+    let condition = [{
+      column: 'title',
+      value: '%' + searchString.toLowerCase() + '%',
+      clause: 'like'
+    }, {
+      column: 'merchant_id',
+      value: user.sub_account.merchant.id,
+      clause: '='
+    }, {
+      column: 'tags',
+      value: '%' + tag.toLowerCase() + '%',
+      clause: 'like'
+    }]
+
+    let conditionForOther = [{
+      column: 'title',
+      value: '%' + searchString.toLowerCase() + '%',
+      clause: 'like'
+    }, {
+      column: 'merchant_id',
+      value: user.sub_account.merchant.id,
+      clause: '='
+    }, {
+      column: 'tags',
+      value: '%herbicide%',
+      clause: 'not like'
+    }, {
+      column: 'tags',
+      value: '%fungicide%',
+      clause: 'not like'
+    }, {
+      column: 'tags',
+      value: '%insecticide%',
+      clause: 'not like'
+    }]
+
+    let params = {
+      condition: tag.toLowerCase() !== 'other' ? condition : conditionForOther,
       sort: {
         title: 'asc'
       },
-      merchant_id: 2,
-      account_id: 7,
+      merchant_id: user.sub_account.merchant.id,
+      account_id: user.id,
       inventory_type: 'product_trace',
-      type: 'DISTRIBUTOR',
-      productType: 'all',
-      limit: 5,
-      offset: 0
+      limit: limit,
+      offset: offset,
+      tags: '%' + tag.toLowerCase() + '%'
     }
-    Api.request(Routes.inventoryRetrieve, parameter, response => {
-      if (response.data.length) {
-        setHerbicideData(response.data)
-        setFungicideData(response.data)
-        setInsecticideData(response.data)
-        // setOtherData(response.data)
-
-        setFilteredHerbicideData(response.data)
-        setFilteredFungicideData(response.data)
-        setFilteredInsecticideData(response.data)
-        // setFilteredOtherData(response.data)
+    let parameter = null
+    setLoading(true)
+    setData([])
+    let route = null
+    if(user.account_type === 'DISTRIBUTOR') {
+      route = Routes.inventoryRetrieve
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        offset: offset,
       }
-      console.log({ inventoryResponse: response })
+    } else if(user.account_type === 'MANUFACTURER') {
+      parameter = params
+      route = Routes.inventoryMerchant
+    } else {
+      route = Routes.inventoryEndUser
+      parameter = {
+        condition: {
+          value: '%' + searchString.toLowerCase() + '%',
+          column: 'title'
+        },
+        merchant_id: user.sub_account.merchant.id,
+        sort: {title: 'asc'},
+        account_id: user.id,
+        inventory_type: 'product_trace',
+        type: user.account_type,
+        productType: 'all',
+        limit: limit,
+        tags: tag.toLowerCase() !== 'other' ? '%' + tag.toLowerCase() + '%' : tag.toLowerCase(),
+        offset: offset,
+      }
+    }
+    console.log('========',route, parameter, flag)
+    Api.request(route, parameter, response => {
+      setLoading(false)
+      if (response.data.length > 0) {
+        let tempData = flag == false ? response.data : _.uniqBy([...data, ...response.data], 'product_attribute_id')
+        setData(tempData)
+        setOffset(flag == false ? 0 : offset + 1);  
+      } else {
+        setData(flag == false ? [] : data)
+         setOffset(flag == false ? 0 : offset);
+      }
     }, error => {
-      console.log({ inventoryError: error })
+      setLoading(false)
     })
-  }, [])
+  }
 
-  useEffect(() => {
-    if (props.initialPage !=null) {
-      switch (props.initialPage) {
-        case 'InventoryHerbicides':
-          setActiveIndex(0)
-          break;
-        case 'InventoryFungicides':
-          setActiveIndex(1)
-          break;
-        case 'InventoryInsecticides':
-          setActiveIndex(2)
-          break;
-        case 'InventoryOther':
-          setActiveIndex(3)
-          break;
-        default:
-          break 
+  const onPageChange = (activeIndex) => {
+    console.log(activeIndex);
+    
+    setActiveIndex(activeIndex)
+    setTimeout(() => {
+      retrieve(false, paginationProps[activeIndex].name)
+    }, 100);
+  }
+
+  const scan = (parameter) => {
+    if(config.NFC_TEST && parameter !== null) {
+      retrieveProduct(parameter);
+    }
+  }
+
+  const manageResponse = (tag) => {
+    let parsed = null
+    if(tag.ndefMessage){
+      const ndefRecords = tag.ndefMessage;
+
+      function decodeNdefRecord(record) {
+          if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_TEXT)) {
+              return {'text': Ndef.text.decodePayload(record.payload)};
+          } else if (Ndef.isType(record, Ndef.TNF_WELL_KNOWN, Ndef.RTD_URI)) {
+              return {'uri': Ndef.uri.decodePayload(record.payload)};
+          }
+
+          return {'unknown': null}
+      }
+
+      parsed = ndefRecords.map(decodeNdefRecord);
+    }
+    manageNfcText(parsed, tag.id)
+  }
+
+  const _cancel = () => {
+    setLoading(false)
+    NfcManager.unregisterTagEvent().catch(() => 0);
+  }
+
+  const startScanningNFC = async () => {
+    console.log('starting')
+    setLoading(true)
+    try {
+      await NfcManager.registerTagEvent();
+    } catch (ex) {
+      setLoading(false)
+      console.warn('ex', ex);
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    }
+  }
+
+  const manageNfcText = (data, id) => {
+    setLoading(false)
+    if(data){
+      data.map((item, index) => {
+        console.log('item', item.text)
+        if(index === 0 && item.text){
+          let array = item.text.split(Helper.delimeter)
+          let parameter = {
+            title: array[0],
+            merchant: array[1],
+            batch_number: array[2],
+            manufacturing_date: array[3],
+            code: array[4],
+            website: array[5],
+            nfc: id,
+            link: false
+          }
+          scan(parameter)
+        }
+      })
+    }
+  }
+
+  const startScanning = () => {
+    NfcManager.start();
+    NfcManager.setEventListener(NfcEvents.DiscoverTag, tag => {
+      setLoading(false)
+      manageResponse(tag)
+      NfcManager.unregisterTagEvent().catch(() => 0);
+    });
+    startScanningNFC()
+  }
+
+  const retrieveProduct = (params) => {
+    const { user } = props.state;
+    let parameter = {
+      condition: [{
+        value: params.code,
+        column: 'code',
+        clause: '='
+      }],
+      nfc: params.nfc,
+      merchant_id: user.sub_account.merchant.id,
+      account_type: user.account_type
+    }
+    manageRequest(parameter, params.title);
+  }
+
+  const manageRequest = (parameter, title) => {
+    setLoading(true)
+    console.log("TRACE::", parameter);
+    Api.request(Routes.productTraceRetrieve, parameter, response => {
+      setLoading(false)
+      if(response.data != null && response.data.length > 0) {
+        console.log(response.data[0], "volume");
+        props.parentNav.navigate('productDetailsStack', {
+          data: {
+            ...response.data[0],
+            title: title,
+            volume: response.data[0].volume,
+            fromScan: true
+          }
+        })
+      } else {
+        Else();
       }
     }
-  }, [])
+    );
+  }
+  const Else = () => {
+    Alert.alert(
+      "Opps",
+      "Product not found!",
+      [
+        { text: "OK"}
+      ],
+      { cancelable: false }
+    );
+  }
 
-  const onPageChange = (activeIndex) => setActiveIndex(activeIndex)
   const searchProductHandler = () => {
     const query = searchString.toLocaleLowerCase()
     switch (activeIndex) {
@@ -131,16 +338,22 @@ const Inventory = (props) => {
 
   return (
     <View style={Style.MainContainer}>
-      <Pagination
-        activeIndex={activeIndex}
-        onChange={(index) => onPageChange(index)}
-        pages={paginationProps}
-      >
-      </Pagination>
-      <PagerProvider activeIndex={activeIndex}>
-
+      <View style={{
+        width: '100%',
+        height: 140
+      }}>
+        <View style={[BasicStyles.paginationHolder,{
+          shadowColor: Color.black,
+        }]}>
+          <Pagination
+            activeIndex={activeIndex}
+            onChange={(index) => onPageChange(index)}
+            pages={paginationProps}
+          >
+          </Pagination>
+        </View>
         {/* SEARCHBAR */}
-        <View style={Style.searchbarContainer}>
+        <View style={[Style.searchbarContainer, BasicStyles.paginationHolder]}>
           <TextInput
             style={Style.searchbar}
             placeholder="Search..."
@@ -149,37 +362,56 @@ const Inventory = (props) => {
           />
           <TouchableOpacity
             style={Style.searchIcon}
-            onPress={() => searchProductHandler()}
+            onPress={() => retrieve(false, paginationProps[activeIndex].name)}
           >
             <SearchIcon height="50" width="52" />
           </TouchableOpacity>
           <TouchableOpacity
             style={Style.nfcIcon}
-            onPress={() => Alert.alert('nfc')}
+            onPress={() => startScanning()}
           >
             <NfcIcon width="35" />
           </TouchableOpacity>
         </View>
+      </View>
+      <PagerProvider activeIndex={activeIndex}>
 
         <Pager panProps={{enabled: false}}>
           <View style={Style.sliderContainer}>
             {/* ===== HERBICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredHerbicideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== FUNGICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredFungicideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== INSECTICIDE ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredInsecticideData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
           <View style={Style.sliderContainer}>
             {/* ===== OTHER ===== */}
-            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={filteredOtherData} />
+            <InventoryList navigation={props.navigation} parentNav={props.parentNav} data={data} loading={loading} retrieve={(flag) => retrieve(flag, paginationProps[activeIndex].name)}/>
           </View>
         </Pager>
       </PagerProvider>
+
+      <TaskButton navigation={props.parentNav} showOverlay={(bool) => setShowOverlay(bool)}/>
+      {
+        showOverlay && (
+          <View style={{
+            flex: 1,
+            position: 'absolute',
+            left: 0,
+              top: 0,
+              opacity: 0.7,
+              backgroundColor: 'white',
+              width: width,
+              height: height
+          }}></View>
+        )
+      }
+      {loading ? <Spinner mode="overlay" /> : null}
     </View>
   );
 }
@@ -190,29 +422,17 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-connect(mapStateToProps, mapDispatchToProps)(Inventory);
+let InventoryPage = connect(mapStateToProps, mapDispatchToProps)(Inventory);
 
 const InventoryScreen = (props) => {
   return (
     <InventoryStack.Navigator>
       <InventoryStack.Screen
-        name="Inventory"
-        children={(childProps) => <Inventory {...childProps} parentNav={props.parentNav} />}
+        name="InventoryPage"
+        children={(childProps) => <InventoryPage {...childProps} parentNav={props.parentNav} />}
         options={() => ({
           headerTitle: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TitleLogo />
-              <Text
-                style={{
-                  color: '#000',
-                  marginLeft: 7,
-                  fontWeight: 'bold',
-                  fontSize: 20
-                }}
-                >
-                INVENTORY
-              </Text>
-            </View>
+            <StackHeaderTitle title={'INVENTORY'}/>
           ),
           headerLeft: () => (
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -232,43 +452,8 @@ const InventoryScreen = (props) => {
           ),
         })}
       />
-      <InventoryStack.Screen
-        name="InventoryItem"
-        component={InventoryItem}
-      />
-      <InventoryStack.Screen
-        name="ApplyTask"
-        component={ApplyTask}
-        options={({ navigation }) => {
-          return ({
-            headerLeft: () => (
-              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => navigation.pop()}>
-                  <FontAwesomeIcon
-                    icon={faChevronLeft}
-                    size={BasicStyles.iconSize}
-                    style={[
-                      BasicStyles.iconStyle,
-                      {
-                        color: '#000',
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
-            ),
-            headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'center' }}>
-                <Text style={{ color: '#000', fontWeight: 'bold', fontSize: 16,textAlign:'center' }}>
-                 APPLY TASK
-                </Text>
-             
-              </View>
-            )
-        })}}
-      />
     </InventoryStack.Navigator>
   )
 }
 
-export default InventoryScreen
+export default InventoryScreen;

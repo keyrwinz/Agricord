@@ -12,9 +12,9 @@ export default {
   MainContainer: {
     flex: 1,
     paddingHorizontal: 15,
-    justifyContent: 'center',
-    paddingBottom: 30,
     width: '100%',
+    // top: '10%',
+    // bottom: '20%',
     backgroundImage: 'assets/homescreen/background.svg'
   },
   flexRow: {
@@ -55,8 +55,8 @@ export default {
     position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 20,
-    marginVertical: 10
+    marginLeft: -20,
+    marginVertical: 10,
   },
   graphTextContainer: {
     position: 'absolute',
@@ -142,6 +142,10 @@ export default {
     marginLeft: 7,
     color: Color.gray,
   },
+  overFlowText: {
+    width: 100
+  },
+
   eventPayloadText: {
     marginTop: 5,
     marginLeft: 5,

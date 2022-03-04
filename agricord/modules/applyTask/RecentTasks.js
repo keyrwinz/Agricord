@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import styles from 'modules/applyTask/Styles.js';
+import { Color } from 'common';
 
 class RecentTasks extends Component {
   constructor(props) {
@@ -11,21 +12,23 @@ class RecentTasks extends Component {
   }
 
   renderRecentTasks = () => {
-    const tasks = this.props.tasks;
-    return tasks.map((task, index) => {
+    const { data, selected } = this.props;
+    return data.slice(0, 3).map((item, index) => {
       return (
         <TouchableOpacity
-          style={styles.Task}
+          style={[styles.Task, {
+            backgroundColor: selected && selected.id == item.id ? Color.blue : Color.white
+          }]}
           key={index}
           onPress={() => {
-            if (this.state.isClicked) {
-              this.props.handleRemoveItem(this.props.type);
-            } else {
-              this.props.handleSelect(index);
-            }
+            this.props.handleSelect(item);
             this.setState({isClicked: !this.state.isClicked});
           }}>
-          <Text style={styles.TaskTextStyle}>{task.task}</Text>
+          <Text
+            numberOfLines={1}
+            style={[styles.TaskTextStyle, {
+            color: selected && selected.id == item.id ? Color.white : Color.blue
+          }]}>{item.name}</Text>
         </TouchableOpacity>
       );
     });

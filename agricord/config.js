@@ -1,5 +1,5 @@
-let LIVE_BACKEND_URL = 'https://api.traceag.com.au/api/public/increment/v1';
-let DEV_BACKEND_URL = 'http://192.168.254.102/project_rx_api/public/increment/v1';
+let LIVE_BACKEND_URL = 'http://api.traceag.com.au/api/public/increment/v1';
+let DEV_BACKEND_URL = 'http://192.168.254.101/trackr/api/public/increment/v1';
 let isDev = false;
 let BACKEND_URL = isDev ? DEV_BACKEND_URL : LIVE_BACKEND_URL;
 export default {
@@ -16,4 +16,7 @@ export default {
     cluster: 'ap1',
     encrypted: true,
   },
+  versionChecker: 'store',
+  retrieveDataFlag: 1,
+  NFC_TEST: true
 };

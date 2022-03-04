@@ -1,5 +1,5 @@
 import Color from './Color';
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform } from 'react-native';
 const width = Math.round(Dimensions.get('window').width);
 export default {
   formControl: {
@@ -128,5 +128,152 @@ export default {
     width: 30,
     borderRadius: 15
   },
-  profileIconSize: 30
+  profileIconSize: 30,
+  paginationHolder: {
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: Platform.OS == 'android' ? 15 : 5,
+    },
+    shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+    shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
+    elevation: 5, // 15
+    backgroundColor:Color.white,
+    height: 60
+  },
+  standardFontSize: 12,
+  standardTitleFontSize: 16,
+  standardTitle2FontSize: 14,
+  standardSubTitleFontSize: 14,
+  standardHeaderFontSize: 18,
+  standardBorderRadius: 12,
+  headerDrawerStyle: {
+    headerStyle: {
+      elevation: 10,
+      shadowColor: Color.black,
+      shadowOffset: {
+        width: 0,
+        height: Platform.OS == 'android' ? 15 : 5,
+      },
+      shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+      shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
+      backgroundColor: Color.white,
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center',
+      fontSize: 18
+    },
+    headerTitleContainerStyle: {
+      backgroundColor: Color.white,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingRight: Platform.OS == 'ios' ? 0 : 50
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },  
+  },
+  headerDrawerStyleNoPadding: {
+    headerStyle: {
+      elevation: 10,
+      shadowColor: Color.black,
+      shadowOffset: {
+        width: 0,
+        height: Platform.OS == 'android' ? 15 : 5,
+      },
+      shadowOpacity: Platform.OS == 'android' ? 0.22 : 0.15, // 0.22
+      shadowRadius: Platform.OS == 'android' ? 2.22 : 10, // 2.22
+      backgroundColor: Color.white,
+      height: 60,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    headerTitleContainerStyle: {
+      backgroundColor: Color.white,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  },
+  standardShadow: {
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23, // 0.23
+    shadowRadius: 2.62, // 2.62
+    elevation: 2, // 2
+  },
+  starndardDivider: {
+    width: '90%',
+    height: 0.5,
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  standardDivider: {
+    width: '90%',
+    height: 0.5,
+    marginLeft: '5%',
+    marginRight: '5%',
+  },
+  standardCardContainer: {
+    minHeight: 60,
+    width: '100%',
+    marginTop: 15,
+    // box-shadow
+    backgroundColor: Color.white,
+    borderRadius: 12,
+    borderColor: '#FFFFFF',
+    borderWidth:1,
+    shadowColor: Color.black,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23, //0.23
+    shadowRadius: 2.62, // 2.62
+    elevation: 2, // 2
+    alignItems:'center',
+    flexDirection:'row',
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+  standardButton: {
+    height: 50,
+    backgroundColor: Color.primary,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25
+  },
+  standardFormControl: {
+    height: 50,
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10,
+    justifyContent: 'center',
+  },
+  standardTextInputNotCentered: {
+    height: 50,
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10,
+  },
+  standardTextInputMultiline: {
+    borderColor: Color.lightGray,
+    borderWidth: 1,
+    width: '100%',
+    borderRadius: 25,
+    paddingLeft: 10
+  },
+  standardLoginContainer: {
+    width: '80%'
+  }
 }

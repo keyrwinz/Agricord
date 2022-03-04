@@ -1,7 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {BasicStyles} from 'common';
+import {BasicStyles, Color} from 'common';
 
 const styles = StyleSheet.create({
+  MainContainer: {
+    flex: 1,
+    backgroundColor: Color.containerBackground
+  },
   PickerContainer: {
     marginTop: 20,
     width: '90%',
@@ -27,19 +31,18 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   OptionsContainer: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: '10%',
+    marginTop: 4,
     justifyContent: 'flex-end',
-    height: 170,
+    height: 132,
+    overflow: 'scroll',
     width: '90%',
     borderColor: '#AEAEAE',
     borderWidth: 0.5,
     backgroundColor: 'white',
     paddingLeft: 20,
     elevation: 2,
-    marginTop: 60,
-    overflow: 'scroll',
+    borderRadius: 5,
+    // position: 'absolute'
   },
   OptionContainer: {
     width: '100%',
@@ -49,7 +52,6 @@ const styles = StyleSheet.create({
   OptionIconContainer: {},
   OptionTextContainer: {
     paddingLeft: 15,
-    justifyContent: 'center',
     borderRadius: 6,
   },
   OptionTextStyle: {
@@ -97,14 +99,14 @@ const styles = StyleSheet.create({
     fontSize: BasicStyles.titleText.fontSize,
   },
   Task: {
-    height: 35,
-    width: 90,
+    height: 33,
+    width: 85,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#5A84EE',
     borderRadius: 12,
-    marginHorizontal: 7,
+    margin: 1
   },
   TaskTextStyle: {
     fontSize: BasicStyles.normalText.fontSize,
@@ -119,6 +121,15 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 0,
   },
+  SelectContainer: {
+    zIndex: 0,
+    top: 30,
+    width: '85%',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    paddingBottom: 13
+  },
   TitleContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -126,7 +137,16 @@ const styles = StyleSheet.create({
     borderBottomColor: '#5A84EE',
     borderBottomWidth: 4,
     width: '100%',
-    height: 55,
+    height: 55
+  },
+  SelectTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    borderBottomColor: '#5A84EE',
+    borderBottomWidth: 4,
+    width: '100%',
+    height: 55
   },
   TitleIconContainer: {
     paddingLeft: 15,
@@ -140,11 +160,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   ChildrenContainer: {
-    width: '90%',
+    width: '100%',
     justifyContent: 'flex-start',
     alignItems: 'center',
     flex: 1,
-    zIndex: 0,
+    zIndex: 5,
+    position: 'relative'
   },
 });
 

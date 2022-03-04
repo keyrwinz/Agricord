@@ -7,7 +7,7 @@ import {
   ColorPropType,
   ScrollView,
   Image,
-  TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import OrderContainer from 'modules/orderDetails/OrderContainer';
 import {BasicStyles, Routes} from 'common';
@@ -17,6 +17,11 @@ import {connect} from 'react-redux';
 import {Spinner} from 'components';
 import styles from 'modules/orderDetails/Styles.js';
 import TaskIcon from 'components/Products/TaskIcon.js';
+import TaskButton from 'modules/generic/TaskButton.js';
+import ProductCard from 'components/Products/thumbnail/ProductCard.js';
+import _ from "lodash"
+const width = Math.round(Dimensions.get('window').width);
+const height = Math.round(Dimensions.get('window').height);
 
 class OrderDetails extends Component {
   constructor(props) {
@@ -24,6 +29,8 @@ class OrderDetails extends Component {
     this.state = {
       products: [],
       isLoading: false,
+      scannedProducts: 0,
+      showOverlay: false
     };
   }
 
@@ -34,17 +41,32 @@ class OrderDetails extends Component {
   getOrderDetails = () => {
     const {selectedOrder} = this.props.state;
     let parameters = {
-      merchant_id: selectedOrder.merchant_to.id,
-      status: selectedOrder.status,
-      order_id: selectedOrder.order_number,
+      condition: [{
+        value: selectedOrder.id,
+        column: 'order_request_id',
+        clause: '='
+      }]
     };
     this.setState({isLoading: true});
     Api.request(Routes.orderRequest, parameters, response => {
       this.setState({products: response.data, isLoading: false});
+      this.sumProducts();
+    }, error => {
+      this.setState({
+        products: [],
+        isLoading: false
+      })
     });
   };
 
-  renderProducts = () => {
+  async sumProducts(){
+    let qty = _.sumBy(this.state.products, function(el){
+      return parseInt(el.qty)
+    })
+    await this.setState({scannedProducts: qty})
+  }
+
+  _renderProducts = () => {
     return this.state.products.map((product, index) => {
       return (
         <OrderContainer height={73} key={index}>
@@ -74,7 +96,7 @@ class OrderDetails extends Component {
                   borderColor: '#4570DD',
                 }}>
                 <Text style={styles.ProductNumberOfItemsTextStyle}>
-                  {product.qty}
+                  {this.state.qty}
                 </Text>
               </View>
             </View>
@@ -84,92 +106,109 @@ class OrderDetails extends Component {
     });
   };
 
+
+  renderProducts = () => {
+    return this.state.products.map((item, index) => {
+      return (
+        <ProductCard
+          item={{
+            ...item,
+            from: 'order'
+          }}
+          key={item.id}
+          navigation={this.props.navigation}
+          theme={'v3'}
+        />
+      );
+    });
+  };
+
   render() {
     const {selectedOrder} = this.props.state;
+    console.log(selectedOrder, "===========iiii");
     const {parentNav} = this.props.navigation.state.params;
     return (
       <ImageBackground
         source={require('assets/backgroundlvl1.png')}
         style={styles.BackgroundContainer}>
-        <View style={styles.OrderDetailsContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{height: '100%', width: '100%', alignItems: 'center'}}>
-              <OrderContainer
-                title="Coastal Ag Supplies"
-                height={selectedOrder.status === 'pending' ? 140 : 180}>
+        {/* <View style={styles.OrderDetailsContainer}> */}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <View style={{
+            height: '100%',
+            width: '90%',
+            alignItems: 'center',
+            // marginBottom: 100,
+            marginLeft: '5%',
+            marignRight: '5%',
+            marginTop: 15
+        }}>
+            <OrderContainer
+              title={selectedOrder.merchant_from.name}
+              height={selectedOrder.status === 'pending' ? 140 : 180}>
+              <View style={styles.Details}>
+                <View style={styles.DetailsTitleContainer}>
+                  <Text style={styles.DetailsTextStyle}>
+                    {'Allocated To'}
+                  </Text>
+                </View>
+                <View style={styles.DetailsTextContainer}>
+                  <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
+                    {selectedOrder.name}
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.Details}>
+                <View style={styles.DetailsTitleContainer}>
+                  <Text style={styles.DetailsTextStyle}>
+                    {selectedOrder.status === 'completed'
+                      ? 'Delivery Date'
+                      : 'Delivery Due'}
+                  </Text>
+                </View>
+                <View style={styles.DetailsTextContainer}>
+                  <Text style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
+                    {selectedOrder.status === 'completed'
+                      ? selectedOrder.delivered_date_with_time
+                      : selectedOrder.date_of_delivery_with_time}
+                  </Text>
+                </View>
+              </View>
+              {selectedOrder.status === 'pending' ? null : (
                 <View style={styles.Details}>
                   <View style={styles.DetailsTitleContainer}>
                     <Text style={styles.DetailsTextStyle}>
-                      {selectedOrder.status === 'pending'
-                        ? 'Delivery Due'
-                        : 'Delivered By'}
+                      Status
                     </Text>
                   </View>
                   <View style={styles.DetailsTextContainer}>
-                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
-                      {selectedOrder.status === 'pending'
-                        ? selectedOrder.date_of_delivery
-                        : selectedOrder.delivered_by}
+                    <Text
+                      style={[styles.DetailsTextStyle, {color: '#000000'}]} numberOfLines={1}>
+                      {selectedOrder.status}
                     </Text>
                   </View>
                 </View>
-                <View style={styles.Details}>
-                  <View style={styles.DetailsTitleContainer}>
-                    <Text style={styles.DetailsTextStyle}>
-                      {selectedOrder.status === 'pending'
-                        ? 'Order'
-                        : 'Delivery Date'}
-                    </Text>
-                  </View>
-                  <View style={styles.DetailsTextContainer}>
-                    <Text style={[styles.DetailsTextStyle, {color: '#000000'}]}>
-                      {selectedOrder.status === 'pending'
-                        ? selectedOrder.order_number
-                        : selectedOrder.delivered_date}
-                    </Text>
-                  </View>
-                </View>
-                {selectedOrder.status === 'pending' ? null : (
-                  <View style={styles.Details}>
-                    <View style={styles.DetailsTitleContainer}>
-                      <Text style={styles.DetailsTextStyle}>
-                        Product Scanned
-                      </Text>
-                    </View>
-                    <View style={styles.DetailsTextContainer}>
-                      <Text
-                        style={[styles.DetailsTextStyle, {color: '#000000'}]}>
-                        {this.state.products.length}
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              </OrderContainer>
-              {this.renderProducts()}
-            </View>
-          </ScrollView>
-        </View>
+              )}
+            </OrderContainer>
+            {this.renderProducts()}
+          </View>
+        </ScrollView>
 
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 130,
-            alignSelf: 'flex-end',
-            right: 20,
-          }}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('applyTaskStack');
-              console.log('NAV2');
-            }}>
-            <View style={{alignItems: 'center'}}>
-              <Image
-                style={{padding: 30, height: 50, width: '100%'}}
-                source={require('../../assets/taskIcon.png')}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <TaskButton navigation={this.props.parentNav} showOverlay={(bool) => this.setState({showOverlay: bool})}/>
+        {
+          this.state.showOverlay && (
+            <View style={{
+               flex: 1,
+               position: 'absolute',
+               left: 0,
+               top: 0,
+               opacity: 0.7,
+               backgroundColor: 'white',
+               width: width,
+               height: height
+            }}></View>
+          )
+        }
+        {this.state.isLoading ? <Spinner mode="overlay" /> : null}
       </ImageBackground>
     );
   }

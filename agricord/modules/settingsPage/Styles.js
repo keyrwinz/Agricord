@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
   MainContainer: {
     height: '100%',
     width: '100%',
-    backgroundColor: Color.white,
+    backgroundColor: Color.containerBackground,
   },
   sliderContainer: {
     flex: 1,
     minHeight: height,
-    width: '100%',
-    paddingHorizontal: 20,
-    backgroundColor: '#F1F1F1',
+    width: '90%',
+    marginLeft: '5%',
+    marginRight: '5%'
   },
   ScrollView: {
     flex: 1,
